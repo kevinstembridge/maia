@@ -11,6 +11,9 @@ interface SomeVersionedCrudListener {
     fun onSomeVersionedEntityCreated(entity: SomeVersionedEntity)
 
 
+    fun onSomeVersionedEntityBeforeUpdate(before: SomeVersionedEntity) {}
+
+
     fun onSomeVersionedEntityUpdated(before: SomeVersionedEntity, after: SomeVersionedEntity)
 
 

@@ -3,10 +3,14 @@
 
 package org.maiaframework.showcase.join
 
+import org.maiaframework.domain.tx.PostCommitScope
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.stereotype.Component
+import org.springframework.transaction.support.TransactionSynchronization
+import org.springframework.transaction.support.TransactionSynchronizationManager
 
 
 @Component
@@ -14,6 +18,9 @@ class CharlieCrudNotifier : ApplicationContextAware, InitializingBean {
 
 
     private lateinit var applicationContext: ApplicationContext
+
+
+    private val logger = LoggerFactory.getLogger(CharlieCrudNotifier::class.java)
 
 
     private lateinit var charlieCrudListeners: Map<String, CharlieCrudListener>
@@ -32,18 +39,33 @@ class CharlieCrudNotifier : ApplicationContextAware, InitializingBean {
 
 
     fun onEntityCreated(entity: CharlieEntity) {
+        afterCommit {
+
+            this.charlieCrudListeners.forEach { (_, listener) ->
+                safely { listener.onCharlieEntityCreated(entity) }
+            }
+
+        }
+
+    }
+
+
+    fun onEntityBeforeUpdate(entity: CharlieEntity) {
 
         this.charlieCrudListeners.forEach { (_, listener) ->
-            listener.onCharlieEntityCreated(entity)
+            listener.onCharlieEntityBeforeUpdate(entity)
         }
 
     }
 
 
     fun onEntityUpdated(before: CharlieEntity, after: CharlieEntity) {
+        afterCommit {
 
-        this.charlieCrudListeners.forEach { (_, listener) ->
-            listener.onCharlieEntityUpdated(before, after)
+            this.charlieCrudListeners.forEach { (_, listener) ->
+                safely { listener.onCharlieEntityUpdated(before, after) }
+            }
+
         }
 
     }
@@ -59,9 +81,48 @@ class CharlieCrudNotifier : ApplicationContextAware, InitializingBean {
 
 
     fun onEntityDeleted(entity: CharlieEntity) {
+        afterCommit {
 
-        this.charlieCrudListeners.forEach { (_, listener) ->
-            listener.onCharlieEntityDeleted(entity)
+            this.charlieCrudListeners.forEach { (_, listener) ->
+                safely { listener.onCharlieEntityDeleted(entity) }
+            }
+
+        }
+
+    }
+
+
+    /**
+     * Runs [delivery] once the surrounding transaction has committed, so listeners never see changes that roll back.
+     * Runs it immediately if no transaction is active, or if already delivering after commit.
+     */
+    private fun afterCommit(delivery: () -> Unit) {
+
+        if (PostCommitScope.isActive || !TransactionSynchronizationManager.isSynchronizationActive()) {
+            PostCommitScope.run(delivery)
+            return
+        }
+
+        TransactionSynchronizationManager.registerSynchronization(object : TransactionSynchronization {
+
+            /** Ahead of the default order, so listeners run before any collector that flushes what they enlist. */
+            override fun getOrder(): Int = 0
+
+            override fun afterCommit() {
+                PostCommitScope.run(delivery)
+            }
+        })
+
+    }
+
+
+    /** The change has already committed, so a failing listener is logged and must not stop the others. */
+    private fun safely(notification: () -> Unit) {
+
+        try {
+            notification()
+        } catch (e: Exception) {
+            logger.error("CrudListener failed after commit", e)
         }
 
     }

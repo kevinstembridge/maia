@@ -155,6 +155,11 @@ class LeftToRightComplexCrudService(
     fun setFields(updater: LeftToRightComplexEntityUpdater): Int {
 
         val before = this.entityRepo.findByPrimaryKeyOrNull(updater.id)
+
+        if (before != null) {
+            this.leftToRightComplexCrudNotifier.onEntityBeforeUpdate(before)
+        }
+
         val count = this.entityRepo.setFields(updater)
 
         if (count > 0 && before != null) {

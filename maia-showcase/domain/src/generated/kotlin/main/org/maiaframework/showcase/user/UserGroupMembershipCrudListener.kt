@@ -11,6 +11,9 @@ interface UserGroupMembershipCrudListener {
     fun onUserGroupMembershipEntityCreated(entity: UserGroupMembershipEntity)
 
 
+    fun onUserGroupMembershipEntityBeforeUpdate(before: UserGroupMembershipEntity) {}
+
+
     fun onUserGroupMembershipEntityUpdated(before: UserGroupMembershipEntity, after: UserGroupMembershipEntity)
 
 

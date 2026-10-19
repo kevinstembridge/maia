@@ -287,16 +287,22 @@ class SearchableDtoEsDocCrudListenerRendererTest {
 
 
     @Test
-    fun `many-to-many other side resolves old roots now and new roots after commit on every update`(@TempDir dir: File) {
+    fun `many-to-many other side resolves old roots before the update and new roots after commit`(@TempDir dir: File) {
 
         val source = renderAll(spec.leftDto, dir).getValue("LeftEsV1EsRefreshRightCrudListener")
 
         assertThat(source).contains("\n    override fun onRightEntityCreated(entity: RightEntity) {}\n")
 
+        assertThat(functionText(source, "    override fun onRightEntityBeforeUpdate(")).isEqualTo(
+            function(
+                "override fun onRightEntityBeforeUpdate(before: RightEntity)",
+                "        this.collector.enlistRefreshNow(this.indexService) { this.repo.findRootIdsViaRight(before.id) }"
+            )
+        )
+
         assertThat(functionText(source, "    override fun onRightEntityUpdated(")).isEqualTo(
             function(
                 "override fun onRightEntityUpdated(before: RightEntity, after: RightEntity)",
-                "        this.collector.enlistRefreshNow(this.indexService) { this.repo.findRootIdsViaRight(before.id) }",
                 "        val afterId = after.id",
                 "        this.collector.enlistRefreshResolved(this.indexService) { this.repo.findRootIdsViaRight(afterId) }"
             )

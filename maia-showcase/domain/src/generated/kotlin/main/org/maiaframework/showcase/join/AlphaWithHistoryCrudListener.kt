@@ -11,6 +11,9 @@ interface AlphaWithHistoryCrudListener {
     fun onAlphaWithHistoryEntityCreated(entity: AlphaWithHistoryEntity)
 
 
+    fun onAlphaWithHistoryEntityBeforeUpdate(before: AlphaWithHistoryEntity) {}
+
+
     fun onAlphaWithHistoryEntityUpdated(before: AlphaWithHistoryEntity, after: AlphaWithHistoryEntity)
 
 

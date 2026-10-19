@@ -11,6 +11,9 @@ interface AllFieldTypesCrudListener {
     fun onAllFieldTypesEntityCreated(entity: AllFieldTypesEntity)
 
 
+    fun onAllFieldTypesEntityBeforeUpdate(before: AllFieldTypesEntity) {}
+
+
     fun onAllFieldTypesEntityUpdated(before: AllFieldTypesEntity, after: AllFieldTypesEntity)
 
 

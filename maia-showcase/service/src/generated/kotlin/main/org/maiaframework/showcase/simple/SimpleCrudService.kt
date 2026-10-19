@@ -113,6 +113,11 @@ class SimpleCrudService(
     fun setFields(updater: SimpleEntityUpdater): Int {
 
         val before = this.entityRepo.findByPrimaryKeyOrNull(updater.id)
+
+        if (before != null) {
+            this.simpleCrudNotifier.onEntityBeforeUpdate(before)
+        }
+
         val count = this.entityRepo.setFields(updater)
 
         if (count > 0 && before != null) {

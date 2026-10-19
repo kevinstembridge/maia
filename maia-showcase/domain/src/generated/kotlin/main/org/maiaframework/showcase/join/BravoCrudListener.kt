@@ -11,6 +11,9 @@ interface BravoCrudListener {
     fun onBravoEntityCreated(entity: BravoEntity)
 
 
+    fun onBravoEntityBeforeUpdate(before: BravoEntity) {}
+
+
     fun onBravoEntityUpdated(before: BravoEntity, after: BravoEntity)
 
 

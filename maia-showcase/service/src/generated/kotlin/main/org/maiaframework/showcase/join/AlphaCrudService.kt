@@ -126,6 +126,11 @@ class AlphaCrudService(
     fun setFields(updater: AlphaEntityUpdater): Int {
 
         val before = this.entityRepo.findByPrimaryKeyOrNull(updater.id)
+
+        if (before != null) {
+            this.alphaCrudNotifier.onEntityBeforeUpdate(before)
+        }
+
         val count = this.entityRepo.setFields(updater)
 
         if (count > 0 && before != null) {

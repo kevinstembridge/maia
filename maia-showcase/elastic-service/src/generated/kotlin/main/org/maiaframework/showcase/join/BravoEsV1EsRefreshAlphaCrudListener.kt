@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service
  * Generated. Keeps [BravoEsV1IndexService] in step with changes to [AlphaEntity] that raise CrudListener events:
  * when a field the EsDoc reads changes, or before a row is deleted, the documents of every root
  * that reaches the row are refreshed.
- * Ids are enlisted with [EsRefreshCollector], which refreshes them once the transaction has committed.
+ * Ids are enlisted with [EsRefreshCollector], which refreshes them once the transaction has committed. The
+ * created, updated and deleted events are themselves delivered after commit, so ids enlisted from them are
+ * refreshed immediately; only the before-update and before-delete events run inside the transaction.
  *
  * Changes that raise no CrudListener event (importers, direct DAO writes, join rows edited outside a CrudService
  * event) are not seen here; the scheduled job calling [BravoEsV1IndexService.refreshIndex] reconciles them.
@@ -25,6 +27,9 @@ class BravoEsV1EsRefreshAlphaCrudListener(
 
 
     override fun onAlphaEntityCreated(entity: AlphaEntity) {}
+
+
+    override fun onAlphaEntityBeforeUpdate(before: AlphaEntity) {}
 
 
     override fun onAlphaEntityUpdated(before: AlphaEntity, after: AlphaEntity) {

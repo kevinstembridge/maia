@@ -11,6 +11,9 @@ interface LeftManyCrudListener {
     fun onLeftManyEntityCreated(entity: LeftManyEntity)
 
 
+    fun onLeftManyEntityBeforeUpdate(before: LeftManyEntity) {}
+
+
     fun onLeftManyEntityUpdated(before: LeftManyEntity, after: LeftManyEntity)
 
 

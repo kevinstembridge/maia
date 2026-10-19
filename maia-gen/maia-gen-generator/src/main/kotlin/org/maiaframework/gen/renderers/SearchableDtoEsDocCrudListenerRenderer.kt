@@ -131,9 +131,10 @@ class SearchableDtoEsDocCrudListenerRenderer(
         val twoPhase = if (this.role == EsRefreshRole.OTHER_SIDE) {
             """
             | *
-            | * Two-phase rule: the many-to-many CrudServices reconcile join rows after the update event has fired, so an
+            | * Two-phase rule: the many-to-many CrudServices reconcile join rows after the update has been notified, so an
             | * update may coincide with a membership change this listener cannot see. The roots joined before the update are
-            | * resolved now and enlisted, and the roots joined after it are resolved after commit, from the id captured now.
+            | * resolved in the before-update event, inside the transaction, and the roots joined after it are resolved
+            | * after commit.
             |""".trimMargin()
         } else {
             ""
@@ -143,7 +144,9 @@ class SearchableDtoEsDocCrudListenerRenderer(
             |/**
             | * Generated. Keeps [$indexService] in step with changes to [${this.entityUqcn}] that raise CrudListener events:
             | * $trigger
-            | * Ids are enlisted with [EsRefreshCollector], which refreshes them once the transaction has committed.
+            | * Ids are enlisted with [EsRefreshCollector], which refreshes them once the transaction has committed. The
+            | * created, updated and deleted events are themselves delivered after commit, so ids enlisted from them are
+            | * refreshed immediately; only the before-update and before-delete events run inside the transaction.
             |$twoPhase *
             | * Changes that raise no CrudListener event (importers, direct DAO writes, join rows edited outside a CrudService
             | * event) are not seen here; the scheduled job calling [$indexService.refreshIndex] reconciles them.
@@ -158,6 +161,7 @@ class SearchableDtoEsDocCrudListenerRenderer(
         addImportFor(this.entityDef.entityFqcn)
 
         `render function onCreated`()
+        `render function onBeforeUpdate`()
         `render function onUpdated`()
         `render functions onBeforeDelete and onDeleted`()
 
@@ -182,6 +186,23 @@ class SearchableDtoEsDocCrudListenerRenderer(
     }
 
 
+    /**
+     * The roots joined to a many-to-many row before it is updated can only be resolved inside the caller's
+     * transaction: afterwards the CrudService has reconciled its join rows.
+     */
+    private fun `render function onBeforeUpdate`() {
+
+        if (CrudListenerCallbacks.hasUpdateCallback(this.entityDef) == false) {
+            return
+        }
+
+        val body = if (this.role == EsRefreshRole.OTHER_SIDE) listOf(enlistRootsNow("before")) else emptyList()
+
+        renderOverride("on${this.entityUqcn}BeforeUpdate(before: ${this.entityUqcn})", body)
+
+    }
+
+
     private fun `render function onUpdated`() {
 
         if (CrudListenerCallbacks.hasUpdateCallback(this.entityDef) == false) {
@@ -200,7 +221,7 @@ class SearchableDtoEsDocCrudListenerRenderer(
             EsRefreshRole.CHILD -> ifWatchedFieldsChanged(listOf(
                 "        this.collector.enlistRefresh(this.indexService, ${this.listOfRootIds}(before.${this.rootForeignKeyProperty}, after.${this.rootForeignKeyProperty}).distinct())"
             ))
-            EsRefreshRole.OTHER_SIDE -> listOf(enlistRootsNow("before")) + enlistRootsAfterCommit()
+            EsRefreshRole.OTHER_SIDE -> enlistRootsAfterCommit()
         }
 
         renderOverride("on${this.entityUqcn}Updated(before: ${this.entityUqcn}, after: ${this.entityUqcn})", body)

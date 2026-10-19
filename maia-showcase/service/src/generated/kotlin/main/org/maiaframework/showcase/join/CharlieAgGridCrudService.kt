@@ -109,6 +109,11 @@ class CharlieAgGridCrudService(
     fun setFields(updater: CharlieAgGridEntityUpdater): Int {
 
         val before = this.entityRepo.findByPrimaryKeyOrNull(updater.id)
+
+        if (before != null) {
+            this.charlieAgGridCrudNotifier.onEntityBeforeUpdate(before)
+        }
+
         val count = this.entityRepo.setFields(updater)
 
         if (count > 0 && before != null) {

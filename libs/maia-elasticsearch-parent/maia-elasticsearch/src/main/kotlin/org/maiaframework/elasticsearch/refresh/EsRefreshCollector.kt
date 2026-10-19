@@ -1,6 +1,7 @@
 package org.maiaframework.elasticsearch.refresh
 
 import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.tx.PostCommitScope
 import org.maiaframework.props.Props
 import org.slf4j.LoggerFactory
 import org.springframework.transaction.support.TransactionSynchronization
@@ -22,7 +23,9 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * resolvers and every directly enlisted id are still flushed.
  *
  * Without an active transaction synchronization, or when called from within `afterCommit` (after this
- * collector has flushed the current transaction), both enlist methods resolve and flush immediately.
+ * collector has flushed the current transaction), both enlist methods resolve and flush immediately. The same
+ * goes for a call inside a [PostCommitScope] (a CrudNotifier delivering after commit) when nothing is pending;
+ * otherwise it joins the pending work, which this collector flushes after the notifier has delivered.
  */
 class EsRefreshCollector(
     private val props: Props
@@ -56,9 +59,9 @@ class EsRefreshCollector(
             return
         }
 
-        val pending = currentPending() ?: newPending()
+        val pending = pendingOrNull()
 
-        if (pending.flushed) {
+        if (pending == null || pending.flushed) {
             flush(mapOf(target to ids.toSet()))
             return
         }
@@ -81,9 +84,9 @@ class EsRefreshCollector(
             return
         }
 
-        val pending = currentPending() ?: newPending()
+        val pending = pendingOrNull()
 
-        if (pending.flushed) {
+        if (pending == null || pending.flushed) {
             flush(mapOf(target to resolve(target, resolver).toSet()))
             return
         }
@@ -108,6 +111,19 @@ class EsRefreshCollector(
             target,
             resolve(target, resolver)
         )
+
+    }
+
+
+    /**
+     * The current transaction's pending work, started if need be. Null inside a [PostCommitScope] when nothing is
+     * pending: a synchronization registered once the transaction has committed would never fire, so the caller
+     * flushes immediately. When work is pending (enlisted before the commit) it is joined, so ids are still
+     * deduplicated across the transaction.
+     */
+    private fun pendingOrNull(): Pending? {
+
+        return currentPending() ?: if (PostCommitScope.isActive) null else newPending()
 
     }
 

@@ -146,6 +146,11 @@ class BravoCrudService(
     fun setFields(updater: BravoEntityUpdater): Int {
 
         val before = this.entityRepo.findByPrimaryKeyOrNull(updater.id)
+
+        if (before != null) {
+            this.bravoCrudNotifier.onEntityBeforeUpdate(before)
+        }
+
         val count = this.entityRepo.setFields(updater)
 
         if (count > 0 && before != null) {

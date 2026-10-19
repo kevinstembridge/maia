@@ -26,6 +26,7 @@ class CrudListenerRendererTest {
 
         assertThat(source).contains("    fun onWidgetEntityCreated(entity: WidgetEntity)\n")
         assertThat(source).contains("    fun onWidgetEntityUpdated(before: WidgetEntity, after: WidgetEntity)\n")
+        assertThat(source).contains("    fun onWidgetEntityBeforeUpdate(before: WidgetEntity) {}\n")
         assertThat(source).doesNotContain("onWidgetEntityUpdated(id")
         assertThat(source).doesNotContain("import org.maiaframework.domain.DomainId")
 

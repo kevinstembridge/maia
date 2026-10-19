@@ -1,0 +1,5 @@
+# CRUD notifications are delivered after commit
+
+The CrudNotifier delivers created, updated and deleted events to CrudListeners only after the surrounding transaction commits, so listeners (Elasticsearch refreshes, typeaheads, hand-written ones) never act on changes that later roll back. The cost is that listeners run outside the transaction and must open their own if they write, and a listener failure can no longer roll back the change: it is logged and delivery continues to the remaining listeners. The before-delete event stays inside the transaction, since it must precede the delete and may veto it. Events are delivered in order without coalescing. Delivery is immediate when no transaction is active.
+
+Pre-change state that is only knowable inside the transaction is captured by in-transaction callbacks: `before-delete`, and a new `before-update` (default no-op). Elasticsearch refresh listeners use these to resolve the roots affected before the change. While the Notifier is delivering after commit it marks a post-commit scope, and `EsRefreshCollector` flushes immediately inside it, since a synchronization registered during `afterCommit` would never fire.

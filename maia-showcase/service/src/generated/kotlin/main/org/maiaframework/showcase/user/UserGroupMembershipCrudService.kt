@@ -129,6 +129,11 @@ class UserGroupMembershipCrudService(
     fun setFields(updater: UserGroupMembershipEntityUpdater): Int {
 
         val before = this.entityRepo.findByPrimaryKeyOrNull(updater.id)
+
+        if (before != null) {
+            this.userGroupMembershipCrudNotifier.onEntityBeforeUpdate(before)
+        }
+
         val count = this.entityRepo.setFields(updater)
 
         if (count > 0 && before != null) {

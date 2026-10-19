@@ -11,6 +11,9 @@ interface BravoWithHistoryCrudListener {
     fun onBravoWithHistoryEntityCreated(entity: BravoWithHistoryEntity)
 
 
+    fun onBravoWithHistoryEntityBeforeUpdate(before: BravoWithHistoryEntity) {}
+
+
     fun onBravoWithHistoryEntityUpdated(before: BravoWithHistoryEntity, after: BravoWithHistoryEntity)
 
 

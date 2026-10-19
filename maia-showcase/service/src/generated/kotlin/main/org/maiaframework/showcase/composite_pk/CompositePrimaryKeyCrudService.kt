@@ -113,6 +113,11 @@ class CompositePrimaryKeyCrudService(
     fun setFields(updater: CompositePrimaryKeyEntityUpdater): Int {
 
         val before = this.entityRepo.findByPrimaryKeyOrNull(updater.primaryKey)
+
+        if (before != null) {
+            this.compositePrimaryKeyCrudNotifier.onEntityBeforeUpdate(before)
+        }
+
         val count = this.entityRepo.setFields(updater)
 
         if (count > 0 && before != null) {

@@ -3,10 +3,14 @@
 
 package org.maiaframework.showcase.all_field_types
 
+import org.maiaframework.domain.tx.PostCommitScope
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.stereotype.Component
+import org.springframework.transaction.support.TransactionSynchronization
+import org.springframework.transaction.support.TransactionSynchronizationManager
 
 
 @Component
@@ -14,6 +18,9 @@ class AllFieldTypesCrudNotifier : ApplicationContextAware, InitializingBean {
 
 
     private lateinit var applicationContext: ApplicationContext
+
+
+    private val logger = LoggerFactory.getLogger(AllFieldTypesCrudNotifier::class.java)
 
 
     private lateinit var allFieldTypesCrudListeners: Map<String, AllFieldTypesCrudListener>
@@ -32,18 +39,33 @@ class AllFieldTypesCrudNotifier : ApplicationContextAware, InitializingBean {
 
 
     fun onEntityCreated(entity: AllFieldTypesEntity) {
+        afterCommit {
+
+            this.allFieldTypesCrudListeners.forEach { (_, listener) ->
+                safely { listener.onAllFieldTypesEntityCreated(entity) }
+            }
+
+        }
+
+    }
+
+
+    fun onEntityBeforeUpdate(entity: AllFieldTypesEntity) {
 
         this.allFieldTypesCrudListeners.forEach { (_, listener) ->
-            listener.onAllFieldTypesEntityCreated(entity)
+            listener.onAllFieldTypesEntityBeforeUpdate(entity)
         }
 
     }
 
 
     fun onEntityUpdated(before: AllFieldTypesEntity, after: AllFieldTypesEntity) {
+        afterCommit {
 
-        this.allFieldTypesCrudListeners.forEach { (_, listener) ->
-            listener.onAllFieldTypesEntityUpdated(before, after)
+            this.allFieldTypesCrudListeners.forEach { (_, listener) ->
+                safely { listener.onAllFieldTypesEntityUpdated(before, after) }
+            }
+
         }
 
     }
@@ -59,9 +81,48 @@ class AllFieldTypesCrudNotifier : ApplicationContextAware, InitializingBean {
 
 
     fun onEntityDeleted(entity: AllFieldTypesEntity) {
+        afterCommit {
 
-        this.allFieldTypesCrudListeners.forEach { (_, listener) ->
-            listener.onAllFieldTypesEntityDeleted(entity)
+            this.allFieldTypesCrudListeners.forEach { (_, listener) ->
+                safely { listener.onAllFieldTypesEntityDeleted(entity) }
+            }
+
+        }
+
+    }
+
+
+    /**
+     * Runs [delivery] once the surrounding transaction has committed, so listeners never see changes that roll back.
+     * Runs it immediately if no transaction is active, or if already delivering after commit.
+     */
+    private fun afterCommit(delivery: () -> Unit) {
+
+        if (PostCommitScope.isActive || !TransactionSynchronizationManager.isSynchronizationActive()) {
+            PostCommitScope.run(delivery)
+            return
+        }
+
+        TransactionSynchronizationManager.registerSynchronization(object : TransactionSynchronization {
+
+            /** Ahead of the default order, so listeners run before any collector that flushes what they enlist. */
+            override fun getOrder(): Int = 0
+
+            override fun afterCommit() {
+                PostCommitScope.run(delivery)
+            }
+        })
+
+    }
+
+
+    /** The change has already committed, so a failing listener is logged and must not stop the others. */
+    private fun safely(notification: () -> Unit) {
+
+        try {
+            notification()
+        } catch (e: Exception) {
+            logger.error("CrudListener failed after commit", e)
         }
 
     }

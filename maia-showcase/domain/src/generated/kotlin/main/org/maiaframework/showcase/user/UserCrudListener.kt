@@ -11,6 +11,9 @@ interface UserCrudListener {
     fun onUserEntityCreated(entity: UserEntity)
 
 
+    fun onUserEntityBeforeUpdate(before: UserEntity) {}
+
+
     fun onUserEntityUpdated(before: UserEntity, after: UserEntity)
 
 

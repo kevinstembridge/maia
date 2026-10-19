@@ -104,6 +104,14 @@ _Avoid_: List page
 A function that can be performed on some aspect of the domain model, usually one of the CRUD operations. Declared statically in a Spec with `authority()`, never created dynamically.
 _Avoid_: Permission, privilege
 
+**CrudListener**:
+A per-Entity callback interface that is told when an Entity instance is created, updated or deleted. Created, updated and deleted callbacks run after the transaction commits, outside it; the before-update and before-delete callbacks run inside the transaction, before the change.
+_Avoid_: Observer, hook
+
+**CrudNotifier**:
+The per-Entity component that delivers CRUD events to every CrudListener. It only notifies listeners of changes that were committed.
+_Avoid_: Publisher, dispatcher
+
 **Props**:
 The lookup facade for named application properties. Returns a Property override when one exists, otherwise the Spring Environment value.
 _Avoid_: Config, settings

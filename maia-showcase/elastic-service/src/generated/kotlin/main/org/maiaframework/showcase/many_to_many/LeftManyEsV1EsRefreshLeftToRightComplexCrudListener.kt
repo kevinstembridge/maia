@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service
  * creating a join or child row, changing a field the EsDoc reads, or deleting it refreshes the
  * document of the root it joins (before and after, if the row moves to another root). The root id is read
  * straight from the join row's foreign key to the root, so no query is needed.
- * Ids are enlisted with [EsRefreshCollector], which refreshes them once the transaction has committed.
+ * Ids are enlisted with [EsRefreshCollector], which refreshes them once the transaction has committed. The
+ * created, updated and deleted events are themselves delivered after commit, so ids enlisted from them are
+ * refreshed immediately; only the before-update and before-delete events run inside the transaction.
  *
  * Changes that raise no CrudListener event (importers, direct DAO writes, join rows edited outside a CrudService
  * event) are not seen here; the scheduled job calling [LeftManyEsV1IndexService.refreshIndex] reconciles them.
@@ -29,6 +31,9 @@ class LeftManyEsV1EsRefreshLeftToRightComplexCrudListener(
         this.collector.enlistRefresh(this.indexService, listOf(entity.left))
 
     }
+
+
+    override fun onLeftToRightComplexEntityBeforeUpdate(before: LeftToRightComplexEntity) {}
 
 
     override fun onLeftToRightComplexEntityUpdated(before: LeftToRightComplexEntity, after: LeftToRightComplexEntity) {

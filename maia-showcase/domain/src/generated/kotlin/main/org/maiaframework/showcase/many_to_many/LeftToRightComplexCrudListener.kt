@@ -11,6 +11,9 @@ interface LeftToRightComplexCrudListener {
     fun onLeftToRightComplexEntityCreated(entity: LeftToRightComplexEntity)
 
 
+    fun onLeftToRightComplexEntityBeforeUpdate(before: LeftToRightComplexEntity) {}
+
+
     fun onLeftToRightComplexEntityUpdated(before: LeftToRightComplexEntity, after: LeftToRightComplexEntity)
 
 

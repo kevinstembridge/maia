@@ -11,6 +11,9 @@ interface SimpleCrudListener {
     fun onSimpleEntityCreated(entity: SimpleEntity)
 
 
+    fun onSimpleEntityBeforeUpdate(before: SimpleEntity) {}
+
+
     fun onSimpleEntityUpdated(before: SimpleEntity, after: SimpleEntity)
 
 

@@ -21,6 +21,54 @@ class CrudNotifierRendererTest {
 
 
     @Test
+    fun `created, updated and deleted are delivered after commit, each listener isolated from failures`(@TempDir dir: File) {
+
+        val source = render(spec.widget, dir)
+
+        listOf(
+            "    fun onEntityCreated(entity: WidgetEntity) {" to "safely { listener.onWidgetEntityCreated(entity) }",
+            "    fun onEntityUpdated(before: WidgetEntity, after: WidgetEntity) {" to "safely { listener.onWidgetEntityUpdated(before, after) }",
+            "    fun onEntityDeleted(entity: WidgetEntity) {" to "safely { listener.onWidgetEntityDeleted(entity) }"
+        ).forEach { (signature, call) ->
+            val body = functionBody(source, signature)
+            assertThat(body).contains("afterCommit {")
+            assertThat(body).contains(call)
+        }
+
+    }
+
+
+    @Test
+    fun `before-update and before-delete stay inside the transaction and may veto by throwing`(@TempDir dir: File) {
+
+        val source = render(spec.widget, dir)
+
+        val beforeUpdate = functionBody(source, "    fun onEntityBeforeUpdate(entity: WidgetEntity) {")
+        assertThat(beforeUpdate).contains("listener.onWidgetEntityBeforeUpdate(entity)")
+
+        val beforeDelete = functionBody(source, "    fun onEntityBeforeDelete(entity: WidgetEntity) {")
+
+        listOf(beforeUpdate, beforeDelete).forEach {
+            assertThat(it).doesNotContain("afterCommit")
+            assertThat(it).doesNotContain("safely")
+        }
+
+    }
+
+
+    @Test
+    fun `delivery runs in a post-commit scope`(@TempDir dir: File) {
+
+        val source = render(spec.widget, dir)
+
+        assertThat(source).contains("import org.maiaframework.domain.tx.PostCommitScope")
+        assertThat(source).contains("PostCommitScope.run(delivery)")
+        assertThat(source).contains("if (PostCommitScope.isActive || !TransactionSynchronizationManager.isSynchronizationActive()) {")
+
+    }
+
+
+    @Test
     fun `onEntityUpdated receives before and after and fans them out`(@TempDir dir: File) {
 
         val source = render(spec.widget, dir)

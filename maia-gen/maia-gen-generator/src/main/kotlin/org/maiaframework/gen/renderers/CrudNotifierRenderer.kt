@@ -5,6 +5,7 @@ import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.InlineEditDtoDef
+import org.maiaframework.gen.spec.definition.lang.Fqcn
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.BooleanValueClassFieldType
@@ -45,6 +46,10 @@ class CrudNotifierRenderer(
 ) {
 
 
+    /** Extra indent for listener calls rendered inside the `afterCommit { }` block. */
+    private val indent = "    "
+
+
     override fun renderPreClassFields() {
 
         addImportFor(Fqcns.SPRING_APPLICATION_CONTEXT)
@@ -53,6 +58,12 @@ class CrudNotifierRenderer(
             |
             |
             |    private lateinit var applicationContext: ApplicationContext
+            |""".trimMargin())
+
+        append("""
+            |
+            |
+            |    private val logger = LoggerFactory.getLogger(${this.classDef.uqcn}::class.java)
             |""".trimMargin())
 
         renderFieldForCrudListeners(entityDef)
@@ -115,9 +126,11 @@ class CrudNotifierRenderer(
     override fun renderFunctions() {
 
         `render function onEntityCreated`()
+        `render function onEntityBeforeUpdate`()
         `render function onEntityUpdated`()
         `render function onEntityBeforeDelete`()
         `render function onEntityDeleted`()
+        `render delivery helpers`()
 
     }
 
@@ -129,7 +142,10 @@ class CrudNotifierRenderer(
         appendLine("    fun onEntityCreated(entity: ${this.entityDef.entityUqcn}) {")
 
         if (this.entityDef.crudDef.withCrudListener.value) {
+            appendLine("        afterCommit {")
             renderNotificationOfCreateListeners(this.entityDef)
+            blankLine()
+            appendLine("        }")
         }
 
         blankLine()
@@ -185,9 +201,9 @@ class CrudNotifierRenderer(
         if (CrudListenerCallbacks.hasCreateCallback(someEntityDef)) {
 
             blankLine()
-            appendLine("        this.${listenersCollectionFieldName(someEntityDef)}.forEach { (_, listener) ->")
-            appendLine("            listener.on${someEntityDef.entityUqcn}Created(entity)")
-            appendLine("        }")
+            appendLine("${indent}        this.${listenersCollectionFieldName(someEntityDef)}.forEach { (_, listener) ->")
+            appendLine("${indent}            safely { listener.on${someEntityDef.entityUqcn}Created(entity) }")
+            appendLine("${indent}        }")
 
         }
 
@@ -201,13 +217,29 @@ class CrudNotifierRenderer(
         if (someEntityDef.crudDef.withCrudListener.value) {
 
             blankLine()
-            appendLine("        this.${listenersCollectionFieldName(someEntityDef)}.forEach { (_, listener) ->")
-            appendLine("            listener.on${someEntityDef.entityUqcn}Updated(before, after)")
-            appendLine("        }")
+            appendLine("${indent}        this.${listenersCollectionFieldName(someEntityDef)}.forEach { (_, listener) ->")
+            appendLine("${indent}            safely { listener.on${someEntityDef.entityUqcn}Updated(before, after) }")
+            appendLine("${indent}        }")
 
         }
 
         someEntityDef.superclassEntityDef?.let { renderNotificationOfUpdateListeners(it) }
+
+    }
+
+
+    private fun renderNotificationOfBeforeUpdateListeners(someEntityDef: EntityDef) {
+
+        if (someEntityDef.crudDef.withCrudListener.value && CrudListenerCallbacks.hasUpdateCallback(someEntityDef)) {
+
+            blankLine()
+            appendLine("        this.${listenersCollectionFieldName(someEntityDef)}.forEach { (_, listener) ->")
+            appendLine("            listener.on${someEntityDef.entityUqcn}BeforeUpdate(entity)")
+            appendLine("        }")
+
+        }
+
+        someEntityDef.superclassEntityDef?.let { renderNotificationOfBeforeUpdateListeners(it) }
 
     }
 
@@ -233,9 +265,9 @@ class CrudNotifierRenderer(
         someEntityDef.entityCrudApiDef?.deleteApiDef?.let {
 
             blankLine()
-            appendLine("        this.${listenersCollectionFieldName(someEntityDef)}.forEach { (_, listener) ->")
-            appendLine("            listener.on${it.entityDef.entityUqcn}Deleted(entity)")
-            appendLine("        }")
+            appendLine("${indent}        this.${listenersCollectionFieldName(someEntityDef)}.forEach { (_, listener) ->")
+            appendLine("${indent}            safely { listener.on${it.entityDef.entityUqcn}Deleted(entity) }")
+            appendLine("${indent}        }")
 
         }
 
@@ -458,6 +490,26 @@ class CrudNotifierRenderer(
     }
 
 
+    private fun `render function onEntityBeforeUpdate`() {
+
+        if (this.entityDef.hasNoModifiableFields()) {
+            return
+        }
+
+        blankLine()
+        blankLine()
+        appendLine("    fun onEntityBeforeUpdate(entity: ${this.entityDef.entityUqcn}) {")
+
+        if (this.entityDef.crudDef.withCrudListener.value) {
+            renderNotificationOfBeforeUpdateListeners(this.entityDef)
+        }
+
+        blankLine()
+        appendLine("    }")
+
+    }
+
+
     private fun `render function onEntityUpdated`() {
 
         if (this.entityDef.hasNoModifiableFields()) {
@@ -474,7 +526,10 @@ class CrudNotifierRenderer(
         )
 
         if (this.entityDef.crudDef.withCrudListener.value) {
+            appendLine("        afterCommit {")
             renderNotificationOfUpdateListeners(this.entityDef)
+            blankLine()
+            appendLine("        }")
         }
 
         append("""
@@ -517,11 +572,63 @@ class CrudNotifierRenderer(
         appendLine("    fun onEntityDeleted(entity: ${this.entityDef.entityUqcn}) {")
 
         if (this.entityDef.crudDef.withCrudListener.value) {
+            appendLine("        afterCommit {")
             renderNotificationOfDeleteListeners(this.entityDef)
+            blankLine()
+            appendLine("        }")
         }
 
         blankLine()
         appendLine("    }")
+
+    }
+
+
+    private fun `render delivery helpers`() {
+
+        addImportFor(Fqcn.valueOf("org.maiaframework.domain.tx.PostCommitScope"))
+        addImportFor(Fqcn.valueOf("org.slf4j.LoggerFactory"))
+        addImportFor(Fqcn.valueOf("org.springframework.transaction.support.TransactionSynchronization"))
+        addImportFor(Fqcn.valueOf("org.springframework.transaction.support.TransactionSynchronizationManager"))
+
+        append("""
+            |
+            |
+            |    /**
+            |     * Runs [delivery] once the surrounding transaction has committed, so listeners never see changes that roll back.
+            |     * Runs it immediately if no transaction is active, or if already delivering after commit.
+            |     */
+            |    private fun afterCommit(delivery: () -> Unit) {
+            |
+            |        if (PostCommitScope.isActive || !TransactionSynchronizationManager.isSynchronizationActive()) {
+            |            PostCommitScope.run(delivery)
+            |            return
+            |        }
+            |
+            |        TransactionSynchronizationManager.registerSynchronization(object : TransactionSynchronization {
+            |
+            |            /** Ahead of the default order, so listeners run before any collector that flushes what they enlist. */
+            |            override fun getOrder(): Int = 0
+            |
+            |            override fun afterCommit() {
+            |                PostCommitScope.run(delivery)
+            |            }
+            |        })
+            |
+            |    }
+            |
+            |
+            |    /** The change has already committed, so a failing listener is logged and must not stop the others. */
+            |    private fun safely(notification: () -> Unit) {
+            |
+            |        try {
+            |            notification()
+            |        } catch (e: Exception) {
+            |            logger.error("CrudListener failed after commit", e)
+            |        }
+            |
+            |    }
+            |""".trimMargin())
 
     }
 

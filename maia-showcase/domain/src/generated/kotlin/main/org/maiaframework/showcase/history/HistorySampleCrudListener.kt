@@ -11,6 +11,9 @@ interface HistorySampleCrudListener {
     fun onHistorySampleEntityCreated(entity: HistorySampleEntity)
 
 
+    fun onHistorySampleEntityBeforeUpdate(before: HistorySampleEntity) {}
+
+
     fun onHistorySampleEntityUpdated(before: HistorySampleEntity, after: HistorySampleEntity)
 
 

@@ -3,10 +3,14 @@
 
 package org.maiaframework.showcase.join
 
+import org.maiaframework.domain.tx.PostCommitScope
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.stereotype.Component
+import org.springframework.transaction.support.TransactionSynchronization
+import org.springframework.transaction.support.TransactionSynchronizationManager
 
 
 @Component
@@ -14,6 +18,9 @@ class BravoCrudNotifier : ApplicationContextAware, InitializingBean {
 
 
     private lateinit var applicationContext: ApplicationContext
+
+
+    private val logger = LoggerFactory.getLogger(BravoCrudNotifier::class.java)
 
 
     private lateinit var bravoCrudListeners: Map<String, BravoCrudListener>
@@ -32,18 +39,33 @@ class BravoCrudNotifier : ApplicationContextAware, InitializingBean {
 
 
     fun onEntityCreated(entity: BravoEntity) {
+        afterCommit {
+
+            this.bravoCrudListeners.forEach { (_, listener) ->
+                safely { listener.onBravoEntityCreated(entity) }
+            }
+
+        }
+
+    }
+
+
+    fun onEntityBeforeUpdate(entity: BravoEntity) {
 
         this.bravoCrudListeners.forEach { (_, listener) ->
-            listener.onBravoEntityCreated(entity)
+            listener.onBravoEntityBeforeUpdate(entity)
         }
 
     }
 
 
     fun onEntityUpdated(before: BravoEntity, after: BravoEntity) {
+        afterCommit {
 
-        this.bravoCrudListeners.forEach { (_, listener) ->
-            listener.onBravoEntityUpdated(before, after)
+            this.bravoCrudListeners.forEach { (_, listener) ->
+                safely { listener.onBravoEntityUpdated(before, after) }
+            }
+
         }
 
     }
@@ -59,9 +81,48 @@ class BravoCrudNotifier : ApplicationContextAware, InitializingBean {
 
 
     fun onEntityDeleted(entity: BravoEntity) {
+        afterCommit {
 
-        this.bravoCrudListeners.forEach { (_, listener) ->
-            listener.onBravoEntityDeleted(entity)
+            this.bravoCrudListeners.forEach { (_, listener) ->
+                safely { listener.onBravoEntityDeleted(entity) }
+            }
+
+        }
+
+    }
+
+
+    /**
+     * Runs [delivery] once the surrounding transaction has committed, so listeners never see changes that roll back.
+     * Runs it immediately if no transaction is active, or if already delivering after commit.
+     */
+    private fun afterCommit(delivery: () -> Unit) {
+
+        if (PostCommitScope.isActive || !TransactionSynchronizationManager.isSynchronizationActive()) {
+            PostCommitScope.run(delivery)
+            return
+        }
+
+        TransactionSynchronizationManager.registerSynchronization(object : TransactionSynchronization {
+
+            /** Ahead of the default order, so listeners run before any collector that flushes what they enlist. */
+            override fun getOrder(): Int = 0
+
+            override fun afterCommit() {
+                PostCommitScope.run(delivery)
+            }
+        })
+
+    }
+
+
+    /** The change has already committed, so a failing listener is logged and must not stop the others. */
+    private fun safely(notification: () -> Unit) {
+
+        try {
+            notification()
+        } catch (e: Exception) {
+            logger.error("CrudListener failed after commit", e)
         }
 
     }

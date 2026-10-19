@@ -77,6 +77,9 @@ class CrudListenerRenderer(
         if (CrudListenerCallbacks.hasUpdateCallback(this.entityDef)) {
             blankLine()
             blankLine()
+            appendLine("    fun on${entityUqcn}BeforeUpdate(before: $entityUqcn) {}")
+            blankLine()
+            blankLine()
             appendLine("    fun on${entityUqcn}Updated(before: $entityUqcn, after: $entityUqcn)")
         }
 

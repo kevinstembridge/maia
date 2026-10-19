@@ -11,6 +11,9 @@ interface CharlieAgGridCrudListener {
     fun onCharlieAgGridEntityCreated(entity: CharlieAgGridEntity)
 
 
+    fun onCharlieAgGridEntityBeforeUpdate(before: CharlieAgGridEntity) {}
+
+
     fun onCharlieAgGridEntityUpdated(before: CharlieAgGridEntity, after: CharlieAgGridEntity)
 
 

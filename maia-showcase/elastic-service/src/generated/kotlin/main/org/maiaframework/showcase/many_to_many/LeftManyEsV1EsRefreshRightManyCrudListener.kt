@@ -11,11 +11,14 @@ import org.springframework.stereotype.Service
  * Generated. Keeps [LeftManyEsV1IndexService] in step with changes to [RightManyEntity] that raise CrudListener events:
  * every update, and every delete, refreshes the documents of the roots the row is
  * joined to.
- * Ids are enlisted with [EsRefreshCollector], which refreshes them once the transaction has committed.
+ * Ids are enlisted with [EsRefreshCollector], which refreshes them once the transaction has committed. The
+ * created, updated and deleted events are themselves delivered after commit, so ids enlisted from them are
+ * refreshed immediately; only the before-update and before-delete events run inside the transaction.
  *
- * Two-phase rule: the many-to-many CrudServices reconcile join rows after the update event has fired, so an
+ * Two-phase rule: the many-to-many CrudServices reconcile join rows after the update has been notified, so an
  * update may coincide with a membership change this listener cannot see. The roots joined before the update are
- * resolved now and enlisted, and the roots joined after it are resolved after commit, from the id captured now.
+ * resolved in the before-update event, inside the transaction, and the roots joined after it are resolved
+ * after commit.
  *
  * Changes that raise no CrudListener event (importers, direct DAO writes, join rows edited outside a CrudService
  * event) are not seen here; the scheduled job calling [LeftManyEsV1IndexService.refreshIndex] reconciles them.
@@ -31,9 +34,15 @@ class LeftManyEsV1EsRefreshRightManyCrudListener(
     override fun onRightManyEntityCreated(entity: RightManyEntity) {}
 
 
-    override fun onRightManyEntityUpdated(before: RightManyEntity, after: RightManyEntity) {
+    override fun onRightManyEntityBeforeUpdate(before: RightManyEntity) {
 
         this.collector.enlistRefreshNow(this.indexService) { this.repo.findRootIdsViaRightMany(before.id) }
+
+    }
+
+
+    override fun onRightManyEntityUpdated(before: RightManyEntity, after: RightManyEntity) {
+
         val afterId = after.id
         this.collector.enlistRefreshResolved(this.indexService) { this.repo.findRootIdsViaRightMany(afterId) }
 

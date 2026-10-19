@@ -11,6 +11,9 @@ interface RightManyCrudListener {
     fun onRightManyEntityCreated(entity: RightManyEntity)
 
 
+    fun onRightManyEntityBeforeUpdate(before: RightManyEntity) {}
+
+
     fun onRightManyEntityUpdated(before: RightManyEntity, after: RightManyEntity)
 
 

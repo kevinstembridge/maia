@@ -954,6 +954,11 @@ class CrudServiceRenderer(
             append("""    fun setFields(updater: ${this.entityDef.entityBaseName}EntityUpdater): Int {
                 |
                 |        val before = this.entityRepo.findByPrimaryKeyOrNull($primaryKeyFieldNamesCsv)
+                |
+                |        if (before != null) {
+                |            this.${this.entityDef.crudNotifierClassDef.uqcn.firstToLower()}.onEntityBeforeUpdate(before)
+                |        }
+                |
                 |        val count = this.entityRepo.setFields(updater)
                 |
                 |        if (count > 0 && before != null) {

@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.tx.PostCommitScope
 import org.maiaframework.props.Props
 import org.maiaframework.props.repo.InMemoryPropsRepo
 import org.springframework.core.env.MapPropertySource
@@ -54,6 +55,44 @@ class EsRefreshCollectorTest {
             TransactionSynchronizationManager.clearSynchronization()
         }
         TransactionSynchronizationManager.getResourceMap().keys.toList().forEach { TransactionSynchronizationManager.unbindResourceIfPossible(it) }
+    }
+
+
+    @Test
+    fun `enlisting inside a post-commit scope joins work already pending so ids are deduplicated`() {
+
+        TransactionSynchronizationManager.initSynchronization()
+        val id = DomainId.newId()
+
+        collector.enlistRefresh(target, listOf(id))
+
+        PostCommitScope.run {
+            collector.enlistRefresh(target, listOf(id))
+        }
+
+        assertThat(calls).isEmpty()
+
+        commit()
+
+        assertThat(calls).containsExactly("refresh" to listOf(id))
+
+    }
+
+
+    @Test
+    fun `enlisting inside a post-commit scope flushes immediately even though synchronization is active`() {
+
+        TransactionSynchronizationManager.initSynchronization()
+        val id = DomainId.newId()
+
+        PostCommitScope.run {
+            collector.enlistRefresh(target, listOf(id))
+            collector.enlistRefreshResolved(target) { listOf(id) }
+        }
+
+        assertThat(calls).containsExactly("refresh" to listOf(id), "refresh" to listOf(id))
+        assertThat(TransactionSynchronizationManager.getSynchronizations()).isEmpty()
+
     }
 
 

@@ -3,10 +3,14 @@
 
 package org.maiaframework.showcase.many_to_many
 
+import org.maiaframework.domain.tx.PostCommitScope
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.stereotype.Component
+import org.springframework.transaction.support.TransactionSynchronization
+import org.springframework.transaction.support.TransactionSynchronizationManager
 
 
 @Component
@@ -14,6 +18,9 @@ class RightManyCrudNotifier : ApplicationContextAware, InitializingBean {
 
 
     private lateinit var applicationContext: ApplicationContext
+
+
+    private val logger = LoggerFactory.getLogger(RightManyCrudNotifier::class.java)
 
 
     private lateinit var rightManyCrudListeners: Map<String, RightManyCrudListener>
@@ -32,18 +39,33 @@ class RightManyCrudNotifier : ApplicationContextAware, InitializingBean {
 
 
     fun onEntityCreated(entity: RightManyEntity) {
+        afterCommit {
+
+            this.rightManyCrudListeners.forEach { (_, listener) ->
+                safely { listener.onRightManyEntityCreated(entity) }
+            }
+
+        }
+
+    }
+
+
+    fun onEntityBeforeUpdate(entity: RightManyEntity) {
 
         this.rightManyCrudListeners.forEach { (_, listener) ->
-            listener.onRightManyEntityCreated(entity)
+            listener.onRightManyEntityBeforeUpdate(entity)
         }
 
     }
 
 
     fun onEntityUpdated(before: RightManyEntity, after: RightManyEntity) {
+        afterCommit {
 
-        this.rightManyCrudListeners.forEach { (_, listener) ->
-            listener.onRightManyEntityUpdated(before, after)
+            this.rightManyCrudListeners.forEach { (_, listener) ->
+                safely { listener.onRightManyEntityUpdated(before, after) }
+            }
+
         }
 
     }
@@ -59,9 +81,48 @@ class RightManyCrudNotifier : ApplicationContextAware, InitializingBean {
 
 
     fun onEntityDeleted(entity: RightManyEntity) {
+        afterCommit {
 
-        this.rightManyCrudListeners.forEach { (_, listener) ->
-            listener.onRightManyEntityDeleted(entity)
+            this.rightManyCrudListeners.forEach { (_, listener) ->
+                safely { listener.onRightManyEntityDeleted(entity) }
+            }
+
+        }
+
+    }
+
+
+    /**
+     * Runs [delivery] once the surrounding transaction has committed, so listeners never see changes that roll back.
+     * Runs it immediately if no transaction is active, or if already delivering after commit.
+     */
+    private fun afterCommit(delivery: () -> Unit) {
+
+        if (PostCommitScope.isActive || !TransactionSynchronizationManager.isSynchronizationActive()) {
+            PostCommitScope.run(delivery)
+            return
+        }
+
+        TransactionSynchronizationManager.registerSynchronization(object : TransactionSynchronization {
+
+            /** Ahead of the default order, so listeners run before any collector that flushes what they enlist. */
+            override fun getOrder(): Int = 0
+
+            override fun afterCommit() {
+                PostCommitScope.run(delivery)
+            }
+        })
+
+    }
+
+
+    /** The change has already committed, so a failing listener is logged and must not stop the others. */
+    private fun safely(notification: () -> Unit) {
+
+        try {
+            notification()
+        } catch (e: Exception) {
+            logger.error("CrudListener failed after commit", e)
         }
 
     }

@@ -11,6 +11,9 @@ interface OrganizationCrudListener {
     fun onOrganizationEntityCreated(entity: OrganizationEntity)
 
 
+    fun onOrganizationEntityBeforeUpdate(before: OrganizationEntity) {}
+
+
     fun onOrganizationEntityUpdated(before: OrganizationEntity, after: OrganizationEntity)
 
 

@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service
  * Generated. Keeps [LeftManyEsV1IndexService] in step with changes to [LeftManyEntity] that raise CrudListener events:
  * creating, updating or deleting a row refreshes its own document. Every update refreshes it, because the
  * row's many-to-many membership may change in the same operation.
- * Ids are enlisted with [EsRefreshCollector], which refreshes them once the transaction has committed.
+ * Ids are enlisted with [EsRefreshCollector], which refreshes them once the transaction has committed. The
+ * created, updated and deleted events are themselves delivered after commit, so ids enlisted from them are
+ * refreshed immediately; only the before-update and before-delete events run inside the transaction.
  *
  * Changes that raise no CrudListener event (importers, direct DAO writes, join rows edited outside a CrudService
  * event) are not seen here; the scheduled job calling [LeftManyEsV1IndexService.refreshIndex] reconciles them.
@@ -28,6 +30,9 @@ class LeftManyEsV1EsRefreshLeftManyCrudListener(
         this.collector.enlistRefresh(this.indexService, listOf(entity.id))
 
     }
+
+
+    override fun onLeftManyEntityBeforeUpdate(before: LeftManyEntity) {}
 
 
     override fun onLeftManyEntityUpdated(before: LeftManyEntity, after: LeftManyEntity) {

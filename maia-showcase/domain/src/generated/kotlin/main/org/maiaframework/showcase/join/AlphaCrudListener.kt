@@ -11,6 +11,9 @@ interface AlphaCrudListener {
     fun onAlphaEntityCreated(entity: AlphaEntity)
 
 
+    fun onAlphaEntityBeforeUpdate(before: AlphaEntity) {}
+
+
     fun onAlphaEntityUpdated(before: AlphaEntity, after: AlphaEntity)
 
 

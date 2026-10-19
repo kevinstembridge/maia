@@ -11,6 +11,9 @@ interface CharlieCrudListener {
     fun onCharlieEntityCreated(entity: CharlieEntity)
 
 
+    fun onCharlieEntityBeforeUpdate(before: CharlieEntity) {}
+
+
     fun onCharlieEntityUpdated(before: CharlieEntity, after: CharlieEntity)
 
 
