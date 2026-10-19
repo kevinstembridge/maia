@@ -12,6 +12,7 @@ import {LeftToRightSimpleBlotterAgGridDatasource} from '@app/gen-components/org/
 import {LeftToRightSimpleBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftToRightSimpleBlotterRowDto';
 import {LeftToRightSimpleBlotterService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-to-right-simple-blotter-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
+import {UuidAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
 
@@ -27,7 +28,7 @@ export class LeftToRightSimpleBlotter {
 
 
     public columnDefs: ColDef[] = [
-        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
         { field: 'leftSomeString', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'leftSomeInt', headerName: 'Some Int', cellDataType: 'number', filter: true },
         { field: 'rightSomeString', headerName: 'Some String', cellDataType: 'text', filter: true },

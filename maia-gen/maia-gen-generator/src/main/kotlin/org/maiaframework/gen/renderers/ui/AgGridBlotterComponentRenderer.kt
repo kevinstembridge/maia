@@ -59,6 +59,10 @@ class AgGridBlotterComponentRenderer(
             addImport(AgGridCellRendererDefs.chips.typescriptImport)
         }
 
+        if (blotterDef.blotterColumnDefs.any { it is BlotterColumnDef && it.cellRenderer == null && it.fieldType.isUuid }) {
+            addImport(AgGridCellRendererDefs.uuid.typescriptImport)
+        }
+
         addImport("@angular/common", "DecimalPipe")
         addImport("@angular/core", "Component")
         addImport("@angular/core", "EnvironmentInjector")
@@ -573,6 +577,16 @@ class AgGridBlotterComponentRenderer(
             attributes["hide"] = true
         }
 
+        val explicitCellRenderer = blotterColumnDef.cellRenderer
+
+        if (explicitCellRenderer != null) {
+            attributes["cellRenderer"] = explicitCellRenderer.componentClassName
+        } else if (blotterColumnDef.fieldType.isUuid) {
+            attributes["cellRenderer"] = AgGridCellRendererDefs.uuid.componentClassName
+            // room for the short id, the copy icon that appears on hover, and the cell padding
+            attributes["minWidth"] = UUID_COLUMN_MIN_WIDTH
+        }
+
         if (blotterColumnDef.fieldType is ListFieldType) {
             val listFieldType = blotterColumnDef.fieldType as ListFieldType
             if (listFieldType.parameterFieldType is PkAndNameFieldType) {
@@ -612,6 +626,13 @@ class AgGridBlotterComponentRenderer(
     private fun renderColDefFor(fieldDef: BlotterCompositePkColumnDef) {
 
         appendLine("        { field: '${fieldDef.colId}', headerName: '${fieldDef.columnHeader}', filter: ${fieldDef.filter}, hide: ${fieldDef.hide} },")
+
+    }
+
+
+    private companion object {
+
+        const val UUID_COLUMN_MIN_WIDTH = 180
 
     }
 

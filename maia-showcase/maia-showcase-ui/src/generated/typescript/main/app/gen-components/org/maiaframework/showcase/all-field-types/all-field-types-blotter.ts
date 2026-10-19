@@ -15,7 +15,7 @@ import {AllFieldTypesBlotterService} from '@app/gen-components/org/maiaframework
 import {AllFieldTypesEntityDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/all-field-types/all-field-types-entity-delete-dialog';
 import {AuthService} from '@app/gen-components/org/maiaframework/showcase/auth-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
-import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
+import {IconAgGridCellRendererComponent, UuidAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, DataTypeDefinition, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
 import {DateTime} from 'luxon';
@@ -44,7 +44,7 @@ export class AllFieldTypesBlotter {
 
 
     public columnDefs: ColDef[] = [
-        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
         {
             field: 'edit',
             headerName: '',
@@ -91,9 +91,9 @@ export class AllFieldTypesBlotter {
         { field: 'someProvidedStringType', headerName: 'Some Provided String Type', cellDataType: 'text', filter: true },
         { field: 'someProvidedStringTypeNullable', headerName: 'Some Provided String Type Nullable', cellDataType: 'text', filter: true },
         { field: 'someListOfStrings', headerName: 'Some List Of Strings', cellDataType: 'text', filter: true, valueFormatter: (params) => params.value?.join(', ') ?? '' },
-        { field: 'createdBy', headerName: 'Created By ID', cellDataType: 'text', filter: true },
+        { field: 'createdBy', headerName: 'Created By ID', cellDataType: 'text', filter: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
         { field: 'createdByUsername', headerName: 'Created By', cellDataType: 'text', filter: true },
-        { field: 'lastModifiedBy', headerName: 'Last Modified By ID', cellDataType: 'text', filter: true },
+        { field: 'lastModifiedBy', headerName: 'Last Modified By ID', cellDataType: 'text', filter: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
         { field: 'lastModifiedByUsername', headerName: 'Last Modified By', cellDataType: 'text', filter: true },
         { field: 'lastModifiedTimestamp', headerName: 'Last Modified Timestamp', cellDataType: 'dateTimeString', filter: true },
         {

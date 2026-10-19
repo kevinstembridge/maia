@@ -16,7 +16,7 @@ import {LeftManyBlotterService} from '@app/gen-components/org/maiaframework/show
 import {LeftManyCheckForeignKeyReferencesDialog} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-check-foreign-key-references-dialog';
 import {LeftManyEntityDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-entity-delete-dialog';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
-import {ChipsAgGridCellRendererComponent, IconAgGridCellRendererComponent} from '@maia/maia-ui';
+import {ChipsAgGridCellRendererComponent, IconAgGridCellRendererComponent, UuidAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
 
@@ -32,7 +32,7 @@ export class LeftManyBlotter {
 
 
     public columnDefs: ColDef[] = [
-        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
         {
             field: 'view',
             headerName: '',

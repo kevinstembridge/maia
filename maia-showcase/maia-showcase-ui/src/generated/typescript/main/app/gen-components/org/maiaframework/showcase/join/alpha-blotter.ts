@@ -16,7 +16,7 @@ import {AlphaBlotterService} from '@app/gen-components/org/maiaframework/showcas
 import {AlphaCheckForeignKeyReferencesDialog} from '@app/gen-components/org/maiaframework/showcase/join/alpha-check-foreign-key-references-dialog';
 import {AlphaEntityDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/join/alpha-entity-delete-dialog';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
-import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
+import {IconAgGridCellRendererComponent, UuidAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, DataTypeDefinition, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
 import {DateTime} from 'luxon';
@@ -45,7 +45,7 @@ export class AlphaBlotter {
 
 
     public columnDefs: ColDef[] = [
-        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
         {
             field: 'view',
             headerName: '',

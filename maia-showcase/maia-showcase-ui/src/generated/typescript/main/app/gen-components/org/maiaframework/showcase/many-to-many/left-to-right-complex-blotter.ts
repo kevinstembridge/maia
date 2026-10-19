@@ -13,6 +13,7 @@ import {LeftToRightComplexBlotterAgGridDatasource} from '@app/gen-components/org
 import {LeftToRightComplexBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftToRightComplexBlotterRowDto';
 import {LeftToRightComplexBlotterService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-to-right-complex-blotter-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
+import {UuidAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, DataTypeDefinition, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
 import {DateTime} from 'luxon';
@@ -41,7 +42,7 @@ export class LeftToRightComplexBlotter {
 
 
     public columnDefs: ColDef[] = [
-        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
         { field: 'someIntOnComplex', headerName: 'Some Int On Complex', cellDataType: 'number', filter: true },
         { field: 'leftSomeString', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'leftSomeInt', headerName: 'Some Int', cellDataType: 'number', filter: true },

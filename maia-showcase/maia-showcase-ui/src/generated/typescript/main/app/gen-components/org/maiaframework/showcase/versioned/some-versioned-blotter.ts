@@ -15,7 +15,7 @@ import {SomeVersionedBlotterRowDto} from '@app/gen-components/org/maiaframework/
 import {SomeVersionedBlotterService} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-blotter-service';
 import {SomeVersionedEntityDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/versioned/some-versioned-entity-delete-dialog';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
-import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
+import {IconAgGridCellRendererComponent, UuidAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, DataTypeDefinition, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
 import {DateTime} from 'luxon';
@@ -44,7 +44,7 @@ export class SomeVersionedBlotter {
 
 
     public columnDefs: ColDef[] = [
-        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
         {
             field: 'edit',
             headerName: '',

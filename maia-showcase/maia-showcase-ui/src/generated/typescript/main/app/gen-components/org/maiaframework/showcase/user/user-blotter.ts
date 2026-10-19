@@ -13,7 +13,7 @@ import {UserBlotterAgGridDatasource} from '@app/gen-components/org/maiaframework
 import {UserBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/user/UserBlotterRowDto';
 import {UserBlotterService} from '@app/gen-components/org/maiaframework/showcase/user/user-blotter-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
-import {IconAgGridCellRendererComponent} from '@maia/maia-ui';
+import {IconAgGridCellRendererComponent, UuidAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, DataTypeDefinition, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
 import {DateTime} from 'luxon';
@@ -71,7 +71,7 @@ export class UserBlotter {
         { field: 'lastName', headerName: 'Last Name', cellDataType: 'text', filter: true },
         { field: 'authorities', headerName: 'Authorities', cellDataType: 'text', filter: true, valueFormatter: (params) => params.value?.join(', ') ?? '' },
         { field: 'createdTimestamp', headerName: 'Created', cellDataType: 'dateTimeString', filter: true },
-        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
     ];
 
     public defaultColDef: ColDef = {

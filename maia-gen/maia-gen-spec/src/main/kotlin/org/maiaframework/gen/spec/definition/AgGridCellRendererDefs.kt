@@ -36,4 +36,10 @@ object AgGridCellRendererDefs {
     )
 
 
+    val uuid = AgGridCellRendererDef(
+        TypescriptImport("UuidAgGridCellRendererComponent", "@maia/maia-ui"),
+        "UuidAgGridCellRendererComponent"
+    )
+
+
 }

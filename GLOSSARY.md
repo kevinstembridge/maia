@@ -98,6 +98,10 @@ _Avoid_: Endless list
 The Angular page that hosts a Blotter, declared with `blotterPage()` or `withBlotterPage {}`.
 _Avoid_: List page
 
+**Short ID**:
+The truncated display of a uuid, with the full value available in a tooltip on hover and a copy-to-clipboard control. Used wherever a uuid is shown to the user, in forms and in Blotter cells.
+_Avoid_: Truncated uuid
+
 ### Runtime services
 
 **Authority**:

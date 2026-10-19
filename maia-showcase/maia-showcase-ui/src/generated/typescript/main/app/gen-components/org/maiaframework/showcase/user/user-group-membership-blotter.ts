@@ -12,6 +12,7 @@ import {UserGroupMembershipBlotterAgGridDatasource} from '@app/gen-components/or
 import {UserGroupMembershipBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/user/UserGroupMembershipBlotterRowDto';
 import {UserGroupMembershipBlotterService} from '@app/gen-components/org/maiaframework/showcase/user/user-group-membership-blotter-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
+import {UuidAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, DataTypeDefinition, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
 import {DateTime} from 'luxon';
@@ -44,9 +45,9 @@ export class UserGroupMembershipBlotter {
         { field: 'userGroupName', headerName: 'Group', cellDataType: 'text', filter: true },
         { field: 'effectiveFrom', headerName: 'Effective From', cellDataType: 'dateTimeString', filter: true },
         { field: 'effectiveTo', headerName: 'Effective To', cellDataType: 'dateTimeString', filter: true },
-        { field: 'userId', headerName: 'User ID', cellDataType: 'text', filter: true },
-        { field: 'userGroupId', headerName: 'Group ID', cellDataType: 'text', filter: true },
-        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
+        { field: 'userId', headerName: 'User ID', cellDataType: 'text', filter: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
+        { field: 'userGroupId', headerName: 'Group ID', cellDataType: 'text', filter: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
     ];
 
     public defaultColDef: ColDef = {

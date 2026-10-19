@@ -16,7 +16,7 @@ import {RightManyBlotterService} from '@app/gen-components/org/maiaframework/sho
 import {RightManyCheckForeignKeyReferencesDialog} from '@app/gen-components/org/maiaframework/showcase/many-to-many/right-many-check-foreign-key-references-dialog';
 import {RightManyEntityDeleteDialog} from '@app/gen-components/org/maiaframework/showcase/many-to-many/right-many-entity-delete-dialog';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
-import {ChipsAgGridCellRendererComponent, IconAgGridCellRendererComponent} from '@maia/maia-ui';
+import {ChipsAgGridCellRendererComponent, IconAgGridCellRendererComponent, UuidAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
 
@@ -32,7 +32,7 @@ export class RightManyBlotter {
 
 
     public columnDefs: ColDef[] = [
-        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
         {
             field: 'view',
             headerName: '',

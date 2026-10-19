@@ -12,6 +12,7 @@ import {CharlieBlotterAgGridDatasource} from '@app/gen-components/org/maiaframew
 import {CharlieBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/join/CharlieBlotterRowDto';
 import {CharlieBlotterService} from '@app/gen-components/org/maiaframework/showcase/join/charlie-blotter-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
+import {UuidAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, DataTypeDefinition, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
 import {DateTime} from 'luxon';
@@ -40,7 +41,7 @@ export class CharlieBlotter {
 
 
     public columnDefs: ColDef[] = [
-        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
         { field: 'tableStringFromCharlie', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'tableStringFromBravo', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'tableStringFromAlpha', headerName: 'Some String', cellDataType: 'text', filter: true },

@@ -12,7 +12,7 @@ import {LeftManyEsBlotterAgGridDatasource} from '@app/gen-components/org/maiafra
 import {LeftManyEsBlotterRowDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftManyEsBlotterRowDto';
 import {LeftManyEsBlotterService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-es-blotter-service';
 import {agGridTheme} from '@app/themes/ag-grid-theme';
-import {ChipsAgGridCellRendererComponent} from '@maia/maia-ui';
+import {ChipsAgGridCellRendererComponent, UuidAgGridCellRendererComponent} from '@maia/maia-ui';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, FilterModel, GridApi, GridReadyEvent, ICellRendererParams, RowModelType} from 'ag-grid-community';
 
@@ -28,7 +28,7 @@ export class LeftManyEsBlotter {
 
 
     public columnDefs: ColDef[] = [
-        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
         { field: 'someStringFromLeft', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'someIntFromLeft', headerName: 'Some Int', cellDataType: 'number', filter: true },
         { field: 'rightEntities', headerName: 'Right Entities', cellDataType: 'text', filter: true, cellRenderer: ChipsAgGridCellRendererComponent },
