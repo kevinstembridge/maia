@@ -6,6 +6,7 @@ package org.maiaframework.elasticsearch.index.model
 
 
 data class IndexStateResponseDto(
+    val documentCount: Long?,
     val exists: Boolean,
     val health: IndexHealthResponseDto?,
     val indexName: IndexResolvedName,

@@ -53,3 +53,18 @@
     justify-content: flex-end;
     margin-top: auto;
 }
+
+.doc-count {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.doc-count-label {
+    color: var(--mat-sys-on-surface-variant);
+}
+
+.doc-count-value {
+    font-variant-numeric: tabular-nums;
+}

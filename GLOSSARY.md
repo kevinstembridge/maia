@@ -143,3 +143,13 @@ _Avoid_: Task, batch
 **Job execution**:
 One recorded run of a Job, with a status of running, success, failed or abandoned.
 _Avoid_: Job run
+
+### Elasticsearch
+
+**Index**:
+One versioned Elasticsearch index managed by Maia, identified by a base name and a version. Only one version of a base name is active at a time.
+_Avoid_: Collection, table
+
+**Document count**:
+The number of documents in one Index, shown as "Docs" on the Elastic Indices dashboard.
+_Avoid_: Record count, row count

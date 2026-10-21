@@ -6,6 +6,7 @@ import {ManagedEsIndexInfoResponseDto} from '@app/gen-components/org/maiaframewo
 
 
 export interface IndexStateResponseDto {
+    documentCount?: number;
     exists: boolean;
     health?: IndexHealthResponseDto;
     indexName: string;

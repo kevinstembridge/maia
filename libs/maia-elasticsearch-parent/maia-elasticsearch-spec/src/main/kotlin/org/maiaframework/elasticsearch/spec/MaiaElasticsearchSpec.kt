@@ -59,6 +59,9 @@ class MaiaElasticsearchSpec: AbstractSpec(appKey = AppKey("elasticsearch"), defa
         field("health", indexHealthDtoDef) {
             nullable()
         }
+        field("documentCount", FieldTypes.long) {
+            nullable()
+        }
         field("exists", FieldTypes.boolean)
     }
 

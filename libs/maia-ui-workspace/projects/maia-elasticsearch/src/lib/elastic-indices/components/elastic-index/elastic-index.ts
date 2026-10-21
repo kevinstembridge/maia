@@ -23,6 +23,11 @@ export class ElasticIndex {
         return status && status !== 'not-created' ? STATUS_COLORS[status] : undefined;
     });
 
+    documentCountDisplay = computed<string>(() => {
+        const count = this.index().documentCount;
+        return count === undefined || count === null ? '—' : count.toLocaleString();
+    });
+
     onCreateIndex() {
         this.createIndex.emit(this.index());
     }

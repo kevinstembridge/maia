@@ -11,6 +11,10 @@
             </span>
         }
     </div>
+    <div class="doc-count">
+        <span class="doc-count-label">Docs</span>
+        <span class="doc-count-value">{{ documentCountDisplay() }}</span>
+    </div>
     @if (index().managedIndexInfo?.description) {
         <p class="description">{{ index().managedIndexInfo?.description }}</p>
     }

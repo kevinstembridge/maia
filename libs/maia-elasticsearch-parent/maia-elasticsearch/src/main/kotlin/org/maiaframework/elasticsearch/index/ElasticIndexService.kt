@@ -2,6 +2,7 @@ package org.maiaframework.elasticsearch.index
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient
 import co.elastic.clients.elasticsearch._types.Level
+import co.elastic.clients.elasticsearch._types.CommonStatsFlag
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.elasticsearch.index.model.IndexBaseName
 import org.maiaframework.elasticsearch.index.model.IndexHealthResponseDto
@@ -27,6 +28,7 @@ class ElasticIndexService(
         val stateDtosByName = mutableMapOf<IndexResolvedName, IndexStateResponseDto>()
 
         collectHealthDtos(stateDtosByName)
+        collectDocumentCounts(stateDtosByName)
         collectSummaryDtos(stateDtosByName)
 
         return stateDtosByName.values.toList().sortedBy { it.indexName }
@@ -39,7 +41,7 @@ class ElasticIndexService(
         getIndexHealthsFromCluster().forEach { (indexName, indexHealthDto) ->
 
             stateDtosByName.compute(indexName) { name: IndexResolvedName, existingStateDto: IndexStateResponseDto? ->
-                existingStateDto?.copy(health = indexHealthDto) ?: IndexStateResponseDto(exists = true, health = indexHealthDto, indexName = name, managedIndexInfo = null)
+                existingStateDto?.copy(health = indexHealthDto) ?: IndexStateResponseDto(documentCount = null, exists = true, health = indexHealthDto, indexName = name, managedIndexInfo = null)
             }
 
         }
@@ -61,6 +63,23 @@ class ElasticIndexService(
     }
 
 
+    private fun collectDocumentCounts(stateDtosByName: MutableMap<IndexResolvedName, IndexStateResponseDto>) {
+
+        val statsResponse = this.client.indices().stats { s -> s.metric(CommonStatsFlag.Docs) }
+
+        statsResponse.indices().forEach { (name, indexStats) ->
+
+            val indexName = IndexResolvedName(name)
+            val documentCount = indexStats.primaries()?.docs()?.count()
+            stateDtosByName.computeIfPresent(indexName) { _, existingStateDto ->
+                existingStateDto.copy(documentCount = documentCount)
+            }
+
+        }
+
+    }
+
+
     private fun collectSummaryDtos(stateDtosByName: MutableMap<IndexResolvedName, IndexStateResponseDto>) {
 
         controlRegistry.getAllIndexSummaries().forEach { indexSummary ->
@@ -68,6 +87,7 @@ class ElasticIndexService(
             stateDtosByName.compute(indexSummary.indexResolvedName) { indexName: IndexResolvedName, existingStateDto: IndexStateResponseDto? ->
                 existingStateDto?.copy(managedIndexInfo = indexSummary)
                     ?: IndexStateResponseDto(
+                        documentCount = null,
                         exists = false,
                         health = null,
                         indexName,
