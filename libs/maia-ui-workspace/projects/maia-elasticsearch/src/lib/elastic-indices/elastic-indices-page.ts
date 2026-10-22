@@ -6,6 +6,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 import {IndexStateResponseDto} from '@app/gen-components/org/maiaframework/elasticsearch/index/model/IndexStateResponseDto';
 import {ElasticIndicesApiService} from './services/elastic-indices-api-service';
 import {ElasticIndicesPageStore} from './state/elastic-indices-page-store';
@@ -29,7 +30,7 @@ const STATUS_LABELS: Record<DisplayStatus, string> = {
 
 
 @Component({
-    imports: [ElasticIndex, MatSlideToggle, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, MatButtonModule],
+    imports: [ElasticIndex, MatSlideToggle, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, MatButtonModule, MatIconModule],
     providers: [ElasticIndicesApiService, ElasticIndicesPageStore],
     selector: 'maia-elastic-indices-page',
     templateUrl: './elastic-indices-page.html',
@@ -77,6 +78,11 @@ export class ElasticIndicesPage implements OnInit {
 
     onFilterInput(event: Event) {
         this.store.onNameFilterChanged((event.target as HTMLInputElement).value);
+    }
+
+
+    onFilterCleared() {
+        this.store.onNameFilterChanged('');
     }
 
 

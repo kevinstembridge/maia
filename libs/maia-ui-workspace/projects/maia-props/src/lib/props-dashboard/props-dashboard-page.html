@@ -40,6 +40,11 @@
     <mat-form-field class="name-filter">
         <mat-label>Filter by name</mat-label>
         <input matInput [value]="store.nameFilter()" (input)="onNameFilterInput($event)">
+        @if (store.nameFilter()) {
+            <button matSuffix mat-icon-button type="button" aria-label="Clear filter" (click)="onNameFilterCleared()">
+                <mat-icon>close</mat-icon>
+            </button>
+        }
     </mat-form-field>
     <button mat-flat-button class="add-override-button" aria-label="Add override" (click)="onAddOverride()">
         <mat-icon>add</mat-icon>

@@ -4,6 +4,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {TogglesApiService} from './services/toggles-api.service';
 import {TOGGLES_HISTORY_ROUTE} from './services/toggles-history-route.token';
@@ -19,7 +20,7 @@ import {ToggleCard} from './components/toggle-card/toggle-card';
     selector: 'maia-toggles-dashboard-page',
     templateUrl: './toggles-dashboard-page.html',
     styleUrl: './toggles-dashboard-page.scss',
-    imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatProgressSpinnerModule, ToggleCard],
+    imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule, ToggleCard],
     changeDetection: ChangeDetectionStrategy.Eager,
     providers: [TogglesApiService, TogglesDashboardStore]
 })
@@ -67,6 +68,11 @@ export class TogglesDashboardPage implements OnInit {
 
     onNameFilterInput(event: Event) {
         this.store.onNameFilterChanged((event.target as HTMLInputElement).value);
+    }
+
+
+    onNameFilterCleared() {
+        this.store.onNameFilterChanged('');
     }
 
 

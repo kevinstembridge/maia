@@ -72,6 +72,11 @@ export class PropsDashboardPage implements OnInit {
     }
 
 
+    onNameFilterCleared() {
+        this.store.onNameFilterChanged('');
+    }
+
+
     onOverriddenOnlyToggled(): void {
         this.store.onOverriddenOnlyToggled(!this.store.overriddenOnly());
     }

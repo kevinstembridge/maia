@@ -86,6 +86,11 @@ export class JobsDashboardPageComponent implements OnInit {
     }
 
 
+    onFilterCleared() {
+        this.store.onNameFilterChanged('');
+    }
+
+
     onStatusFilterToggled(status: JobStatus) {
         this.store.onStatusFilterChanged(this.store.statusFilter() === status ? null : status);
     }
