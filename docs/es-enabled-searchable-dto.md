@@ -39,7 +39,7 @@ Derived from `FieldType.elasticMappingType`, with two deliberate deviations: str
 |---|---|
 | domain | EsDoc DTO `<Name>V<n>EsDoc` |
 | dao / repo | `findByIds`, `findAllAsSequence`, `findRootIdsVia<Entity>` on the DTO DAO and repo |
-| elasticsearch | `<Name>V<n>EsIndex`, `EsIndexMeta_v000n`, `EsIndexControl_v000n` |
+| elasticsearch | `EsIndexMeta_v000n`, `EsIndexControl_v000n` |
 | elastic-service | `<EsDoc>Repo`, `<Name>V<n>IndexService`, and one `…EsRefresh<Entity>CrudListener` per contributing entity |
 | jobs | `Refresh<Name>V<n>IndexJob` (scheduled full reconcile) |
 | blotter | ES search service, row mapper, field-name mappers, endpoint, TS (when a blotter is declared) |

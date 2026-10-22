@@ -56,4 +56,21 @@ class ElasticSearchDtoSearchServiceRendererTest {
     }
 
 
+    @Test
+    fun `index name is resolved from the esDoc base name and version, not from the EsIndex class`(@TempDir dir: File) {
+
+        val blotterDef = spec.widgetEsBlotter
+        val esDocDef = (blotterDef.blotterSourceDef as BlotterEsDocSourceDef).esDocDef
+
+        ElasticSearchDtoSearchServiceRenderer(blotterDef.searchDtoDef, esDocDef).renderToDir(dir)
+        val source = singleKotlinFileIn(dir)
+
+        assertThat(source)
+            .contains("private val indexNameFactory: IndexNameFactory")
+            .contains("private val indexName = this.indexNameFactory.indexNameFrom(WidgetEsEsIndexMeta_v0001.indexBaseNameAndVersion)")
+            .doesNotContain("EsIndex,", "esIndex")
+
+    }
+
+
 }

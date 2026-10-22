@@ -28,7 +28,9 @@ class BlotterDef(
     withGeneratedTypescriptService: WithGeneratedTypescriptService,
     withGeneratedFindAllFunction: WithGeneratedFindAllFunction,
     val searchModelType: SearchModelType,
-    val paginationPageSize: Int? = DEFAULT_PAGINATION_PAGE_SIZE
+    val paginationPageSize: Int? = DEFAULT_PAGINATION_PAGE_SIZE,
+    urlBaseName: DtoBaseName = dtoBaseName,
+    apiVersion: Int? = null
 ) {
 
 
@@ -148,6 +150,12 @@ class BlotterDef(
     private val modulePath = if (moduleName == null) "" else "${moduleName.value}/"
 
 
+    private val apiPath = if (apiVersion == null) "/api/$modulePath" else "/api/v$apiVersion/$modulePath"
+
+
+    private val blotterUrlPath = "$apiPath${urlBaseName.toKebabCase()}-blotter"
+
+
     val hasViewActionColumn = actionColumnFields.any { it.actionName == ActionName.view }
 
 
@@ -172,11 +180,11 @@ class BlotterDef(
         defaultSortModel = emptyList(),
         dataSourceType = blotterSourceDef.dataSourceType,
         searchModelType = searchModelType,
-        searchApiUrl = "/api/$modulePath${dtoBaseName.toKebabCase()}-blotter/search",
-        countApiUrl = "/api/$modulePath${dtoBaseName.toKebabCase()}-blotter/count",
-        findByIdClientSideApiUrl = "/api/$modulePath${dtoBaseName.toKebabCase()}-blotter/",
-        findByIdServerSideApiUrl = "/api/$modulePath${dtoBaseName.toKebabCase()}-blotter/{id}",
-        findAllApiUrl = "/api/$modulePath${dtoBaseName.toKebabCase()}-blotter/find-all",
+        searchApiUrl = "$blotterUrlPath/search",
+        countApiUrl = "$blotterUrlPath/count",
+        findByIdClientSideApiUrl = "$blotterUrlPath/",
+        findByIdServerSideApiUrl = "$blotterUrlPath/{id}",
+        findAllApiUrl = "$blotterUrlPath/find-all",
         withGeneratedFindAllFunction,
         GenerateFindById.FALSE,
         withGeneratedEndpoint,

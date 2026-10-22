@@ -23,7 +23,9 @@ class BlotterDefBuilder(
     private val withGeneratedFindAllFunction: WithGeneratedFindAllFunction,
     private val withPreAuthorize: WithPreAuthorize?,
     private val blotterSourceDef: BlotterSourceDef,
-    private val searchModelType: SearchModelType
+    private val searchModelType: SearchModelType,
+    private val urlBaseName: DtoBaseName = dtoBaseName,
+    private val apiVersion: Int? = null
 ) {
 
 
@@ -60,7 +62,9 @@ class BlotterDefBuilder(
             this.withGeneratedTypescriptService,
             this.withGeneratedFindAllFunction,
             this.searchModelType,
-            this.paginationPageSize
+            this.paginationPageSize,
+            this.urlBaseName,
+            this.apiVersion
         )
 
     }

@@ -4,6 +4,7 @@
 package org.maiaframework.showcase.many_to_many
 
 import org.maiaframework.domain.search.AgGridSearchModel
+import org.maiaframework.elasticsearch.index.IndexNameFactory
 import org.maiaframework.elasticsearch.results.IndexSearchResults
 import org.maiaframework.elasticsearch.search.EsSearchExecutor
 import org.springframework.stereotype.Service
@@ -12,16 +13,19 @@ import org.springframework.stereotype.Service
 @Service
 class LeftManyEsBlotterRowDtoSearchService(
     private val esDocMapper: LeftManyEsBlotterRowDtoEsDocMapper,
-    private val esIndex: LeftManyEsV1EsIndex,
-    private val esSearchExecutor: EsSearchExecutor
+    private val esSearchExecutor: EsSearchExecutor,
+    private val indexNameFactory: IndexNameFactory
 ) {
+
+
+    private val indexName = this.indexNameFactory.indexNameFrom(LeftManyEsEsIndexMeta_v0001.indexBaseNameAndVersion)
 
 
     fun search(searchModel: AgGridSearchModel): IndexSearchResults<LeftManyEsBlotterRowDto> {
 
         return this.esSearchExecutor.search(
             searchModel,
-            this.esIndex.indexName(),
+            this.indexName,
             LeftManyEsBlotterRowDtoFieldNameMapper.mappingFunction,
             LeftManyEsV1EsDoc::class.java,
             { esDoc -> esDocMapper.mapEsDoc(esDoc) }
@@ -34,7 +38,7 @@ class LeftManyEsBlotterRowDtoSearchService(
 
         return this.esSearchExecutor.count(
             searchModel,
-            this.esIndex.indexName(),
+            this.indexName,
             LeftManyEsBlotterRowDtoFieldNameMapper.mappingFunction
         )
 

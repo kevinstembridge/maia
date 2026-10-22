@@ -44,20 +44,10 @@ class ElasticSearchModuleGenerator(
 
     override fun onGenerateSource() {
 
-        renderEsIndexes()
         renderTypeaheadEsIndexes()
         renderDerivedEsIndexControls()
         renderEsDocMetaClasses()
         renderEsDocFieldNameMappers()
-
-    }
-
-
-    private fun renderEsIndexes() {
-
-        this.applicationModelDef.esDocsDefs.forEach { esDocDef ->
-            EsIndexRenderer(esDocDef.esIndexClassDef, esDocDef.elasticIndexBaseName).renderToDir(this.kotlinOutputDir)
-        }
 
     }
 

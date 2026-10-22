@@ -39,7 +39,7 @@ class EsDocDef(
     private val dtoSuffix = DtoSuffix("EsDoc")
 
 
-    private val esDocBaseNameAndVersion = esDocBaseName.withSuffix("V$esDocVersion")
+    val esDocBaseNameAndVersion = esDocBaseName.withSuffix("V$esDocVersion")
 
 
     private val allClassFields = fields.map { it.classFieldDef }
@@ -56,7 +56,7 @@ class EsDocDef(
     val fqcn = dtoDef.fqcn
 
 
-    private val esDocMetaClassFqcn = Fqcn.valueOf(
+    val esDocMetaClassFqcn = Fqcn.valueOf(
         packageName,
         Uqcn(esDocBaseName.value).withSuffix("EsIndexMeta_v${padWithLeadingZeroes(this.esDocVersion, 4)}")
     )
@@ -87,11 +87,6 @@ class EsDocDef(
     val indexServiceClassDef = aClassDef(packageName.uqcn("${esDocBaseNameAndVersion}IndexService"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .withInterface(ParameterizedType(Fqcns.ES_REFRESH_TARGET))
-        .build()
-
-
-    val esIndexClassDef = aClassDef(packageName.uqcn("${esDocBaseNameAndVersion}EsIndex"))
-        .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .build()
 
 

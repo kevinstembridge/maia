@@ -4,6 +4,7 @@
 package org.maiaframework.showcase.join
 
 import org.maiaframework.domain.search.AgGridSearchModel
+import org.maiaframework.elasticsearch.index.IndexNameFactory
 import org.maiaframework.elasticsearch.results.IndexSearchResults
 import org.maiaframework.elasticsearch.search.EsSearchExecutor
 import org.springframework.stereotype.Service
@@ -12,16 +13,19 @@ import org.springframework.stereotype.Service
 @Service
 class BravoEsBlotterRowDtoSearchService(
     private val esDocMapper: BravoEsBlotterRowDtoEsDocMapper,
-    private val esIndex: BravoEsV1EsIndex,
-    private val esSearchExecutor: EsSearchExecutor
+    private val esSearchExecutor: EsSearchExecutor,
+    private val indexNameFactory: IndexNameFactory
 ) {
+
+
+    private val indexName = this.indexNameFactory.indexNameFrom(BravoEsEsIndexMeta_v0001.indexBaseNameAndVersion)
 
 
     fun search(searchModel: AgGridSearchModel): IndexSearchResults<BravoEsBlotterRowDto> {
 
         return this.esSearchExecutor.search(
             searchModel,
-            this.esIndex.indexName(),
+            this.indexName,
             BravoEsBlotterRowDtoFieldNameMapper.mappingFunction,
             BravoEsV1EsDoc::class.java,
             { esDoc -> esDocMapper.mapEsDoc(esDoc) }
@@ -34,7 +38,7 @@ class BravoEsBlotterRowDtoSearchService(
 
         return this.esSearchExecutor.count(
             searchModel,
-            this.esIndex.indexName(),
+            this.indexName,
             BravoEsBlotterRowDtoFieldNameMapper.mappingFunction
         )
 

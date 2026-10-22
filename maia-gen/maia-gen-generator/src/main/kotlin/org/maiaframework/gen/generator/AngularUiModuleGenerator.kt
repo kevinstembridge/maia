@@ -14,6 +14,7 @@ import org.maiaframework.gen.renderers.ui.BlotterComponentRenderer
 import org.maiaframework.gen.renderers.ui.BlotterHtmlRenderer
 import org.maiaframework.gen.renderers.ui.BlotterPageComponentRenderer
 import org.maiaframework.gen.renderers.ui.BlotterPageHtmlRenderer
+import org.maiaframework.gen.renderers.ui.BlotterRoutesRenderer
 import org.maiaframework.gen.renderers.ui.BlotterScssRenderer
 import org.maiaframework.gen.renderers.ui.BlotterServiceTypescriptRenderer
 import org.maiaframework.gen.renderers.ui.CheckForeignKeyReferencesDialogComponentRenderer
@@ -730,6 +731,10 @@ class AngularUiModuleGenerator(
                 + historyOnlyEntities
                 + timelineBlotterByEntity.keys
                 ).toSet()
+
+        this.applicationModelDef.blotterPageDefs
+            .filter { it.blotterDef.blotterSourceDef.rootEntityDef == null }
+            .forEach { BlotterRoutesRenderer(it).renderToDir(this.typescriptOutputDir) }
 
         allEntities.forEach { entityDef ->
             EntityCrudRoutesRenderer(

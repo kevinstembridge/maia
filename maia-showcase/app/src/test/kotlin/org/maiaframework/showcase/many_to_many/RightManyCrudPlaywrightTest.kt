@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 import org.maiaframework.domain.DomainId
 import org.maiaframework.elasticsearch.EsDocHolder
 import org.maiaframework.elasticsearch.index.EsIndexOps
+import org.maiaframework.elasticsearch.index.IndexNameFactory
 import org.maiaframework.showcase.AbstractPlaywrightTest
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -31,7 +32,7 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
 
 
     @Autowired
-    private lateinit var leftManyTypeaheadEsIndex: LeftManyTypeaheadV1EsIndex
+    private lateinit var indexNameFactory: IndexNameFactory
 
 
     private val left1 = LeftManyEntityTestBuilder(someString = "left-1").build()
@@ -66,7 +67,7 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
             EsDocHolder(
                 id = leftManyEntity.id.toString(),
                 doc = LeftManyTypeaheadV1EsDoc(id = leftManyEntity.id, someString = leftManyEntity.someString),
-                indexName = leftManyTypeaheadEsIndex.indexName()
+                indexName = indexNameFactory.indexNameFrom(LeftManyTypeaheadEsIndexMeta_v0001.indexBaseNameAndVersion)
             )
         )
 

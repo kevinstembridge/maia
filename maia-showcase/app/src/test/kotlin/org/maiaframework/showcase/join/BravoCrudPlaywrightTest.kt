@@ -4,6 +4,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.maiaframework.elasticsearch.index.IndexNameFactory
 import org.maiaframework.showcase.AbstractPlaywrightTest
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -16,7 +17,7 @@ class BravoCrudPlaywrightTest : AbstractPlaywrightTest() {
 
 
     @Autowired
-    private lateinit var alphaTypeaheadEsIndex: AlphaTypeaheadV1EsIndex
+    private lateinit var indexNameFactory: IndexNameFactory
 
 
     @Autowired
@@ -32,7 +33,7 @@ class BravoCrudPlaywrightTest : AbstractPlaywrightTest() {
         fixtures.resetDatabaseState()
 
         // Create the Elasticsearch index and index the alpha fixture so the typeahead returns results
-        val indexName = alphaTypeaheadEsIndex.indexName().value
+        val indexName = indexNameFactory.indexNameFrom(AlphaTypeaheadEsIndexMeta_v0001.indexBaseNameAndVersion).value
 
         if (!elasticsearchClient.indices().exists { r -> r.index(indexName) }.value()) {
             alphaTypeaheadEsIndexControl.createIndex()

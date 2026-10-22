@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.maiaframework.elasticsearch.EsDocHolder
 import org.maiaframework.elasticsearch.index.EsIndexOps
+import org.maiaframework.elasticsearch.index.IndexNameFactory
 import org.maiaframework.showcase.AbstractPlaywrightTest
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -23,7 +24,7 @@ class ManyToManyEffectiveRangeCrudPlaywrightTest : AbstractPlaywrightTest() {
 
 
     @Autowired
-    private lateinit var rightManyTypeaheadEsIndex: RightManyTypeaheadV1EsIndex
+    private lateinit var indexNameFactory: IndexNameFactory
 
 
     @Autowired
@@ -53,7 +54,7 @@ class ManyToManyEffectiveRangeCrudPlaywrightTest : AbstractPlaywrightTest() {
             esIndexOps.upsert(EsDocHolder(
                 id = entity.id.toString(),
                 doc = RightManyTypeaheadV1EsDoc(id = entity.id, someString = entity.someString),
-                indexName = rightManyTypeaheadEsIndex.indexName()
+                indexName = indexNameFactory.indexNameFrom(RightManyTypeaheadEsIndexMeta_v0001.indexBaseNameAndVersion)
             ))
         }
 

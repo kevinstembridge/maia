@@ -17,8 +17,19 @@ class ElasticSearchDtoSearchServiceRenderer(
     init {
 
         addConstructorArg(ClassFieldDef.aClassField("esSearchExecutor", Fqcns.MAIA_ES_SEARCH_EXECUTOR).privat().build())
-        addConstructorArg(ClassFieldDef.aClassField("esIndex", esDocDef.esIndexClassDef.fqcn).privat().build())
+        addConstructorArg(ClassFieldDef.aClassField("indexNameFactory", Fqcns.ES_INDEX_NAME_FACTORY).privat().build())
         addConstructorArg(ClassFieldDef.aClassField("esDocMapper", searchDtoDef.esDocMapperClassDef.fqcn).privat().build())
+
+    }
+
+
+    override fun renderPreClassFields() {
+
+        addImportFor(this.esDocDef.esDocMetaClassFqcn)
+
+        blankLine()
+        blankLine()
+        appendLine("    private val indexName = this.indexNameFactory.indexNameFrom(${this.esDocDef.esDocMetaClassFqcn.uqcn}.indexBaseNameAndVersion)")
 
     }
 
@@ -48,7 +59,7 @@ class ElasticSearchDtoSearchServiceRenderer(
             |
             |        return this.esSearchExecutor.search(
             |            searchModel,
-            |            this.esIndex.indexName(),
+            |            this.indexName,
             |            ${searchDtoDef.fieldNameMapperClassDef.uqcn}.mappingFunction,
             |            ${this.esDocDef.uqcn}::class.java,
             |            { esDoc -> esDocMapper.mapEsDoc(esDoc) }
@@ -77,7 +88,7 @@ class ElasticSearchDtoSearchServiceRenderer(
             |
             |        return this.esSearchExecutor.count(
             |            searchModel,
-            |            this.esIndex.indexName(),
+            |            this.indexName,
             |            ${searchDtoDef.fieldNameMapperClassDef.uqcn}.mappingFunction
             |        )
             |

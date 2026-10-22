@@ -1116,7 +1116,7 @@ abstract class AbstractSpec protected constructor(
 
         val builder = BlotterDefBuilder(
             esDocDef.packageName,
-            esDocDef.esDocBaseName,
+            esDocDef.esDocBaseNameAndVersion,
             entityCreatePageDef = entityCreatePageDef,
             entityEditPageDef = entityEditPageDef,
             entityDetailViewDef = entityDetailViewPageDef,
@@ -1127,7 +1127,9 @@ abstract class AbstractSpec protected constructor(
             withGeneratedEndpoint = withGeneratedEndpoint,
             withGeneratedTypescriptService = withGeneratedTypescriptService,
             withGeneratedFindAllFunction = withGeneratedFindAllFunction,
-            blotterSourceDef = BlotterEsDocSourceDef(esDocDef)
+            blotterSourceDef = BlotterEsDocSourceDef(esDocDef),
+            urlBaseName = esDocDef.esDocBaseName,
+            apiVersion = esDocDef.esDocVersion
         )
 
         builder.init()
