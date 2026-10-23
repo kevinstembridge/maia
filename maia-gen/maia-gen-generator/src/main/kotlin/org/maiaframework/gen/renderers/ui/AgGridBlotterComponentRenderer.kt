@@ -605,6 +605,17 @@ class AgGridBlotterComponentRenderer(
 
     private fun renderColDefFor(fieldDef: BlotterActionColumnDef) {
 
+        val enabledWhenField = fieldDef.enabledWhenField
+
+        val extraRendererParams = enabledWhenField?.let { ", enabledWhenField: '$it'" } ?: ""
+
+        val clickGuard = enabledWhenField?.let {
+            """
+            |                if (event.data?.$it !== true) {
+            |                    return;
+            |                }"""
+        } ?: ""
+
         append("""
             |        {
             |            field: '${fieldDef.actionName}',
@@ -613,8 +624,8 @@ class AgGridBlotterComponentRenderer(
             |            maxWidth: 100,
             |            filter: false,
             |            cellRenderer: ${fieldDef.cellRenderer!!.componentClassName},
-            |            cellRendererParams: { iconName: '${fieldDef.icon}' },
-            |            onCellClicked: event => {
+            |            cellRendererParams: { iconName: '${fieldDef.icon}'$extraRendererParams },
+            |            onCellClicked: event => {$clickGuard
             |                this.on${fieldDef.actionName.firstToUpper()}(event.data);
             |            }
             |        },

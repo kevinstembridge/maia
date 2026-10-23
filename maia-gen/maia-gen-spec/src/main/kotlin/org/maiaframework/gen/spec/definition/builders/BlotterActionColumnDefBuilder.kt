@@ -14,6 +14,7 @@ class BlotterActionColumnDefBuilder(
 
     private var columnHeader: String? = null
     private var icon: String? = null
+    private var enabledWhenField: String? = null
 
 
     override fun build(): BlotterActionColumnDef {
@@ -22,7 +23,8 @@ class BlotterActionColumnDefBuilder(
             this.actionName,
             this.columnHeader,
             this.icon,
-            this.cellRenderer
+            this.cellRenderer,
+            this.enabledWhenField
         )
 
     }
@@ -39,6 +41,19 @@ class BlotterActionColumnDefBuilder(
     fun icon(icon: String): BlotterActionColumnDefBuilder {
 
         this.icon = icon
+        return this
+
+    }
+
+
+    /**
+     * The action is enabled for a row only when the named boolean field of the row's DTO is true.
+     * Otherwise the icon is rendered greyed out and clicking it does nothing.
+     */
+    fun enabledWhen(booleanRowField: String): BlotterActionColumnDefBuilder {
+
+        require(booleanRowField.isNotBlank()) { "booleanRowField must not be blank" }
+        this.enabledWhenField = booleanRowField
         return this
 
     }

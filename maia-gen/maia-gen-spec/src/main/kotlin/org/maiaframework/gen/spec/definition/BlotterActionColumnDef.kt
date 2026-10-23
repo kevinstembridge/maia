@@ -5,7 +5,8 @@ class BlotterActionColumnDef(
     val actionName: ActionName,
     columnHeader: String?,
     val icon: String?,
-    cellRenderer: AgGridCellRendererDef?
+    cellRenderer: AgGridCellRendererDef?,
+    val enabledWhenField: String? = null
 ): AbstractBlotterColumnDef(
     columnHeader,
     cellRenderer,
