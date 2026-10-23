@@ -569,8 +569,11 @@ class AgGridBlotterComponentRenderer(
 
         attributes["cellDataType"] = "'${blotterColumnDef.agGridCellDateType.name}'"
 
-        if (blotterColumnDef.isFilterable) {
-            attributes["filter"] = true
+        // the grid's defaultColDef turns filtering and sorting on, so opting out must be explicit
+        attributes["filter"] = blotterColumnDef.isFilterable
+
+        if (!blotterColumnDef.isSortable) {
+            attributes["sortable"] = false
         }
 
         if (blotterColumnDef.hide) {

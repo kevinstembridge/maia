@@ -40,6 +40,18 @@ class AgGridBlotterActionColumnEnabledWhenTest {
     }
 
 
+    @Test
+    fun `column opted out of filtering and sorting is rendered with filter and sortable false`(@TempDir tempDir: File) {
+
+        val colDef = renderActionColumn(tempDir) { }
+
+        assertThat(colDef)
+            .contains("{ field: 'id', headerName: 'ID', cellDataType: 'text', filter: true },")
+            .contains("{ field: 'eligible', headerName: 'Eligible', cellDataType: 'boolean', filter: false, sortable: false, hide: true },")
+
+    }
+
+
     private fun renderActionColumn(
         tempDir: File,
         init: org.maiaframework.gen.spec.definition.builders.BlotterActionColumnDefBuilder.() -> Unit
@@ -56,6 +68,11 @@ class AgGridBlotterActionColumnEnabledWhenTest {
             val widgetBlotter = blotter(widgetEsDoc) {
                 moduleName("ops")
                 columnFromDto(fieldPathInSourceData = "id", dtoFieldName = "id") { header("ID") }
+                columnFromDto(fieldPathInSourceData = "eligible", dtoFieldName = "eligible", sortable = false) {
+                    header("Eligible")
+                    isFilterable = false
+                    hide()
+                }
                 actionColumn("review", AgGridCellRendererDefs.iconAction) {
                     header("Review")
                     icon("rate_review")
