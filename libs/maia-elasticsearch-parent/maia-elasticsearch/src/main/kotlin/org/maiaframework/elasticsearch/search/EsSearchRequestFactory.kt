@@ -7,7 +7,10 @@ import co.elastic.clients.elasticsearch.core.CountRequest
 import co.elastic.clients.elasticsearch.core.SearchRequest
 import org.maiaframework.domain.search.AgGridSearchModel
 import org.maiaframework.elasticsearch.index.model.IndexResolvedName
+import org.maiaframework.json.JsonNodeExtensions.getDouble
+import org.maiaframework.json.JsonNodeExtensions.getString
 import org.maiaframework.json.JsonNodeExtensions.getStringOrNull
+import tools.jackson.databind.JsonNode
 
 class EsSearchRequestFactory {
 
@@ -69,6 +72,10 @@ class EsSearchRequestFactory {
 
         searchModel.filterModel.properties().forEach { filterModelItem ->
             val fieldPath = fieldNameMapper.invoke(filterModelItem.key)
+            if (filterModelItem.value.getStringOrNull("filterType") == "number") {
+                addNumberFilter(boolQueryBuilder, fieldPath, filterModelItem.value)
+                return@forEach
+            }
             val filter = filterModelItem.value.getStringOrNull("filter")
             when (filterModelItem.value.getStringOrNull("type")) {
                 "contains" -> boolQueryBuilder.must { m ->
@@ -79,6 +86,35 @@ class EsSearchRequestFactory {
         }
 
         return boolQueryBuilder
+
+    }
+
+
+    /** Follows the JDBC converter: negative filters exclude nulls, inRange is lower-inclusive and upper-exclusive. */
+    private fun addNumberFilter(
+        boolQueryBuilder: BoolQuery.Builder,
+        fieldPath: String,
+        filterModelItem: JsonNode
+    ) {
+
+        val type = filterModelItem.getString("type")
+        val filter = filterModelItem.getDouble("filter")
+
+        when (type) {
+            "equals" -> boolQueryBuilder.must { m -> m.term { t -> t.field(fieldPath).value(filter) } }
+            "notEqual" -> boolQueryBuilder
+                .must { m -> m.exists { e -> e.field(fieldPath) } }
+                .mustNot { m -> m.term { t -> t.field(fieldPath).value(filter) } }
+            "greaterThan" -> boolQueryBuilder.must { m -> m.range { r -> r.number { n -> n.field(fieldPath).gt(filter) } } }
+            "greaterThanOrEqual" -> boolQueryBuilder.must { m -> m.range { r -> r.number { n -> n.field(fieldPath).gte(filter) } } }
+            "lessThan" -> boolQueryBuilder.must { m -> m.range { r -> r.number { n -> n.field(fieldPath).lt(filter) } } }
+            "lessThanOrEqual" -> boolQueryBuilder.must { m -> m.range { r -> r.number { n -> n.field(fieldPath).lte(filter) } } }
+            "inRange" -> {
+                val filterTo = filterModelItem.getDouble("filterTo")
+                boolQueryBuilder.must { m -> m.range { r -> r.number { n -> n.field(fieldPath).gte(filter).lt(filterTo) } } }
+            }
+            else -> throw IllegalArgumentException("Unknown filter type [$type]")
+        }
 
     }
 
