@@ -25,7 +25,7 @@ import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
 import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
@@ -127,7 +127,7 @@ class EntityPkRenderer(
             is MapFieldType -> TODO("YAGNI?")
             is ObjectIdFieldType -> TODO("YAGNI?")
             is PeriodFieldType -> TODO("YAGNI?")
-            is PkAndNameFieldType -> TODO("YAGNI?")
+            is EntityRefFieldType -> TODO("YAGNI?")
             is RequestDtoFieldType -> TODO("YAGNI?")
             is SetFieldType -> TODO("YAGNI?")
             is SimpleResponseDtoFieldType -> TODO("YAGNI?")

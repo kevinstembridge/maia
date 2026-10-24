@@ -24,11 +24,11 @@ class UserCrudEndpoint(val crudService: UserCrudService) {
     @PostMapping("/api/user/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('WRITE')")
-    fun create(@RequestBody @Valid createDto: UserCreateRequestDto): UserPkAndNameDto {
+    fun create(@RequestBody @Valid createDto: UserCreateRequestDto): UserRefDto {
 
         val entity = this.crudService.create(createDto)
 
-        return UserPkAndNameDto(
+        return UserRefDto(
             entity.id,
             entity.displayName
         )

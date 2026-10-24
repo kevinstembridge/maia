@@ -5,7 +5,7 @@ import org.maiaframework.gen.spec.definition.lang.DataClassFieldType
 import org.maiaframework.gen.spec.definition.lang.EnumFieldType
 import org.maiaframework.gen.spec.definition.lang.EsDocFieldType
 import org.maiaframework.gen.spec.definition.lang.FieldType
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
@@ -59,8 +59,8 @@ abstract class AbstractTypescriptRenderer: AbstractSourceFileRenderer() {
             addImport(fieldType.esDocDef.dtoDef.typescriptDtoImport)
         }
 
-        if (fieldType is PkAndNameFieldType) {
-            addImport(fieldType.pkAndNameDef.pkAndNameDtoTypescriptImport)
+        if (fieldType is EntityRefFieldType) {
+            addImport(fieldType.entityRefDef.refDtoTypescriptImport)
         }
 
         if (fieldType is MapFieldType) {

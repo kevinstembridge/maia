@@ -97,10 +97,10 @@ class EmailAddressRepo(private val dao: EmailAddressDao) {
     }
 
 
-    fun pkAndNameFor(emailAddress: EmailAddress): EmailAddressPkAndNameDto {
+    fun entityRefFor(emailAddress: EmailAddress): EmailAddressRefDto {
 
         val entity = findByPrimaryKey(emailAddress)
-        return EmailAddressPkAndNameDto(
+        return EmailAddressRefDto(
             entity.emailAddress,
             entity.emailAddress
         )

@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 data class BravoWithHistoryEntityDetailViewDto(
-    val alpha: AlphaWithHistoryPkAndNameDto,
+    val alpha: AlphaWithHistoryRefDto,
     val createdTimestamp: Instant,
     val id: DomainId,
     val someInt: Int,

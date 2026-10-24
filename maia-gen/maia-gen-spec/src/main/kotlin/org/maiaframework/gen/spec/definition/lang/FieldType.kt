@@ -3,7 +3,7 @@ package org.maiaframework.gen.spec.definition.lang
 import org.maiaframework.gen.spec.definition.BooleanTypeDef
 import org.maiaframework.gen.spec.definition.BooleanValueClassDef
 import org.maiaframework.gen.spec.definition.DataClassDef
-import org.maiaframework.gen.spec.definition.EntityPkAndNameDef
+import org.maiaframework.gen.spec.definition.EntityRefDef
 import org.maiaframework.gen.spec.definition.EnumDef
 import org.maiaframework.gen.spec.definition.EsDocDef
 import org.maiaframework.gen.spec.definition.EsDocMappingType
@@ -542,7 +542,7 @@ private fun jdbcCompatibleTypeForListOrSet(parameterFieldType: FieldType): JdbcC
         is ForeignKeyFieldType -> TODO("YAGNI?")
         is FqcnFieldType -> TODO("YAGNI?")
         is JoinFetchDtoFieldType -> TODO("YAGNI?")
-        is PkAndNameFieldType -> TODO("YAGNI?")
+        is EntityRefFieldType -> TODO("YAGNI?")
         is InstantFieldType -> TODO("YAGNI?")
         is IntFieldType -> JdbcCompatibleType.integer_array
         is IntTypeFieldType -> JdbcCompatibleType.integer_array
@@ -735,10 +735,10 @@ class SimpleResponseDtoFieldType internal constructor(
 }
 
 
-class PkAndNameFieldType internal constructor(
-    val pkAndNameDef: EntityPkAndNameDef
+class EntityRefFieldType internal constructor(
+    val entityRefDef: EntityRefDef
 ) : FieldType(
-    pkAndNameDef.dtoDef.fqcn,
+    entityRefDef.dtoDef.fqcn,
     TypescriptCompatibleTypes.object_,
     sqlType = null,
     EsDocMappingTypes.`object`,

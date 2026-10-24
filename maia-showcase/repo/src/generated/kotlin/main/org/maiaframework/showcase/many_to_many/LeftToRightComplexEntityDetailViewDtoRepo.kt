@@ -25,24 +25,24 @@ class LeftToRightComplexEntityDetailViewDtoRepo(
             effectiveTo = entity.effectiveTo,
             id = entity.id,
             lastModifiedTimestamp = entity.lastModifiedTimestamp,
-            left = leftManyPkAndNameDtoFor(entity.left),
-            right = rightManyPkAndNameDtoFor(entity.right),
+            left = leftManyRefDtoFor(entity.left),
+            right = rightManyRefDtoFor(entity.right),
             someIntOnComplex = entity.someIntOnComplex,
         )
 
     }
 
 
-    private fun leftManyPkAndNameDtoFor(id: DomainId): LeftManyPkAndNameDto {
+    private fun leftManyRefDtoFor(id: DomainId): LeftManyRefDto {
 
-        return this.leftManyRepo.pkAndNameFor(id)
+        return this.leftManyRepo.entityRefFor(id)
 
     }
 
 
-    private fun rightManyPkAndNameDtoFor(id: DomainId): RightManyPkAndNameDto {
+    private fun rightManyRefDtoFor(id: DomainId): RightManyRefDto {
 
-        return this.rightManyRepo.pkAndNameFor(id)
+        return this.rightManyRepo.entityRefFor(id)
 
     }
 

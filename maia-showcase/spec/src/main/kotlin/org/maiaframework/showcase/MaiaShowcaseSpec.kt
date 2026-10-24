@@ -942,7 +942,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val alphaEntityDef = entity(
         "org.maiaframework.showcase.join",
         "Alpha",
-        nameFieldForPkAndNameDto = "someString",
+        nameFieldForEntityRef = "someString",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
     ) {
@@ -1035,7 +1035,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val bravoEntityDef = entity(
         "org.maiaframework.showcase.join",
         "Bravo",
-        nameFieldForPkAndNameDto = "someString",
+        nameFieldForEntityRef = "someString",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
@@ -1308,7 +1308,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val alphaAgGridEntityDef = entity(
         "org.maiaframework.showcase.join",
         "AlphaAgGrid",
-        nameFieldForPkAndNameDto = "someString",
+        nameFieldForEntityRef = "someString",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
@@ -1322,7 +1322,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val bravoAgGridEntityDef = entity(
         "org.maiaframework.showcase.join",
         "BravoAgGrid",
-        nameFieldForPkAndNameDto = "someString",
+        nameFieldForEntityRef = "someString",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
@@ -1411,7 +1411,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val alphaWithHistoryEntityDef = entity(
         "org.maiaframework.showcase.join",
         "AlphaWithHistory",
-        nameFieldForPkAndNameDto = "someString",
+        nameFieldForEntityRef = "someString",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
         recordVersionHistory = true,
@@ -1501,7 +1501,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val bravoWithHistoryEntityDef = entity(
         "org.maiaframework.showcase.join",
         "BravoWithHistory",
-        nameFieldForPkAndNameDto = "someString",
+        nameFieldForEntityRef = "someString",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
         recordVersionHistory = true,
@@ -1579,7 +1579,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "LeftMany",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        nameFieldForPkAndNameDto = "someString",
+        nameFieldForEntityRef = "someString",
         recordVersionHistory = true,
     ) {
         field("someInt", FieldTypes.int) {
@@ -1633,7 +1633,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "RightMany",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        nameFieldForPkAndNameDto = "someString",
+        nameFieldForEntityRef = "someString",
         recordVersionHistory = true
     ) {
         field("someInt", FieldTypes.int) {

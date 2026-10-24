@@ -15,7 +15,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -82,7 +82,7 @@ class BlotterColumnDef(
             is ForeignKeyFieldType -> "id"
             is FqcnFieldType -> TODO("YAGNI?")
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
-            is PkAndNameFieldType -> "id"
+            is EntityRefFieldType -> "id"
             is InstantFieldType -> "date"
             is IntFieldType -> "number"
             is IntTypeFieldType -> "number"
@@ -120,7 +120,7 @@ class BlotterColumnDef(
             is FqcnFieldType -> TODO("YAGNI?")
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
             is ForeignKeyFieldType -> "equals"
-            is PkAndNameFieldType -> "equals"
+            is EntityRefFieldType -> "equals"
             is InstantFieldType -> "equals"
             is IntFieldType -> "equals"
             is IntTypeFieldType -> "equals"
@@ -158,7 +158,7 @@ class BlotterColumnDef(
             is ForeignKeyFieldType -> AgGridCellDataType.text
             is FqcnFieldType -> TODO("YAGNI?")
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
-            is PkAndNameFieldType -> AgGridCellDataType.text
+            is EntityRefFieldType -> AgGridCellDataType.text
             is InstantFieldType -> AgGridCellDataType.dateTimeString
             is IntFieldType -> AgGridCellDataType.number
             is IntTypeFieldType -> AgGridCellDataType.number

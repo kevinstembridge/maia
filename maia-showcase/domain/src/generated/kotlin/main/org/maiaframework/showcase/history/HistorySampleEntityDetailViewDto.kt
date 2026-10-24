@@ -4,15 +4,15 @@
 package org.maiaframework.showcase.history
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.showcase.party.PartyPkAndNameDto
+import org.maiaframework.showcase.party.PartyRefDto
 import java.time.Instant
 
 
 data class HistorySampleEntityDetailViewDto(
-    val createdBy: PartyPkAndNameDto,
+    val createdBy: PartyRefDto,
     val createdTimestamp: Instant,
     val id: DomainId,
-    val lastModifiedBy: PartyPkAndNameDto,
+    val lastModifiedBy: PartyRefDto,
     val lastModifiedTimestamp: Instant,
     val someInt: Int,
     val someString: String,

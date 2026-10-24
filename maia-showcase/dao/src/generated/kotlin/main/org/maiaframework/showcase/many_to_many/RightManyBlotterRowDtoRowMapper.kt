@@ -13,14 +13,14 @@ import org.maiaframework.jdbc.SqlParams
 class RightManyBlotterRowDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowMapper<RightManyBlotterRowDto> {
 
 
-    private val leftEntitiesPkAndNameDtoRowMapper = LeftManyPkAndNameDtoRowMapper()
+    private val leftEntitiesRefDtoRowMapper = LeftManyRefDtoRowMapper()
 
 
     override fun mapRow(rsa: ResultSetAdapter): RightManyBlotterRowDto {
 
         val entityId = rsa.readDomainId("id")
 
-        val leftEntitiesPkAndNameDtoList = fetchLeftEntitiesPkAndNameDtos(entityId)
+        val leftEntitiesRefDtoList = fetchLeftEntitiesRefDtos(entityId)
 
         val id = rsa.readDomainId("id")
         val someInt = rsa.readInt("someInt")
@@ -28,7 +28,7 @@ class RightManyBlotterRowDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowMap
 
         return RightManyBlotterRowDto(
             id,
-            leftEntitiesPkAndNameDtoList,
+            leftEntitiesRefDtoList,
             someInt,
             someString,
         )
@@ -36,7 +36,7 @@ class RightManyBlotterRowDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowMap
     }
 
 
-    private fun fetchLeftEntitiesPkAndNameDtos(entityId: DomainId): List<LeftManyPkAndNameDto> {
+    private fun fetchLeftEntitiesRefDtos(entityId: DomainId): List<LeftManyRefDto> {
 
         return this.jdbcOps.queryForList(
             """
@@ -53,7 +53,7 @@ class RightManyBlotterRowDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowMap
             SqlParams().apply {
                 addValue("entityId", entityId)
             },
-            this.leftEntitiesPkAndNameDtoRowMapper
+            this.leftEntitiesRefDtoRowMapper
         )
 
     }

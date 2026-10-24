@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 data class CharlieAgGridFetchForEditDto(
-    val bravo: BravoAgGridPkAndNameDto,
+    val bravo: BravoAgGridRefDto,
     val createdTimestamp: Instant,
     val id: DomainId,
     val someInt: Int,

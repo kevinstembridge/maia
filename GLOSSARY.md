@@ -60,6 +60,10 @@ _Avoid_: Type code
 An Entity declared `isAbstract = true` that only serves as a parent in Entity inheritance and is never instantiated on its own.
 _Avoid_: Base table
 
+**Entity ref**:
+A minimal identifying projection of an Entity (its primary key, a display name, and optionally a shortcode), used wherever one Entity refers to another, such as foreign-key pickers and many-to-many sides.
+_Avoid_: Pk and name, lookup, summary
+
 **Effective range**:
 A pair of optional effective-from and effective-to bounds (timestamps or dates) on an Entity, managed either by the user or by the system, so that a record is only in force between them.
 _Avoid_: Validity period, active dates

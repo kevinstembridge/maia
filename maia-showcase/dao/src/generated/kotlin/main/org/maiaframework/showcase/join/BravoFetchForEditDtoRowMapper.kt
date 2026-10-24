@@ -12,7 +12,7 @@ class BravoFetchForEditDtoRowMapper : MaiaRowMapper<BravoFetchForEditDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): BravoFetchForEditDto {
 
-        val alpha = AlphaPkAndNameDto(
+        val alpha = AlphaRefDto(
             rsa.readDomainId("alphaId"),
             rsa.readString("alphaName"),
         )

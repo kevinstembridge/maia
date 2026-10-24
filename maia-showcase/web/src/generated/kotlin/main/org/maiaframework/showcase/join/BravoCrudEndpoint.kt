@@ -25,11 +25,11 @@ class BravoCrudEndpoint(val crudService: BravoCrudService) {
     @PostMapping("/api/bravo/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('WRITE')")
-    fun create(@RequestBody @Valid createDto: BravoCreateRequestDto): BravoPkAndNameDto {
+    fun create(@RequestBody @Valid createDto: BravoCreateRequestDto): BravoRefDto {
 
         val entity = this.crudService.create(createDto)
 
-        return BravoPkAndNameDto(
+        return BravoRefDto(
             entity.id,
             entity.someString
         )

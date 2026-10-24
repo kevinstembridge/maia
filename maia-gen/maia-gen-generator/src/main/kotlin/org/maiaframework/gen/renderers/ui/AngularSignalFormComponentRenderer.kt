@@ -98,8 +98,8 @@ class AngularSignalFormComponentRenderer(
 
         if (angularFormDef.formPurpose == FormPurpose.create && angularFormDef.isEntityCreateForm) {
             val createdEntityDef = this.angularFormDef.createdEntityDef
-            if (createdEntityDef != null && createdEntityDef.createReturnsPkAndName) {
-                addImport(createdEntityDef.entityPkAndNameDef.pkAndNameDtoTypescriptImport)
+            if (createdEntityDef != null && createdEntityDef.createReturnsEntityRef) {
+                addImport(createdEntityDef.entityRefDef.refDtoTypescriptImport)
             } else {
                 addImport("@maia/maia-ui", "EntityCreatedResponseDto")
             }
@@ -825,7 +825,7 @@ class AngularSignalFormComponentRenderer(
             val classFieldDef = angularFormFieldDef.classFieldDef
             val formFieldName = angularFormFieldDef.fieldName
 
-            // Non-typeahead FK fields are skipped because the DTO uses a PkAndName object shape.
+            // Non-typeahead FK fields are skipped because the DTO uses a EntityRef object shape.
             if (classFieldDef.typeaheadDef != null || classFieldDef.fieldType !is ForeignKeyFieldType) {
                 if (classFieldDef.nullable) {
                     appendLine("                    ${formFieldName}: dto.${formFieldName} ?? model.${formFieldName},")

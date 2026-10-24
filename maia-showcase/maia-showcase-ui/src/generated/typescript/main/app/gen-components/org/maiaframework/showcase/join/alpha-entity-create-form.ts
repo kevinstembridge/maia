@@ -8,7 +8,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {Router} from '@angular/router';
 import {AlphaCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/AlphaCreateRequestDto';
-import {AlphaPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/join/AlphaPkAndNameDto';
+import {AlphaRefDto} from '@app/gen-components/org/maiaframework/showcase/join/AlphaRefDto';
 import {AlphaCrudService} from '@app/gen-components/org/maiaframework/showcase/join/alpha-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {firstValueFrom} from 'rxjs';
@@ -29,7 +29,7 @@ import {firstValueFrom} from 'rxjs';
 export class AlphaEntityCreateForm {
 
 
-    readonly onSuccess = output<AlphaPkAndNameDto>();
+    readonly onSuccess = output<AlphaRefDto>();
 
 
     /** Set to false when embedding the form to stay on the current page after a successful create. */

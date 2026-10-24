@@ -13,7 +13,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -62,7 +62,7 @@ fun renderWriteConversionForImplicitField(
         }
         is FqcnFieldType -> TODO("YAGNI?")
         is JoinFetchDtoFieldType -> TODO("YAGNI?")
-        is PkAndNameFieldType -> TODO("YAGNI?")
+        is EntityRefFieldType -> TODO("YAGNI?")
         is InstantFieldType -> renderer.appendLine("${indent}return $fieldName")
         is IntFieldType -> renderer.appendLine("${indent}return $fieldName")
         is IntTypeFieldType -> `render for value field wrapper`(fieldType, renderer, indent)
@@ -120,7 +120,7 @@ private fun `render for List field type`(
         is ForeignKeyFieldType -> renderer.appendLine("${indent}return inputValue")
         is FqcnFieldType -> renderer.appendLine("${indent}return inputValue")
         is JoinFetchDtoFieldType -> TODO("YAGNI?")
-        is PkAndNameFieldType -> TODO("YAGNI?")
+        is EntityRefFieldType -> TODO("YAGNI?")
         is InstantFieldType -> renderer.appendLine("${indent}return inputValue")
         is IntFieldType -> renderer.appendLine("${indent}return inputValue")
         is IntTypeFieldType -> renderer.appendLine("${indent}return inputValue")

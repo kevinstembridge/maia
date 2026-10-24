@@ -19,11 +19,11 @@ class ManyToManyCreatedByFieldTest {
                 field("username", FieldTypes.string) { fieldDisplayName("Username") }
             }
 
-            val left = entity("com.example", "Left", nameFieldForPkAndNameDto = "name") {
+            val left = entity("com.example", "Left", nameFieldForEntityRef = "name") {
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 
-            val right = entity("com.example", "Right", nameFieldForPkAndNameDto = "name") {
+            val right = entity("com.example", "Right", nameFieldForEntityRef = "name") {
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 

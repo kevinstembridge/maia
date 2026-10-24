@@ -148,10 +148,10 @@ class BravoRepo(private val dao: BravoDao) {
     }
 
 
-    fun pkAndNameFor(id: DomainId): BravoPkAndNameDto {
+    fun entityRefFor(id: DomainId): BravoRefDto {
 
         val entity = findByPrimaryKey(id)
-        return BravoPkAndNameDto(
+        return BravoRefDto(
             entity.id,
             entity.someString
         )

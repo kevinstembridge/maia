@@ -107,10 +107,10 @@ class UserGroupRepo(private val dao: UserGroupDao) {
     }
 
 
-    fun pkAndNameFor(id: DomainId): UserGroupPkAndNameDto {
+    fun entityRefFor(id: DomainId): UserGroupRefDto {
 
         val entity = findByPrimaryKey(id)
-        return UserGroupPkAndNameDto(
+        return UserGroupRefDto(
             entity.id,
             entity.name
         )

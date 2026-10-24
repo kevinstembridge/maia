@@ -59,17 +59,17 @@ class CrudEndpointRenderer(
         addImportFor(Fqcns.SPRING_POST_MAPPING)
         addImportFor(Fqcns.SPRING_REQUEST_BODY)
         addImportFor(Fqcns.SPRING_RESPONSE_STATUS)
-        val createReturnsPkAndName = entityDef.createReturnsPkAndName
+        val createReturnsEntityRef = entityDef.createReturnsEntityRef
 
-        if (createReturnsPkAndName) {
-            addImportFor(entityDef.entityPkAndNameDef.pkAndNameDtoFqcn)
+        if (createReturnsEntityRef) {
+            addImportFor(entityDef.entityRefDef.refDtoFqcn)
         } else {
             addImportFor(Fqcns.MAIA_ENTITY_CREATED_RESPONSE_DTO)
         }
 
         val createDtoUqcn = createApiDef.requestDtoDef.uqcn
 
-        val returnType = if (createReturnsPkAndName) entityDef.entityPkAndNameDef.dtoUqcn.toString() else "EntityCreatedResponseDto"
+        val returnType = if (createReturnsEntityRef) entityDef.entityRefDef.dtoUqcn.toString() else "EntityCreatedResponseDto"
 
         blankLine()
         blankLine()
@@ -80,10 +80,10 @@ class CrudEndpointRenderer(
         blankLine()
         appendLine("        val entity = this.crudService.create(createDto)")
 
-        if (createReturnsPkAndName) {
+        if (createReturnsEntityRef) {
 
             blankLine()
-            appendLine("        return ${entityDef.entityPkAndNameDef.constructionFrom("entity", "        ")}")
+            appendLine("        return ${entityDef.entityRefDef.constructionFrom("entity", "        ")}")
 
         } else {
 

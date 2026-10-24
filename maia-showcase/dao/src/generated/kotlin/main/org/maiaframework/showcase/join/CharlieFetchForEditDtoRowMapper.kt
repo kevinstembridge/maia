@@ -12,7 +12,7 @@ class CharlieFetchForEditDtoRowMapper : MaiaRowMapper<CharlieFetchForEditDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): CharlieFetchForEditDto {
 
-        val bravo = BravoPkAndNameDto(
+        val bravo = BravoRefDto(
             rsa.readDomainId("bravoId"),
             rsa.readString("bravoName"),
         )

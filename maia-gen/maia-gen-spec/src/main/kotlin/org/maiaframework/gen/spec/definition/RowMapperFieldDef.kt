@@ -49,7 +49,7 @@ class ManyToManyRowMapperFieldDef(
     val thisSideIdTableColumnName = manyToManySearchableDtoFieldDef.manyToManyEntityDef.idTableColumnName(rootEntityDef)
 
 
-    val entityPkAndNameDef: EntityPkAndNameDef by lazy { otherSideEntity.entityDef.entityPkAndNameDef }
+    val entityRefDef: EntityRefDef by lazy { otherSideEntity.entityDef.entityRefDef }
 
 
 }

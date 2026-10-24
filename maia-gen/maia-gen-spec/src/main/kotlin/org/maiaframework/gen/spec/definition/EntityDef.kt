@@ -72,7 +72,7 @@ class EntityDef(
      * generator needs to know the name of the entity field that will be used as the
      * display name in those dropdowns.
      */
-    private val nameFieldForPkAndNameDto: String? = null,
+    private val nameFieldForEntityRef: String? = null,
     val stagingEntityFieldDefs: List<DataRowStagingEntityFieldDef> = emptyList(),
     val effectiveRangeDef: EffectiveRangeDef?,
     val cacheableDef: CacheableDef?,
@@ -80,10 +80,10 @@ class EntityDef(
     val isManyToManyJoinEntity: Boolean = false,
     val historyBlotterConfig: EntityHistoryBlotterConfig = EntityHistoryBlotterConfig.DEFAULT,
     /**
-     * Optional. The name of the entity field to expose as `shortcode` in the PkAndName DTO.
-     * Requires [nameFieldForPkAndNameDto].
+     * Optional. The name of the entity field to expose as `shortcode` in the EntityRef DTO.
+     * Requires [nameFieldForEntityRef].
      */
-    private val shortcodeFieldForPkAndNameDto: String? = null
+    private val shortcodeFieldForEntityRef: String? = null
 ) {
 
 
@@ -260,34 +260,34 @@ class EntityDef(
     val isConcrete: Boolean = this.isAbstract == false
 
 
-    val hasPkAndNameDtoDef = this.nameFieldForPkAndNameDto != null
+    val hasRefDtoDef = this.nameFieldForEntityRef != null
 
 
     /**
-     * True if a create endpoint for this entity can return the PkAndName DTO instead of
+     * True if a create endpoint for this entity can return the EntityRef DTO instead of
      * a bare `{id}` EntityCreatedResponseDto.
      */
-    val createReturnsPkAndName: Boolean
-        get() = this.hasPkAndNameDtoDef && this.primaryKeyFields.size == 1
+    val createReturnsEntityRef: Boolean
+        get() = this.hasRefDtoDef && this.primaryKeyFields.size == 1
 
 
-    val entityPkAndNameDef: EntityPkAndNameDef
+    val entityRefDef: EntityRefDef
         get() {
 
-            requireNotNull(this.nameFieldForPkAndNameDto) { "nameFieldForPkAndNameDto for entity $entityBaseName must not be null if pkAndNameDef is required." }
+            requireNotNull(this.nameFieldForEntityRef) { "nameFieldForEntityRef for entity $entityBaseName must not be null if entityRefDef is required." }
 
             if (primaryKeyFields.size > 1) {
-                throw ModelDefinitionException("YAGNI: pkAndName DTOs are not yet supported for Entities with composite primary keys")
+                throw ModelDefinitionException("YAGNI: EntityRef DTOs are not yet supported for Entities with composite primary keys")
             }
 
             val primaryKeyEntityFieldDef = primaryKeyFields.firstOrNull()
                 ?: throw RuntimeException("Entity $entityBaseName has no primary key field")
 
-            val nameEntityFieldDef = findFieldByName(this.nameFieldForPkAndNameDto)
+            val nameEntityFieldDef = findFieldByName(this.nameFieldForEntityRef)
 
-            val shortcodeEntityFieldDef = this.shortcodeFieldForPkAndNameDto?.let { findFieldByName(it) }
+            val shortcodeEntityFieldDef = this.shortcodeFieldForEntityRef?.let { findFieldByName(it) }
 
-            return EntityPkAndNameDef(
+            return EntityRefDef(
                 packageName,
                 DtoBaseName(entityBaseName.value),
                 primaryKeyEntityFieldDef,
@@ -314,7 +314,7 @@ class EntityDef(
                 JoinFetchDtoDef(
                     packageName = this.packageName,
                     otherSideDisplayName = otherSide.displayName.replace(" ", ""),
-                    nameTableColumnName = otherSide.entityDef.entityPkAndNameDef.nameEntityFieldDef.tableColumnName.value,
+                    nameTableColumnName = otherSide.entityDef.entityRefDef.nameEntityFieldDef.tableColumnName.value,
                     joinEntitySchemaAndTableName = m2m.entityDef.schemaAndTableName,
                     otherSideIdTableColumnName = m2m.idTableColumnName(otherSide.entityDef),
                     thisSideIdTableColumnName = m2m.idTableColumnName(this),
@@ -342,7 +342,7 @@ class EntityDef(
                 val joinFetchDtoDef = joinFetchDtoDefsByAssociation[manyToManyEntityDef]!!
                 FieldTypes.list(FieldTypes.joinFetchDto(joinFetchDtoDef))
             } else {
-                FieldTypes.list(FieldTypes.pkAndName(otherSide.entityDef.entityPkAndNameDef))
+                FieldTypes.list(FieldTypes.entityRef(otherSide.entityDef.entityRefDef))
             }
             val classFieldDef = aClassField(fieldName, fieldType).build()
             ManyToManySearchableDtoFieldDef(classFieldDef, manyToManyEntityDef, null, Nullability.NOT_NULLABLE)
@@ -763,14 +763,14 @@ class EntityDef(
 
     init {
 
-        nameFieldForPkAndNameDto?.let { findFieldByNameOrNull(it)
-            ?: throw IllegalStateException("nameFieldForPkAndNameDto references a non-existent field $nameFieldForPkAndNameDto on entity $entityBaseName")
+        nameFieldForEntityRef?.let { findFieldByNameOrNull(it)
+            ?: throw IllegalStateException("nameFieldForEntityRef references a non-existent field $nameFieldForEntityRef on entity $entityBaseName")
         }
 
-        shortcodeFieldForPkAndNameDto?.let {
-            check(nameFieldForPkAndNameDto != null) { "shortcodeFieldForPkAndNameDto requires nameFieldForPkAndNameDto on entity $entityBaseName" }
+        shortcodeFieldForEntityRef?.let {
+            check(nameFieldForEntityRef != null) { "shortcodeFieldForEntityRef requires nameFieldForEntityRef on entity $entityBaseName" }
             findFieldByNameOrNull(it)
-                ?: throw IllegalStateException("shortcodeFieldForPkAndNameDto references a non-existent field $it on entity $entityBaseName")
+                ?: throw IllegalStateException("shortcodeFieldForEntityRef references a non-existent field $it on entity $entityBaseName")
         }
 
         if (withHandCodedDao.value) {

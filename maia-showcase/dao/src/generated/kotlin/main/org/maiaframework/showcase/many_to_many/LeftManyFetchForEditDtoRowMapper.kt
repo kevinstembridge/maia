@@ -13,7 +13,7 @@ import org.maiaframework.jdbc.SqlParams
 class LeftManyFetchForEditDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowMapper<LeftManyFetchForEditDto> {
 
 
-    private val rightSimpleEntitiesPkAndNameDtoRowMapper = RightManyPkAndNameDtoRowMapper()
+    private val rightSimpleEntitiesRefDtoRowMapper = RightManyRefDtoRowMapper()
 
 
     override fun mapRow(rsa: ResultSetAdapter): LeftManyFetchForEditDto {
@@ -22,7 +22,7 @@ class LeftManyFetchForEditDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowMa
 
         val rightEntitiesJoinFetchDtoList = fetchRightEntitiesJoinFetchDtos(entityId)
 
-        val rightSimpleEntitiesPkAndNameDtoList = fetchRightSimpleEntitiesPkAndNameDtos(entityId)
+        val rightSimpleEntitiesRefDtoList = fetchRightSimpleEntitiesRefDtos(entityId)
 
         val rightSystemEffectiveEntitiesJoinFetchDtoList = fetchRightSystemEffectiveEntitiesJoinFetchDtos(entityId)
 
@@ -42,7 +42,7 @@ class LeftManyFetchForEditDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowMa
             id,
             lastModifiedTimestamp,
             rightEntitiesJoinFetchDtoList,
-            rightSimpleEntitiesPkAndNameDtoList,
+            rightSimpleEntitiesRefDtoList,
             rightSystemEffectiveEntitiesJoinFetchDtoList,
             rightSystemSingleEffectiveEntitiesJoinFetchDtoList,
             rightUserEffectiveEntitiesJoinFetchDtoList,
@@ -89,7 +89,7 @@ class LeftManyFetchForEditDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowMa
     }
 
 
-    private fun fetchRightSimpleEntitiesPkAndNameDtos(entityId: DomainId): List<RightManyPkAndNameDto> {
+    private fun fetchRightSimpleEntitiesRefDtos(entityId: DomainId): List<RightManyRefDto> {
 
         return this.jdbcOps.queryForList(
             """
@@ -105,7 +105,7 @@ class LeftManyFetchForEditDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowMa
             SqlParams().apply {
                 addValue("entityId", entityId)
             },
-            this.rightSimpleEntitiesPkAndNameDtoRowMapper
+            this.rightSimpleEntitiesRefDtoRowMapper
         )
 
     }

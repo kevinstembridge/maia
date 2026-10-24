@@ -5,7 +5,7 @@ package org.maiaframework.showcase.history
 
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
-import org.maiaframework.showcase.party.PartyPkAndNameDto
+import org.maiaframework.showcase.party.PartyRefDto
 
 
 class HistorySampleFetchForEditDtoRowMapper : MaiaRowMapper<HistorySampleFetchForEditDto> {
@@ -13,13 +13,13 @@ class HistorySampleFetchForEditDtoRowMapper : MaiaRowMapper<HistorySampleFetchFo
 
     override fun mapRow(rsa: ResultSetAdapter): HistorySampleFetchForEditDto {
 
-        val createdBy = PartyPkAndNameDto(
+        val createdBy = PartyRefDto(
             rsa.readDomainId("createdById"),
             rsa.readString("createdByName"),
         )
         val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
-        val lastModifiedBy = PartyPkAndNameDto(
+        val lastModifiedBy = PartyRefDto(
             rsa.readDomainId("lastModifiedById"),
             rsa.readString("lastModifiedByName"),
         )

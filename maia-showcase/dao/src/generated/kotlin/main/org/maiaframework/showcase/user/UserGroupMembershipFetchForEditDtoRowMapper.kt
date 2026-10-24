@@ -16,11 +16,11 @@ class UserGroupMembershipFetchForEditDtoRowMapper : MaiaRowMapper<UserGroupMembe
         val effectiveFrom = rsa.readInstantOrNull("effectiveFrom")
         val effectiveTo = rsa.readInstantOrNull("effectiveTo")
         val id = rsa.readDomainId("id")
-        val user = UserPkAndNameDto(
+        val user = UserRefDto(
             rsa.readDomainId("userId"),
             rsa.readString("userName"),
         )
-        val userGroup = UserGroupPkAndNameDto(
+        val userGroup = UserGroupRefDto(
             rsa.readDomainId("userGroupId"),
             rsa.readString("userGroupName"),
         )

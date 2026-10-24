@@ -30,7 +30,7 @@ import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
 import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
@@ -626,7 +626,7 @@ class AngularReactiveFormComponentRenderer(
                 if (typeaheadDef != null) {
                     appendLine("                    ${formFieldName}: dto.${formFieldName},")
                 } else if (classFieldDef.fieldType is ForeignKeyFieldType) {
-                    // Skip non-typeahead FK fields — DTO uses a PkAndName object shape
+                    // Skip non-typeahead FK fields — DTO uses a EntityRef object shape
                 } else {
                     appendLine("                    ${formFieldName}: dto.${formFieldName},")
                 }
@@ -1070,8 +1070,8 @@ class AngularReactiveFormComponentRenderer(
         when (this.angularFormDef.formPurpose) {
             FormPurpose.create -> {
                 val createdEntityDef = this.angularFormDef.createdEntityDef
-                if (this.angularFormDef.isEntityCreateForm && createdEntityDef != null && createdEntityDef.createReturnsPkAndName) {
-                    addImport(createdEntityDef.entityPkAndNameDef.pkAndNameDtoTypescriptImport)
+                if (this.angularFormDef.isEntityCreateForm && createdEntityDef != null && createdEntityDef.createReturnsEntityRef) {
+                    addImport(createdEntityDef.entityRefDef.refDtoTypescriptImport)
                 } else {
                     addImport("@maia/maia-ui", "EntityCreatedResponseDto")
                 }
@@ -1162,7 +1162,7 @@ class AngularReactiveFormComponentRenderer(
                 is MapFieldType -> {}
                 is ObjectIdFieldType -> {}
                 is PeriodFieldType -> {}
-                is PkAndNameFieldType -> {}
+                is EntityRefFieldType -> {}
                 is RequestDtoFieldType -> {}
                 is SetFieldType -> {}
                 is SimpleResponseDtoFieldType -> {}

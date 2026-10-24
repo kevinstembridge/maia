@@ -25,11 +25,11 @@ class RightManyCrudEndpoint(val crudService: RightManyCrudService) {
     @PostMapping("/api/right-many/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('WRITE')")
-    fun create(@RequestBody @Valid createDto: RightManyCreateRequestDto): RightManyPkAndNameDto {
+    fun create(@RequestBody @Valid createDto: RightManyCreateRequestDto): RightManyRefDto {
 
         val entity = this.crudService.create(createDto)
 
-        return RightManyPkAndNameDto(
+        return RightManyRefDto(
             entity.id,
             entity.someString
         )

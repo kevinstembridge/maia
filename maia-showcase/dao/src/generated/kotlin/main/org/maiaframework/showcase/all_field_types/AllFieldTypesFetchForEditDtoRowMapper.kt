@@ -6,7 +6,7 @@ package org.maiaframework.showcase.all_field_types
 import org.maiaframework.jdbc.MaiaRowMapper
 import org.maiaframework.jdbc.ResultSetAdapter
 import org.maiaframework.showcase.enums.SomeEnum
-import org.maiaframework.showcase.party.PartyPkAndNameDto
+import org.maiaframework.showcase.party.PartyRefDto
 import org.maiaframework.showcase.types.SomeBooleanType
 import org.maiaframework.showcase.types.SomeIntType
 import org.maiaframework.showcase.types.SomeLongType
@@ -22,14 +22,14 @@ class AllFieldTypesFetchForEditDtoRowMapper : MaiaRowMapper<AllFieldTypesFetchFo
 
     override fun mapRow(rsa: ResultSetAdapter): AllFieldTypesFetchForEditDto {
 
-        val createdBy = PartyPkAndNameDto(
+        val createdBy = PartyRefDto(
             rsa.readDomainId("createdById"),
             rsa.readString("createdByName"),
         )
         val createdByUsername = rsa.readString("createdByUsername")
         val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
-        val lastModifiedBy = PartyPkAndNameDto(
+        val lastModifiedBy = PartyRefDto(
             rsa.readDomainId("lastModifiedById"),
             rsa.readString("lastModifiedByName"),
         )

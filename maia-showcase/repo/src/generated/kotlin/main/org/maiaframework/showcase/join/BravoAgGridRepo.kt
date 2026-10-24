@@ -114,10 +114,10 @@ class BravoAgGridRepo(private val dao: BravoAgGridDao) {
     }
 
 
-    fun pkAndNameFor(id: DomainId): BravoAgGridPkAndNameDto {
+    fun entityRefFor(id: DomainId): BravoAgGridRefDto {
 
         val entity = findByPrimaryKey(id)
-        return BravoAgGridPkAndNameDto(
+        return BravoAgGridRefDto(
             entity.id,
             entity.someString
         )

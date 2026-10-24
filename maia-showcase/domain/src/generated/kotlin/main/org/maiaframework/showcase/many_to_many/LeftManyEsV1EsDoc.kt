@@ -8,7 +8,7 @@ import org.maiaframework.domain.DomainId
 
 data class LeftManyEsV1EsDoc(
     val id: DomainId,
-    val rightEntities: List<RightManyPkAndNameDto>,
+    val rightEntities: List<RightManyRefDto>,
     val someIntFromLeft: Int,
     val someStringFromLeft: String
 ) {

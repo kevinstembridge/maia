@@ -3,7 +3,7 @@ package org.maiaframework.gen.renderers.ui
 import org.maiaframework.gen.renderers.AbstractSourceFileRenderer
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 import org.maiaframework.gen.spec.definition.lang.ListFieldType
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 
 class EntityDetailViewContentHtmlRenderer(private val entityDetailViewDef: EntityDetailViewDef) : AbstractSourceFileRenderer() {
 
@@ -30,7 +30,7 @@ class EntityDetailViewContentHtmlRenderer(private val entityDetailViewDef: Entit
 
             val fieldType = classFieldDef.fieldType
 
-            if (fieldType is PkAndNameFieldType) {
+            if (fieldType is EntityRefFieldType) {
 
                 append("""
                     |    <div class="detail-row">
@@ -50,7 +50,7 @@ class EntityDetailViewContentHtmlRenderer(private val entityDetailViewDef: Entit
                     |""".trimMargin()
                 )
 
-            } else if (fieldType is ListFieldType && fieldType.parameterFieldType is PkAndNameFieldType) {
+            } else if (fieldType is ListFieldType && fieldType.parameterFieldType is EntityRefFieldType) {
 
                 append("""
                     |    <div class="detail-row">

@@ -17,11 +17,11 @@ class LeftToRightComplexFetchForEditDtoRowMapper : MaiaRowMapper<LeftToRightComp
         val effectiveTo = rsa.readInstantOrNull("effectiveTo")
         val id = rsa.readDomainId("id")
         val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
-        val left = LeftManyPkAndNameDto(
+        val left = LeftManyRefDto(
             rsa.readDomainId("leftId"),
             rsa.readString("leftName"),
         )
-        val right = RightManyPkAndNameDto(
+        val right = RightManyRefDto(
             rsa.readDomainId("rightId"),
             rsa.readString("rightName"),
         )

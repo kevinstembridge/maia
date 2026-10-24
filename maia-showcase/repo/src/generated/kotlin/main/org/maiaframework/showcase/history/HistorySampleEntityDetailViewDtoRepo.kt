@@ -4,7 +4,7 @@
 package org.maiaframework.showcase.history
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.showcase.party.PartyPkAndNameDto
+import org.maiaframework.showcase.party.PartyRefDto
 import org.maiaframework.showcase.party.PartyRepo
 import org.springframework.stereotype.Repository
 
@@ -21,10 +21,10 @@ class HistorySampleEntityDetailViewDtoRepo(
         val entity = this.entityRepo.findByPrimaryKey(id)
 
         return HistorySampleEntityDetailViewDto(
-            createdBy = partyPkAndNameDtoFor(entity.createdBy),
+            createdBy = partyRefDtoFor(entity.createdBy),
             createdTimestamp = entity.createdTimestamp,
             id = entity.id,
-            lastModifiedBy = partyPkAndNameDtoFor(entity.lastModifiedBy),
+            lastModifiedBy = partyRefDtoFor(entity.lastModifiedBy),
             lastModifiedTimestamp = entity.lastModifiedTimestamp,
             someInt = entity.someInt,
             someString = entity.someString,
@@ -34,9 +34,9 @@ class HistorySampleEntityDetailViewDtoRepo(
     }
 
 
-    private fun partyPkAndNameDtoFor(id: DomainId): PartyPkAndNameDto {
+    private fun partyRefDtoFor(id: DomainId): PartyRefDto {
 
-        return this.partyRepo.pkAndNameFor(id)
+        return this.partyRepo.entityRefFor(id)
 
     }
 

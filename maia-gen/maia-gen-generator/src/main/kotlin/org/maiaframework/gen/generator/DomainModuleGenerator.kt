@@ -83,7 +83,7 @@ class DomainModuleGenerator(
         `render JoinFetchDtos`()
         `render form models`()
         `render HazelcastEntityConfig`()
-        `render PkAndNameDtos`()
+        `render RefDtos`()
         `render IntTypes`()
         `render LongTypes`()
         `render RequestDtos`()
@@ -137,12 +137,12 @@ class DomainModuleGenerator(
     }
 
 
-    private fun `render PkAndNameDtos`() {
+    private fun `render RefDtos`() {
 
         this.applicationModelDef.entityHierarchies
             .map { it.entityDef }
-            .filter { it.hasPkAndNameDtoDef }
-            .map { it.entityPkAndNameDef.dtoDef }
+            .filter { it.hasRefDtoDef }
+            .map { it.entityRefDef.dtoDef }
             .forEach { renderDto(it) }
 
     }

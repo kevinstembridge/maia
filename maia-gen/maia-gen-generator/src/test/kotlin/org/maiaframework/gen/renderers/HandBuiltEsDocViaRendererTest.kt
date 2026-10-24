@@ -22,7 +22,7 @@ class HandBuiltEsDocViaRendererTest {
 
     private class OrderSpec(path: String = "customer.region") : AbstractSpec(AppKey("Test")) {
 
-        val region = entity("com.example.order", "Region", nameFieldForPkAndNameDto = "name", deletable = Deletable.TRUE) {
+        val region = entity("com.example.order", "Region", nameFieldForEntityRef = "name", deletable = Deletable.TRUE) {
             field("name", FieldTypes.string) {
                 fieldDisplayName("Name")
                 editableByUser()
@@ -34,7 +34,7 @@ class HandBuiltEsDocViaRendererTest {
             }
         }
 
-        val customer = entity("com.example.order", "Customer", nameFieldForPkAndNameDto = "name", deletable = Deletable.TRUE) {
+        val customer = entity("com.example.order", "Customer", nameFieldForEntityRef = "name", deletable = Deletable.TRUE) {
             field("name", FieldTypes.string) {
                 fieldDisplayName("Name")
                 editableByUser()
@@ -47,7 +47,7 @@ class HandBuiltEsDocViaRendererTest {
             }
         }
 
-        val order = entity("com.example.order", "Order", nameFieldForPkAndNameDto = "orderNo", deletable = Deletable.TRUE) {
+        val order = entity("com.example.order", "Order", nameFieldForEntityRef = "orderNo", deletable = Deletable.TRUE) {
             field("orderNo", FieldTypes.string) {
                 fieldDisplayName("Order no")
                 editableByUser()
@@ -60,7 +60,7 @@ class HandBuiltEsDocViaRendererTest {
             }
         }
 
-        val carrier = entity("com.example.order", "Carrier", nameFieldForPkAndNameDto = "name") {
+        val carrier = entity("com.example.order", "Carrier", nameFieldForEntityRef = "name") {
             field("name", FieldTypes.string) {
                 fieldDisplayName("Name")
                 editableByUser()

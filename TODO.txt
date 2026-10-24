@@ -62,7 +62,7 @@ TODO * Mahana clean build
 TODO * Many-to-many relationship.
     => Define a many-to-many relationship and generate the full CRUD stack for it.
         The rowMapper of the Left entity should make a direct query to the Right entity's table
-        to fetch the RightPkAndNameDtos. This won't be fast enough to service a search request
+        to fetch the RightRefDtos. This won't be fast enough to service a search request
         from a blotter. For that, we'll have to store blotter rows in ES.
     TODO * Refactor so that CrudApiDefs don't need to have a mutable list of MTM associations.
 

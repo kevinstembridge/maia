@@ -495,7 +495,7 @@ abstract class AbstractSpec protected constructor(
         withHandcodedDao: WithHandCodedDao = WithHandCodedDao.FALSE,
         leftEntity: ReferencedEntity,
         rightEntity: ReferencedEntity,
-        pkAndNameFieldName: String? = null,
+        nameFieldForEntityRef: String? = null,
         init: (ManyToManyEntityDefBuilder.() -> Unit)? = null
     ): ManyToManyEntityDef {
 
@@ -514,7 +514,7 @@ abstract class AbstractSpec protected constructor(
             withHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
             leftEntity,
             rightEntity,
-            pkAndNameFieldName
+            nameFieldForEntityRef
         ) {
 
             manyToManyBuilder.description?.let { description(it.value) }
@@ -555,7 +555,7 @@ abstract class AbstractSpec protected constructor(
         withHandCodedEntityDao: WithHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
         leftEntity: ReferencedEntity,
         rightEntity: ReferencedEntity,
-        pkAndNameFieldName: String? = null,
+        nameFieldForEntityRef: String? = null,
         init: (EntityDefBuilder.() -> Unit)? = null
     ): ManyToManyEntityDef {
 
@@ -570,7 +570,7 @@ abstract class AbstractSpec protected constructor(
             deletable,
             allowDeleteAll,
             allowFindAll,
-            pkAndNameFieldName,
+            nameFieldForEntityRef,
             withHandcodedDao,
             withHandCodedEntityDao,
             defaultSchemaName,
@@ -620,8 +620,8 @@ abstract class AbstractSpec protected constructor(
 
         entityDefs.add(entityDef)
 
-        this.rowMapperDefs.add(leftEntity.entityDef.entityPkAndNameDef.rowMapperDef)
-        this.rowMapperDefs.add(rightEntity.entityDef.entityPkAndNameDef.rowMapperDef)
+        this.rowMapperDefs.add(leftEntity.entityDef.entityRefDef.rowMapperDef)
+        this.rowMapperDefs.add(rightEntity.entityDef.entityRefDef.rowMapperDef)
 
         val manyToManyEntityDef = ManyToManyEntityDef(entityDef, leftEntity, rightEntity)
 
@@ -676,8 +676,8 @@ abstract class AbstractSpec protected constructor(
         allowFindAll: AllowFindAll = AllowFindAll.FALSE,
         withHandcodedDao: WithHandCodedDao = WithHandCodedDao.FALSE,
         withHandcodedEntityDao: WithHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
-        nameFieldForPkAndNameDto: String? = null,
-        shortcodeFieldForPkAndNameDto: String? = null,
+        nameFieldForEntityRef: String? = null,
+        shortcodeFieldForEntityRef: String? = null,
         init: EntityDefBuilder.() -> Unit
     ): EntityDef {
 
@@ -692,11 +692,11 @@ abstract class AbstractSpec protected constructor(
             deletable,
             allowDeleteAll,
             allowFindAll,
-            nameFieldForPkAndNameDto,
+            nameFieldForEntityRef,
             withHandcodedDao,
             withHandcodedEntityDao,
             this.defaultSchemaName,
-            shortcodeFieldForPkAndNameDto = shortcodeFieldForPkAndNameDto
+            shortcodeFieldForEntityRef = shortcodeFieldForEntityRef
         )
 
         builder.init()

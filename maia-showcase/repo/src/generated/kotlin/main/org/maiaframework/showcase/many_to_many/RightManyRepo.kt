@@ -141,10 +141,10 @@ class RightManyRepo(private val dao: RightManyDao) {
     }
 
 
-    fun pkAndNameFor(id: DomainId): RightManyPkAndNameDto {
+    fun entityRefFor(id: DomainId): RightManyRefDto {
 
         val entity = findByPrimaryKey(id)
-        return RightManyPkAndNameDto(
+        return RightManyRefDto(
             entity.id,
             entity.someString
         )

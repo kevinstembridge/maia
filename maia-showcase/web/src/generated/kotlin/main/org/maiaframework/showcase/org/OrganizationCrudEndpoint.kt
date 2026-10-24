@@ -22,11 +22,11 @@ class OrganizationCrudEndpoint(val crudService: OrganizationCrudService) {
 
     @PostMapping("/api/organization/create")
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody @Valid createDto: OrganizationCreateRequestDto): OrganizationPkAndNameDto {
+    fun create(@RequestBody @Valid createDto: OrganizationCreateRequestDto): OrganizationRefDto {
 
         val entity = this.crudService.create(createDto)
 
-        return OrganizationPkAndNameDto(
+        return OrganizationRefDto(
             entity.id,
             entity.orgName
         )

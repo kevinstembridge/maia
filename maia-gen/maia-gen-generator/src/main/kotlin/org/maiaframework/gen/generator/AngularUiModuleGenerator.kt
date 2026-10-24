@@ -230,7 +230,7 @@ class AngularUiModuleGenerator(
         renderFetchForEditDtos()
         renderForeignKeyDialogs()
         renderForeignKeyService()
-        renderPkAndNameDtos()
+        renderRefDtos()
         renderRequestDtos()
         renderSimpleResponseDtos()
         renderSearchableResponseDtos()
@@ -1080,12 +1080,12 @@ class AngularUiModuleGenerator(
     }
 
 
-    private fun renderPkAndNameDtos() {
+    private fun renderRefDtos() {
 
         this.applicationModelDef.entityHierarchies
             .map { it.entityDef }
-            .filter { it.hasPkAndNameDtoDef }
-            .map { it.entityPkAndNameDef.dtoDef }
+            .filter { it.hasRefDtoDef }
+            .map { it.entityRefDef.dtoDef }
             .forEach { dtoDef -> renderTypescriptInterface(dtoDef) }
 
     }

@@ -2,7 +2,7 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.TypescriptInterfaceDtoRenderer
 
 import {RightJoinFetchDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightJoinFetchDto';
-import {RightManyPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightManyPkAndNameDto';
+import {RightManyRefDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightManyRefDto';
 import {RightSystemEffectiveJoinFetchDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightSystemEffectiveJoinFetchDto';
 import {RightSystemSingleEffectiveJoinFetchDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightSystemSingleEffectiveJoinFetchDto';
 import {RightUserEffectiveJoinFetchDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightUserEffectiveJoinFetchDto';
@@ -13,7 +13,7 @@ export interface LeftManyFetchForEditDto {
     id: string;
     lastModifiedTimestamp: string;
     rightEntities: ReadonlyArray<RightJoinFetchDto>;
-    rightSimpleEntities: ReadonlyArray<RightManyPkAndNameDto>;
+    rightSimpleEntities: ReadonlyArray<RightManyRefDto>;
     rightSystemEffectiveEntities: ReadonlyArray<RightSystemEffectiveJoinFetchDto>;
     rightSystemSingleEffectiveEntities: ReadonlyArray<RightSystemSingleEffectiveJoinFetchDto>;
     rightUserEffectiveEntities: ReadonlyArray<RightUserEffectiveJoinFetchDto>;

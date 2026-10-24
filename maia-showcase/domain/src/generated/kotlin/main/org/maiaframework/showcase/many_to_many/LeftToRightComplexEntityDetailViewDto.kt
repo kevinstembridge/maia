@@ -13,8 +13,8 @@ data class LeftToRightComplexEntityDetailViewDto(
     val effectiveTo: Instant?,
     val id: DomainId,
     val lastModifiedTimestamp: Instant,
-    val left: LeftManyPkAndNameDto,
-    val right: RightManyPkAndNameDto,
+    val left: LeftManyRefDto,
+    val right: RightManyRefDto,
     val someIntOnComplex: Int
 ) {
 

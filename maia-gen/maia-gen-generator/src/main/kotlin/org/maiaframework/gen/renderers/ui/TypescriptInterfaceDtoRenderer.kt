@@ -24,7 +24,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -67,7 +67,7 @@ open class TypescriptInterfaceDtoRenderer(
                 addImportsFor(listElementType)
 
                 if (listElementType is ForeignKeyFieldType && dtoCharacteristics.contains(DtoCharacteristic.RESPONSE_DTO)) {
-                    addImport(listElementType.foreignKeyFieldDef.foreignEntityDef.entityPkAndNameDef.pkAndNameDtoTypescriptImport)
+                    addImport(listElementType.foreignKeyFieldDef.foreignEntityDef.entityRefDef.refDtoTypescriptImport)
                 }
 
                 if (listElementType is JoinFetchDtoFieldType) {
@@ -83,7 +83,7 @@ open class TypescriptInterfaceDtoRenderer(
             addImportsFor(fieldType)
 
             if (fieldType is ForeignKeyFieldType && dtoCharacteristics.contains(DtoCharacteristic.RESPONSE_DTO)) {
-                addImport(fieldType.foreignKeyFieldDef.foreignEntityDef.entityPkAndNameDef.pkAndNameDtoTypescriptImport)
+                addImport(fieldType.foreignKeyFieldDef.foreignEntityDef.entityRefDef.refDtoTypescriptImport)
             }
 
         }
@@ -121,7 +121,7 @@ open class TypescriptInterfaceDtoRenderer(
                 is ForeignKeyFieldType -> renderForForeignKeyField(fieldDef, nullableClause, fieldType)
                 is FqcnFieldType -> renderForPlainField(fieldDef, nullableClause)
                 is JoinFetchDtoFieldType -> appendLine("    ${fieldDef.classFieldName}$nullableClause: ${fieldType.uqcn};")
-                is PkAndNameFieldType -> appendLine("    ${fieldDef.classFieldName}$nullableClause: ${fieldType.pkAndNameDef.dtoUqcn};")
+                is EntityRefFieldType -> appendLine("    ${fieldDef.classFieldName}$nullableClause: ${fieldType.entityRefDef.dtoUqcn};")
                 is InstantFieldType -> renderForPlainField(fieldDef, nullableClause)
                 is IntFieldType -> renderForPlainField(fieldDef, nullableClause)
                 is IntTypeFieldType -> renderForPlainField(fieldDef, nullableClause)
@@ -177,7 +177,7 @@ open class TypescriptInterfaceDtoRenderer(
             is ForeignKeyFieldType -> TODO()
             is FqcnFieldType -> parameterFieldType.uqcn.value
             is JoinFetchDtoFieldType -> parameterFieldType.uqcn.value
-            is PkAndNameFieldType -> parameterFieldType.uqcn.value
+            is EntityRefFieldType -> parameterFieldType.uqcn.value
             is InstantFieldType -> "string"
             is IntFieldType -> "number"
             is IntTypeFieldType -> "number"
@@ -215,7 +215,7 @@ open class TypescriptInterfaceDtoRenderer(
     ) {
 
         if (dtoCharacteristics.contains(DtoCharacteristic.RESPONSE_DTO)) {
-            appendLine("    ${fieldDef.classFieldName}$nullableClause: ${fieldType.foreignKeyFieldDef.foreignEntityDef.entityPkAndNameDef.dtoUqcn};")
+            appendLine("    ${fieldDef.classFieldName}$nullableClause: ${fieldType.foreignKeyFieldDef.foreignEntityDef.entityRefDef.dtoUqcn};")
         } else {
             appendLine("    ${fieldDef.classFieldName}$nullableClause: string;")
         }

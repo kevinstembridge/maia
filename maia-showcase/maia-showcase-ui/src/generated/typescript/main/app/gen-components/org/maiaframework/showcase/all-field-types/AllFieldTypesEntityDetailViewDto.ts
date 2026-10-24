@@ -2,15 +2,15 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.TypescriptInterfaceDtoRenderer
 
 import {SomeEnum} from '@app/gen-components/org/maiaframework/showcase/enums/SomeEnum';
-import {PartyPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/party/PartyPkAndNameDto';
+import {PartyRefDto} from '@app/gen-components/org/maiaframework/showcase/party/PartyRefDto';
 
 
 export interface AllFieldTypesEntityDetailViewDto {
-    createdBy: PartyPkAndNameDto;
+    createdBy: PartyRefDto;
     createdByUsername: string;
     createdTimestamp: string;
     id: string;
-    lastModifiedBy: PartyPkAndNameDto;
+    lastModifiedBy: PartyRefDto;
     lastModifiedByUsername: string;
     lastModifiedTimestamp: string;
     someBoolean: boolean;

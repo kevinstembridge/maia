@@ -25,11 +25,11 @@ class AlphaCrudEndpoint(val crudService: AlphaCrudService) {
     @PostMapping("/api/alpha/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('WRITE')")
-    fun create(@RequestBody @Valid createDto: AlphaCreateRequestDto): AlphaPkAndNameDto {
+    fun create(@RequestBody @Valid createDto: AlphaCreateRequestDto): AlphaRefDto {
 
         val entity = this.crudService.create(createDto)
 
-        return AlphaPkAndNameDto(
+        return AlphaRefDto(
             entity.id,
             entity.someString
         )

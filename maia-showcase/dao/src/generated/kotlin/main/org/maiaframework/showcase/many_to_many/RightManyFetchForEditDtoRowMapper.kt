@@ -13,7 +13,7 @@ import org.maiaframework.jdbc.SqlParams
 class RightManyFetchForEditDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowMapper<RightManyFetchForEditDto> {
 
 
-    private val leftSimpleEntitiesPkAndNameDtoRowMapper = LeftManyPkAndNameDtoRowMapper()
+    private val leftSimpleEntitiesRefDtoRowMapper = LeftManyRefDtoRowMapper()
 
 
     override fun mapRow(rsa: ResultSetAdapter): RightManyFetchForEditDto {
@@ -22,7 +22,7 @@ class RightManyFetchForEditDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowM
 
         val leftEntitiesJoinFetchDtoList = fetchLeftEntitiesJoinFetchDtos(entityId)
 
-        val leftSimpleEntitiesPkAndNameDtoList = fetchLeftSimpleEntitiesPkAndNameDtos(entityId)
+        val leftSimpleEntitiesRefDtoList = fetchLeftSimpleEntitiesRefDtos(entityId)
 
         val leftSystemEffectiveEntitiesJoinFetchDtoList = fetchLeftSystemEffectiveEntitiesJoinFetchDtos(entityId)
 
@@ -40,7 +40,7 @@ class RightManyFetchForEditDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowM
             createdTimestamp,
             id,
             leftEntitiesJoinFetchDtoList,
-            leftSimpleEntitiesPkAndNameDtoList,
+            leftSimpleEntitiesRefDtoList,
             leftSystemEffectiveEntitiesJoinFetchDtoList,
             leftSystemSingleEffectiveEntitiesJoinFetchDtoList,
             leftUserEffectiveEntitiesJoinFetchDtoList,
@@ -87,7 +87,7 @@ class RightManyFetchForEditDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowM
     }
 
 
-    private fun fetchLeftSimpleEntitiesPkAndNameDtos(entityId: DomainId): List<LeftManyPkAndNameDto> {
+    private fun fetchLeftSimpleEntitiesRefDtos(entityId: DomainId): List<LeftManyRefDto> {
 
         return this.jdbcOps.queryForList(
             """
@@ -103,7 +103,7 @@ class RightManyFetchForEditDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowM
             SqlParams().apply {
                 addValue("entityId", entityId)
             },
-            this.leftSimpleEntitiesPkAndNameDtoRowMapper
+            this.leftSimpleEntitiesRefDtoRowMapper
         )
 
     }

@@ -8,7 +8,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {Router} from '@angular/router';
 import {BravoCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoCreateRequestDto';
-import {BravoPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoPkAndNameDto';
+import {BravoRefDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoRefDto';
 import {AlphaTypeaheadV1Component} from '@app/gen-components/org/maiaframework/showcase/join/alpha-typeahead-v1';
 import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
@@ -31,7 +31,7 @@ import {firstValueFrom} from 'rxjs';
 export class BravoEntityCreateForm {
 
 
-    readonly onSuccess = output<BravoPkAndNameDto>();
+    readonly onSuccess = output<BravoRefDto>();
 
 
     /** Set to false when embedding the form to stay on the current page after a successful create. */

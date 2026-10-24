@@ -4,7 +4,7 @@
 package org.maiaframework.showcase.all_field_types
 
 import org.maiaframework.domain.DomainId
-import org.maiaframework.showcase.party.PartyPkAndNameDto
+import org.maiaframework.showcase.party.PartyRefDto
 import org.maiaframework.showcase.party.PartyRepo
 import org.springframework.stereotype.Repository
 
@@ -21,11 +21,11 @@ class AllFieldTypesEntityDetailViewDtoRepo(
         val entity = this.entityRepo.findByPrimaryKey(id)
 
         return AllFieldTypesEntityDetailViewDto(
-            createdBy = partyPkAndNameDtoFor(entity.createdBy),
+            createdBy = partyRefDtoFor(entity.createdBy),
             createdByUsername = entity.createdByUsername,
             createdTimestamp = entity.createdTimestamp,
             id = entity.id,
-            lastModifiedBy = partyPkAndNameDtoFor(entity.lastModifiedBy),
+            lastModifiedBy = partyRefDtoFor(entity.lastModifiedBy),
             lastModifiedByUsername = entity.lastModifiedByUsername,
             lastModifiedTimestamp = entity.lastModifiedTimestamp,
             someBoolean = entity.someBoolean,
@@ -67,9 +67,9 @@ class AllFieldTypesEntityDetailViewDtoRepo(
     }
 
 
-    private fun partyPkAndNameDtoFor(id: DomainId): PartyPkAndNameDto {
+    private fun partyRefDtoFor(id: DomainId): PartyRefDto {
 
-        return this.partyRepo.pkAndNameFor(id)
+        return this.partyRepo.entityRefFor(id)
 
     }
 

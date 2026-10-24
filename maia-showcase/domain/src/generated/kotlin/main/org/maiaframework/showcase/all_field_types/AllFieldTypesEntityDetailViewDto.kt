@@ -5,7 +5,7 @@ package org.maiaframework.showcase.all_field_types
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.showcase.enums.SomeEnum
-import org.maiaframework.showcase.party.PartyPkAndNameDto
+import org.maiaframework.showcase.party.PartyRefDto
 import org.maiaframework.showcase.types.SomeBooleanType
 import org.maiaframework.showcase.types.SomeIntType
 import org.maiaframework.showcase.types.SomeLongType
@@ -20,11 +20,11 @@ import java.time.Period
 
 
 data class AllFieldTypesEntityDetailViewDto(
-    val createdBy: PartyPkAndNameDto,
+    val createdBy: PartyRefDto,
     val createdByUsername: String,
     val createdTimestamp: Instant,
     val id: DomainId,
-    val lastModifiedBy: PartyPkAndNameDto,
+    val lastModifiedBy: PartyRefDto,
     val lastModifiedByUsername: String,
     val lastModifiedTimestamp: Instant,
     val someBoolean: Boolean,

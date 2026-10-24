@@ -148,10 +148,10 @@ class BravoWithHistoryRepo(private val dao: BravoWithHistoryDao) {
     }
 
 
-    fun pkAndNameFor(id: DomainId): BravoWithHistoryPkAndNameDto {
+    fun entityRefFor(id: DomainId): BravoWithHistoryRefDto {
 
         val entity = findByPrimaryKey(id)
-        return BravoWithHistoryPkAndNameDto(
+        return BravoWithHistoryRefDto(
             entity.id,
             entity.someString
         )

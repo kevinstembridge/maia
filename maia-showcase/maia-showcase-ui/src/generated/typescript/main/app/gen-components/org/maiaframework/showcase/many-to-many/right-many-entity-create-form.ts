@@ -12,7 +12,7 @@ import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from '@angular/m
 import {Router} from '@angular/router';
 import {LeftManyTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftManyTypeaheadV1EsDoc';
 import {RightManyCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightManyCreateRequestDto';
-import {RightManyPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightManyPkAndNameDto';
+import {RightManyRefDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightManyRefDto';
 import {LeftManyTypeaheadV1Component} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-typeahead-v1';
 import {RightManyCrudService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/right-many-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
@@ -42,7 +42,7 @@ import {firstValueFrom} from 'rxjs';
 export class RightManyEntityCreateForm {
 
 
-    readonly onSuccess = output<RightManyPkAndNameDto>();
+    readonly onSuccess = output<RightManyRefDto>();
 
 
     /** Set to false when embedding the form to stay on the current page after a successful create. */

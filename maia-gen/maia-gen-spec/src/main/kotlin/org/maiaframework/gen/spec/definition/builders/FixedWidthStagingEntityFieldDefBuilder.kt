@@ -28,7 +28,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -114,7 +114,7 @@ class FixedWidthStagingEntityFieldDefBuilder(
             is ForeignKeyFieldType -> doNothing()
             is FqcnFieldType -> doNothing()
             is JoinFetchDtoFieldType -> doNothing()
-            is PkAndNameFieldType -> doNothing()
+            is EntityRefFieldType -> doNothing()
             is InstantFieldType -> doNothing()
             is IntFieldType -> doNothing()
             is IntTypeFieldType -> doNothing()

@@ -12,8 +12,8 @@ data class UserGroupMembershipFetchForEditDto(
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
     val id: DomainId,
-    val user: UserPkAndNameDto,
-    val userGroup: UserGroupPkAndNameDto
+    val user: UserRefDto,
+    val userGroup: UserGroupRefDto
 ) {
 
 

@@ -26,7 +26,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -300,7 +300,7 @@ class RequestDtoFieldDefBuilder private constructor(
             is ForeignKeyFieldType -> `throw Other field not supported`(fieldType)
             is FqcnFieldType -> `throw Other field not supported`(fieldType)
             is JoinFetchDtoFieldType -> `throw Other field not supported`(fieldType)
-            is PkAndNameFieldType -> `throw Other field not supported`(fieldType)
+            is EntityRefFieldType -> `throw Other field not supported`(fieldType)
             is InstantFieldType -> `throw Other field not supported`(fieldType)
             is IntFieldType -> `throw Other field not supported`(fieldType)
             is IntTypeFieldType -> `throw Other field not supported`(fieldType)

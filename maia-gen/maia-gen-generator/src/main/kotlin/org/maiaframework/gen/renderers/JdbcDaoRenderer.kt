@@ -9,7 +9,7 @@ import org.maiaframework.gen.spec.definition.EffectiveRangeManagedBy
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.EntityHierarchy
-import org.maiaframework.gen.spec.definition.EntityPkAndNameDef
+import org.maiaframework.gen.spec.definition.EntityRefDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.IndexDef
 import org.maiaframework.gen.spec.definition.RowMapperFunctions
@@ -42,7 +42,7 @@ import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
 import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
@@ -962,7 +962,7 @@ class JdbcDaoRenderer(
             is ForeignKeyFieldType -> "it.value"
             is FqcnFieldType -> TODO("YAGNI?")
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
-            is PkAndNameFieldType -> TODO("YAGNI?")
+            is EntityRefFieldType -> TODO("YAGNI?")
             is InstantFieldType -> TODO("YAGNI?")
             is IntFieldType -> "it"
             is IntTypeFieldType -> "it.value"
@@ -2137,11 +2137,11 @@ class JdbcDaoRenderer(
                     foreignKeyEntity.schemaAndTableName
                 }
 
-                val pkAndNameDef = foreignKeyPkAndNameDef(foreignKeyEntity, entityFieldDef)
+                val entityRefDef = foreignKeyEntityRefDef(foreignKeyEntity, entityFieldDef)
 
                 listOf(
                     "$tableOrAlias.id as ${foreignKeyFieldDef.foreignKeyFieldName}Id",
-                    "$tableOrAlias.${pkAndNameDef.nameEntityFieldDef.tableColumnName} as ${foreignKeyFieldDef.foreignKeyFieldName}Name"
+                    "$tableOrAlias.${entityRefDef.nameEntityFieldDef.tableColumnName} as ${foreignKeyFieldDef.foreignKeyFieldName}Name"
                 )
 
             }
@@ -2222,15 +2222,15 @@ class JdbcDaoRenderer(
     }
 
 
-    private fun foreignKeyPkAndNameDef(
+    private fun foreignKeyEntityRefDef(
         foreignKeyEntity: EntityDef,
         entityFieldDef: EntityFieldDef
-    ): EntityPkAndNameDef {
+    ): EntityRefDef {
 
         try {
-            return foreignKeyEntity.entityPkAndNameDef
+            return foreignKeyEntity.entityRefDef
         } catch (e: IllegalArgumentException) {
-            throw IllegalStateException("Foreign key field $entityFieldDef references an Entity that does not have an pkAndNameDef", e)
+            throw IllegalStateException("Foreign key field $entityFieldDef references an Entity that does not have an entityRefDef", e)
         }
 
     }
@@ -2668,7 +2668,7 @@ class JdbcDaoRenderer(
             }
             is FqcnFieldType -> TODO()
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
-            is PkAndNameFieldType -> TODO()
+            is EntityRefFieldType -> TODO()
             is InstantFieldType -> "field.value as ${fieldType.unqualifiedToString}${q}"
             is IntFieldType -> "field.value as ${fieldType.unqualifiedToString}${q}"
             is IntTypeFieldType -> fieldValueAsClauseForValueWrapper(classFieldDef)
@@ -2723,7 +2723,7 @@ class JdbcDaoRenderer(
             is ForeignKeyFieldType -> TODO()
             is FqcnFieldType -> TODO()
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
-            is PkAndNameFieldType -> TODO()
+            is EntityRefFieldType -> TODO()
             is InstantFieldType -> TODO()
             is IntFieldType -> TODO()
             is IntTypeFieldType -> TODO()

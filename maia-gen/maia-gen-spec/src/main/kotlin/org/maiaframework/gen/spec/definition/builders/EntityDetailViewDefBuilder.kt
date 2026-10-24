@@ -46,7 +46,7 @@ class EntityDetailViewDefBuilder(private val entityDef: EntityDef) {
         }
 
         val otherSide = manyToManyEntityDef.otherSideFrom(this.entityDef)
-        val fieldType = FieldTypes.list(FieldTypes.pkAndName(otherSide.entityDef.entityPkAndNameDef))
+        val fieldType = FieldTypes.list(FieldTypes.entityRef(otherSide.entityDef.entityRefDef))
         val classFieldDef = aClassField(fieldName, fieldType) {
             displayName("${otherSide.displayName} Entities")
         }.build()

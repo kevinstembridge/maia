@@ -16,27 +16,27 @@ class LeftManyEntityDetailViewDtoRepo(
 ) {
 
 
-    private val rightSimpleEntitiesPkAndNameDtoRowMapper = RightManyPkAndNameDtoRowMapper()
+    private val rightSimpleEntitiesRefDtoRowMapper = RightManyRefDtoRowMapper()
 
 
-    private val rightEntitiesPkAndNameDtoRowMapper = RightManyPkAndNameDtoRowMapper()
+    private val rightEntitiesRefDtoRowMapper = RightManyRefDtoRowMapper()
 
 
     fun fetch(id: DomainId): LeftManyEntityDetailViewDto {
 
         val entity = this.entityRepo.findByPrimaryKey(id)
 
-        val rightSimpleEntitiesPkAndNameDtoList = fetchRightSimpleEntitiesPkAndNameDtos(id)
+        val rightSimpleEntitiesRefDtoList = fetchRightSimpleEntitiesRefDtos(id)
 
-        val rightEntitiesPkAndNameDtoList = fetchRightEntitiesPkAndNameDtos(id)
+        val rightEntitiesRefDtoList = fetchRightEntitiesRefDtos(id)
 
 
         return LeftManyEntityDetailViewDto(
             createdTimestamp = entity.createdTimestamp,
             id = entity.id,
             lastModifiedTimestamp = entity.lastModifiedTimestamp,
-            rightEntities = rightEntitiesPkAndNameDtoList,
-            rightSimpleEntities = rightSimpleEntitiesPkAndNameDtoList,
+            rightEntities = rightEntitiesRefDtoList,
+            rightSimpleEntities = rightSimpleEntitiesRefDtoList,
             someInt = entity.someInt,
             someString = entity.someString,
             version = entity.version,
@@ -45,7 +45,7 @@ class LeftManyEntityDetailViewDtoRepo(
     }
 
 
-    private fun fetchRightSimpleEntitiesPkAndNameDtos(entityId: DomainId): List<RightManyPkAndNameDto> {
+    private fun fetchRightSimpleEntitiesRefDtos(entityId: DomainId): List<RightManyRefDto> {
 
         return this.jdbcOps.queryForList(
             """
@@ -61,13 +61,13 @@ class LeftManyEntityDetailViewDtoRepo(
             SqlParams().apply {
                 addValue("entityId", entityId)
             },
-            this.rightSimpleEntitiesPkAndNameDtoRowMapper
+            this.rightSimpleEntitiesRefDtoRowMapper
         )
 
     }
 
 
-    private fun fetchRightEntitiesPkAndNameDtos(entityId: DomainId): List<RightManyPkAndNameDto> {
+    private fun fetchRightEntitiesRefDtos(entityId: DomainId): List<RightManyRefDto> {
 
         return this.jdbcOps.queryForList(
             """
@@ -84,7 +84,7 @@ class LeftManyEntityDetailViewDtoRepo(
             SqlParams().apply {
                 addValue("entityId", entityId)
             },
-            this.rightEntitiesPkAndNameDtoRowMapper
+            this.rightEntitiesRefDtoRowMapper
         )
 
     }

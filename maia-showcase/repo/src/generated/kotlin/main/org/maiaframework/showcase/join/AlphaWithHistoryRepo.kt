@@ -141,10 +141,10 @@ class AlphaWithHistoryRepo(private val dao: AlphaWithHistoryDao) {
     }
 
 
-    fun pkAndNameFor(id: DomainId): AlphaWithHistoryPkAndNameDto {
+    fun entityRefFor(id: DomainId): AlphaWithHistoryRefDto {
 
         val entity = findByPrimaryKey(id)
-        return AlphaWithHistoryPkAndNameDto(
+        return AlphaWithHistoryRefDto(
             entity.id,
             entity.someString
         )

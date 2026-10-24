@@ -13,7 +13,7 @@ import org.maiaframework.gen.spec.definition.EntityEditPageDef
 import org.maiaframework.gen.spec.definition.Pipes
 import org.maiaframework.gen.spec.definition.flags.SearchModelType
 import org.maiaframework.gen.spec.definition.lang.ListFieldType
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 
 
 class AgGridBlotterComponentRenderer(
@@ -54,7 +54,7 @@ class AgGridBlotterComponentRenderer(
             .forEach { addImport(it) }
 
         if (blotterDef.blotterColumnDefs.any { col ->
-            col is BlotterColumnDef && col.fieldType is ListFieldType && (col.fieldType as ListFieldType).parameterFieldType is PkAndNameFieldType
+            col is BlotterColumnDef && col.fieldType is ListFieldType && (col.fieldType as ListFieldType).parameterFieldType is EntityRefFieldType
         }) {
             addImport(AgGridCellRendererDefs.chips.typescriptImport)
         }
@@ -592,7 +592,7 @@ class AgGridBlotterComponentRenderer(
 
         if (blotterColumnDef.fieldType is ListFieldType) {
             val listFieldType = blotterColumnDef.fieldType as ListFieldType
-            if (listFieldType.parameterFieldType is PkAndNameFieldType) {
+            if (listFieldType.parameterFieldType is EntityRefFieldType) {
                 attributes["cellRenderer"] = AgGridCellRendererDefs.chips.componentClassName
             } else {
                 attributes["valueFormatter"] = "(params) => params.value?.join(', ') ?? ''"

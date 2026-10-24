@@ -5,7 +5,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {LeftManyCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftManyCreateRequestDto';
 import {LeftManyFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftManyFetchForEditDto';
-import {LeftManyPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftManyPkAndNameDto';
+import {LeftManyRefDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftManyRefDto';
 import {LeftManyUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftManyUpdateRequestDto';
 import {Observable} from 'rxjs';
 
@@ -23,9 +23,9 @@ export class LeftManyCrudService {
     private readonly http = inject(HttpClient);
 
 
-    public create(requestDto: LeftManyCreateRequestDto): Observable<LeftManyPkAndNameDto> {
+    public create(requestDto: LeftManyCreateRequestDto): Observable<LeftManyRefDto> {
 
-        return this.http.post<LeftManyPkAndNameDto>(
+        return this.http.post<LeftManyRefDto>(
                 '/api/left-many/create',
                 requestDto,
                 this.httpOptions);

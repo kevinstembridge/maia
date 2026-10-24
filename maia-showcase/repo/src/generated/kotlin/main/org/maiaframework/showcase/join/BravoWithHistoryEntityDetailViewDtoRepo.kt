@@ -19,7 +19,7 @@ class BravoWithHistoryEntityDetailViewDtoRepo(
         val entity = this.entityRepo.findByPrimaryKey(id)
 
         return BravoWithHistoryEntityDetailViewDto(
-            alpha = alphaWithHistoryPkAndNameDtoFor(entity.alpha),
+            alpha = alphaWithHistoryRefDtoFor(entity.alpha),
             createdTimestamp = entity.createdTimestamp,
             id = entity.id,
             someInt = entity.someInt,
@@ -30,9 +30,9 @@ class BravoWithHistoryEntityDetailViewDtoRepo(
     }
 
 
-    private fun alphaWithHistoryPkAndNameDtoFor(id: DomainId): AlphaWithHistoryPkAndNameDto {
+    private fun alphaWithHistoryRefDtoFor(id: DomainId): AlphaWithHistoryRefDto {
 
-        return this.alphaWithHistoryRepo.pkAndNameFor(id)
+        return this.alphaWithHistoryRepo.entityRefFor(id)
 
     }
 

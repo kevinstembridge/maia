@@ -11,7 +11,7 @@ import {MatTooltip} from '@angular/material/tooltip';
 import {Router} from '@angular/router';
 import {AuthoritySelectOptions} from '@app/gen-components/org/maiaframework/showcase/AuthoritySelectOptions';
 import {UserCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/user/UserCreateRequestDto';
-import {UserPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/user/UserPkAndNameDto';
+import {UserRefDto} from '@app/gen-components/org/maiaframework/showcase/user/UserRefDto';
 import {UserCrudService} from '@app/gen-components/org/maiaframework/showcase/user/user-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {firstValueFrom} from 'rxjs';
@@ -35,7 +35,7 @@ import {firstValueFrom} from 'rxjs';
 export class UserEntityCreateForm {
 
 
-    readonly onSuccess = output<UserPkAndNameDto>();
+    readonly onSuccess = output<UserRefDto>();
 
 
     /** Set to false when embedding the form to stay on the current page after a successful create. */

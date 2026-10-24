@@ -152,10 +152,10 @@ class OrgRoleRepo(private val dao: OrgRoleDao) {
     }
 
 
-    fun pkAndNameFor(id: DomainId): OrgRolePkAndNameDto {
+    fun entityRefFor(id: DomainId): OrgRoleRefDto {
 
         val entity = findByPrimaryKey(id)
-        return OrgRolePkAndNameDto(
+        return OrgRoleRefDto(
             entity.id,
             entity.displayName
         )

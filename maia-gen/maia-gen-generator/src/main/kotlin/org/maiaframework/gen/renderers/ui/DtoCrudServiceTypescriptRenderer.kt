@@ -64,7 +64,7 @@ class DtoCrudServiceTypescriptRenderer(
 
         val entityDef = this.entityCrudApiDef.entityDef
 
-        return if (entityDef.createReturnsPkAndName) entityDef.entityPkAndNameDef.dtoUqcn.toString() else "EntityCreatedResponseDto"
+        return if (entityDef.createReturnsEntityRef) entityDef.entityRefDef.dtoUqcn.toString() else "EntityCreatedResponseDto"
 
     }
 
@@ -216,8 +216,8 @@ class DtoCrudServiceTypescriptRenderer(
 
         this.entityCrudApiDef.createApiDef?.let {
             addImport(it.requestDtoDef.typescriptImport)
-            if (this.entityCrudApiDef.entityDef.createReturnsPkAndName) {
-                addImport(this.entityCrudApiDef.entityDef.entityPkAndNameDef.pkAndNameDtoTypescriptImport)
+            if (this.entityCrudApiDef.entityDef.createReturnsEntityRef) {
+                addImport(this.entityCrudApiDef.entityDef.entityRefDef.refDtoTypescriptImport)
             } else {
                 addImport("@maia/maia-ui", "EntityCreatedResponseDto")
             }

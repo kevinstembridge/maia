@@ -53,7 +53,7 @@ class AngularFormDef(
 
     /** The TypeScript type of the response to the create request, for entity create forms. */
     val createResponseTypeName: String
-        get() = createdEntityDef?.takeIf { it.createReturnsPkAndName }?.entityPkAndNameDef?.dtoUqcn?.toString() ?: "EntityCreatedResponseDto"
+        get() = createdEntityDef?.takeIf { it.createReturnsEntityRef }?.entityRefDef?.dtoUqcn?.toString() ?: "EntityCreatedResponseDto"
 
 
 

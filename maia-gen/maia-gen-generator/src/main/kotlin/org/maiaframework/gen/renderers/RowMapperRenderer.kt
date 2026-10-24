@@ -35,14 +35,14 @@ class RowMapperRenderer(
         this.rowMapperDef.manyToManyFieldDefs.forEach { manyToManyRowMapperFieldDef ->
 
             if (manyToManyRowMapperFieldDef.joinFetchDtoDef == null) {
-                val entityPkAndNameDef = manyToManyRowMapperFieldDef.entityPkAndNameDef
+                val entityRefDef = manyToManyRowMapperFieldDef.entityRefDef
 
-                addImportFor(entityPkAndNameDef.rowMapperDef.classDef.fqcn)
+                addImportFor(entityRefDef.rowMapperDef.classDef.fqcn)
 
                 append("""
                     |
                     |
-                    |    private val ${manyToManyRowMapperFieldDef.classFieldName}PkAndNameDtoRowMapper = ${entityPkAndNameDef.rowMapperDef.classDef.uqcn}()
+                    |    private val ${manyToManyRowMapperFieldDef.classFieldName}RefDtoRowMapper = ${entityRefDef.rowMapperDef.classDef.uqcn}()
                     |""".trimMargin())
             }
 
@@ -54,7 +54,7 @@ class RowMapperRenderer(
     override fun renderFunctions() {
 
         `render function mapRow`()
-        `render functions for manyToManyPkAndNameDtos`()
+        `render functions for manyToManyRefDtos`()
 
     }
 
@@ -83,7 +83,7 @@ class RowMapperRenderer(
                 if (manyToManyRowMapperFieldDef.joinFetchDtoDef != null) {
                     appendLine("        val ${classFieldName}JoinFetchDtoList = fetch${classFieldName.firstToUpper()}JoinFetchDtos(entityId)")
                 } else {
-                    appendLine("        val ${classFieldName}PkAndNameDtoList = fetch${classFieldName.firstToUpper()}PkAndNameDtos(entityId)")
+                    appendLine("        val ${classFieldName}RefDtoList = fetch${classFieldName.firstToUpper()}RefDtos(entityId)")
                 }
                 blankLine()
             }
@@ -107,7 +107,7 @@ class RowMapperRenderer(
                     if (rowMapperFieldDef.joinFetchDtoDef != null) {
                         fieldNames.add("${rowMapperFieldDef.classFieldName}JoinFetchDtoList")
                     } else {
-                        fieldNames.add("${rowMapperFieldDef.classFieldName}PkAndNameDtoList")
+                        fieldNames.add("${rowMapperFieldDef.classFieldName}RefDtoList")
                     }
                 }
             }
@@ -156,16 +156,16 @@ class RowMapperRenderer(
     private fun `render for ForeignKey field`(rowMapperFieldDef: ForeignKeyRowMapperFieldDef) {
 
         val foreignKeyFieldDef = rowMapperFieldDef.foreignKeyFieldDef
-        val pkAndNameDef = foreignKeyFieldDef.foreignEntityDef.entityPkAndNameDef
-        val pkEntityFieldDef = pkAndNameDef.pkEntityFieldDef
-        val nameEntityFieldDef = pkAndNameDef.nameEntityFieldDef
+        val entityRefDef = foreignKeyFieldDef.foreignEntityDef.entityRefDef
+        val pkEntityFieldDef = entityRefDef.pkEntityFieldDef
+        val nameEntityFieldDef = entityRefDef.nameEntityFieldDef
 
         val idResultSetFieldName = "${foreignKeyFieldDef.foreignKeyFieldName}Id"
         val nameResultSetFieldName = "${foreignKeyFieldDef.foreignKeyFieldName}Name"
 
-        addImportFor(pkAndNameDef.dtoDef.fqcn)
+        addImportFor(entityRefDef.dtoDef.fqcn)
 
-        appendLine("        val ${rowMapperFieldDef.classFieldName} = ${pkAndNameDef.dtoUqcn}(")
+        appendLine("        val ${rowMapperFieldDef.classFieldName} = ${entityRefDef.dtoUqcn}(")
         appendLine(renderRowMapperField(pkEntityFieldDef, idResultSetFieldName, nullable = false, indentSize = 12, orElseText = "", ::addImportFor) + ",")
         appendLine(renderRowMapperField(nameEntityFieldDef, nameResultSetFieldName, nullable = false, indentSize = 12, orElseText = "", ::addImportFor) + ",")
         appendLine("        )")
@@ -173,7 +173,7 @@ class RowMapperRenderer(
     }
 
 
-    private fun `render functions for manyToManyPkAndNameDtos`() {
+    private fun `render functions for manyToManyRefDtos`() {
 
         val tripleQuote = "\"\"\""
 
@@ -240,8 +240,8 @@ class RowMapperRenderer(
 
                 addImportFor(Fqcns.MAIA_DOMAIN_ID)
                 addImportFor(Fqcns.MAIA_SQL_PARAMS)
-                val entityPkAndNameDef = manyToManyRowMapperFieldDef.entityPkAndNameDef
-                addImportFor(entityPkAndNameDef.pkAndNameDtoFqcn)
+                val entityRefDef = manyToManyRowMapperFieldDef.entityRefDef
+                addImportFor(entityRefDef.refDtoFqcn)
 
                 val otherSideEntity = manyToManyRowMapperFieldDef.otherSideEntity
                 val otherSideIdTableColumnName = manyToManyRowMapperFieldDef.otherSideIdTableColumnName
@@ -255,23 +255,23 @@ class RowMapperRenderer(
                 append("""
                     |
                     |
-                    |    private fun fetch${classFieldName.firstToUpper()}PkAndNameDtos(entityId: DomainId): List<${entityPkAndNameDef.pkAndNameDtoFqcn.uqcn}> {
+                    |    private fun fetch${classFieldName.firstToUpper()}RefDtos(entityId: DomainId): List<${entityRefDef.refDtoFqcn.uqcn}> {
                     |
                     |        return this.jdbcOps.queryForList(
                     |            $tripleQuote
                     |            select
                     |                other.id,
-                    |                other.${otherSideEntity.entityDef.entityPkAndNameDef.nameEntityFieldDef.tableColumnName}
+                    |                other.${otherSideEntity.entityDef.entityRefDef.nameEntityFieldDef.tableColumnName}
                     |            from ${otherSideEntity.entityDef.schemaAndTableName} other
                     |            join ${manyToManyEntityDef.entityDef.schemaAndTableName} mtm
                     |                on other.id = mtm.${otherSideIdTableColumnName}
                     |            where mtm.${thisSideIdTableColumnName} = :entityId${effectiveRangeClause}
-                    |            order by other.${otherSideEntity.entityDef.entityPkAndNameDef.nameEntityFieldDef.tableColumnName}
+                    |            order by other.${otherSideEntity.entityDef.entityRefDef.nameEntityFieldDef.tableColumnName}
                     |            $tripleQuote.trimIndent(),
                     |            SqlParams().apply {
                     |                addValue("entityId", entityId)
                     |            },
-                    |            this.${classFieldName}PkAndNameDtoRowMapper
+                    |            this.${classFieldName}RefDtoRowMapper
                     |        )
                     |
                     |    }

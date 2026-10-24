@@ -133,7 +133,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         "Party",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        nameFieldForPkAndNameDto = "displayName",
+        nameFieldForEntityRef = "displayName",
         versioned = true,
         recordVersionHistory = true,
     ) {
@@ -164,7 +164,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val orgRoleEntityDef = entity(
         "org.maiaframework.showcase.org", "OrgRole",
         recordVersionHistory = true,
-        nameFieldForPkAndNameDto = "displayName"
+        nameFieldForEntityRef = "displayName"
     ) {
         field("key", orgRoleKeyStringType) {
             unique()
@@ -184,7 +184,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val orgEntityDef = entity(
         "org.maiaframework.showcase.org",
         "Organization",
-        nameFieldForPkAndNameDto = "orgName",
+        nameFieldForEntityRef = "orgName",
     ) {
         superclass(partyEntityDef)
         typeDiscriminator("ORG")
@@ -277,7 +277,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val userEntityDef = entity(
         "org.maiaframework.showcase.user",
         "User",
-        nameFieldForPkAndNameDto = "displayName",
+        nameFieldForEntityRef = "displayName",
     ) {
         superclass(personEntityDef)
         typeDiscriminator("USR")
@@ -357,7 +357,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         "org.maiaframework.showcase.user",
         "UserGroup",
         recordVersionHistory = true,
-        nameFieldForPkAndNameDto = "name",
+        nameFieldForEntityRef = "name",
     ) {
         moduleName("ops")
         typeDiscriminator("UG")
@@ -464,7 +464,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val emailAddressEntityDef = entity(
         "org.maiaframework.showcase.contact",
         "EmailAddress",
-        nameFieldForPkAndNameDto = "emailAddress",
+        nameFieldForEntityRef = "emailAddress",
     ) {
         moduleName("ops")
         field("emailAddress", emailAddressStringType) {

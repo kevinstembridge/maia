@@ -134,10 +134,10 @@ class PartyRepo(private val dao: PartyDao) {
     }
 
 
-    fun pkAndNameFor(id: DomainId): PartyPkAndNameDto {
+    fun entityRefFor(id: DomainId): PartyRefDto {
 
         val entity = findByPrimaryKey(id)
-        return PartyPkAndNameDto(
+        return PartyRefDto(
             entity.id,
             entity.displayName
         )

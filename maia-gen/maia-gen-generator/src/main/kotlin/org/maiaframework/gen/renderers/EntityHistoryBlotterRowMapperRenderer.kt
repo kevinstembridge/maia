@@ -26,7 +26,7 @@ import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
 import org.maiaframework.gen.spec.definition.lang.PeriodFieldType
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.RequestDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.SetFieldType
 import org.maiaframework.gen.spec.definition.lang.SimpleResponseDtoFieldType
@@ -129,7 +129,7 @@ class EntityHistoryBlotterRowMapperRenderer(
             }
             is FqcnFieldType -> TODO()
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
-            is PkAndNameFieldType -> TODO()
+            is EntityRefFieldType -> TODO()
             is InstantFieldType -> appendLine("        val $fieldName = rsa.readInstant$orNull(\"$columnName\")")
             is IntFieldType -> appendLine("        val $fieldName = rsa.readInt$orNull(\"$columnName\")")
             is IntTypeFieldType -> {

@@ -114,10 +114,10 @@ class UserRepo(private val dao: UserDao) {
     }
 
 
-    fun pkAndNameFor(id: DomainId): UserPkAndNameDto {
+    fun entityRefFor(id: DomainId): UserRefDto {
 
         val entity = findByPrimaryKey(id)
-        return UserPkAndNameDto(
+        return UserRefDto(
             entity.id,
             entity.displayName
         )

@@ -141,10 +141,10 @@ class AlphaRepo(private val dao: AlphaDao) {
     }
 
 
-    fun pkAndNameFor(id: DomainId): AlphaPkAndNameDto {
+    fun entityRefFor(id: DomainId): AlphaRefDto {
 
         val entity = findByPrimaryKey(id)
-        return AlphaPkAndNameDto(
+        return AlphaRefDto(
             entity.id,
             entity.someString
         )

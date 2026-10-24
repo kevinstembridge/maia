@@ -18,7 +18,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -102,17 +102,17 @@ class EntityRowMapperRenderer(
 
 //                } else {
 //
-//                    val pkAndNameDef = foreignKeyFieldDef.entityDef.entityPkAndNameDef
-//                    val idEntityFieldDef = pkAndNameDef.idEntityFieldDef
+//                    val entityRefDef = foreignKeyFieldDef.entityDef.entityRefDef
+//                    val idEntityFieldDef = entityRefDef.idEntityFieldDef
 //
 //                    val idResultSetFieldName = "${foreignKeyFieldDef.foreignKeyFieldName}Id"
 //                    val nameResultSetFieldName = "${foreignKeyFieldDef.foreignKeyFieldName}Name"
 //
-//                    addImportFor(pkAndNameDef.dtoDef.fqcn)
+//                    addImportFor(entityRefDef.dtoDef.fqcn)
 //
-//                    appendLine("            ${pkAndNameDef.dtoUqcn}(")
+//                    appendLine("            ${entityRefDef.dtoUqcn}(")
 //                    renderRowMapperField(idEntityFieldDef, idResultSetFieldName, indent = 12)
-//                    renderRowMapperField(pkAndNameDef.nameEntityFieldDef, nameResultSetFieldName, indent = 12)
+//                    renderRowMapperField(entityRefDef.nameEntityFieldDef, nameResultSetFieldName, indent = 12)
 //                    appendLine("            ),")
 //
 //                }
@@ -173,7 +173,7 @@ class EntityRowMapperRenderer(
             is ForeignKeyFieldType -> renderForForeignKeyFieldType(fieldType, indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
             is FqcnFieldType -> renderForPlainField(indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
-            is PkAndNameFieldType -> TODO("YAGNI?")
+            is EntityRefFieldType -> TODO("YAGNI?")
             is InstantFieldType -> renderForPlainField(indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
             is IntFieldType -> renderForPlainField(indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
             is IntTypeFieldType -> renderForValueWrapper(fieldType, indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
@@ -293,7 +293,7 @@ class EntityRowMapperRenderer(
             is ForeignKeyFieldType -> TODO("YAGNI?")
             is FqcnFieldType -> TODO("YAGNI?")
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
-            is PkAndNameFieldType -> TODO("YAGNI?")
+            is EntityRefFieldType -> TODO("YAGNI?")
             is InstantFieldType -> appendLine("${indentStr}val $classFieldName = rsa.readListOfInstants(\"${resultSetColumnName}\")")
             is IntFieldType -> TODO("YAGNI?")
             is IntTypeFieldType -> TODO("YAGNI?")

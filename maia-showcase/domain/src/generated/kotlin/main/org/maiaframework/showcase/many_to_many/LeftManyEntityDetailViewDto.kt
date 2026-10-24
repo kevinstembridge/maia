@@ -11,8 +11,8 @@ data class LeftManyEntityDetailViewDto(
     val createdTimestamp: Instant,
     val id: DomainId,
     val lastModifiedTimestamp: Instant,
-    val rightEntities: List<RightManyPkAndNameDto>,
-    val rightSimpleEntities: List<RightManyPkAndNameDto>,
+    val rightEntities: List<RightManyRefDto>,
+    val rightSimpleEntities: List<RightManyRefDto>,
     val someInt: Int,
     val someString: String,
     val version: Long

@@ -51,14 +51,14 @@ class EsRefreshDependencyDefTest {
             field("shippingRegionName", "shippingCustomer.region.name")
         }
 
-        val left = entity("com.example", "Left", nameFieldForPkAndNameDto = "name") {
+        val left = entity("com.example", "Left", nameFieldForEntityRef = "name") {
             field("name", FieldTypes.string)
             crud {}
         }
 
-        val right = entity("com.example", "Right", nameFieldForPkAndNameDto = "name") {
+        val right = entity("com.example", "Right", nameFieldForEntityRef = "name") {
             field("name", FieldTypes.string)
-            field("notInPkAndName", FieldTypes.int)
+            field("notInEntityRef", FieldTypes.int)
             crud {}
         }
 
@@ -201,7 +201,7 @@ class EsRefreshDependencyDefTest {
 
     private class SelfManyToManySpec : AbstractSpec(AppKey("Test")) {
 
-        val person = entity("com.example", "Person", nameFieldForPkAndNameDto = "name") {
+        val person = entity("com.example", "Person", nameFieldForEntityRef = "name") {
             field("name", FieldTypes.string)
             crud {}
         }
@@ -232,15 +232,15 @@ class EsRefreshDependencyDefTest {
 
     private class ShortcodeSpec : AbstractSpec(AppKey("Test")) {
 
-        val item = entity("com.example", "Item", nameFieldForPkAndNameDto = "name") {
+        val item = entity("com.example", "Item", nameFieldForEntityRef = "name") {
             field("name", FieldTypes.string)
             crud {}
         }
 
-        val tag = entity("com.example", "Tag", nameFieldForPkAndNameDto = "name", shortcodeFieldForPkAndNameDto = "code") {
+        val tag = entity("com.example", "Tag", nameFieldForEntityRef = "name", shortcodeFieldForEntityRef = "code") {
             field("name", FieldTypes.string)
             field("code", FieldTypes.string)
-            field("notInPkAndName", FieldTypes.int)
+            field("notInEntityRef", FieldTypes.int)
             crud {}
         }
 
@@ -262,12 +262,12 @@ class EsRefreshDependencyDefTest {
 
     private class JoinWithoutListenerSpec : AbstractSpec(AppKey("Test")) {
 
-        val left = entity("com.example", "Left", nameFieldForPkAndNameDto = "name") {
+        val left = entity("com.example", "Left", nameFieldForEntityRef = "name") {
             field("name", FieldTypes.string)
             crud {}
         }
 
-        val right = entity("com.example", "Right", nameFieldForPkAndNameDto = "name") {
+        val right = entity("com.example", "Right", nameFieldForEntityRef = "name") {
             field("name", FieldTypes.string)
             crud {}
         }
@@ -308,12 +308,12 @@ class EsRefreshDependencyDefTest {
             field("countryName", "country.name")
         }
 
-        val owner = entity("com.example", "Owner", nameFieldForPkAndNameDto = "name") {
+        val owner = entity("com.example", "Owner", nameFieldForEntityRef = "name") {
             field("name", FieldTypes.string)
             crud {}
         }
 
-        val label = entity("com.example", "Label", nameFieldForPkAndNameDto = "name") {
+        val label = entity("com.example", "Label", nameFieldForEntityRef = "name") {
             field("code", FieldTypes.string) { primaryKey() }
             field("name", FieldTypes.string)
             crud {}
@@ -527,7 +527,7 @@ class EsRefreshDependencyDefTest {
 
 
     @Test
-    fun `pkAndName shortcode on the other side is watched`() {
+    fun `entityRef shortcode on the other side is watched`() {
 
         val deps = ShortcodeSpec().itemDto.esRefreshDependencies
 

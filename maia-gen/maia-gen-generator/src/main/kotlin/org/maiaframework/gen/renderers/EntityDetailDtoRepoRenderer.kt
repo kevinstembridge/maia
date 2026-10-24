@@ -7,7 +7,7 @@ import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.ManyToManyRowMapperFieldDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 import org.maiaframework.gen.spec.definition.lang.FieldTypes.isValueFieldWrapper
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 
 class EntityDetailDtoRepoRenderer(private val entityDetailViewDef: EntityDetailViewDef) : AbstractKotlinRenderer(entityDetailViewDef.repoClassDef) {
 
@@ -25,14 +25,14 @@ class EntityDetailDtoRepoRenderer(private val entityDetailViewDef: EntityDetailV
         }
 
         entityDetailViewDef.dtoDef.allFields
-            .filter { it.fieldType is PkAndNameFieldType }
+            .filter { it.fieldType is EntityRefFieldType }
             .groupBy { it.fieldType.fqcn }
             .mapValues { entry -> entry.value.first() }
             .forEach {
 
                 val classFieldDef = it.value
-                val pkAndNameDef = (classFieldDef.fieldType as PkAndNameFieldType).pkAndNameDef
-                val entityRepoClassDef = pkAndNameDef.entityRepoClassDef
+                val entityRefDef = (classFieldDef.fieldType as EntityRefFieldType).entityRefDef
+                val entityRepoClassDef = entityRefDef.entityRepoClassDef
 
                 addConstructorArg(
                     aClassField(
@@ -50,14 +50,14 @@ class EntityDetailDtoRepoRenderer(private val entityDetailViewDef: EntityDetailV
 
         manyToManyRowMapperFieldDefs.forEach { rowMapperFieldDef ->
 
-            val entityPkAndNameDef = rowMapperFieldDef.entityPkAndNameDef
+            val entityRefDef = rowMapperFieldDef.entityRefDef
 
-            addImportFor(entityPkAndNameDef.rowMapperDef.classDef.fqcn)
+            addImportFor(entityRefDef.rowMapperDef.classDef.fqcn)
 
             append("""
                 |
                 |
-                |    private val ${rowMapperFieldDef.classFieldName}PkAndNameDtoRowMapper = ${entityPkAndNameDef.rowMapperDef.classDef.uqcn}()
+                |    private val ${rowMapperFieldDef.classFieldName}RefDtoRowMapper = ${entityRefDef.rowMapperDef.classDef.uqcn}()
                 |""".trimMargin())
 
         }
@@ -69,8 +69,8 @@ class EntityDetailDtoRepoRenderer(private val entityDetailViewDef: EntityDetailV
 
         `render function fetch`()
         `render functions for value mapping fields`()
-        `render functions for PkAndName fields`()
-        `render functions for manyToManyPkAndNameDtos`()
+        `render functions for EntityRef fields`()
+        `render functions for manyToManyRefDtos`()
 
     }
 
@@ -114,7 +114,7 @@ class EntityDetailDtoRepoRenderer(private val entityDetailViewDef: EntityDetailV
             if (manyToManyRowMapperFieldDefs.isNotEmpty()) {
                 blankLine()
                 manyToManyRowMapperFieldDefs.forEach { rowMapperFieldDef ->
-                    appendLine("        val ${rowMapperFieldDef.classFieldName}PkAndNameDtoList = fetch${rowMapperFieldDef.classFieldName.firstToUpper()}PkAndNameDtos($primaryKeyFieldNamesCsv)")
+                    appendLine("        val ${rowMapperFieldDef.classFieldName}RefDtoList = fetch${rowMapperFieldDef.classFieldName.firstToUpper()}RefDtos($primaryKeyFieldNamesCsv)")
                     blankLine()
                 }
             }
@@ -143,17 +143,17 @@ class EntityDetailDtoRepoRenderer(private val entityDetailViewDef: EntityDetailV
                     appendLine("            $classFieldName = \"MASKED\",")
                 }
 
-            } else if (fieldType is PkAndNameFieldType) {
+            } else if (fieldType is EntityRefFieldType) {
 
                 if (classFieldDef.nullable) {
-                    appendLine("            $classFieldName = entity.$classFieldName?.let { ${fieldType.pkAndNameDef.dtoUqcn.firstToLower()}For(it) },")
+                    appendLine("            $classFieldName = entity.$classFieldName?.let { ${fieldType.entityRefDef.dtoUqcn.firstToLower()}For(it) },")
                 } else {
-                    appendLine("            $classFieldName = ${fieldType.pkAndNameDef.dtoUqcn.firstToLower()}For(entity.$classFieldName),")
+                    appendLine("            $classFieldName = ${fieldType.entityRefDef.dtoUqcn.firstToLower()}For(entity.$classFieldName),")
                 }
 
             } else if (manyToManyRowMapperFieldDefs.any { it.classFieldName == classFieldName }) {
 
-                appendLine("            $classFieldName = ${classFieldName}PkAndNameDtoList,")
+                appendLine("            $classFieldName = ${classFieldName}RefDtoList,")
 
             } else if (classFieldDef.valueMappings != null) {
 
@@ -210,26 +210,26 @@ class EntityDetailDtoRepoRenderer(private val entityDetailViewDef: EntityDetailV
     }
 
 
-    private fun `render functions for PkAndName fields`() {
+    private fun `render functions for EntityRef fields`() {
 
         entityDetailViewDef.dtoDef.allFields
-            .filter { it.fieldType is PkAndNameFieldType }
+            .filter { it.fieldType is EntityRefFieldType }
             .groupBy { it.fieldType.fqcn }
             .mapValues { entry -> entry.value.first() }
             .forEach {
 
                 val classFieldDef = it.value
-                val pkAndNameDef = (classFieldDef.fieldType as PkAndNameFieldType).pkAndNameDef
-                val entityRepoClassDef = pkAndNameDef.entityRepoClassDef
+                val entityRefDef = (classFieldDef.fieldType as EntityRefFieldType).entityRefDef
+                val entityRepoClassDef = entityRefDef.entityRepoClassDef
 
-                addImportFor(pkAndNameDef.pkAndNameDtoFqcn)
+                addImportFor(entityRefDef.refDtoFqcn)
 
                 append("""
                     |
                     |
-                    |    private fun ${pkAndNameDef.dtoUqcn.firstToLower()}For(id: DomainId): ${pkAndNameDef.dtoUqcn} {
+                    |    private fun ${entityRefDef.dtoUqcn.firstToLower()}For(id: DomainId): ${entityRefDef.dtoUqcn} {
                     |
-                    |        return this.${entityRepoClassDef.uqcn.firstToLower()}.pkAndNameFor(id)
+                    |        return this.${entityRepoClassDef.uqcn.firstToLower()}.entityRefFor(id)
                     |
                     |    }
                     |""".trimMargin()
@@ -240,7 +240,7 @@ class EntityDetailDtoRepoRenderer(private val entityDetailViewDef: EntityDetailV
     }
 
 
-    private fun `render functions for manyToManyPkAndNameDtos`() {
+    private fun `render functions for manyToManyRefDtos`() {
 
         if (manyToManyRowMapperFieldDefs.isEmpty()) return
 
@@ -253,7 +253,7 @@ class EntityDetailDtoRepoRenderer(private val entityDetailViewDef: EntityDetailV
             val otherSideEntity = rowMapperFieldDef.otherSideEntity
             val otherSideIdTableColumnName = rowMapperFieldDef.otherSideIdTableColumnName
             val thisSideIdTableColumnName = rowMapperFieldDef.thisSideIdTableColumnName
-            val entityPkAndNameDef = rowMapperFieldDef.entityPkAndNameDef
+            val entityRefDef = rowMapperFieldDef.entityRefDef
 
             val isSystemManagedJoin = manyToManyEntityDef.entityDef.effectiveRangeDef?.managedBy == EffectiveRangeManagedBy.SYSTEM
                 && manyToManyEntityDef.entityDef.effectiveRangeDef?.dateType == EffectiveRangeDateType.TIMESTAMP
@@ -261,28 +261,28 @@ class EntityDetailDtoRepoRenderer(private val entityDetailViewDef: EntityDetailV
 
             addImportFor(Fqcns.MAIA_DOMAIN_ID)
             addImportFor(Fqcns.MAIA_SQL_PARAMS)
-            addImportFor(entityPkAndNameDef.pkAndNameDtoFqcn)
+            addImportFor(entityRefDef.refDtoFqcn)
 
             append("""
                 |
                 |
-                |    private fun fetch${classFieldName.firstToUpper()}PkAndNameDtos(entityId: DomainId): List<${entityPkAndNameDef.pkAndNameDtoFqcn.uqcn}> {
+                |    private fun fetch${classFieldName.firstToUpper()}RefDtos(entityId: DomainId): List<${entityRefDef.refDtoFqcn.uqcn}> {
                 |
                 |        return this.jdbcOps.queryForList(
                 |            $tripleQuote
                 |            select
                 |                other.id,
-                |                other.${otherSideEntity.entityDef.entityPkAndNameDef.nameEntityFieldDef.tableColumnName}
+                |                other.${otherSideEntity.entityDef.entityRefDef.nameEntityFieldDef.tableColumnName}
                 |            from ${otherSideEntity.entityDef.schemaAndTableName} other
                 |            join ${manyToManyEntityDef.entityDef.schemaAndTableName} mtm
                 |                on other.id = mtm.${otherSideIdTableColumnName}
                 |            where mtm.${thisSideIdTableColumnName} = :entityId${effectiveRangeClause}
-                |            order by other.${otherSideEntity.entityDef.entityPkAndNameDef.nameEntityFieldDef.tableColumnName}
+                |            order by other.${otherSideEntity.entityDef.entityRefDef.nameEntityFieldDef.tableColumnName}
                 |            $tripleQuote.trimIndent(),
                 |            SqlParams().apply {
                 |                addValue("entityId", entityId)
                 |            },
-                |            this.${classFieldName}PkAndNameDtoRowMapper
+                |            this.${classFieldName}RefDtoRowMapper
                 |        )
                 |
                 |    }

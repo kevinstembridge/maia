@@ -201,18 +201,18 @@ data class ClassFieldDef(
     }
 
 
-    val asPkAndNameDtoClassFieldDef: ClassFieldDef
+    val asRefDtoClassFieldDef: ClassFieldDef
         get() {
 
             if (fieldType is ForeignKeyFieldType) {
 
                 return aClassField(
                     fieldType.foreignKeyFieldDef.foreignKeyFieldName.value,
-                    FieldTypes.pkAndName(fieldType.foreignKeyFieldDef.foreignEntityDef.entityPkAndNameDef)
+                    FieldTypes.entityRef(fieldType.foreignKeyFieldDef.foreignEntityDef.entityRefDef)
                 ).build()
 
             } else {
-                throw RuntimeException("Unable to produce a PkAndNameDto from this field because it is not a foreign key reference.")
+                throw RuntimeException("Unable to produce a RefDto from this field because it is not a foreign key reference.")
             }
 
         }
@@ -331,7 +331,7 @@ data class ClassFieldDef(
             }
             is FqcnFieldType -> TODO("YAGNI?")
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
-            is PkAndNameFieldType -> TODO("YAGNI?")
+            is EntityRefFieldType -> TODO("YAGNI?")
             is InstantFieldType -> "readInstant$nullableSuffix"
             is IntFieldType -> "readInt$nullableSuffix"
             is IntTypeFieldType -> "readInt$nullableSuffix"

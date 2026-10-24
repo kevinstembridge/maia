@@ -14,7 +14,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -52,7 +52,7 @@ object SqlParamFunctions {
             is ForeignKeyFieldType -> "addValue"
             is FqcnFieldType -> "addValue"
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
-            is PkAndNameFieldType -> "addValue"
+            is EntityRefFieldType -> "addValue"
             is InstantFieldType -> "addValue"
             is IntFieldType -> "addValue"
             is IntTypeFieldType -> "addValue"
@@ -90,7 +90,7 @@ object SqlParamFunctions {
             is ForeignKeyFieldType -> TODO()
             is FqcnFieldType -> TODO()
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
-            is PkAndNameFieldType -> TODO()
+            is EntityRefFieldType -> TODO()
             is InstantFieldType -> "addListOfInstants"
             is IntFieldType -> TODO()
             is IntTypeFieldType -> TODO()
@@ -128,7 +128,7 @@ object SqlParamFunctions {
             is ForeignKeyFieldType -> ""
             is FqcnFieldType -> ""
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
-            is PkAndNameFieldType -> ""
+            is EntityRefFieldType -> ""
             is InstantFieldType -> ""
             is IntFieldType -> ""
             is IntTypeFieldType -> ""
@@ -166,7 +166,7 @@ object SqlParamFunctions {
             is ForeignKeyFieldType -> ""
             is FqcnFieldType -> ""
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
-            is PkAndNameFieldType -> ""
+            is EntityRefFieldType -> ""
             is InstantFieldType -> ""
             is IntFieldType -> ""
             is IntTypeFieldType -> ""
@@ -217,7 +217,7 @@ object SqlParamFunctions {
                 is ForeignKeyFieldType -> TODO("YAGNI")
                 is FqcnFieldType -> TODO("YAGNI")
                 is JoinFetchDtoFieldType -> TODO("YAGNI?")
-                is PkAndNameFieldType -> TODO("YAGNI")
+                is EntityRefFieldType -> TODO("YAGNI")
                 is InstantFieldType -> lineAppender("${indent}addListOfInstants(\"$fieldName\", $entityNamePrefix$fieldName)")
                 is IntFieldType -> TODO("YAGNI")
                 is IntTypeFieldType -> TODO("YAGNI")

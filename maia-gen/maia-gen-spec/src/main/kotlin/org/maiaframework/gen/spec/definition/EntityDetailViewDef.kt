@@ -84,9 +84,9 @@ class EntityDetailViewDef(
 
         if (fieldType is ForeignKeyFieldType) {
 
-            if (fieldType.foreignKeyFieldDef.foreignEntityDef.hasPkAndNameDtoDef) {
+            if (fieldType.foreignKeyFieldDef.foreignEntityDef.hasRefDtoDef) {
 
-                val newFieldType = FieldTypes.pkAndName(fieldType.foreignKeyFieldDef.foreignEntityDef.entityPkAndNameDef)
+                val newFieldType = FieldTypes.entityRef(fieldType.foreignKeyFieldDef.foreignEntityDef.entityRefDef)
                 val builder = aClassField(classFieldDef.classFieldName, newFieldType)
                 classFieldDef.displayName?.let { builder.displayName(it.value) }
                 builder.nullability(classFieldDef.nullability)

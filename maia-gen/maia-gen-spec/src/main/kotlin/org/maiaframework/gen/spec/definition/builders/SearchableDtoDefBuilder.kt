@@ -129,14 +129,14 @@ class SearchableDtoDefBuilder(
 
         val classFieldDef = ClassFieldDefBuilder(
             ClassFieldName(fieldName),
-            FieldTypes.list(FieldTypes.pkAndName(otherEntityDef.entityPkAndNameDef)),
+            FieldTypes.list(FieldTypes.entityRef(otherEntityDef.entityRefDef)),
         ).build()
 
         val responseDtoFieldDef = ResponseDtoFieldDef(
             ClassFieldName(fieldName),
             fieldDisplayName = null,
             tableColumnName = TableColumnName("BOGUS"), // TODO this.entityAndField.databaseColumnName,
-            fieldType = FieldTypes.list(FieldTypes.pkAndName(otherEntityDef.entityPkAndNameDef)),
+            fieldType = FieldTypes.list(FieldTypes.entityRef(otherEntityDef.entityRefDef)),
             nullability = Nullability.NOT_NULLABLE,
             isMasked = false,
             caseSensitive = CaseSensitive.FALSE,

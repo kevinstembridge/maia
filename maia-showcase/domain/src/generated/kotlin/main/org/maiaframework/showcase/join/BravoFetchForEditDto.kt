@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 data class BravoFetchForEditDto(
-    val alpha: AlphaPkAndNameDto,
+    val alpha: AlphaRefDto,
     val createdTimestamp: Instant,
     val id: DomainId,
     val someInt: Int,

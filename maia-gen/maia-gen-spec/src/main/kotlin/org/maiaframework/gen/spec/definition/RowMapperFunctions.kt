@@ -13,7 +13,7 @@ import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.Fqcn
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
-import org.maiaframework.gen.spec.definition.lang.PkAndNameFieldType
+import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
@@ -88,7 +88,7 @@ object RowMapperFunctions {
             is ForeignKeyFieldType -> renderForForeignKey(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause, fqcnImporter)
             is FqcnFieldType -> TODO()
             is JoinFetchDtoFieldType -> TODO()
-            is PkAndNameFieldType -> TODO()
+            is EntityRefFieldType -> TODO()
             is InstantFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
             is IntFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
             is IntTypeFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter)
@@ -191,7 +191,7 @@ object RowMapperFunctions {
             is ForeignKeyFieldType -> TODO()
             is FqcnFieldType -> TODO()
             is JoinFetchDtoFieldType -> TODO()
-            is PkAndNameFieldType -> TODO()
+            is EntityRefFieldType -> TODO()
             is InstantFieldType -> "${indentStr}rsa.readListOfInstants(\"${resultSetColumnName}\")"
             is IntFieldType -> TODO()
             is IntTypeFieldType -> TODO()

@@ -5,7 +5,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {BravoWithHistoryCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoWithHistoryCreateRequestDto';
 import {BravoWithHistoryFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoWithHistoryFetchForEditDto';
-import {BravoWithHistoryPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoWithHistoryPkAndNameDto';
+import {BravoWithHistoryRefDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoWithHistoryRefDto';
 import {BravoWithHistoryUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoWithHistoryUpdateRequestDto';
 import {Observable} from 'rxjs';
 
@@ -23,9 +23,9 @@ export class BravoWithHistoryCrudService {
     private readonly http = inject(HttpClient);
 
 
-    public create(requestDto: BravoWithHistoryCreateRequestDto): Observable<BravoWithHistoryPkAndNameDto> {
+    public create(requestDto: BravoWithHistoryCreateRequestDto): Observable<BravoWithHistoryRefDto> {
 
-        return this.http.post<BravoWithHistoryPkAndNameDto>(
+        return this.http.post<BravoWithHistoryRefDto>(
                 '/api/bravo-with-history/create',
                 requestDto,
                 this.httpOptions);

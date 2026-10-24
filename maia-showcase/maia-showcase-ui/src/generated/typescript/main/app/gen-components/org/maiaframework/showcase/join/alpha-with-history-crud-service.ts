@@ -5,7 +5,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {AlphaWithHistoryCreateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/AlphaWithHistoryCreateRequestDto';
 import {AlphaWithHistoryFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/AlphaWithHistoryFetchForEditDto';
-import {AlphaWithHistoryPkAndNameDto} from '@app/gen-components/org/maiaframework/showcase/join/AlphaWithHistoryPkAndNameDto';
+import {AlphaWithHistoryRefDto} from '@app/gen-components/org/maiaframework/showcase/join/AlphaWithHistoryRefDto';
 import {AlphaWithHistoryUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/AlphaWithHistoryUpdateRequestDto';
 import {Observable} from 'rxjs';
 
@@ -23,9 +23,9 @@ export class AlphaWithHistoryCrudService {
     private readonly http = inject(HttpClient);
 
 
-    public create(requestDto: AlphaWithHistoryCreateRequestDto): Observable<AlphaWithHistoryPkAndNameDto> {
+    public create(requestDto: AlphaWithHistoryCreateRequestDto): Observable<AlphaWithHistoryRefDto> {
 
-        return this.http.post<AlphaWithHistoryPkAndNameDto>(
+        return this.http.post<AlphaWithHistoryRefDto>(
                 '/api/alpha-with-history/create',
                 requestDto,
                 this.httpOptions);

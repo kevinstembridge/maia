@@ -114,10 +114,10 @@ class OrganizationRepo(private val dao: OrganizationDao) {
     }
 
 
-    fun pkAndNameFor(id: DomainId): OrganizationPkAndNameDto {
+    fun entityRefFor(id: DomainId): OrganizationRefDto {
 
         val entity = findByPrimaryKey(id)
-        return OrganizationPkAndNameDto(
+        return OrganizationRefDto(
             entity.id,
             entity.orgName
         )

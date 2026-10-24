@@ -59,12 +59,12 @@ class EntityDefBuilder(
     private val deletable: Deletable = Deletable.FALSE,
     private val allowDeleteAll: AllowDeleteAll,
     private val allowFindAll: AllowFindAll,
-    private val nameFieldForPkAndNameDto: String?,
+    private val nameFieldForEntityRef: String?,
     private val withHandcodedDao: WithHandCodedDao = WithHandCodedDao.FALSE,
     private val withHandcodedEntityDao: WithHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
     defaultSchemaName: SchemaName,
     private val isManyToManyJoinEntity: Boolean = false,
-    private val shortcodeFieldForPkAndNameDto: String? = null
+    private val shortcodeFieldForEntityRef: String? = null
 ) {
 
 
@@ -159,14 +159,14 @@ class EntityDefBuilder(
             recordVersionHistory,
             this.versioned,
             isHistoryEntity = false,
-            this.nameFieldForPkAndNameDto,
+            this.nameFieldForEntityRef,
             stagingEntityFieldDefs = emptyList(),
             this.effectiveRangeDef,
             this.cacheableDef,
             this.angularFormSystem,
             isManyToManyJoinEntity = this.isManyToManyJoinEntity,
             historyBlotterConfig = this.historyBlotterConfig,
-            shortcodeFieldForPkAndNameDto = this.shortcodeFieldForPkAndNameDto
+            shortcodeFieldForEntityRef = this.shortcodeFieldForEntityRef
         )
 
     }

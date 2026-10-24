@@ -25,11 +25,11 @@ class BravoWithHistoryCrudEndpoint(val crudService: BravoWithHistoryCrudService)
     @PostMapping("/api/bravo-with-history/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('WRITE')")
-    fun create(@RequestBody @Valid createDto: BravoWithHistoryCreateRequestDto): BravoWithHistoryPkAndNameDto {
+    fun create(@RequestBody @Valid createDto: BravoWithHistoryCreateRequestDto): BravoWithHistoryRefDto {
 
         val entity = this.crudService.create(createDto)
 
-        return BravoWithHistoryPkAndNameDto(
+        return BravoWithHistoryRefDto(
             entity.id,
             entity.someString
         )

@@ -8,7 +8,7 @@ import java.time.Instant
 
 
 data class CharlieFetchForEditDto(
-    val bravo: BravoPkAndNameDto,
+    val bravo: BravoRefDto,
     val createdTimestamp: Instant,
     val id: DomainId,
     val someInt: Int,

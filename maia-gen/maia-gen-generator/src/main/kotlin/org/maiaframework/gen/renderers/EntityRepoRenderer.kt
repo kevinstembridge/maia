@@ -103,7 +103,7 @@ class EntityRepoRenderer(
         `render function deleteAll`()
         `render deleteBy for indexes`()
         `render function removeByPrimaryKey`()
-        `render function pkAndNameFor`()
+        `render function entityRefFor`()
 
     }
 
@@ -917,23 +917,23 @@ class EntityRepoRenderer(
     }
 
 
-    private fun `render function pkAndNameFor`() {
+    private fun `render function entityRefFor`() {
 
-        if (this.entityDef.hasPkAndNameDtoDef == false) {
+        if (this.entityDef.hasRefDtoDef == false) {
             return
         }
 
-        val entityPkAndNameDef = entityDef.entityPkAndNameDef
-        addImportFor(entityPkAndNameDef.pkAndNameDtoFqcn)
+        val entityRefDef = entityDef.entityRefDef
+        addImportFor(entityRefDef.refDtoFqcn)
 
         append(
             """
             |
             |
-            |    fun pkAndNameFor($primaryKeyFieldNamesAndTypesCsv): ${entityPkAndNameDef.dtoUqcn} {
+            |    fun entityRefFor($primaryKeyFieldNamesAndTypesCsv): ${entityRefDef.dtoUqcn} {
             |
             |        val entity = findByPrimaryKey($primaryKeyFieldNamesCsv)
-            |        return ${entityPkAndNameDef.constructionFrom("entity", "        ")}
+            |        return ${entityRefDef.constructionFrom("entity", "        ")}
             |
             |    }
             |""".trimMargin()
