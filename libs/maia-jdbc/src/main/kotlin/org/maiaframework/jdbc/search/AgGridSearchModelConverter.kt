@@ -151,18 +151,28 @@ class AgGridSearchModelConverter(
 
         }
 
+        if (fieldType == "id") {
+
+            // An id filter needs no type, but if one is sent it must be "equals".
+            val idFilterType = fieldFilterModel.get("type")?.takeUnless { it.isNull }?.asString()
+            if (idFilterType != null && idFilterType != "equals") {
+                throw IllegalArgumentException("Unknown filter type [$idFilterType] for an id filter")
+            }
+
+            sqlParams.addValue(sqlParamName, fieldFilterModel.getString("filter"), Types.OTHER)
+            return "$dbColumnName = :$sqlParamName"
+
+        }
+
         val filterType = fieldFilterModel.getString("type")
 
-        if (filterType == "blank" || filterType == "notBlank") {
+        // Blank is only meaningful for the filter types that support it; anything else falls through to the
+        // unknown filterType error below.
+        if ((fieldType == "text" || fieldType == "number" || fieldType == "date") && (filterType == "blank" || filterType == "notBlank")) {
             return blankConditionToSql(filterType == "blank", dbColumnName, jdbcCompatibleType)
         }
 
         when (fieldType) {
-
-            "id" -> {
-                sqlParams.addValue(sqlParamName, fieldFilterModel.getString("filter"), Types.OTHER)
-                return "$dbColumnName = :$sqlParamName"
-            }
             "text" -> {
 
                 // AG Grid sends a boolean column filter as a text filter of type true/false with no filter value

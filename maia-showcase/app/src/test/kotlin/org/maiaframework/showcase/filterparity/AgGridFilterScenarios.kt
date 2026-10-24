@@ -7,11 +7,15 @@ package org.maiaframework.showcase.filterparity
  * [filterModelJson] is the raw JSON of the `filterModel`, keyed by DTO field name.
  * [expectedKeys] are [SeedRow.key]s; order is irrelevant. The same expectation is asserted against Postgres
  * and Elasticsearch, so a scenario passing on one backend and failing on the other is a parity bug.
+ *
+ * A scenario with [expectsRejection] instead asserts that both backends throw IllegalArgumentException for
+ * the Filter model (an unsupported or malformed one); [expectedKeys] is then unused.
  */
 data class FilterScenario(
     val name: String,
     val filterModelJson: String,
-    val expectedKeys: Set<String>,
+    val expectedKeys: Set<String> = emptySet(),
+    val expectsRejection: Boolean = false,
 )
 
 
@@ -22,6 +26,114 @@ data class FilterScenario(
 object AgGridFilterScenarios {
 
     val all: List<FilterScenario> = listOf(
+
+        // Unrecognised or unsupported Filter models are rejected by both backends, never matched loosely.
+
+        FilterScenario(
+            name = "unknown filterType is rejected",
+            filterModelJson = """{"textRequired": {"filterType": "bogus", "type": "equals", "filter": "alpha"}}""",
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "missing filterType is rejected",
+            filterModelJson = """{"textRequired": {"type": "equals", "filter": "alpha"}}""",
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "bigint filterType is rejected",
+            filterModelJson = """{"intRequired": {"filterType": "bigint", "type": "equals", "filter": "3"}}""",
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "multi filterType is rejected",
+            filterModelJson = """{"textRequired": {"filterType": "multi", "filterModels": [null, {"filterType": "text", "type": "equals", "filter": "alpha"}]}}""",
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "boolean as its own filterType is rejected",
+            filterModelJson = """{"flagRequired": {"filterType": "boolean", "type": "true"}}""",
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "unknown text type is rejected",
+            filterModelJson = textFilter("textRequired", "bogus", "alpha"),
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "text filter with no type is rejected",
+            filterModelJson = """{"textRequired": {"filterType": "text", "filter": "alpha"}}""",
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "unknown number type is rejected",
+            filterModelJson = numberFilter("intRequired", "bogus", 3),
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "number filter with no type is rejected",
+            filterModelJson = """{"intRequired": {"filterType": "number", "filter": 3}}""",
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "unknown date type is rejected",
+            filterModelJson = """{"dateRequired": ${dateFilter("bogus", "2024-03-15")}}""",
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "date filter with no type is rejected",
+            filterModelJson = """{"dateRequired": {"filterType": "date", "dateFrom": "2024-03-15"}}""",
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "unknown id type is rejected",
+            filterModelJson = """{"id": {"filterType": "id", "type": "bogus", "filter": "${AgGridFilterSeed.idOf("beta").value}"}}""",
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "blank on an id filter is rejected",
+            filterModelJson = """{"id": {"filterType": "id", "type": "blank"}}""",
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "blank on an unsupported filterType is rejected",
+            filterModelJson = """{"intRequired": {"filterType": "bigint", "type": "blank"}}""",
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "unknown compound operator is rejected",
+            filterModelJson = compound("textRequired", "XOR", """{"filterType": "text", "type": "equals", "filter": "alpha"}"""),
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "unknown type inside a compound condition is rejected",
+            filterModelJson = compound(
+                "textRequired", "OR",
+                """{"filterType": "text", "type": "equals", "filter": "alpha"}""",
+                """{"filterType": "text", "type": "bogus", "filter": "beta"}""",
+            ),
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "id filter without a type still matches",
+            filterModelJson = """{"id": {"filterType": "id", "filter": "${AgGridFilterSeed.idOf("beta").value}"}}""",
+            expectedKeys = setOf("beta"),
+        ),
 
         FilterScenario(
             name = "text equals matches the exact value only",

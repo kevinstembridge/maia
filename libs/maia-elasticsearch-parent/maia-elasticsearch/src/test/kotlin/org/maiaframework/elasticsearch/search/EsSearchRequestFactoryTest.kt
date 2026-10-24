@@ -25,7 +25,7 @@ class EsSearchRequestFactoryTest {
 
     private val searchModel = AgGridSearchModel(
         filterModel = JsonNodeFactory.instance.objectNode().apply {
-            putObject("title").put("filter", "abc")
+            putObject("title").put("filterType", "text").put("type", "equals").put("filter", "abc")
         },
         sortModel = listOf(AgGridSortModelItem("title", "desc")),
         startRow = 0,

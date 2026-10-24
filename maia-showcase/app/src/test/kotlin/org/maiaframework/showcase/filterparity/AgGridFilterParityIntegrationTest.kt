@@ -2,6 +2,7 @@ package org.maiaframework.showcase.filterparity
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
@@ -98,6 +99,10 @@ class AgGridFilterParityIntegrationTest : AbstractBlackBoxTest() {
         return AgGridFilterScenarios.all.flatMap { scenario ->
             Backend.entries.map { backend ->
                 DynamicTest.dynamicTest("${scenario.name} [$backend]") {
+                    if (scenario.expectsRejection) {
+                        assertThatThrownBy { search(backend, scenario) }.isInstanceOf(IllegalArgumentException::class.java)
+                        return@dynamicTest
+                    }
                     val expectedIds = scenario.expectedKeys.map { AgGridFilterSeed.idOf(it) }
                     assertThat(search(backend, scenario)).containsExactlyInAnyOrderElementsOf(expectedIds)
                 }

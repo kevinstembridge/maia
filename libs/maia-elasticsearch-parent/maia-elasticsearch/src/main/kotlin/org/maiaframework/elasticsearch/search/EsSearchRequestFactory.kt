@@ -113,32 +113,67 @@ class EsSearchRequestFactory {
     }
 
 
-    /** Adds one single-condition filter (a text or number condition) of a field to [boolQueryBuilder]. */
+    /**
+     * Adds one single-condition filter of a field to [boolQueryBuilder]. Dispatch is strict: by `filterType`
+     * (id, text, number, date, set) and then by `type`. Anything else throws, as the JDBC converter does.
+     */
     private fun addConditionFilter(
         boolQueryBuilder: BoolQuery.Builder,
         fieldPath: String,
         filterModelItem: JsonNode
     ) {
 
-        val blankType = filterModelItem.getStringOrNull("type")
-        if (blankType == "blank" || blankType == "notBlank") {
-            addBlankFilter(boolQueryBuilder, fieldPath, blank = blankType == "blank")
+        when (val filterType = filterModelItem.getString("filterType")) {
+            "id" -> addIdFilter(boolQueryBuilder, fieldPath, filterModelItem)
+            "text" -> addTextFilter(boolQueryBuilder, fieldPath, filterModelItem)
+            "number" -> addNumberFilter(boolQueryBuilder, fieldPath, filterModelItem)
+            "date" -> addDateFilter(boolQueryBuilder, fieldPath, filterModelItem)
+            "set" -> boolQueryBuilder.must { m -> buildSetQuery(fieldPath, filterModelItem.get("values"), m) }
+            else -> throw IllegalArgumentException("Unknown filter field type [$filterType]")
+        }
+
+    }
+
+
+    /** An id filter needs no type, but if one is sent it must be "equals". */
+    private fun addIdFilter(
+        boolQueryBuilder: BoolQuery.Builder,
+        fieldPath: String,
+        filterModelItem: JsonNode
+    ) {
+
+        val type = filterModelItem.getStringOrNull("type")
+        if (type != null && type != "equals") {
+            throw IllegalArgumentException("Unknown filter type [$type] for an id filter")
+        }
+
+        boolQueryBuilder.must { m -> m.term { t -> t.field(fieldPath).value(filterModelItem.getString("filter")) } }
+
+    }
+
+
+    private fun addTextFilter(
+        boolQueryBuilder: BoolQuery.Builder,
+        fieldPath: String,
+        filterModelItem: JsonNode
+    ) {
+
+        val type = filterModelItem.getString("type")
+
+        if (type == "blank" || type == "notBlank") {
+            addBlankFilter(boolQueryBuilder, fieldPath, blank = type == "blank")
             return
         }
-        if (filterModelItem.getStringOrNull("filterType") == "number") {
-            addNumberFilter(boolQueryBuilder, fieldPath, filterModelItem)
+
+        if (type == "true" || type == "false") {
+            boolQueryBuilder.must { m -> m.term { t -> t.field(fieldPath).value(type.toBoolean()) } }
             return
         }
-        if (filterModelItem.getStringOrNull("filterType") == "date") {
-            addDateFilter(boolQueryBuilder, fieldPath, filterModelItem)
-            return
-        }
-        if (filterModelItem.getStringOrNull("filterType") == "set") {
-            boolQueryBuilder.must { m -> buildSetQuery(fieldPath, filterModelItem.get("values"), m) }
-            return
-        }
+
         val filter = filterModelItem.getStringOrNull("filter")
-        when (filterModelItem.getStringOrNull("type")) {
+
+        when (type) {
+            "equals" -> boolQueryBuilder.must { m -> m.term { t -> t.field(fieldPath).value(filter) } }
             "contains" -> boolQueryBuilder.must { m ->
                 m.wildcard { w -> w.field(fieldPath).value("*${escapeWildcards(filter)}*").caseInsensitive(true) }
             }
@@ -160,10 +195,7 @@ class EsSearchRequestFactory {
             "endsWith" -> boolQueryBuilder.must { m ->
                 m.wildcard { w -> w.field(fieldPath).value("*${escapeWildcards(filter)}").caseInsensitive(true) }
             }
-            "true", "false" -> boolQueryBuilder.must { m ->
-                m.term { t -> t.field(fieldPath).value(filterModelItem.getStringOrNull("type").toBoolean()) }
-            }
-            else -> boolQueryBuilder.must { m -> m.term { t -> t.field(fieldPath).value(filter) } }
+            else -> throw IllegalArgumentException("Unknown filter type [$type]")
         }
 
     }
@@ -218,6 +250,12 @@ class EsSearchRequestFactory {
     ) {
 
         val type = filterModelItem.getString("type")
+
+        if (type == "blank" || type == "notBlank") {
+            addBlankFilter(boolQueryBuilder, fieldPath, blank = type == "blank")
+            return
+        }
+
         val filter = filterModelItem.getDouble("filter")
 
         when (type) {
@@ -246,6 +284,13 @@ class EsSearchRequestFactory {
      */
     private fun addDateFilter(boolQueryBuilder: BoolQuery.Builder, fieldPath: String, filterNode: JsonNode) {
 
+        val type = filterNode.getString("type")
+
+        if (type == "blank" || type == "notBlank") {
+            addBlankFilter(boolQueryBuilder, fieldPath, blank = type == "blank")
+            return
+        }
+
         val dateFrom = filterNode.getLocalDate("dateFrom")
 
         fun range(gte: java.time.LocalDate?, lt: java.time.LocalDate?): Query = Query.of { q ->
@@ -259,7 +304,7 @@ class EsSearchRequestFactory {
             }
         }
 
-        when (val type = filterNode.getStringOrNull("type")) {
+        when (type) {
             "equals" -> boolQueryBuilder.must(range(dateFrom, dateFrom.plusDays(1)))
             "notEqual" -> boolQueryBuilder.must { m ->
                 m.bool { b -> b.should(range(null, dateFrom)).should(range(dateFrom.plusDays(1), null)).minimumShouldMatch("1") }
