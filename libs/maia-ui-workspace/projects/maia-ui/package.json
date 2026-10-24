@@ -5,8 +5,8 @@
     "@angular/common": "^22.0.0",
     "@angular/core": "^22.0.0",
     "@angular/material": "^22.0.0",
-    "ag-grid-angular": "^35.2.0",
-    "ag-grid-community": "^35.2.0",
+    "ag-grid-angular": "^36.2.0",
+    "ag-grid-community": "^36.2.0",
     "luxon": "^3.x"
   },
   "dependencies": {
