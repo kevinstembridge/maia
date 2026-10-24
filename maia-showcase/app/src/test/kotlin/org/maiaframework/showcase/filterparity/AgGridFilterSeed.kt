@@ -67,7 +67,13 @@ object AgGridFilterSeed {
         SeedRow("question", textRequired = "alp?a", textNullable = "alp?a", intRequired = 5, decimalRequired = 5.5),
         SeedRow("beta", textRequired = "beta", textNullable = "beta", intRequired = 6, intNullable = 6, decimalRequired = 6.5, decimalNullable = 6.5, flagNullable = false),
         SeedRow("multi-word", textRequired = "alpha beta", textNullable = " ", intRequired = 7, decimalRequired = 7.5),
-        SeedRow("empty-string", textRequired = "", textNullable = "", intRequired = 8, decimalRequired = 8.5),
+        SeedRow("empty-string", textRequired = "empty", textNullable = "", intRequired = 8, decimalRequired = 8.5),
+        SeedRow("percent", textRequired = "5%off"),
+        SeedRow("percent-lookalike", textRequired = "50 off"),
+        SeedRow("underscore", textRequired = "a_c"),
+        SeedRow("underscore-lookalike", textRequired = "abc"),
+        SeedRow("tagged-one", textRequired = "tagged-one", tags = listOf("apple", "Banana")),
+        SeedRow("tagged-two", textRequired = "tagged-two", tags = listOf("wild*card", "q?x")),
     )
 
     private val byKey = rows.associateBy { it.key }
