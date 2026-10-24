@@ -2,14 +2,17 @@ package org.maiaframework.elasticsearch.search
 
 import co.elastic.clients.elasticsearch._types.SortOptions
 import co.elastic.clients.elasticsearch._types.SortOrder
+import co.elastic.clients.elasticsearch._types.FieldValue
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery
 import co.elastic.clients.elasticsearch._types.query_dsl.Query
+import co.elastic.clients.util.ObjectBuilder
 import co.elastic.clients.elasticsearch.core.CountRequest
 import co.elastic.clients.elasticsearch.core.SearchRequest
 import org.maiaframework.domain.search.AgGridSearchModel
 import org.maiaframework.elasticsearch.index.model.IndexResolvedName
 import org.maiaframework.json.JsonNodeExtensions.getDouble
 import org.maiaframework.json.JsonNodeExtensions.getString
+import org.maiaframework.json.JsonNodeExtensions.getLocalDate
 import org.maiaframework.json.JsonNodeExtensions.getStringOrNull
 import tools.jackson.databind.JsonNode
 
@@ -121,6 +124,14 @@ class EsSearchRequestFactory {
             addNumberFilter(boolQueryBuilder, fieldPath, filterModelItem)
             return
         }
+        if (filterModelItem.getStringOrNull("filterType") == "date") {
+            addDateFilter(boolQueryBuilder, fieldPath, filterModelItem)
+            return
+        }
+        if (filterModelItem.getStringOrNull("filterType") == "set") {
+            boolQueryBuilder.must { m -> buildSetQuery(fieldPath, filterModelItem.get("values"), m) }
+            return
+        }
         val filter = filterModelItem.getStringOrNull("filter")
         when (filterModelItem.getStringOrNull("type")) {
             "contains" -> boolQueryBuilder.must { m ->
@@ -171,6 +182,77 @@ class EsSearchRequestFactory {
                 boolQueryBuilder.must { m -> m.range { r -> r.number { n -> n.field(fieldPath).gte(filter).lt(filterTo) } } }
             }
             else -> throw IllegalArgumentException("Unknown filter type [$type]")
+        }
+
+    }
+
+
+    /**
+     * Date filters use UTC day boundaries, matching the Postgres converter: equals is [d, d+1), notEqual its
+     * negation (rows with no value are excluded, so it is two ranges rather than a must_not), greaterThan is
+     * >= d+1, lessThan is < d and inRange is [from, to+1).
+     */
+    private fun addDateFilter(boolQueryBuilder: BoolQuery.Builder, fieldPath: String, filterNode: JsonNode) {
+
+        val dateFrom = filterNode.getLocalDate("dateFrom")
+
+        fun range(gte: java.time.LocalDate?, lt: java.time.LocalDate?): Query = Query.of { q ->
+            q.range { r ->
+                r.date { d ->
+                    d.field(fieldPath).timeZone("UTC")
+                    gte?.let { d.gte(it.toString()) }
+                    lt?.let { d.lt(it.toString()) }
+                    d
+                }
+            }
+        }
+
+        when (val type = filterNode.getStringOrNull("type")) {
+            "equals" -> boolQueryBuilder.must(range(dateFrom, dateFrom.plusDays(1)))
+            "notEqual" -> boolQueryBuilder.must { m ->
+                m.bool { b -> b.should(range(null, dateFrom)).should(range(dateFrom.plusDays(1), null)).minimumShouldMatch("1") }
+            }
+            "greaterThan" -> boolQueryBuilder.must(range(dateFrom.plusDays(1), null))
+            "lessThan" -> boolQueryBuilder.must(range(null, dateFrom))
+            "inRange" -> boolQueryBuilder.must(range(dateFrom, filterNode.getLocalDate("dateTo").plusDays(1)))
+            else -> throw IllegalArgumentException("Unknown filter type [$type]")
+        }
+
+    }
+
+
+    /**
+     * Set filter: matches any listed value. A null entry is "(Blanks)" and also matches rows where the field
+     * is missing. The empty string matches only if listed. An empty list matches nothing.
+     */
+    private fun buildSetQuery(
+        fieldPath: String,
+        valuesNode: JsonNode?,
+        queryBuilder: Query.Builder
+    ): ObjectBuilder<Query> {
+
+        val entries = valuesNode?.toList() ?: emptyList()
+        val values = entries.filterNot { it.isNull }.map { FieldValue.of(it.asString()) }
+        val includesBlanks = entries.any { it.isNull }
+
+        return queryBuilder.bool { b ->
+
+            if (values.isNotEmpty()) {
+                b.should { s -> s.terms { t -> t.field(fieldPath).terms { tf -> tf.value(values) } } }
+            }
+
+            if (includesBlanks) {
+                b.should { s -> s.bool { nb -> nb.mustNot { mn -> mn.exists { e -> e.field(fieldPath) } } } }
+            }
+
+            if (values.isEmpty() && !includesBlanks) {
+                b.must { m -> m.matchNone { it } }
+            } else {
+                b.minimumShouldMatch("1")
+            }
+
+            b
+
         }
 
     }
