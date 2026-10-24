@@ -16,6 +16,7 @@ import org.maiaframework.json.JsonNodeExtensions.getString
 import org.maiaframework.json.JsonNodeExtensions.getLocalDate
 import org.maiaframework.json.JsonNodeExtensions.getStringOrNull
 import tools.jackson.databind.JsonNode
+import java.time.LocalDate
 
 class EsSearchRequestFactory {
 
@@ -75,12 +76,13 @@ class EsSearchRequestFactory {
         boolQueryBuilder: BoolQuery.Builder
     ): BoolQuery.Builder {
 
-        searchModel.filterModel.properties().forEach { filterModelItem ->
-            val fieldPath = fieldNameMapper.invoke(filterModelItem.key)
-            if (filterModelItem.value.has("operator")) {
-                addCompoundFilter(boolQueryBuilder, fieldPath, filterModelItem.value)
+        searchModel.filterModel.properties().forEach { filterModelEntry ->
+            val fieldPath = fieldNameMapper.invoke(filterModelEntry.key)
+            val filterModelItem = filterModelEntry.value
+            if (filterModelItem.has("operator")) {
+                addCompoundFilter(boolQueryBuilder, fieldPath, filterModelItem)
             } else {
-                addConditionFilter(boolQueryBuilder, fieldPath, filterModelItem.value)
+                addConditionFilter(boolQueryBuilder, fieldPath, filterModelItem)
             }
         }
 
@@ -136,7 +138,7 @@ class EsSearchRequestFactory {
             "number" -> addNumberFilter(boolQueryBuilder, fieldPath, filterModelItem)
             "date" -> addDateFilter(boolQueryBuilder, fieldPath, filterModelItem)
             "set" -> boolQueryBuilder.must { m -> buildSetQuery(fieldPath, filterModelItem.get("values"), m) }
-            else -> throw IllegalArgumentException("Unknown filter field type [$filterType]")
+            else -> throw unknownFilterType("filter field type", filterType)
         }
 
     }
@@ -151,7 +153,7 @@ class EsSearchRequestFactory {
 
         val type = filterModelItem.getStringOrNull("type")
         if (type != null && type != "equals") {
-            throw IllegalArgumentException("Unknown filter type [$type] for an id filter")
+            throw unknownFilterType("filter type", type, " for an id filter")
         }
 
         boolQueryBuilder.must { m -> m.term { t -> t.field(fieldPath).value(filterModelItem.getString("filter")) } }
@@ -180,29 +182,19 @@ class EsSearchRequestFactory {
         val filter = filterModelItem.getString("filter")
 
         when (type) {
-            "equals" -> boolQueryBuilder.must { m -> m.term { t -> t.field(fieldPath).value(filter) } }
-            "contains" -> boolQueryBuilder.must { m ->
-                m.wildcard { w -> w.field(fieldPath).value("*${escapeWildcards(filter)}*").caseInsensitive(true) }
-            }
+            "equals" -> boolQueryBuilder.must(termQuery(fieldPath, filter))
+            "contains" -> boolQueryBuilder.must(wildcardQuery(fieldPath, "*${escapeWildcards(filter)}*"))
             "notEqual" -> {
                 mustExistIfScalarText(boolQueryBuilder, fieldPath)
-                boolQueryBuilder.mustNot { m ->
-                    m.term { t -> t.field(fieldPath).value(filter) }
-                }
+                boolQueryBuilder.mustNot(termQuery(fieldPath, filter))
             }
             "notContains" -> {
                 mustExistIfScalarText(boolQueryBuilder, fieldPath)
-                boolQueryBuilder.mustNot { m ->
-                    m.wildcard { w -> w.field(fieldPath).value("*${escapeWildcards(filter)}*").caseInsensitive(true) }
-                }
+                boolQueryBuilder.mustNot(wildcardQuery(fieldPath, "*${escapeWildcards(filter)}*"))
             }
-            "startsWith" -> boolQueryBuilder.must { m ->
-                m.wildcard { w -> w.field(fieldPath).value("${escapeWildcards(filter)}*").caseInsensitive(true) }
-            }
-            "endsWith" -> boolQueryBuilder.must { m ->
-                m.wildcard { w -> w.field(fieldPath).value("*${escapeWildcards(filter)}").caseInsensitive(true) }
-            }
-            else -> throw IllegalArgumentException("Unknown filter type [$type]")
+            "startsWith" -> boolQueryBuilder.must(wildcardQuery(fieldPath, "${escapeWildcards(filter)}*"))
+            "endsWith" -> boolQueryBuilder.must(wildcardQuery(fieldPath, "*${escapeWildcards(filter)}"))
+            else -> throw unknownFilterType("filter type", type)
         }
 
     }
@@ -223,7 +215,7 @@ class EsSearchRequestFactory {
     private fun mustExistIfScalarText(boolQueryBuilder: BoolQuery.Builder, fieldPath: String) {
 
         if (isScalarText(fieldPath)) {
-            boolQueryBuilder.must { m -> m.exists { e -> e.field(fieldPath) } }
+            boolQueryBuilder.must(existsQuery(fieldPath))
         }
 
     }
@@ -235,8 +227,8 @@ class EsSearchRequestFactory {
      */
     private fun addBlankFilter(boolQueryBuilder: BoolQuery.Builder, fieldPath: String, blank: Boolean) {
 
-        val exists = Query.of { q -> q.exists { e -> e.field(fieldPath) } }
-        val emptyString = Query.of { q -> q.term { t -> t.field(fieldPath).value("") } }
+        val exists = existsQuery(fieldPath)
+        val emptyString = termQuery(fieldPath, "")
 
         when {
             blank && isScalarText(fieldPath) -> boolQueryBuilder.must { m ->
@@ -267,10 +259,10 @@ class EsSearchRequestFactory {
         val filter = filterModelItem.getDouble("filter")
 
         when (type) {
-            "equals" -> boolQueryBuilder.must { m -> m.term { t -> t.field(fieldPath).value(filter) } }
+            "equals" -> boolQueryBuilder.must(termQuery(fieldPath, filter))
             "notEqual" -> boolQueryBuilder
-                .must { m -> m.exists { e -> e.field(fieldPath) } }
-                .mustNot { m -> m.term { t -> t.field(fieldPath).value(filter) } }
+                .must(existsQuery(fieldPath))
+                .mustNot(termQuery(fieldPath, filter))
             "greaterThan" -> boolQueryBuilder.must { m -> m.range { r -> r.number { n -> n.field(fieldPath).gt(filter) } } }
             "greaterThanOrEqual" -> boolQueryBuilder.must { m -> m.range { r -> r.number { n -> n.field(fieldPath).gte(filter) } } }
             "lessThan" -> boolQueryBuilder.must { m -> m.range { r -> r.number { n -> n.field(fieldPath).lt(filter) } } }
@@ -279,7 +271,7 @@ class EsSearchRequestFactory {
                 val filterTo = filterModelItem.getDouble("filterTo")
                 boolQueryBuilder.must { m -> m.range { r -> r.number { n -> n.field(fieldPath).gte(filter).lt(filterTo) } } }
             }
-            else -> throw IllegalArgumentException("Unknown filter type [$type]")
+            else -> throw unknownFilterType("filter type", type)
         }
 
     }
@@ -290,18 +282,18 @@ class EsSearchRequestFactory {
      * negation (rows with no value are excluded, so it is two ranges rather than a must_not), greaterThan is
      * >= d+1, lessThan is < d and inRange is [from, to+1).
      */
-    private fun addDateFilter(boolQueryBuilder: BoolQuery.Builder, fieldPath: String, filterNode: JsonNode) {
+    private fun addDateFilter(boolQueryBuilder: BoolQuery.Builder, fieldPath: String, filterModelItem: JsonNode) {
 
-        val type = filterNode.getString("type")
+        val type = filterModelItem.getString("type")
 
         if (type == "blank" || type == "notBlank") {
             addBlankFilter(boolQueryBuilder, fieldPath, blank = type == "blank")
             return
         }
 
-        val dateFrom = filterNode.getLocalDate("dateFrom")
+        val dateFrom = filterModelItem.getLocalDate("dateFrom")
 
-        fun range(gte: java.time.LocalDate?, lt: java.time.LocalDate?): Query = Query.of { q ->
+        fun range(gte: LocalDate?, lt: LocalDate?): Query = Query.of { q ->
             q.range { r ->
                 r.date { d ->
                     d.field(fieldPath).timeZone("UTC")
@@ -319,8 +311,8 @@ class EsSearchRequestFactory {
             }
             "greaterThan" -> boolQueryBuilder.must(range(dateFrom.plusDays(1), null))
             "lessThan" -> boolQueryBuilder.must(range(null, dateFrom))
-            "inRange" -> boolQueryBuilder.must(range(dateFrom, filterNode.getLocalDate("dateTo").plusDays(1)))
-            else -> throw IllegalArgumentException("Unknown filter type [$type]")
+            "inRange" -> boolQueryBuilder.must(range(dateFrom, filterModelItem.getLocalDate("dateTo").plusDays(1)))
+            else -> throw unknownFilterType("filter type", type)
         }
 
     }
@@ -347,7 +339,7 @@ class EsSearchRequestFactory {
             }
 
             if (includesBlanks) {
-                b.should { s -> s.bool { nb -> nb.mustNot { mn -> mn.exists { e -> e.field(fieldPath) } } } }
+                b.should { s -> s.bool { nb -> nb.mustNot(existsQuery(fieldPath)) } }
             }
 
             if (values.isEmpty() && !includesBlanks) {
@@ -359,6 +351,32 @@ class EsSearchRequestFactory {
             b
 
         }
+
+    }
+
+
+    private fun existsQuery(fieldPath: String): Query = Query.of { q -> q.exists { e -> e.field(fieldPath) } }
+
+
+    private fun termQuery(fieldPath: String, value: Any): Query = Query.of { q ->
+        q.term { t ->
+            when (value) {
+                is String -> t.field(fieldPath).value(value)
+                is Double -> t.field(fieldPath).value(value)
+                else -> throw IllegalArgumentException("Unsupported term value [$value]")
+            }
+        }
+    }
+
+
+    private fun wildcardQuery(fieldPath: String, pattern: String): Query = Query.of { q ->
+        q.wildcard { w -> w.field(fieldPath).value(pattern).caseInsensitive(true) }
+    }
+
+
+    private fun unknownFilterType(kind: String, value: String, suffix: String = ""): IllegalArgumentException {
+
+        return IllegalArgumentException("Unknown $kind [$value]$suffix")
 
     }
 

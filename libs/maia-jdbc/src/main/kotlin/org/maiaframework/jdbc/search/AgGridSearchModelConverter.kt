@@ -10,6 +10,7 @@ import org.maiaframework.domain.search.AgGridSearchModel
 import org.maiaframework.jdbc.JdbcCompatibleType
 import org.maiaframework.jdbc.SqlParams
 import java.sql.Types
+import java.time.LocalDate
 
 class AgGridSearchModelConverter(
     private val fieldNameToColumnNameMapper: (String) -> String,
@@ -137,282 +138,214 @@ class AgGridSearchModelConverter(
         sqlParamName: String
     ): String {
 
-        val dbColumnName = fieldNameToColumnNameMapper.invoke(classFieldName)
-        val jdbcCompatibleType = fieldNameToJdbcTypeMapper.invoke(classFieldName)
+        val column = FilterColumn(
+            classFieldName,
+            fieldNameToColumnNameMapper.invoke(classFieldName),
+            fieldNameToJdbcTypeMapper.invoke(classFieldName),
+            sqlParams,
+            sqlParamName
+        )
 
-        val fieldType = fieldFilterModel.getString("filterType")
-
-        if (fieldType == "set") {
-
-            // A null entry is "(Blanks)": it also matches null rows. The empty string matches only if listed.
-            val entries = fieldFilterModel.get("values")?.toList() ?: emptyList()
-            val values = entries.filterNot { it.isNull }.map { it.asString() }
-            val includesBlanks = entries.any { it.isNull }
-
-            sqlParams.addListOfStrings(sqlParamName, values)
-            val matchExpression = setMatchExpression(dbColumnName, jdbcCompatibleType, sqlParamName)
-
-            return if (includesBlanks) {
-                // For a scalar column "(Blanks)" is null only: the empty string matches only if listed.
-                val blankExpression = if (jdbcCompatibleType.sqlType == Types.ARRAY) {
-                    blankConditionToSql(true, dbColumnName, jdbcCompatibleType)
+        return when (val filterType = fieldFilterModel.getString("filterType")) {
+            "set" -> setConditionToSql(fieldFilterModel, column)
+            "id" -> idConditionToSql(fieldFilterModel, column)
+            "text", "number", "date" -> {
+                val type = fieldFilterModel.getString("type")
+                // Blank is only meaningful for the filter types that support it.
+                if (type == "blank" || type == "notBlank") {
+                    blankConditionToSql(type == "blank", column.dbColumnName, column.jdbcCompatibleType)
                 } else {
-                    "$dbColumnName is null"
+                    when (filterType) {
+                        "text" -> textConditionToSql(type, fieldFilterModel, column)
+                        "number" -> numberConditionToSql(type, fieldFilterModel, column)
+                        else -> dateConditionToSql(type, fieldFilterModel, column)
+                    }
                 }
-                "($matchExpression or $blankExpression)"
-            } else {
-                matchExpression
             }
-
+            else -> throw unknownFilterType("filter field type", filterType)
         }
 
-        if (fieldType == "id") {
+    }
 
-            // An id filter needs no type, but if one is sent it must be "equals".
-            val idFilterType = fieldFilterModel.get("type")?.takeUnless { it.isNull }?.asString()
-            if (idFilterType != null && idFilterType != "equals") {
-                throw IllegalArgumentException("Unknown filter type [$idFilterType] for an id filter")
-            }
 
-            sqlParams.addValue(sqlParamName, fieldFilterModel.getString("filter"), Types.OTHER)
-            return "$dbColumnName = :$sqlParamName"
+    /** The column a single filter condition applies to, and where its parameters are bound. */
+    private class FilterColumn(
+        val classFieldName: String,
+        val dbColumnName: String,
+        val jdbcCompatibleType: JdbcCompatibleType,
+        val sqlParams: SqlParams,
+        val sqlParamName: String
+    ) {
 
+        fun paramName(suffix: String): String = "${sqlParamName}_$suffix"
+
+    }
+
+
+    private fun unknownFilterType(kind: String, value: String, suffix: String = ""): IllegalArgumentException {
+
+        return IllegalArgumentException("Unknown $kind [$value]$suffix")
+
+    }
+
+
+    private fun setConditionToSql(fieldFilterModel: ObjectNode, column: FilterColumn): String {
+
+        // A null entry is "(Blanks)": it also matches null rows. The empty string matches only if listed.
+        val entries = fieldFilterModel.get("values")?.toList() ?: emptyList()
+        val values = entries.filterNot { it.isNull }.map { it.asString() }
+        val includesBlanks = entries.any { it.isNull }
+
+        column.sqlParams.addListOfStrings(column.sqlParamName, values)
+        val matchExpression = setMatchExpression(column.dbColumnName, column.jdbcCompatibleType, column.sqlParamName)
+
+        if (!includesBlanks) {
+            return matchExpression
         }
 
-        val filterType = fieldFilterModel.getString("type")
-
-        // Blank is only meaningful for the filter types that support it; anything else falls through to the
-        // unknown filterType error below.
-        if ((fieldType == "text" || fieldType == "number" || fieldType == "date") && (filterType == "blank" || filterType == "notBlank")) {
-            return blankConditionToSql(filterType == "blank", dbColumnName, jdbcCompatibleType)
+        // For a scalar column "(Blanks)" is null only: the empty string matches only if listed.
+        val blankExpression = if (column.jdbcCompatibleType.sqlType == Types.ARRAY) {
+            blankConditionToSql(true, column.dbColumnName, column.jdbcCompatibleType)
+        } else {
+            "${column.dbColumnName} is null"
         }
 
-        when (fieldType) {
-            "text" -> {
+        return "($matchExpression or $blankExpression)"
 
-                // AG Grid sends a boolean column filter as a text filter of type true/false with no filter value
-                if (filterType == "true" || filterType == "false") {
-                    if (jdbcCompatibleType != JdbcCompatibleType.boolean) {
-                        throw IllegalArgumentException("Filter type [$filterType] is only valid for a boolean column, but [$classFieldName] is [$jdbcCompatibleType]")
-                    }
-                    return "$dbColumnName = $filterType"
-                }
+    }
 
-                val filterTerm = fieldFilterModel.getString("filter")
 
-                if (jdbcCompatibleType == JdbcCompatibleType.text_array) {
-                    return textArrayConditionToSql(filterType, dbColumnName, filterTerm, sqlParams, sqlParamName)
-                }
+    private fun idConditionToSql(fieldFilterModel: ObjectNode, column: FilterColumn): String {
 
-                val dbColumnNameSuffix = dbColumnNameSuffixFor(jdbcCompatibleType)
-                val likeOrIlike = "ilike" // TODO if (filterModelItem.caseSensitive) "like" else "ilike"
+        // An id filter needs no type, but if one is sent it must be "equals".
+        val idFilterType = fieldFilterModel.get("type")?.takeUnless { it.isNull }?.asString()
+        if (idFilterType != null && idFilterType != "equals") {
+            throw unknownFilterType("filter type", idFilterType, " for an id filter")
+        }
 
-                when (filterType) {
+        column.sqlParams.addValue(column.sqlParamName, fieldFilterModel.getString("filter"), Types.OTHER)
+        return "${column.dbColumnName} = :${column.sqlParamName}"
 
-                    "equals" -> {
-                        sqlParams.addValue(sqlParamName, filterTerm, jdbcCompatibleType.sqlType)
-                        return "$dbColumnName = :$sqlParamName"
-                    }
+    }
 
-                    "notEqual" -> {
-                        sqlParams.addValue(sqlParamName, filterTerm, jdbcCompatibleType.sqlType)
-                        return "$dbColumnName != :$sqlParamName"
-                    }
 
-                    "contains" -> {
-                        sqlParams.addValue(sqlParamName, "%${escapeLike(filterTerm)}%", jdbcCompatibleType.sqlType)
-                        return "$dbColumnName$dbColumnNameSuffix $likeOrIlike :$sqlParamName"
-                    }
+    private fun textConditionToSql(type: String, fieldFilterModel: ObjectNode, column: FilterColumn): String {
 
-                    "notContains" -> {
-                        sqlParams.addValue(sqlParamName, "%${escapeLike(filterTerm)}%", jdbcCompatibleType.sqlType)
-                        return "$dbColumnName$dbColumnNameSuffix not $likeOrIlike :$sqlParamName"
-                    }
+        // AG Grid sends a boolean column filter as a text filter of type true/false with no filter value
+        if (type == "true" || type == "false") {
+            if (column.jdbcCompatibleType != JdbcCompatibleType.boolean) {
+                throw IllegalArgumentException("Filter type [$type] is only valid for a boolean column, but [${column.classFieldName}] is [${column.jdbcCompatibleType}]")
+            }
+            return "${column.dbColumnName} = $type"
+        }
 
-                    "startsWith" -> {
-                        sqlParams.addValue(sqlParamName, "${escapeLike(filterTerm)}%", jdbcCompatibleType.sqlType)
-                        return "$dbColumnName$dbColumnNameSuffix $likeOrIlike :$sqlParamName"
-                    }
+        val filterTerm = fieldFilterModel.getString("filter")
 
-                    "endsWith" -> {
-                        sqlParams.addValue(sqlParamName, "%${escapeLike(filterTerm)}", jdbcCompatibleType.sqlType)
-                        return "$dbColumnName$dbColumnNameSuffix $likeOrIlike :$sqlParamName"
-                    }
+        if (column.jdbcCompatibleType == JdbcCompatibleType.text_array) {
+            return textArrayConditionToSql(type, filterTerm, column)
+        }
 
-                    else -> throw IllegalArgumentException("Unknown filter type [$filterType]")
+        val columnExpression = "${column.dbColumnName}${dbColumnNameSuffixFor(column.jdbcCompatibleType)}"
 
-                }
+        return when (type) {
+            "equals" -> "${column.dbColumnName} = ${textParam(column, filterTerm)}"
+            "notEqual" -> "${column.dbColumnName} != ${textParam(column, filterTerm)}"
+            "contains" -> "$columnExpression ilike ${textParam(column, "%${escapeLike(filterTerm)}%")}"
+            "notContains" -> "$columnExpression not ilike ${textParam(column, "%${escapeLike(filterTerm)}%")}"
+            "startsWith" -> "$columnExpression ilike ${textParam(column, "${escapeLike(filterTerm)}%")}"
+            "endsWith" -> "$columnExpression ilike ${textParam(column, "%${escapeLike(filterTerm)}")}"
+            else -> throw unknownFilterType("filter type", type)
+        }
 
+    }
+
+
+    /** Binds [value] as the column's own JDBC type and returns its placeholder. */
+    private fun textParam(column: FilterColumn, value: String): String {
+
+        column.sqlParams.addValue(column.sqlParamName, value, column.jdbcCompatibleType.sqlType)
+        return ":${column.sqlParamName}"
+
+    }
+
+
+    private fun dateConditionToSql(type: String, fieldFilterModel: ObjectNode, column: FilterColumn): String {
+
+        val col = column.dbColumnName
+        val fromName = column.paramName("dateFrom")
+        val toName = column.paramName("dateTo")
+        val dateFrom = fieldFilterModel.getLocalDate("dateFrom")
+
+        return when (type) {
+
+            "equals" -> {
+                bindDateRange(column, dateFrom, dateFrom.plusDays(1))
+                "$col >= :$fromName and $col < :$toName"
             }
 
-            "date" -> {
-
-                when (filterType) {
-
-                    "equals" -> {
-
-                        val dateFrom = fieldFilterModel.getLocalDate("dateFrom")
-                        val dateFromParamName = "${sqlParamName}_dateFrom"
-
-                        val dateToParamName = "${sqlParamName}_dateTo"
-                        val plusOneDay = dateFrom.plusDays(1)
-
-                        sqlParams.addValue(dateFromParamName, dateFrom)
-                        sqlParams.addValue(dateToParamName, plusOneDay)
-
-                        return "$dbColumnName >= :$dateFromParamName and $dbColumnName < :$dateToParamName"
-
-                    }
-
-                    "notEqual" -> {
-
-                        val dateFrom = fieldFilterModel.getLocalDate("dateFrom")
-                        val dateFromParamName = "${sqlParamName}_dateFrom"
-
-                        val dateToParamName = "${sqlParamName}_dateTo"
-                        val plusOneDay = dateFrom.plusDays(1)
-
-                        sqlParams.addValue(dateFromParamName, dateFrom)
-                        sqlParams.addValue(dateToParamName, plusOneDay)
-
-                        return "($dbColumnName < :$dateFromParamName or $dbColumnName >= :$dateToParamName)"
-
-                    }
-
-                    "greaterThan" -> {
-
-                        val dateFrom = fieldFilterModel.getLocalDate("dateFrom")
-                        val dateFromParamName = "${sqlParamName}_dateFrom"
-
-                        sqlParams.addValue(dateFromParamName, dateFrom.plusDays(1))
-
-                        return "$dbColumnName >= :$dateFromParamName"
-
-                    }
-
-                    "lessThan" -> {
-
-                        val dateFrom = fieldFilterModel.getLocalDate("dateFrom")
-                        val dateFromParamName = "${sqlParamName}_dateFrom"
-
-                        sqlParams.addValue(dateFromParamName, dateFrom)
-
-                        return "$dbColumnName < :$dateFromParamName"
-
-                    }
-
-                    "inRange" -> {
-
-                        val dateFrom = fieldFilterModel.getLocalDate("dateFrom")
-                        val dateTo = fieldFilterModel.getLocalDate("dateTo")
-                        val plusOneDay = dateTo.plusDays(1)
-
-                        val dateFromParamName = "${sqlParamName}_dateFrom"
-                        val dateToParamName = "${sqlParamName}_dateTo"
-
-                        sqlParams.addValue(dateFromParamName, dateFrom)
-                        sqlParams.addValue(dateToParamName, plusOneDay)
-
-                        return "$dbColumnName >= :$dateFromParamName and $dbColumnName < :$dateToParamName"
-
-                    }
-
-                    else -> throw IllegalArgumentException("Unknown filter type [$filterType]")
-
-                }
-
+            "notEqual" -> {
+                bindDateRange(column, dateFrom, dateFrom.plusDays(1))
+                "($col < :$fromName or $col >= :$toName)"
             }
 
-            "number" -> {
-
-                when (filterType) {
-
-                    "equals" -> {
-
-                        val filter = fieldFilterModel.getDouble("filter")
-
-                        sqlParams.addValue(sqlParamName, filter)
-
-                        return "$dbColumnName = :$sqlParamName"
-
-                    }
-
-                    "notEqual" -> {
-
-                        val filter = fieldFilterModel.getDouble("filter")
-
-                        sqlParams.addValue(sqlParamName, filter)
-
-                        return "$dbColumnName != :$sqlParamName"
-
-                    }
-
-                    "greaterThan" -> {
-
-                        val filter = fieldFilterModel.getDouble("filter")
-
-                        sqlParams.addValue(sqlParamName, filter)
-
-                        return "$dbColumnName > :$sqlParamName"
-
-                    }
-
-                    "greaterThanOrEqual" -> {
-
-                        val filter = fieldFilterModel.getDouble("filter")
-
-                        sqlParams.addValue(sqlParamName, filter)
-
-                        return "$dbColumnName >= :$sqlParamName"
-
-                    }
-
-                    "lessThan" -> {
-
-                        val filter = fieldFilterModel.getDouble("filter")
-
-                        sqlParams.addValue(sqlParamName, filter)
-
-                        return "$dbColumnName < :$sqlParamName"
-
-                    }
-
-                    "lessThanOrEqual" -> {
-
-                        val filter = fieldFilterModel.getDouble("filter")
-
-                        sqlParams.addValue(sqlParamName, filter)
-
-                        return "$dbColumnName <= :$sqlParamName"
-
-                    }
-
-                    "inRange" -> {
-
-                        val filter = fieldFilterModel.getDouble("filter")
-                        val filterTo = fieldFilterModel.getDouble("filterTo")
-
-                        val fromParamName = "${sqlParamName}_from"
-                        val toParamName = "${sqlParamName}_to"
-
-                        sqlParams.addValue(fromParamName, filter)
-                        sqlParams.addValue(toParamName, filterTo)
-
-                        return "$dbColumnName >= :$fromParamName and $dbColumnName < :$toParamName"
-
-                    }
-
-                    else -> throw IllegalArgumentException("Unknown filter type [$filterType]")
-
-                }
-
+            "greaterThan" -> {
+                column.sqlParams.addValue(fromName, dateFrom.plusDays(1))
+                "$col >= :$fromName"
             }
 
-            else -> throw IllegalArgumentException("Unknown filter field type [$fieldType]")
+            "lessThan" -> {
+                column.sqlParams.addValue(fromName, dateFrom)
+                "$col < :$fromName"
+            }
+
+            "inRange" -> {
+                bindDateRange(column, dateFrom, fieldFilterModel.getLocalDate("dateTo").plusDays(1))
+                "$col >= :$fromName and $col < :$toName"
+            }
+
+            else -> throw unknownFilterType("filter type", type)
 
         }
 
     }
+
+
+    private fun bindDateRange(column: FilterColumn, from: LocalDate, toExclusive: LocalDate) {
+
+        column.sqlParams.addValue(column.paramName("dateFrom"), from)
+        column.sqlParams.addValue(column.paramName("dateTo"), toExclusive)
+
+    }
+
+
+    private fun numberConditionToSql(type: String, fieldFilterModel: ObjectNode, column: FilterColumn): String {
+
+        val col = column.dbColumnName
+
+        fun compare(operator: String): String {
+            column.sqlParams.addValue(column.sqlParamName, fieldFilterModel.getDouble("filter"))
+            return "$col $operator :${column.sqlParamName}"
+        }
+
+        return when (type) {
+            "equals" -> compare("=")
+            "notEqual" -> compare("!=")
+            "greaterThan" -> compare(">")
+            "greaterThanOrEqual" -> compare(">=")
+            "lessThan" -> compare("<")
+            "lessThanOrEqual" -> compare("<=")
+            "inRange" -> {
+                val fromName = column.paramName("from")
+                val toName = column.paramName("to")
+                column.sqlParams.addValue(fromName, fieldFilterModel.getDouble("filter"))
+                column.sqlParams.addValue(toName, fieldFilterModel.getDouble("filterTo"))
+                "$col >= :$fromName and $col < :$toName"
+            }
+            else -> throw unknownFilterType("filter type", type)
+        }
+
+    }
+
 
     /**
      * The values are bound as text and compared in the column's own type, so int, decimal, date, instant and
@@ -461,34 +394,35 @@ class AgGridSearchModelConverter(
     }
 
 
-    private fun textArrayConditionToSql(
-        filterType: String,
-        dbColumnName: String,
-        filterTerm: String,
-        sqlParams: SqlParams,
-        sqlParamName: String
-    ): String {
+    private fun textArrayConditionToSql(type: String, filterTerm: String, column: FilterColumn): String {
+
+        val col = column.dbColumnName
+        val param = ":${column.sqlParamName}"
 
         fun anyElementIlike(pattern: String): String {
-            sqlParams.addValue(sqlParamName, pattern, Types.VARCHAR)
-            return "exists (select 1 from unnest($dbColumnName) as element where element ilike :$sqlParamName)"
+            column.sqlParams.addValue(column.sqlParamName, pattern, Types.VARCHAR)
+            return "exists (select 1 from unnest($col) as element where element ilike $param)"
         }
 
-        return when (filterType) {
+        fun bindTerm() {
+            column.sqlParams.addValue(column.sqlParamName, filterTerm, Types.VARCHAR)
+        }
+
+        return when (type) {
             "equals" -> {
-                sqlParams.addValue(sqlParamName, filterTerm, Types.VARCHAR)
-                ":$sqlParamName = ANY($dbColumnName)"
+                bindTerm()
+                "$param = ANY($col)"
             }
             "notEqual" -> {
-                sqlParams.addValue(sqlParamName, filterTerm, Types.VARCHAR)
+                bindTerm()
                 // A null array counts as empty, so it is included, like notContains and Elasticsearch do.
-                "NOT (:$sqlParamName = ANY(coalesce($dbColumnName, '{}')))"
+                "NOT ($param = ANY(coalesce($col, '{}')))"
             }
             "contains" -> anyElementIlike("%${escapeLike(filterTerm)}%")
             "notContains" -> "not " + anyElementIlike("%${escapeLike(filterTerm)}%")
             "startsWith" -> anyElementIlike("${escapeLike(filterTerm)}%")
             "endsWith" -> anyElementIlike("%${escapeLike(filterTerm)}")
-            else -> throw IllegalArgumentException("Unknown filter type [$filterType] for array column")
+            else -> throw unknownFilterType("filter type", type, " for array column")
         }
 
     }
