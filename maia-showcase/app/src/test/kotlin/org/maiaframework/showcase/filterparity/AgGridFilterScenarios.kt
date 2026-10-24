@@ -358,7 +358,7 @@ object AgGridFilterScenarios {
             expectedKeys = emptySet(),
         ),
 
-    ).plus(textFilterScenarios())
+    ).plus(textFilterScenarios()).plus(blankFilterScenarios())
 
 
     private fun textFilterScenarios(): List<FilterScenario> {
@@ -404,6 +404,61 @@ object AgGridFilterScenarios {
         )
 
     }
+
+
+    /**
+     * Blank / notBlank (GLOSSARY.md: Blank). Blank is null or missing, plus the empty string for TEXT columns; for
+     * array columns it is null or an empty array. notBlank is the exact complement. Text scenarios use the
+     * nullable column because a textRequired of "" cannot be read back from Elasticsearch. Expected keys come
+     * from the seed so filler rows cannot silently break them.
+     */
+    private fun blankFilterScenarios(): List<FilterScenario> {
+
+        val allKeys = AgGridFilterSeed.rows.map { it.key }.toSet()
+
+        return listOf(
+
+            // text: null, missing and "" are Blank; " " is not
+            FilterScenario("text blank matches null and the empty string", blankFilter("textNullable", "text", "blank"), keysWhere { it.textNullable.isNullOrEmpty() }),
+            FilterScenario("text notBlank is the complement of blank", blankFilter("textNullable", "text", "notBlank"), keysWhere { !it.textNullable.isNullOrEmpty() }),
+            FilterScenario("text blank on a required column matches nothing", blankFilter("textRequired", "text", "blank"), emptySet()),
+            FilterScenario("text notBlank on a required column matches everything", blankFilter("textRequired", "text", "notBlank"), allKeys),
+
+            // number
+            FilterScenario("number blank on an int column matches nulls", blankFilter("intNullable", "number", "blank"), keysWhere { it.intNullable == null }),
+            FilterScenario("number notBlank on an int column matches values", blankFilter("intNullable", "number", "notBlank"), keysWhere { it.intNullable != null }),
+            FilterScenario("number blank on a decimal column matches nulls", blankFilter("decimalNullable", "number", "blank"), keysWhere { it.decimalNullable == null }),
+            FilterScenario("number notBlank on a decimal column matches values", blankFilter("decimalNullable", "number", "notBlank"), keysWhere { it.decimalNullable != null }),
+            FilterScenario("number blank on a required column matches nothing", blankFilter("intRequired", "number", "blank"), emptySet()),
+            FilterScenario("number notBlank on a required column matches everything", blankFilter("intRequired", "number", "notBlank"), allKeys),
+
+            // date
+            FilterScenario("localdate blank matches nulls", blankFilter("dateNullable", "date", "blank"), keysWhere { it.dateNullable == null }),
+            FilterScenario("localdate notBlank matches values", blankFilter("dateNullable", "date", "notBlank"), keysWhere { it.dateNullable != null }),
+            FilterScenario("instant blank matches nulls", blankFilter("instantNullable", "date", "blank"), keysWhere { it.instantNullable == null }),
+            FilterScenario("instant notBlank matches values", blankFilter("instantNullable", "date", "notBlank"), keysWhere { it.instantNullable != null }),
+
+            // boolean (sent as a text filter)
+            FilterScenario("boolean blank matches nulls only", blankFilter("flagNullable", "text", "blank"), keysWhere { it.flagNullable == null }),
+            FilterScenario("boolean notBlank matches true and false", blankFilter("flagNullable", "text", "notBlank"), keysWhere { it.flagNullable != null }),
+
+            // array: null or empty is Blank
+            FilterScenario("array blank matches an empty array", blankFilter("tags", "text", "blank"), keysWhere { it.tags.isEmpty() }),
+            FilterScenario("array notBlank matches a non-empty array", blankFilter("tags", "text", "notBlank"), keysWhere { it.tags.isNotEmpty() }),
+
+            // negative filters exclude null rows on both backends. Empty-string rows are deliberately still
+            // included (both backends agree): pinned here, see the decision reported with ticket #10.
+            FilterScenario("text notEqual on a nullable column excludes nulls", textFilter("textNullable", "notEqual", "alpha"), keysWhere { it.textNullable != null && it.textNullable != "alpha" }),
+            FilterScenario("text notContains on a nullable column excludes nulls", textFilter("textNullable", "notContains", "AL"), keysWhere { it.textNullable != null && !it.textNullable!!.contains("al", ignoreCase = true) }),
+            FilterScenario("text notContains on a nullable column keeps empty-string rows", textFilter("textNullable", "notContains", "zzz"), setOf("empty-string", "upper-case") + keysWhere { it.textNullable != null }),
+
+        )
+
+    }
+
+
+    private fun blankFilter(field: String, filterType: String, type: String): String =
+        """{"$field": {"filterType": "$filterType", "type": "$type"}}"""
 
 
     private fun dateFilter(type: String, dateFrom: String): String =

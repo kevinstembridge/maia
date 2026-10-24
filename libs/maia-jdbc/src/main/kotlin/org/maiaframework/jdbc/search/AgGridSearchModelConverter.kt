@@ -153,6 +153,10 @@ class AgGridSearchModelConverter(
 
         val filterType = fieldFilterModel.getString("type")
 
+        if (filterType == "blank" || filterType == "notBlank") {
+            return blankConditionToSql(filterType == "blank", dbColumnName, jdbcCompatibleType)
+        }
+
         when (fieldType) {
 
             "id" -> {
@@ -384,6 +388,30 @@ class AgGridSearchModelConverter(
         }
 
     }
+
+    /**
+     * Blank is null, plus the empty string for text columns and the empty array for array columns; notBlank is
+     * the exact complement.
+     */
+    private fun blankConditionToSql(blank: Boolean, dbColumnName: String, jdbcCompatibleType: JdbcCompatibleType): String {
+
+        return when (jdbcCompatibleType) {
+            JdbcCompatibleType.text, JdbcCompatibleType.varchar ->
+                if (blank) "($dbColumnName is null or $dbColumnName = '')" else "($dbColumnName is not null and $dbColumnName != '')"
+            JdbcCompatibleType.text_array,
+            JdbcCompatibleType.boolean_array,
+            JdbcCompatibleType.decimal_array,
+            JdbcCompatibleType.integer_array,
+            JdbcCompatibleType.smallint_array,
+            JdbcCompatibleType.timestamp_array,
+            JdbcCompatibleType.uuid_array ->
+                if (blank) "($dbColumnName is null or cardinality($dbColumnName) = 0)" else "($dbColumnName is not null and cardinality($dbColumnName) > 0)"
+            else ->
+                if (blank) "$dbColumnName is null" else "$dbColumnName is not null"
+        }
+
+    }
+
 
     private fun textArrayConditionToSql(
         filterType: String,

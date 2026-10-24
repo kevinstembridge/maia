@@ -76,6 +76,11 @@ class EsSearchRequestFactory {
 
         searchModel.filterModel.properties().forEach { filterModelItem ->
             val fieldPath = fieldNameMapper.invoke(filterModelItem.key)
+            val blankType = filterModelItem.value.getStringOrNull("type")
+            if (blankType == "blank" || blankType == "notBlank") {
+                addBlankFilter(boolQueryBuilder, fieldPath, blank = blankType == "blank")
+                return@forEach
+            }
             if (filterModelItem.value.getStringOrNull("filterType") == "number") {
                 addNumberFilter(boolQueryBuilder, fieldPath, filterModelItem.value)
                 return@forEach
@@ -93,11 +98,17 @@ class EsSearchRequestFactory {
                 "contains" -> boolQueryBuilder.must { m ->
                     m.wildcard { w -> w.field(fieldPath).value("*${escapeWildcards(filter)}*").caseInsensitive(true) }
                 }
-                "notEqual" -> boolQueryBuilder.mustNot { m ->
-                    m.term { t -> t.field(fieldPath).value(filter) }
+                "notEqual" -> {
+                    mustExistIfScalarText(boolQueryBuilder, fieldPath)
+                    boolQueryBuilder.mustNot { m ->
+                        m.term { t -> t.field(fieldPath).value(filter) }
+                    }
                 }
-                "notContains" -> boolQueryBuilder.mustNot { m ->
-                    m.wildcard { w -> w.field(fieldPath).value("*${escapeWildcards(filter)}*").caseInsensitive(true) }
+                "notContains" -> {
+                    mustExistIfScalarText(boolQueryBuilder, fieldPath)
+                    boolQueryBuilder.mustNot { m ->
+                        m.wildcard { w -> w.field(fieldPath).value("*${escapeWildcards(filter)}*").caseInsensitive(true) }
+                    }
                 }
                 "startsWith" -> boolQueryBuilder.must { m ->
                     m.wildcard { w -> w.field(fieldPath).value("${escapeWildcards(filter)}*").caseInsensitive(true) }
@@ -113,6 +124,47 @@ class EsSearchRequestFactory {
         }
 
         return boolQueryBuilder
+
+    }
+
+
+    /**
+     * A scalar text field is indexed with a `.raw` keyword sub-field, which is how it is told apart from array
+     * and non-text fields here (only the mapped path is available).
+     */
+    private fun isScalarText(fieldPath: String): Boolean = fieldPath.endsWith(".raw")
+
+
+    /**
+     * Negative text filters exclude null/missing rows, as SQL does (a bare must_not would match them). Not applied
+     * to array fields: a missing field there is an empty array, which SQL's `not any(...)` still includes.
+     */
+    private fun mustExistIfScalarText(boolQueryBuilder: BoolQuery.Builder, fieldPath: String) {
+
+        if (isScalarText(fieldPath)) {
+            boolQueryBuilder.must { m -> m.exists { e -> e.field(fieldPath) } }
+        }
+
+    }
+
+
+    /**
+     * Blank is null/missing, plus the empty string for scalar text; ES does not index an empty array, so an
+     * empty array is missing and therefore Blank too. notBlank is the exact complement.
+     */
+    private fun addBlankFilter(boolQueryBuilder: BoolQuery.Builder, fieldPath: String, blank: Boolean) {
+
+        val exists = Query.of { q -> q.exists { e -> e.field(fieldPath) } }
+        val emptyString = Query.of { q -> q.term { t -> t.field(fieldPath).value("") } }
+
+        when {
+            blank && isScalarText(fieldPath) -> boolQueryBuilder.must { m ->
+                m.bool { b -> b.should { s -> s.bool { nb -> nb.mustNot(exists) } }.should(emptyString).minimumShouldMatch("1") }
+            }
+            blank -> boolQueryBuilder.mustNot(exists)
+            isScalarText(fieldPath) -> boolQueryBuilder.must(exists).mustNot(emptyString)
+            else -> boolQueryBuilder.must(exists)
+        }
 
     }
 
