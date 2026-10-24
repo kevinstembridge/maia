@@ -135,6 +135,22 @@ class AgGridSearchModelConverter(
         val jdbcCompatibleType = fieldNameToJdbcTypeMapper.invoke(classFieldName)
 
         val fieldType = fieldFilterModel.getString("filterType")
+
+        if (fieldType == "set") {
+
+            // A null entry is "(Blanks)": it also matches null rows. The empty string matches only if listed.
+            val entries = fieldFilterModel.get("values")?.toList() ?: emptyList()
+            val values = entries.filterNot { it.isNull }.map { it.asString() }
+            val includesBlanks = entries.any { it.isNull }
+
+            sqlParams.addListOfStrings(sqlParamName, values)
+            val columnExpression = "$dbColumnName${dbColumnNameSuffixFor(jdbcCompatibleType)}"
+            val anyExpression = "$columnExpression = any(:$sqlParamName)"
+
+            return if (includesBlanks) "($anyExpression or $dbColumnName is null)" else anyExpression
+
+        }
+
         val filterType = fieldFilterModel.getString("type")
 
         when (fieldType) {
