@@ -10,6 +10,7 @@ import co.elastic.clients.elasticsearch.core.CountRequest
 import co.elastic.clients.elasticsearch.core.SearchRequest
 import org.maiaframework.domain.search.AgGridSearchModel
 import org.maiaframework.elasticsearch.index.model.IndexResolvedName
+import org.maiaframework.json.JsonNodeExtensions.getArrayNode
 import org.maiaframework.json.JsonNodeExtensions.getDouble
 import org.maiaframework.json.JsonNodeExtensions.getString
 import org.maiaframework.json.JsonNodeExtensions.getLocalDate
@@ -100,7 +101,13 @@ class EsSearchRequestFactory {
 
         val operator = filterModelItem.getString("operator").lowercase()
 
-        val conditionQueries = filterModelItem.get("conditions").values().map { condition ->
+        val conditions = filterModelItem.getArrayNode("conditions")
+
+        if (conditions.isEmpty) {
+            throw IllegalArgumentException("A compound filter on [$fieldPath] needs at least one condition")
+        }
+
+        val conditionQueries = conditions.values().map { condition ->
             Query.of { q -> q.bool { b -> addConditionFilter(b, fieldPath, condition); b } }
         }
 
@@ -170,7 +177,7 @@ class EsSearchRequestFactory {
             return
         }
 
-        val filter = filterModelItem.getStringOrNull("filter")
+        val filter = filterModelItem.getString("filter")
 
         when (type) {
             "equals" -> boolQueryBuilder.must { m -> m.term { t -> t.field(fieldPath).value(filter) } }
@@ -203,7 +210,8 @@ class EsSearchRequestFactory {
 
     /**
      * A scalar text field is indexed with a `.raw` keyword sub-field, which is how it is told apart from array
-     * and non-text fields here (only the mapped path is available).
+     * and non-text fields here (only the mapped path is available). This assumes the field-name mapper points
+     * text-and-keyword columns at `<field>.raw`; a text column mapped any other way is not recognised.
      */
     private fun isScalarText(fieldPath: String): Boolean = fieldPath.endsWith(".raw")
 

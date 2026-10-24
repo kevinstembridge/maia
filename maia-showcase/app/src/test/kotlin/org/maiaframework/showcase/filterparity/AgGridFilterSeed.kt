@@ -67,7 +67,9 @@ object AgGridFilterSeed {
         SeedRow("question", textRequired = "alp?a", textNullable = "alp?a", intRequired = 5, decimalRequired = 5.5),
         SeedRow("beta", textRequired = "beta", textNullable = "beta", intRequired = 6, intNullable = 6, decimalRequired = 6.5, decimalNullable = 6.5, flagNullable = false),
         SeedRow("multi-word", textRequired = "alpha beta", textNullable = " ", intRequired = 7, decimalRequired = 7.5),
-        SeedRow("empty-string", textRequired = "placeholder", /* a blank textRequired cannot be read back from ES: StringTrimmingDeserializer maps it to null */ textNullable = "", intRequired = 8, decimalRequired = 8.5),
+        // textRequired is a placeholder because a blank textRequired cannot be read back from ES: the app's
+        // StringTrimmingDeserializer maps "" to null. The empty string under test is in textNullable.
+        SeedRow("empty-string", textRequired = "placeholder", textNullable = "", intRequired = 8, decimalRequired = 8.5),
         SeedRow("percent", textRequired = "5%off"),
         SeedRow("percent-lookalike", textRequired = "50 off"),
         SeedRow("underscore", textRequired = "a_c"),

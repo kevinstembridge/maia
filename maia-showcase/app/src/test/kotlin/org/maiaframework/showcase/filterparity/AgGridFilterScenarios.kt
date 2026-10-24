@@ -130,6 +130,90 @@ object AgGridFilterScenarios {
         ),
 
         FilterScenario(
+            name = "set on an int column matches any listed value",
+            filterModelJson = setFilter("intRequired", "\"3\"", "\"4\""),
+            expectedKeys = setOf("upper-case", "star"),
+        ),
+
+        FilterScenario(
+            name = "set on a nullable int column with a null entry also matches Blank rows",
+            filterModelJson = setFilter("intNullable", "null", "\"6\""),
+            expectedKeys = keysWhere { it.intNullable == null || it.intNullable == 6 },
+        ),
+
+        FilterScenario(
+            name = "set on a decimal column matches any listed value",
+            filterModelJson = setFilter("decimalRequired", "\"1.5\"", "\"6.5\""),
+            expectedKeys = setOf("alpha", "beta"),
+        ),
+
+        FilterScenario(
+            name = "set on a date column matches any listed day",
+            filterModelJson = setFilter("dateRequired", "\"2024-03-15\"", "\"2024-03-16\""),
+            expectedKeys = setOf("date-at-midnight", "date-end-of-day", "date-after-midnight"),
+        ),
+
+        FilterScenario(
+            name = "set on an instant column matches the exact instant",
+            filterModelJson = setFilter("instantRequired", "\"2024-03-15T00:00:00Z\""),
+            expectedKeys = setOf("date-at-midnight"),
+        ),
+
+        FilterScenario(
+            name = "set on a boolean column matches the listed value",
+            filterModelJson = setFilter("flagNullable", "\"true\""),
+            expectedKeys = setOf("alpha"),
+        ),
+
+        FilterScenario(
+            name = "set on an array column matches rows with any listed element",
+            filterModelJson = setFilter("tags", "\"apple\"", "\"a\""),
+            expectedKeys = setOf("tagged-one", "alpha"),
+        ),
+
+        FilterScenario(
+            name = "compound filter with an empty conditions list is rejected",
+            filterModelJson = compound("textRequired", "AND"),
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "compound filter with no conditions key is rejected",
+            filterModelJson = """{"textRequired": {"filterType": "multi", "operator": "OR"}}""",
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "text equals with no filter value is rejected",
+            filterModelJson = """{"textRequired": {"filterType": "text", "type": "equals"}}""",
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "text notEqual with no filter value is rejected",
+            filterModelJson = """{"textRequired": {"filterType": "text", "type": "notEqual"}}""",
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "text contains with no filter value is rejected",
+            filterModelJson = """{"textRequired": {"filterType": "text", "type": "contains"}}""",
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "text equals with a non-textual filter value is rejected",
+            filterModelJson = """{"textRequired": {"filterType": "text", "type": "equals", "filter": 3}}""",
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
+            name = "array text equals with no filter value is rejected",
+            filterModelJson = """{"tags": {"filterType": "text", "type": "equals"}}""",
+            expectsRejection = true,
+        ),
+
+        FilterScenario(
             name = "id filter without a type still matches",
             filterModelJson = """{"id": {"filterType": "id", "filter": "${AgGridFilterSeed.idOf("beta").value}"}}""",
             expectedKeys = setOf("beta"),
@@ -292,13 +376,13 @@ object AgGridFilterScenarios {
 
         FilterScenario(
             name = "set matches the empty string only when listed",
-            filterModelJson = withoutEmptyStringRow(setFilter("textNullable", "\"\"")),
+            filterModelJson = setFilter("textNullable", "\"\""),
             expectedKeys = keysWhere { it.textNullable == "" },
         ),
 
         FilterScenario(
             name = "set with null and empty string listed matches both",
-            filterModelJson = withoutEmptyStringRow(setFilter("textNullable", "null", "\"\"")),
+            filterModelJson = setFilter("textNullable", "null", "\"\""),
             expectedKeys = keysWhere { it.textNullable == null || it.textNullable == "" },
         ),
 
@@ -693,19 +777,6 @@ object AgGridFilterScenarios {
     /** [values] are raw JSON literals, e.g. `"\"a\""` or `"null"`. */
     private fun setFilter(field: String, vararg values: String): String =
         """{"$field": {"filterType": "set", "values": [${values.joinToString(",")}]}}"""
-
-
-    /**
-     * ANDs a second condition on `textRequired` that excludes the "empty-string" seed row. The app's
-     * StringTrimmingDeserializer turns "" into null, so the ES client cannot decode that row (its
-     * `textRequired` is a non-null String) and any ES search returning it fails. The restriction lists every
-     * other `textRequired` value, so the row's `textNullable` of "" is still exercised via other rows.
-     */
-    private fun withoutEmptyStringRow(filterModelJson: String): String {
-        val others = AgGridFilterSeed.rows.map { it.textRequired }.filter { it.isNotEmpty() }
-        val restriction = setFilter("textRequired", *others.map { "\"$it\"" }.toTypedArray())
-        return filterModelJson.dropLast(1) + "," + restriction.drop(1)
-    }
 
 
     private fun textFilter(field: String, type: String, value: String): String =

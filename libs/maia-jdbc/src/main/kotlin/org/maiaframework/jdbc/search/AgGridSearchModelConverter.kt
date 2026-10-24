@@ -108,7 +108,13 @@ class AgGridSearchModelConverter(
 
         val expressions = mutableListOf<String>()
 
-        fieldNode.getArrayNode("conditions").forEachIndexed { index, conditionEntry: JsonNode ->
+        val conditions = fieldNode.getArrayNode("conditions")
+
+        if (conditions.isEmpty) {
+            throw IllegalArgumentException("A compound filter on [$fieldName] needs at least one condition")
+        }
+
+        conditions.forEachIndexed { index, conditionEntry: JsonNode ->
 
             val sqlParamName = "${sqlParamNamePrefix}_$index"
 
@@ -144,10 +150,19 @@ class AgGridSearchModelConverter(
             val includesBlanks = entries.any { it.isNull }
 
             sqlParams.addListOfStrings(sqlParamName, values)
-            val columnExpression = "$dbColumnName${dbColumnNameSuffixFor(jdbcCompatibleType)}"
-            val anyExpression = "$columnExpression = any(:$sqlParamName)"
+            val matchExpression = setMatchExpression(dbColumnName, jdbcCompatibleType, sqlParamName)
 
-            return if (includesBlanks) "($anyExpression or $dbColumnName is null)" else anyExpression
+            return if (includesBlanks) {
+                // For a scalar column "(Blanks)" is null only: the empty string matches only if listed.
+                val blankExpression = if (jdbcCompatibleType.sqlType == Types.ARRAY) {
+                    blankConditionToSql(true, dbColumnName, jdbcCompatibleType)
+                } else {
+                    "$dbColumnName is null"
+                }
+                "($matchExpression or $blankExpression)"
+            } else {
+                matchExpression
+            }
 
         }
 
@@ -400,6 +415,29 @@ class AgGridSearchModelConverter(
     }
 
     /**
+     * The values are bound as text and compared in the column's own type, so int, decimal, date, instant and
+     * boolean columns match like they do in Elasticsearch. An array column matches if any element is listed.
+     */
+    private fun setMatchExpression(dbColumnName: String, jdbcCompatibleType: JdbcCompatibleType, sqlParamName: String): String {
+
+        return when (jdbcCompatibleType) {
+            JdbcCompatibleType.text, JdbcCompatibleType.varchar -> "$dbColumnName = any(:$sqlParamName)"
+            JdbcCompatibleType.uuid -> "$dbColumnName::text = any(:$sqlParamName)"
+            JdbcCompatibleType.text_array,
+            JdbcCompatibleType.boolean_array,
+            JdbcCompatibleType.decimal_array,
+            JdbcCompatibleType.integer_array,
+            JdbcCompatibleType.smallint_array,
+            JdbcCompatibleType.timestamp_array,
+            JdbcCompatibleType.uuid_array ->
+                "$dbColumnName && cast(:$sqlParamName as ${jdbcCompatibleType.postgresDataType})"
+            else -> "$dbColumnName = any(cast(:$sqlParamName as ${jdbcCompatibleType.postgresDataType}[]))"
+        }
+
+    }
+
+
+    /**
      * Blank is null, plus the empty string for text columns and the empty array for array columns; notBlank is
      * the exact complement.
      */
@@ -443,7 +481,8 @@ class AgGridSearchModelConverter(
             }
             "notEqual" -> {
                 sqlParams.addValue(sqlParamName, filterTerm, Types.VARCHAR)
-                "NOT (:$sqlParamName = ANY($dbColumnName))"
+                // A null array counts as empty, so it is included, like notContains and Elasticsearch do.
+                "NOT (:$sqlParamName = ANY(coalesce($dbColumnName, '{}')))"
             }
             "contains" -> anyElementIlike("%${escapeLike(filterTerm)}%")
             "notContains" -> "not " + anyElementIlike("%${escapeLike(filterTerm)}%")
