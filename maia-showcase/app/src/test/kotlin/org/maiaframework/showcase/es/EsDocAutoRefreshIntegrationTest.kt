@@ -593,7 +593,7 @@ class EsDocAutoRefreshIntegrationTest : AbstractBlackBoxTest() {
         refreshIndexSegments(bravoIndex)
 
         val filter = JsonNodeFactory.instance.objectNode().apply {
-            putObject("dtoStringFromAlpha").put("filter", "Alpha One")
+            putObject("dtoStringFromAlpha").put("filterType", "text").put("type", "equals").put("filter", "Alpha One")
         }
 
         val filtered = bravoEsSearchService.search(AgGridSearchModel(filter, emptyList(), 0, 10))
