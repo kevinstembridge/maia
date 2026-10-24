@@ -230,7 +230,7 @@ class AgGridSearchModelConverter(
                         sqlParams.addValue(dateFromParamName, dateFrom)
                         sqlParams.addValue(dateToParamName, plusOneDay)
 
-                        return "$dbColumnName < :$dateFromParamName or $dbColumnName >= :$dateToParamName"
+                        return "($dbColumnName < :$dateFromParamName or $dbColumnName >= :$dateToParamName)"
 
                     }
 
