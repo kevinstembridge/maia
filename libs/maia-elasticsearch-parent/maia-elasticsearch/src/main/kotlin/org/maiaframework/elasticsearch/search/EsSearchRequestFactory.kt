@@ -93,6 +93,9 @@ class EsSearchRequestFactory {
                 "endsWith" -> boolQueryBuilder.must { m ->
                     m.wildcard { w -> w.field(fieldPath).value("*${escapeWildcards(filter)}").caseInsensitive(true) }
                 }
+                "true", "false" -> boolQueryBuilder.must { m ->
+                    m.term { t -> t.field(fieldPath).value(filterModelItem.value.getStringOrNull("type").toBoolean()) }
+                }
                 else -> boolQueryBuilder.must { m -> m.term { t -> t.field(fieldPath).value(filter) } }
             }
         }
