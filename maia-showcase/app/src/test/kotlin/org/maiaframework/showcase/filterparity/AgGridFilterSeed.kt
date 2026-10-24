@@ -68,6 +68,12 @@ object AgGridFilterSeed {
         SeedRow("beta", textRequired = "beta", textNullable = "beta", intRequired = 6, intNullable = 6, decimalRequired = 6.5, decimalNullable = 6.5, flagNullable = false),
         SeedRow("multi-word", textRequired = "alpha beta", textNullable = " ", intRequired = 7, decimalRequired = 7.5),
         SeedRow("empty-string", textRequired = "", textNullable = "", intRequired = 8, decimalRequired = 8.5),
+
+        // Date rows around the pivot day 2024-03-15; every row above sits on 2024-01-01 (before the pivot).
+        SeedRow("date-before-midnight", dateRequired = LocalDate.of(2024, 3, 14), dateNullable = LocalDate.of(2024, 3, 14), instantRequired = Instant.parse("2024-03-14T23:59:59.999Z"), instantNullable = Instant.parse("2024-03-14T23:59:59.999Z")),
+        SeedRow("date-at-midnight", dateRequired = LocalDate.of(2024, 3, 15), dateNullable = LocalDate.of(2024, 3, 15), instantRequired = Instant.parse("2024-03-15T00:00:00Z"), instantNullable = Instant.parse("2024-03-15T00:00:00Z")),
+        SeedRow("date-end-of-day", dateRequired = LocalDate.of(2024, 3, 15), instantRequired = Instant.parse("2024-03-15T23:59:59.999Z")),
+        SeedRow("date-after-midnight", dateRequired = LocalDate.of(2024, 3, 16), dateNullable = LocalDate.of(2024, 3, 16), instantRequired = Instant.parse("2024-03-16T00:00:00Z"), instantNullable = Instant.parse("2024-03-16T00:00:00Z")),
     )
 
     private val byKey = rows.associateBy { it.key }
