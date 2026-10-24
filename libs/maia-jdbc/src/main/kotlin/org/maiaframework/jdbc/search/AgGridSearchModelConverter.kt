@@ -148,17 +148,7 @@ class AgGridSearchModelConverter(
                 val filterTerm = fieldFilterModel.getString("filter")
 
                 if (jdbcCompatibleType == JdbcCompatibleType.text_array) {
-                    return when (filterType) {
-                        "contains" -> {
-                            sqlParams.addValue(sqlParamName, filterTerm, Types.VARCHAR)
-                            ":$sqlParamName = ANY($dbColumnName)"
-                        }
-                        "notContains" -> {
-                            sqlParams.addValue(sqlParamName, filterTerm, Types.VARCHAR)
-                            "NOT (:$sqlParamName = ANY($dbColumnName))"
-                        }
-                        else -> throw IllegalArgumentException("Unknown filter type [$filterType] for array column")
-                    }
+                    return textArrayConditionToSql(filterType, dbColumnName, filterTerm, sqlParams, sqlParamName)
                 }
 
                 val dbColumnNameSuffix = dbColumnNameSuffixFor(jdbcCompatibleType)
@@ -177,22 +167,22 @@ class AgGridSearchModelConverter(
                     }
 
                     "contains" -> {
-                        sqlParams.addValue(sqlParamName, "%$filterTerm%", jdbcCompatibleType.sqlType)
+                        sqlParams.addValue(sqlParamName, "%${escapeLike(filterTerm)}%", jdbcCompatibleType.sqlType)
                         return "$dbColumnName$dbColumnNameSuffix $likeOrIlike :$sqlParamName"
                     }
 
                     "notContains" -> {
-                        sqlParams.addValue(sqlParamName, "%$filterTerm%", jdbcCompatibleType.sqlType)
+                        sqlParams.addValue(sqlParamName, "%${escapeLike(filterTerm)}%", jdbcCompatibleType.sqlType)
                         return "$dbColumnName$dbColumnNameSuffix not $likeOrIlike :$sqlParamName"
                     }
 
                     "startsWith" -> {
-                        sqlParams.addValue(sqlParamName, "$filterTerm%", jdbcCompatibleType.sqlType)
+                        sqlParams.addValue(sqlParamName, "${escapeLike(filterTerm)}%", jdbcCompatibleType.sqlType)
                         return "$dbColumnName$dbColumnNameSuffix $likeOrIlike :$sqlParamName"
                     }
 
                     "endsWith" -> {
-                        sqlParams.addValue(sqlParamName, "%$filterTerm", jdbcCompatibleType.sqlType)
+                        sqlParams.addValue(sqlParamName, "%${escapeLike(filterTerm)}", jdbcCompatibleType.sqlType)
                         return "$dbColumnName$dbColumnNameSuffix $likeOrIlike :$sqlParamName"
                     }
 
@@ -370,6 +360,46 @@ class AgGridSearchModelConverter(
         }
 
     }
+
+    private fun textArrayConditionToSql(
+        filterType: String,
+        dbColumnName: String,
+        filterTerm: String,
+        sqlParams: SqlParams,
+        sqlParamName: String
+    ): String {
+
+        fun anyElementIlike(pattern: String): String {
+            sqlParams.addValue(sqlParamName, pattern, Types.VARCHAR)
+            return "exists (select 1 from unnest($dbColumnName) as element where element ilike :$sqlParamName)"
+        }
+
+        return when (filterType) {
+            "equals" -> {
+                sqlParams.addValue(sqlParamName, filterTerm, Types.VARCHAR)
+                ":$sqlParamName = ANY($dbColumnName)"
+            }
+            "notEqual" -> {
+                sqlParams.addValue(sqlParamName, filterTerm, Types.VARCHAR)
+                "NOT (:$sqlParamName = ANY($dbColumnName))"
+            }
+            "contains" -> anyElementIlike("%${escapeLike(filterTerm)}%")
+            "notContains" -> "not " + anyElementIlike("%${escapeLike(filterTerm)}%")
+            "startsWith" -> anyElementIlike("${escapeLike(filterTerm)}%")
+            "endsWith" -> anyElementIlike("%${escapeLike(filterTerm)}")
+            else -> throw IllegalArgumentException("Unknown filter type [$filterType] for array column")
+        }
+
+    }
+
+
+    /** Makes `%`, `_` and the escape character itself match literally in a (i)like pattern. */
+    private fun escapeLike(term: String): String {
+
+        return term.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+
+    }
+
 
     private fun dbColumnNameSuffixFor(jdbcCompatibleType: JdbcCompatibleType): String {
 

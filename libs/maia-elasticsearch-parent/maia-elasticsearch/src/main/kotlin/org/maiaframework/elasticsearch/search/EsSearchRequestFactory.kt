@@ -81,6 +81,18 @@ class EsSearchRequestFactory {
                 "contains" -> boolQueryBuilder.must { m ->
                     m.wildcard { w -> w.field(fieldPath).value("*${escapeWildcards(filter)}*").caseInsensitive(true) }
                 }
+                "notEqual" -> boolQueryBuilder.mustNot { m ->
+                    m.term { t -> t.field(fieldPath).value(filter) }
+                }
+                "notContains" -> boolQueryBuilder.mustNot { m ->
+                    m.wildcard { w -> w.field(fieldPath).value("*${escapeWildcards(filter)}*").caseInsensitive(true) }
+                }
+                "startsWith" -> boolQueryBuilder.must { m ->
+                    m.wildcard { w -> w.field(fieldPath).value("${escapeWildcards(filter)}*").caseInsensitive(true) }
+                }
+                "endsWith" -> boolQueryBuilder.must { m ->
+                    m.wildcard { w -> w.field(fieldPath).value("*${escapeWildcards(filter)}").caseInsensitive(true) }
+                }
                 else -> boolQueryBuilder.must { m -> m.term { t -> t.field(fieldPath).value(filter) } }
             }
         }
