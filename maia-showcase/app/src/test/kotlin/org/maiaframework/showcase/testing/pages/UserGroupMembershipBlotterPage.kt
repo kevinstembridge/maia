@@ -29,7 +29,7 @@ class UserGroupMembershipBlotterPage(
             "return c && c.innerText && c.innerText.trim().length > 0; }"
         )
 
-        page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 0")
+        page.evaluate("document.querySelector('.ag-grid-viewport').scrollLeft = 0")
         val editCell = page.locator(".ag-row:not(.ag-row-loading) .ag-cell[col-id='edit']").first()
         editCell.waitFor()
         editCell.scrollIntoViewIfNeeded()
@@ -43,7 +43,7 @@ class UserGroupMembershipBlotterPage(
         page.waitForFunction(
             "() => {" +
             "  if (document.querySelector('.ag-row-loading')) return false;" +
-            "  const vp = document.querySelector('.ag-center-cols-viewport');" +
+            "  const vp = document.querySelector('.ag-grid-viewport');" +
             "  if (vp) vp.scrollLeft = 0;" +
             "  return Array.from(document.querySelectorAll('.ag-cell'))" +
             "    .some(c => c.innerText && c.innerText.includes('$value'));" +

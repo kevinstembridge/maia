@@ -28,7 +28,7 @@ class SomeVersionedBlotterPage(
             "() => { const c = document.querySelector('.ag-cell[col-id=\"someInt\"]'); " +
             "return c && c.innerText && c.innerText.trim().length > 0; }"
         )
-        page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 0")
+        page.evaluate("document.querySelector('.ag-grid-viewport').scrollLeft = 0")
         val editCell = page.locator(".ag-row:not(.ag-row-loading) .ag-cell[col-id='edit']").first()
         editCell.waitFor()
         editCell.scrollIntoViewIfNeeded()
@@ -37,12 +37,12 @@ class SomeVersionedBlotterPage(
 
 
     fun clickDeleteButtonForFirstRow() {
-        page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 0")
+        page.evaluate("document.querySelector('.ag-grid-viewport').scrollLeft = 0")
         page.waitForFunction(
             "() => { const c = document.querySelector('.ag-cell[col-id=\"someInt\"]'); " +
             "return c && c.innerText && c.innerText.trim().length > 0; }"
         )
-        page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 99999")
+        page.evaluate("document.querySelector('.ag-grid-viewport').scrollLeft = 99999")
         val deleteCell = page.locator(".ag-row:not(.ag-row-loading) .ag-cell[col-id='delete']").first()
         deleteCell.waitFor()
         deleteCell.scrollIntoViewIfNeeded()
@@ -71,7 +71,7 @@ class SomeVersionedBlotterPage(
     fun assertTableContainsValue(value: String) {
         page.waitForFunction(
             "() => {" +
-            "  const vp = document.querySelector('.ag-center-cols-viewport');" +
+            "  const vp = document.querySelector('.ag-grid-viewport');" +
             "  if (!vp) return false;" +
             "  vp.scrollLeft = 0;" +
             "  return Array.from(document.querySelectorAll('.ag-cell'))" +

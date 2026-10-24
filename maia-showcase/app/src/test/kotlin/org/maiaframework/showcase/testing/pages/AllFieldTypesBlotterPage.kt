@@ -27,7 +27,7 @@ class AllFieldTypesBlotterPage(
         // Scroll to 0 so the edit column (leftmost) stays in the virtual DOM.
         // AllFieldTypes has 30+ columns — scrolling right removes leftmost columns via AG Grid
         // column virtualization. SomeVersioned's few columns all fit, so scroll=99999 works there.
-        page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 0")
+        page.evaluate("document.querySelector('.ag-grid-viewport').scrollLeft = 0")
         // Wait for a cell with actual content: AG Grid keeps row DOM nodes after reapplyFilters()
         // but sets rowNode.data = undefined immediately. Waiting for someInt (visible at scroll=0)
         // confirms the datasource response has arrived and data is truly loaded.
@@ -51,7 +51,7 @@ class AllFieldTypesBlotterPage(
         // original evaluate() call and the cell becoming visible.
         page.waitForFunction(
             "() => {" +
-            "  const vp = document.querySelector('.ag-center-cols-viewport');" +
+            "  const vp = document.querySelector('.ag-grid-viewport');" +
             "  if (!vp) return false;" +
             "  vp.scrollLeft = 1800;" +
             "  return Array.from(document.querySelectorAll('.ag-cell'))" +
@@ -63,12 +63,12 @@ class AllFieldTypesBlotterPage(
 
     fun clickDeleteButtonForFirstRow() {
         // Scroll back to 0 first so the someInt column (far left) is in the virtual DOM
-        page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 0")
+        page.evaluate("document.querySelector('.ag-grid-viewport').scrollLeft = 0")
         page.waitForFunction(
             "() => { const c = document.querySelector('.ag-cell[col-id=\"someInt\"]'); " +
             "return c && c.innerText && c.innerText.trim().length > 0; }"
         )
-        page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 99999")
+        page.evaluate("document.querySelector('.ag-grid-viewport').scrollLeft = 99999")
         val deleteCell = page.locator(".ag-row:not(.ag-row-loading) .ag-cell[col-id='delete']").first()
         deleteCell.waitFor()
         deleteCell.scrollIntoViewIfNeeded()

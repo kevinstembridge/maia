@@ -54,7 +54,7 @@ class UsersBlotterPage(
         ) as String?
 
         requireNotNull(rowIndex) { "Could not find row for displayName: $displayName" }
-        page.evaluate("document.querySelector('.ag-center-cols-viewport').scrollLeft = 99999")
+        page.evaluate("document.querySelector('.ag-grid-viewport').scrollLeft = 99999")
         val editCell = page.locator(".ag-row[row-index='$rowIndex'] .ag-cell[col-id='edit']")
         editCell.waitFor()
         editCell.scrollIntoViewIfNeeded()
@@ -67,7 +67,7 @@ class UsersBlotterPage(
         page.waitForFunction(
             "() => {" +
             "  if (document.querySelector('.ag-row-loading')) return false;" +
-            "  const vp = document.querySelector('.ag-center-cols-viewport');" +
+            "  const vp = document.querySelector('.ag-grid-viewport');" +
             "  if (vp) vp.scrollLeft = 0;" +
             "  return Array.from(document.querySelectorAll('.ag-cell'))" +
             "    .some(c => c.innerText && c.innerText.includes('$value'));" +
