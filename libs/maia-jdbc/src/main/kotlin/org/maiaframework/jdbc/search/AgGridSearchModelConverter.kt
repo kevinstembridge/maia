@@ -145,6 +145,14 @@ class AgGridSearchModelConverter(
             }
             "text" -> {
 
+                // AG Grid sends a boolean column filter as a text filter of type true/false with no filter value
+                if (filterType == "true" || filterType == "false") {
+                    if (jdbcCompatibleType != JdbcCompatibleType.boolean) {
+                        throw IllegalArgumentException("Filter type [$filterType] is only valid for a boolean column, but [$classFieldName] is [$jdbcCompatibleType]")
+                    }
+                    return "$dbColumnName = $filterType"
+                }
+
                 val filterTerm = fieldFilterModel.getString("filter")
 
                 if (jdbcCompatibleType == JdbcCompatibleType.text_array) {
