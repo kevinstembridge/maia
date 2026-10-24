@@ -1,0 +1,5 @@
+# AG Grid filter models behave identically on every search backend
+
+A Blotter's Filter model must return the same rows whether it is served from Postgres (`AgGridSearchModelConverter`) or Elasticsearch (`EsSearchRequestFactory`), so choosing a backend never changes what a user sees. This is enforced by a shared set of filter scenarios in `maia-showcase`, run against a real Postgres and a real Elasticsearch in Testcontainers, rather than by per-backend unit tests that would assert implementation details and let the two drift.
+
+Parity follows the SQL reference behaviour, not AG Grid's client-side behaviour: negative filters (`notEqual`, `notContains`) exclude Blanks, so users reach blank rows with the `blank` filter instead. Date filters use UTC day boundaries, and an unrecognised `filterType` or `type` throws instead of being ignored. Filters beyond the original JDBC set (`blank`, `notBlank`, set, boolean) are added to both backends together, and the bigint and multi filters stay unsupported by both until the generator emits them. A filter that cannot be expressed on both backends should not be added to either.

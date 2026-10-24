@@ -94,6 +94,14 @@ _Avoid_: Paged grid
 A Blotter that loads more results as the user scrolls down. Declared with `infiniteScroll()`.
 _Avoid_: Endless list
 
+**Filter model**:
+The per-column filter conditions a Blotter sends with a search. Several conditions on one column are combined with AND or OR; conditions on different columns are always ANDed.
+_Avoid_: Filter state, search criteria
+
+**Blank**:
+A value that is null or missing, or, for text, the empty string. Filters for blank values match it, and negative filters such as "not equal" exclude it.
+_Avoid_: Empty, null value
+
 **Blotter page**:
 The Angular page that hosts a Blotter, declared with `blotterPage()` or `withBlotterPage {}`.
 _Avoid_: List page

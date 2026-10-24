@@ -54,6 +54,49 @@ class EsSearchRequestFactoryTest {
     }
 
 
+    @Test
+    fun `contains filter becomes a case-insensitive wildcard query`() {
+
+        val request = factory.buildSearchRequest(containsModel("awai"), fieldNameMapper, indexName)
+
+        val wildcard = request.query()!!.bool().must().single().wildcard()
+        assertThat(wildcard.field()).isEqualTo("field_title")
+        assertThat(wildcard.value()).isEqualTo("*awai*")
+        assertThat(wildcard.caseInsensitive()).isTrue()
+
+    }
+
+
+    @Test
+    fun `contains filter escapes wildcard characters in the user input`() {
+
+        val request = factory.buildSearchRequest(containsModel("a*b?c\\d"), fieldNameMapper, indexName)
+
+        assertThat(request.query()!!.bool().must().single().wildcard().value()).isEqualTo("*a\\*b\\?c\\\\d*")
+
+    }
+
+
+    @Test
+    fun `contains filter is applied to count requests too`() {
+
+        val request = factory.buildCountRequest(containsModel("awai"), fieldNameMapper, indexName)
+
+        assertThat(request.query()!!.bool().must().single().wildcard().value()).isEqualTo("*awai*")
+
+    }
+
+
+    private fun containsModel(filter: String) = AgGridSearchModel(
+        filterModel = JsonNodeFactory.instance.objectNode().apply {
+            putObject("title").put("filterType", "text").put("type", "contains").put("filter", filter)
+        },
+        sortModel = emptyList(),
+        startRow = 0,
+        endRow = 10
+    )
+
+
     private fun sortFieldsOf(request: SearchRequest): List<String> {
         return request.sort().map { it.field().field() }
     }

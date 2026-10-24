@@ -69,10 +69,23 @@ class EsSearchRequestFactory {
 
         searchModel.filterModel.properties().forEach { filterModelItem ->
             val fieldPath = fieldNameMapper.invoke(filterModelItem.key)
-            boolQueryBuilder.must { m -> m.term { t -> t.field(fieldPath).value(filterModelItem.value.getStringOrNull("filter")) } }
+            val filter = filterModelItem.value.getStringOrNull("filter")
+            when (filterModelItem.value.getStringOrNull("type")) {
+                "contains" -> boolQueryBuilder.must { m ->
+                    m.wildcard { w -> w.field(fieldPath).value("*${escapeWildcards(filter)}*").caseInsensitive(true) }
+                }
+                else -> boolQueryBuilder.must { m -> m.term { t -> t.field(fieldPath).value(filter) } }
+            }
         }
 
         return boolQueryBuilder
+
+    }
+
+
+    private fun escapeWildcards(filter: String?): String {
+
+        return (filter ?: "").replace("\\", "\\\\").replace("*", "\\*").replace("?", "\\?")
 
     }
 
