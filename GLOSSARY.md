@@ -95,11 +95,11 @@ A Blotter that loads more results as the user scrolls down. Declared with `infin
 _Avoid_: Endless list
 
 **Filter model**:
-The per-column filter conditions a Blotter sends with a search. Several conditions on one column are combined with AND or OR; conditions on different columns are always ANDed.
+The filter conditions a user has set on a Blotter's columns. A column may have several conditions, combined with AND or OR; a row must satisfy the conditions of every filtered column.
 _Avoid_: Filter state, search criteria
 
 **Blank**:
-A value that is null or missing, or, for text, the empty string. Filters for blank values match it, and negative filters such as "not equal" exclude it.
+A value that is null or missing, or, for text, the empty string.
 _Avoid_: Empty, null value
 
 **Blotter page**:
