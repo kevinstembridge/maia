@@ -65,6 +65,9 @@ val playwrightHeadless = providers.gradleProperty("playwright.headless").orElse(
 
 tasks.withType<Test>().configureEach {
     systemProperty("playwright.headless", playwrightHeadless.get())
+    // The PostgreSQL JDBC driver opens each session in the JVM's time zone; the filter-parity tests
+    // (docs/adr/0005) expect UTC day boundaries, so run the whole suite in UTC.
+    jvmArgs("-Duser.timezone=UTC")
 }
 
 

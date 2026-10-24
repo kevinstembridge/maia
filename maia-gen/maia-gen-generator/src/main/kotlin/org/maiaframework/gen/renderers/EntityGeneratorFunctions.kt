@@ -52,7 +52,7 @@ fun renderWriteConversionForImplicitField(
         is BooleanValueClassFieldType -> renderer.appendLine("${indent}return $fieldName")
         is DataClassFieldType -> TODO("YAGNI?")
         is DomainIdFieldType -> renderer.appendLine("${indent}return (inputValue as DomainId).value")
-        is DoubleFieldType -> TODO("YAGNI?")
+        is DoubleFieldType -> renderer.appendLine("${indent}return $fieldName")
         is EnumFieldType -> renderer.appendLine("${indent}return $fullCastPrefix.name")
         is EsDocFieldType -> TODO("YAGNI?")
         is ForeignKeyFieldType -> when (val pkType = fieldType.pkFieldType) {

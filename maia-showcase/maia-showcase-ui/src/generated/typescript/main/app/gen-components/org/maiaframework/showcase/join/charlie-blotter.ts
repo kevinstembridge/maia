@@ -41,7 +41,7 @@ export class CharlieBlotter {
 
 
     public columnDefs: ColDef[] = [
-        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: false, sortable: false, hide: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
         { field: 'tableStringFromCharlie', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'tableStringFromBravo', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'tableStringFromAlpha', headerName: 'Some String', cellDataType: 'text', filter: true },

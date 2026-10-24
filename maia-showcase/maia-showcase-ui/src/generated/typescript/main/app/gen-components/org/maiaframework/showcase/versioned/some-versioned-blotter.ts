@@ -44,7 +44,7 @@ export class SomeVersionedBlotter {
 
 
     public columnDefs: ColDef[] = [
-        { field: 'id', headerName: 'ID', cellDataType: 'text', hide: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
+        { field: 'id', headerName: 'ID', cellDataType: 'text', filter: false, sortable: false, hide: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
         {
             field: 'edit',
             headerName: '',

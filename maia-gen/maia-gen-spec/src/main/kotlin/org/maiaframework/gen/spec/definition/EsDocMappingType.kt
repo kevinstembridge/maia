@@ -21,7 +21,7 @@ class BooleanEsDocMappingType internal constructor() : EsDocMappingType("boolean
 class DateEsDocMappingType internal constructor() : EsDocMappingType("date")
 
 
-class DoubleEsDocMappingType internal constructor() : EsDocMappingType("double")
+class DoubleEsDocMappingType internal constructor() : EsDocMappingType("double_")
 
 
 class KeywordEsDocMappingType internal constructor() : EsDocMappingType("keyword")

@@ -1165,6 +1165,128 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
+    val agGridFilterSampleEntityDef = entity(
+        "org.maiaframework.showcase.filter_sample",
+        "AgGridFilterSample",
+        deletable = Deletable.TRUE,
+        allowDeleteAll = AllowDeleteAll.TRUE
+    ) {
+        field("textRequired", FieldTypes.string) {
+            fieldDisplayName("Text Required")
+            lengthConstraint(max = 100)
+        }
+        field("textNullable", FieldTypes.string) {
+            fieldDisplayName("Text Nullable")
+            lengthConstraint(max = 100)
+            nullable()
+        }
+        field("intRequired", FieldTypes.int) {
+            fieldDisplayName("Int Required")
+        }
+        field("intNullable", FieldTypes.int) {
+            fieldDisplayName("Int Nullable")
+            nullable()
+        }
+        field("decimalRequired", FieldTypes.double) {
+            fieldDisplayName("Decimal Required")
+        }
+        field("decimalNullable", FieldTypes.double) {
+            fieldDisplayName("Decimal Nullable")
+            nullable()
+        }
+        field("dateRequired", FieldTypes.localDate) {
+            fieldDisplayName("Date Required")
+        }
+        field("dateNullable", FieldTypes.localDate) {
+            fieldDisplayName("Date Nullable")
+            nullable()
+        }
+        field("instantRequired", FieldTypes.instant) {
+            fieldDisplayName("Instant Required")
+        }
+        field("instantNullable", FieldTypes.instant) {
+            fieldDisplayName("Instant Nullable")
+            nullable()
+        }
+        field("flagRequired", FieldTypes.boolean) {
+            fieldDisplayName("Flag Required")
+        }
+        field("flagNullable", FieldTypes.boolean) {
+            fieldDisplayName("Flag Nullable")
+            nullable()
+        }
+        field("tags", fieldListOf(FieldTypes.string)) {
+            fieldDisplayName("Tags")
+        }
+    }
+
+
+    // PostgreSQL search entry point for the shared AG Grid filter-scenario harness.
+    val agGridFilterSampleSearchableDtoDef = searchableDto(
+        "org.maiaframework.showcase.filter_sample",
+        "AgGridFilterSample",
+        entityDef = agGridFilterSampleEntityDef,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+        searchModelType = SearchModelType.AG_GRID
+    ) {
+        field("textRequired")
+        field("textNullable")
+        field("intRequired")
+        field("intNullable")
+        field("decimalRequired")
+        field("decimalNullable")
+        field("dateRequired")
+        field("dateNullable")
+        field("instantRequired")
+        field("instantNullable")
+        field("flagRequired")
+        field("flagNullable")
+        field("tags")
+    }
+
+
+    // Elasticsearch search entry point for the same harness, over the same entity.
+    val agGridFilterSampleEsSearchableDtoDef = searchableDto(
+        "org.maiaframework.showcase.filter_sample",
+        "AgGridFilterSampleEs",
+        entityDef = agGridFilterSampleEntityDef,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+    ) {
+        elasticsearchEnabled(version = 1, autoRefresh = false)
+        field("textRequired")
+        field("textNullable")
+        field("intRequired")
+        field("intNullable")
+        field("decimalRequired")
+        field("decimalNullable")
+        field("dateRequired")
+        field("dateNullable")
+        field("instantRequired")
+        field("instantNullable")
+        field("flagRequired")
+        field("flagNullable")
+        field("tags") { esMapping(EsDocMappingTypes.keyword) }
+    }
+
+
+    val agGridFilterSampleEsBlotterDef = blotter(agGridFilterSampleEsSearchableDtoDef) {
+        columnFromDto("id")
+        columnFromDto("textRequired")
+        columnFromDto("textNullable")
+        columnFromDto("intRequired")
+        columnFromDto("intNullable")
+        columnFromDto("decimalRequired")
+        columnFromDto("decimalNullable")
+        columnFromDto("dateRequired")
+        columnFromDto("dateNullable")
+        columnFromDto("instantRequired")
+        columnFromDto("instantNullable")
+        columnFromDto("flagRequired")
+        columnFromDto("flagNullable")
+        columnFromDto("tags")
+    }
+
+
     val charlieSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.join",
         "Charlie",

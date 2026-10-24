@@ -227,6 +227,44 @@ class ResultSetAdapter(private val underlying: ResultSet) {
     }
 
 
+    fun readDouble(columnName: String): Double {
+
+        try {
+
+            val actual = this.underlying.getDouble(columnName)
+
+            return if (this.underlying.wasNull()) {
+                throw NullResultSetFieldException(columnName)
+            } else {
+                actual
+            }
+
+        } catch (e: SQLException) {
+            throw MaiaDataAccessException(e)
+        }
+
+    }
+
+
+    fun readDoubleOrNull(columnName: String): Double? {
+
+        try {
+
+            val actual = this.underlying.getDouble(columnName)
+
+            return if (this.underlying.wasNull()) {
+                null
+            } else {
+                actual
+            }
+
+        } catch (e: SQLException) {
+            throw MaiaDataAccessException(e)
+        }
+
+    }
+
+
     fun <T : Enum<T>> readEnum(
         columnName: String,
         enumClass: Class<T>
