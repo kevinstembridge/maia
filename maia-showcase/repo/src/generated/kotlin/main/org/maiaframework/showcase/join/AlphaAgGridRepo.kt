@@ -111,8 +111,8 @@ class AlphaAgGridRepo(private val dao: AlphaAgGridDao) {
 
         val entity = findByPrimaryKey(id)
         return AlphaAgGridRefDto(
-            entity.id,
-            entity.someString
+            id = entity.id,
+            displayName = entity.someString
         )
 
     }

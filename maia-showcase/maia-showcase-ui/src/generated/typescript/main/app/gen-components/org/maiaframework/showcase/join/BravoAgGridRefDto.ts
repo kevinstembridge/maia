@@ -3,6 +3,6 @@
 
 
 export interface BravoAgGridRefDto {
+    displayName: string;
     id: string;
-    name: string;
 }

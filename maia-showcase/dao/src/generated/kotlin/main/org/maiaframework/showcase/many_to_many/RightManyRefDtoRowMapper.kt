@@ -13,11 +13,11 @@ class RightManyRefDtoRowMapper : MaiaRowMapper<RightManyRefDto> {
     override fun mapRow(rsa: ResultSetAdapter): RightManyRefDto {
 
         val id = rsa.readDomainId("id")
-        val name = rsa.readString("some_string")
+        val displayName = rsa.readString("some_string")
 
         return RightManyRefDto(
+            displayName,
             id,
-            name,
         )
 
     }

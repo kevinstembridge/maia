@@ -118,8 +118,8 @@ class BravoAgGridRepo(private val dao: BravoAgGridDao) {
 
         val entity = findByPrimaryKey(id)
         return BravoAgGridRefDto(
-            entity.id,
-            entity.someString
+            id = entity.id,
+            displayName = entity.someString
         )
 
     }

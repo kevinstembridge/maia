@@ -701,7 +701,7 @@ class EsDocAutoRefreshIntegrationTest : AbstractBlackBoxTest() {
 
         @Suppress("UNCHECKED_CAST")
         val rights = doc.source()!!["rightEntities"] as List<Map<String, Any?>>
-        return rights.map { it["id"] to it["name"] }
+        return rights.map { it["id"] to it["displayName"] }
 
     }
 

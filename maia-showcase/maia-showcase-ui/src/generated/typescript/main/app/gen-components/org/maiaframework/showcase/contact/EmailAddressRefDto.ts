@@ -3,6 +3,6 @@
 
 
 export interface EmailAddressRefDto {
+    displayName: string;
     id: string;
-    name: string;
 }

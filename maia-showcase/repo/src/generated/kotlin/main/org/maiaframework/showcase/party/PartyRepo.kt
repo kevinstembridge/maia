@@ -138,8 +138,8 @@ class PartyRepo(private val dao: PartyDao) {
 
         val entity = findByPrimaryKey(id)
         return PartyRefDto(
-            entity.id,
-            entity.displayName
+            id = entity.id,
+            displayName = entity.displayName
         )
 
     }

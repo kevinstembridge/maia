@@ -14,14 +14,14 @@ class HistorySampleFetchForEditDtoRowMapper : MaiaRowMapper<HistorySampleFetchFo
     override fun mapRow(rsa: ResultSetAdapter): HistorySampleFetchForEditDto {
 
         val createdBy = PartyRefDto(
-            rsa.readDomainId("createdById"),
-            rsa.readString("createdByName"),
+            id = rsa.readDomainId("createdById"),
+            displayName = rsa.readString("createdByName"),
         )
         val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
         val lastModifiedBy = PartyRefDto(
-            rsa.readDomainId("lastModifiedById"),
-            rsa.readString("lastModifiedByName"),
+            id = rsa.readDomainId("lastModifiedById"),
+            displayName = rsa.readString("lastModifiedByName"),
         )
         val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
         val someInt = rsa.readInt("someInt")

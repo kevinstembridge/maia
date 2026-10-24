@@ -62,12 +62,14 @@ class SearchableDtoReverseJoinRendererTest {
             field("shippingName", "shippingCustomer.name")
         }
 
-        val left = entity("com.example", "Left", nameFieldForEntityRef = "name") {
+        val left = entity("com.example", "Left") {
+            refDtoFieldNames("name")
             field("name", FieldTypes.string)
             crud {}
         }
 
-        val right = entity("com.example", "Right", nameFieldForEntityRef = "name") {
+        val right = entity("com.example", "Right") {
+            refDtoFieldNames("name")
             field("name", FieldTypes.string)
             crud {}
         }

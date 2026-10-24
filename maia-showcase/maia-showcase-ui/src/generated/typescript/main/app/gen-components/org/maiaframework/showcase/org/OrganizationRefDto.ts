@@ -3,6 +3,6 @@
 
 
 export interface OrganizationRefDto {
+    displayName: string;
     id: string;
-    name: string;
 }

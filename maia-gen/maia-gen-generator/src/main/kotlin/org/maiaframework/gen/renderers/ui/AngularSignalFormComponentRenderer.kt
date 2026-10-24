@@ -843,7 +843,7 @@ class AngularSignalFormComponentRenderer(
         chipFields.forEach { chip ->
             appendLine("                this.${chip.selectedFieldName}.set(dto.${chip.fetchForEditDtoFieldName}.map(r => ({")
             appendLine("                    ${chip.esDocIdFieldName}: r.${chip.esDocIdFieldName},")
-            appendLine("                    ${chip.searchTermFieldName}: r.name,")
+            appendLine("                    ${chip.searchTermFieldName}: r.displayName,")
             appendLine("                })));")
         }
 
@@ -851,7 +851,7 @@ class AngularSignalFormComponentRenderer(
             appendLine("                this.${field.joinsFieldName}.set(dto.${field.fetchForEditDtoFieldName}?.map(e => ({")
             appendLine("                    id: e.id,")
             appendLine("                    entityId: e.entityId,")
-            appendLine("                    entityName: e.name,")
+            appendLine("                    entityName: e.displayName,")
             appendLine("                    effectiveFrom: e.effectiveFrom ? new Date(e.effectiveFrom) : null,")
             appendLine("                    effectiveTo: e.effectiveTo ? new Date(e.effectiveTo) : null,")
             field.extraJoinFields.forEach { extra ->

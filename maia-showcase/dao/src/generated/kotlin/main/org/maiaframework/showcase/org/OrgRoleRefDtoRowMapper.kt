@@ -13,11 +13,11 @@ class OrgRoleRefDtoRowMapper : MaiaRowMapper<OrgRoleRefDto> {
     override fun mapRow(rsa: ResultSetAdapter): OrgRoleRefDto {
 
         val id = rsa.readDomainId("id")
-        val name = rsa.readString("display_name")
+        val displayName = rsa.readString("display_name")
 
         return OrgRoleRefDto(
+            displayName,
             id,
-            name,
         )
 
     }

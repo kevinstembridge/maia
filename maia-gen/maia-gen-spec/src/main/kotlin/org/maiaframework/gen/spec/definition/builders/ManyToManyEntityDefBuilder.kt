@@ -37,6 +37,25 @@ class ManyToManyEntityDefBuilder {
     internal var lastModifiedTimestamp: Boolean = false
 
 
+    internal var displayNameFieldForEntityRef: String? = null
+
+
+    internal var shortcodeFieldForEntityRef: String? = null
+
+
+    fun refDtoFieldNames(
+        displayNameFieldName: String,
+        shortcodeFieldName: String? = null
+    ) {
+
+        require(this.displayNameFieldForEntityRef == null) { "refDtoFieldNames already set; cannot call refDtoFieldNames more than once" }
+
+        this.displayNameFieldForEntityRef = displayNameFieldName
+        this.shortcodeFieldForEntityRef = shortcodeFieldName
+
+    }
+
+
     fun effectiveRange(
         managedBy: EffectiveRangeManagedBy = EffectiveRangeManagedBy.SYSTEM,
         dateType: EffectiveRangeDateType = EffectiveRangeDateType.TIMESTAMP,

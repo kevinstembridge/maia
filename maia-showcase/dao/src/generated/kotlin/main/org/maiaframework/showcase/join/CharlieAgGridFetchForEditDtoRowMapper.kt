@@ -13,8 +13,8 @@ class CharlieAgGridFetchForEditDtoRowMapper : MaiaRowMapper<CharlieAgGridFetchFo
     override fun mapRow(rsa: ResultSetAdapter): CharlieAgGridFetchForEditDto {
 
         val bravo = BravoAgGridRefDto(
-            rsa.readDomainId("bravoId"),
-            rsa.readString("bravoName"),
+            id = rsa.readDomainId("bravoId"),
+            displayName = rsa.readString("bravoName"),
         )
         val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")

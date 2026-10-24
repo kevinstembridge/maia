@@ -145,8 +145,8 @@ class AlphaRepo(private val dao: AlphaDao) {
 
         val entity = findByPrimaryKey(id)
         return AlphaRefDto(
-            entity.id,
-            entity.someString
+            id = entity.id,
+            displayName = entity.someString
         )
 
     }

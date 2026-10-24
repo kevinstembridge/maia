@@ -3,6 +3,6 @@
 
 
 export interface RightManyRefDto {
+    displayName: string;
     id: string;
-    name: string;
 }

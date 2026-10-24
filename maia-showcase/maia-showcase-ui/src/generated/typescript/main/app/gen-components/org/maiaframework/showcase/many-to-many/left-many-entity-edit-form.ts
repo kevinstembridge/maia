@@ -183,33 +183,33 @@ export class LeftManyEntityEditForm implements OnInit {
                 }));
                 this.selectedRightSimpleEntities.set(dto.rightSimpleEntities.map(r => ({
                     id: r.id,
-                    someString: r.name,
+                    someString: r.displayName,
                 })));
                 this.rightSystemEffectiveJoins.set(dto.rightSystemEffectiveEntities?.map(e => ({
                     id: e.id,
                     entityId: e.entityId,
-                    entityName: e.name,
+                    entityName: e.displayName,
                     effectiveFrom: e.effectiveFrom ? new Date(e.effectiveFrom) : null,
                     effectiveTo: e.effectiveTo ? new Date(e.effectiveTo) : null,
                 })) ?? []);
                 this.rightSystemSingleEffectiveJoins.set(dto.rightSystemSingleEffectiveEntities?.map(e => ({
                     id: e.id,
                     entityId: e.entityId,
-                    entityName: e.name,
+                    entityName: e.displayName,
                     effectiveFrom: e.effectiveFrom ? new Date(e.effectiveFrom) : null,
                     effectiveTo: e.effectiveTo ? new Date(e.effectiveTo) : null,
                 })) ?? []);
                 this.rightUserEffectiveJoins.set(dto.rightUserEffectiveEntities?.map(e => ({
                     id: e.id,
                     entityId: e.entityId,
-                    entityName: e.name,
+                    entityName: e.displayName,
                     effectiveFrom: e.effectiveFrom ? new Date(e.effectiveFrom) : null,
                     effectiveTo: e.effectiveTo ? new Date(e.effectiveTo) : null,
                 })) ?? []);
                 this.rightJoins.set(dto.rightEntities?.map(e => ({
                     id: e.id,
                     entityId: e.entityId,
-                    entityName: e.name,
+                    entityName: e.displayName,
                     effectiveFrom: e.effectiveFrom ? new Date(e.effectiveFrom) : null,
                     effectiveTo: e.effectiveTo ? new Date(e.effectiveTo) : null,
                     someIntOnComplex: e.someIntOnComplex ?? 0,

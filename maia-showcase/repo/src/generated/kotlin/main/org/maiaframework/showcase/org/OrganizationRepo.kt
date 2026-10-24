@@ -118,8 +118,8 @@ class OrganizationRepo(private val dao: OrganizationDao) {
 
         val entity = findByPrimaryKey(id)
         return OrganizationRefDto(
-            entity.id,
-            entity.orgName
+            id = entity.id,
+            displayName = entity.orgName
         )
 
     }

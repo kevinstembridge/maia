@@ -79,7 +79,7 @@ class LeftManyFetchForEditDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowMa
             RightJoinFetchDto(
                 id = rsa.readDomainId("id"),
                 entityId = rsa.readDomainId("entity_id"),
-                name = rsa.readString("some_string"),
+                displayName = rsa.readString("some_string"),
                 effectiveFrom = rsa.readInstantOrNull("effective_from"),
                 effectiveTo = rsa.readInstantOrNull("effective_to"),
                 someIntOnComplex = rsa.readInt("some_int_on_complex"),
@@ -135,7 +135,7 @@ class LeftManyFetchForEditDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowMa
             RightSystemEffectiveJoinFetchDto(
                 id = rsa.readDomainId("id"),
                 entityId = rsa.readDomainId("entity_id"),
-                name = rsa.readString("some_string"),
+                displayName = rsa.readString("some_string"),
                 effectiveFrom = rsa.readInstantOrNull("effective_from"),
                 effectiveTo = rsa.readInstantOrNull("effective_to"),
             )
@@ -168,7 +168,7 @@ class LeftManyFetchForEditDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowMa
             RightSystemSingleEffectiveJoinFetchDto(
                 id = rsa.readDomainId("id"),
                 entityId = rsa.readDomainId("entity_id"),
-                name = rsa.readString("some_string"),
+                displayName = rsa.readString("some_string"),
                 effectiveFrom = rsa.readInstantOrNull("effective_from"),
                 effectiveTo = rsa.readInstantOrNull("effective_to"),
             )
@@ -200,7 +200,7 @@ class LeftManyFetchForEditDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowMa
             RightUserEffectiveJoinFetchDto(
                 id = rsa.readDomainId("id"),
                 entityId = rsa.readDomainId("entity_id"),
-                name = rsa.readString("some_string"),
+                displayName = rsa.readString("some_string"),
                 effectiveFrom = rsa.readInstantOrNull("effective_from"),
                 effectiveTo = rsa.readInstantOrNull("effective_to"),
             )

@@ -7,8 +7,8 @@ import {ICellRendererParams} from 'ag-grid-community';
     imports: [],
     template: `
         <div class="chips-container">
-            @for (item of items; track item.name) {
-                <span class="chip-item">{{item.name}}</span>
+            @for (item of items; track item.displayName) {
+                <span class="chip-item">{{item.displayName}}</span>
             }
         </div>
     `,
@@ -21,7 +21,7 @@ import {ICellRendererParams} from 'ag-grid-community';
 export class ChipsAgGridCellRendererComponent implements ICellRendererAngularComp {
 
 
-    items: { name: string }[] = [];
+    items: { displayName: string }[] = [];
 
 
     agInit(params: ICellRendererParams): void {

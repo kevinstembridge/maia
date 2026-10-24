@@ -158,7 +158,7 @@ class RowMapperRenderer(
         val foreignKeyFieldDef = rowMapperFieldDef.foreignKeyFieldDef
         val entityRefDef = foreignKeyFieldDef.foreignEntityDef.entityRefDef
         val pkEntityFieldDef = entityRefDef.pkEntityFieldDef
-        val nameEntityFieldDef = entityRefDef.nameEntityFieldDef
+        val displayNameEntityFieldDef = entityRefDef.displayNameEntityFieldDef
 
         val idResultSetFieldName = "${foreignKeyFieldDef.foreignKeyFieldName}Id"
         val nameResultSetFieldName = "${foreignKeyFieldDef.foreignKeyFieldName}Name"
@@ -166,8 +166,8 @@ class RowMapperRenderer(
         addImportFor(entityRefDef.dtoDef.fqcn)
 
         appendLine("        val ${rowMapperFieldDef.classFieldName} = ${entityRefDef.dtoUqcn}(")
-        appendLine(renderRowMapperField(pkEntityFieldDef, idResultSetFieldName, nullable = false, indentSize = 12, orElseText = "", ::addImportFor) + ",")
-        appendLine(renderRowMapperField(nameEntityFieldDef, nameResultSetFieldName, nullable = false, indentSize = 12, orElseText = "", ::addImportFor) + ",")
+        appendLine("            id = " + renderRowMapperField(pkEntityFieldDef, idResultSetFieldName, nullable = false, indentSize = 0, orElseText = "", ::addImportFor) + ",")
+        appendLine("            displayName = " + renderRowMapperField(displayNameEntityFieldDef, nameResultSetFieldName, nullable = false, indentSize = 0, orElseText = "", ::addImportFor) + ",")
         appendLine("        )")
 
     }
@@ -211,14 +211,14 @@ class RowMapperRenderer(
                     |            select
                     |                mtm.id,
                     |                other.id as entity_id,
-                    |                other.${joinFetchDtoDef.nameTableColumnName},
+                    |                other.${joinFetchDtoDef.displayNameTableColumnName},
                     |                lower(mtm.effective_range) as effective_from,
                     |                upper(mtm.effective_range) as effective_to$extraSelectClauses
                     |            from ${joinFetchDtoDef.otherSideEntitySchemaAndTableName} other
                     |            join ${joinFetchDtoDef.joinEntitySchemaAndTableName} mtm
                     |                on other.id = mtm.${joinFetchDtoDef.otherSideIdTableColumnName}
                     |            where mtm.${joinFetchDtoDef.thisSideIdTableColumnName} = :entityId${effectiveRangeClause}
-                    |            order by other.${joinFetchDtoDef.nameTableColumnName}
+                    |            order by other.${joinFetchDtoDef.displayNameTableColumnName}
                     |            $tripleQuote.trimIndent(),
                     |            SqlParams().apply {
                     |                addValue("entityId", entityId)
@@ -227,7 +227,7 @@ class RowMapperRenderer(
                     |            ${joinFetchDtoDef.uqcn}(
                     |                id = rsa.readDomainId("id"),
                     |                entityId = rsa.readDomainId("entity_id"),
-                    |                name = rsa.readString("${joinFetchDtoDef.nameTableColumnName}"),
+                    |                displayName = rsa.readString("${joinFetchDtoDef.displayNameTableColumnName}"),
                     |                effectiveFrom = rsa.readInstantOrNull("effective_from"),
                     |                effectiveTo = rsa.readInstantOrNull("effective_to"),$extraCtorArgs
                     |            )
@@ -261,12 +261,12 @@ class RowMapperRenderer(
                     |            $tripleQuote
                     |            select
                     |                other.id,
-                    |                other.${otherSideEntity.entityDef.entityRefDef.nameEntityFieldDef.tableColumnName}
+                    |                other.${otherSideEntity.entityDef.entityRefDef.displayNameEntityFieldDef.tableColumnName}
                     |            from ${otherSideEntity.entityDef.schemaAndTableName} other
                     |            join ${manyToManyEntityDef.entityDef.schemaAndTableName} mtm
                     |                on other.id = mtm.${otherSideIdTableColumnName}
                     |            where mtm.${thisSideIdTableColumnName} = :entityId${effectiveRangeClause}
-                    |            order by other.${otherSideEntity.entityDef.entityRefDef.nameEntityFieldDef.tableColumnName}
+                    |            order by other.${otherSideEntity.entityDef.entityRefDef.displayNameEntityFieldDef.tableColumnName}
                     |            $tripleQuote.trimIndent(),
                     |            SqlParams().apply {
                     |                addValue("entityId", entityId)

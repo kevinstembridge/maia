@@ -13,8 +13,8 @@ class BravoFetchForEditDtoRowMapper : MaiaRowMapper<BravoFetchForEditDto> {
     override fun mapRow(rsa: ResultSetAdapter): BravoFetchForEditDto {
 
         val alpha = AlphaRefDto(
-            rsa.readDomainId("alphaId"),
-            rsa.readString("alphaName"),
+            id = rsa.readDomainId("alphaId"),
+            displayName = rsa.readString("alphaName"),
         )
         val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")

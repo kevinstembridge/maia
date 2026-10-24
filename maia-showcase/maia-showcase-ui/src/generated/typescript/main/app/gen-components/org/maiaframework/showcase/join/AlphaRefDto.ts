@@ -3,6 +3,6 @@
 
 
 export interface AlphaRefDto {
+    displayName: string;
     id: string;
-    name: string;
 }

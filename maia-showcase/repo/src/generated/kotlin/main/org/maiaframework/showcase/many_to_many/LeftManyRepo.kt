@@ -145,8 +145,8 @@ class LeftManyRepo(private val dao: LeftManyDao) {
 
         val entity = findByPrimaryKey(id)
         return LeftManyRefDto(
-            entity.id,
-            entity.someString
+            id = entity.id,
+            displayName = entity.someString
         )
 
     }

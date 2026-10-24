@@ -42,11 +42,13 @@ class HistoryFkValidationTest {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
 
-            val noHistory = entity("com.example", "NoHistory", nameFieldForEntityRef = "name", deletable = Deletable.TRUE) {
+            val noHistory = entity("com.example", "NoHistory", deletable = Deletable.TRUE) {
+                refDtoFieldNames("name")
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 
-            val withHistory = entity("com.example", "WithHistory", recordVersionHistory = true, nameFieldForEntityRef = "name") {
+            val withHistory = entity("com.example", "WithHistory", recordVersionHistory = true) {
+                refDtoFieldNames("name")
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 

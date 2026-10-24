@@ -3,6 +3,6 @@
 
 
 export interface BravoRefDto {
+    displayName: string;
     id: string;
-    name: string;
 }

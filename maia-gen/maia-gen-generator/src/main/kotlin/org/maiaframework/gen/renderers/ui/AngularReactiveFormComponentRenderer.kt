@@ -637,7 +637,7 @@ class AngularReactiveFormComponentRenderer(
             chipFields.forEach { chip ->
                 appendLine("                this.${chip.selectedFieldName} = dto.${chip.fetchForEditDtoFieldName}.map(r => ({")
                 appendLine("                    ${chip.esDocIdFieldName}: r.${chip.esDocIdFieldName},")
-                appendLine("                    ${chip.searchTermFieldName}: r.name,")
+                appendLine("                    ${chip.searchTermFieldName}: r.displayName,")
                 appendLine("                }));")
             }
 
@@ -646,7 +646,7 @@ class AngularReactiveFormComponentRenderer(
                 appendLine("                this.${field.joinsFieldName} = dto.${field.fetchForEditDtoFieldName}?.map(e => ({")
                 appendLine("                    id: e.id,")
                 appendLine("                    entityId: e.entityId,")
-                appendLine("                    entityName: e.name,")
+                appendLine("                    entityName: e.displayName,")
                 appendLine("                    effectiveFrom: e.effectiveFrom ? new Date(e.effectiveFrom) : null,")
                 appendLine("                    effectiveTo: e.effectiveTo ? new Date(e.effectiveTo) : null,")
                 extraDtoFields.forEach { (name, _, _, defaultValue) ->

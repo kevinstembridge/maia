@@ -145,8 +145,8 @@ class AlphaWithHistoryRepo(private val dao: AlphaWithHistoryDao) {
 
         val entity = findByPrimaryKey(id)
         return AlphaWithHistoryRefDto(
-            entity.id,
-            entity.someString
+            id = entity.id,
+            displayName = entity.someString
         )
 
     }

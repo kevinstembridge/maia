@@ -348,7 +348,7 @@ object EsRefreshDependencyFactory {
             otherBuilder.paths.add(joinPath + JoinHop(joinEntityDef, otherFkField, otherEntityDef, primaryKeyFieldOf(otherEntityDef)))
 
             val entityRefDef = otherEntityDef.entityRefDef
-            otherBuilder.watchedFields.add(entityRefDef.nameEntityFieldDef.classFieldName)
+            otherBuilder.watchedFields.add(entityRefDef.displayNameEntityFieldDef.classFieldName)
             entityRefDef.shortcodeEntityFieldDef?.let { otherBuilder.watchedFields.add(it.classFieldName) }
 
         }

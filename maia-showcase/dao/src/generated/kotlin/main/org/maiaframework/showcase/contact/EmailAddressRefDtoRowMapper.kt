@@ -14,11 +14,11 @@ class EmailAddressRefDtoRowMapper : MaiaRowMapper<EmailAddressRefDto> {
     override fun mapRow(rsa: ResultSetAdapter): EmailAddressRefDto {
 
         val id = rsa.readString("email_address") { EmailAddress(it) }
-        val name = rsa.readString("email_address") { EmailAddress(it) }
+        val displayName = rsa.readString("email_address") { EmailAddress(it) }
 
         return EmailAddressRefDto(
+            displayName,
             id,
-            name,
         )
 
     }

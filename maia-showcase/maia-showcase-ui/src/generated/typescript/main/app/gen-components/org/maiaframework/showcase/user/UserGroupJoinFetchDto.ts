@@ -3,9 +3,9 @@
 
 
 export interface UserGroupJoinFetchDto {
+    displayName: string;
     effectiveFrom?: string;
     effectiveTo?: string;
     entityId: string;
     id: string;
-    name: string;
 }

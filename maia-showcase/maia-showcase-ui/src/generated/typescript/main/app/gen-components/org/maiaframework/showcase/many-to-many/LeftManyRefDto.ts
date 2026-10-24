@@ -3,6 +3,6 @@
 
 
 export interface LeftManyRefDto {
+    displayName: string;
     id: string;
-    name: string;
 }

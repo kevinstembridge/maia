@@ -72,7 +72,7 @@ class EntityDef(
      * generator needs to know the name of the entity field that will be used as the
      * display name in those dropdowns.
      */
-    private val nameFieldForEntityRef: String? = null,
+    private val displayNameFieldForEntityRef: String? = null,
     val stagingEntityFieldDefs: List<DataRowStagingEntityFieldDef> = emptyList(),
     val effectiveRangeDef: EffectiveRangeDef?,
     val cacheableDef: CacheableDef?,
@@ -81,7 +81,7 @@ class EntityDef(
     val historyBlotterConfig: EntityHistoryBlotterConfig = EntityHistoryBlotterConfig.DEFAULT,
     /**
      * Optional. The name of the entity field to expose as `shortcode` in the EntityRef DTO.
-     * Requires [nameFieldForEntityRef].
+     * Requires [displayNameFieldForEntityRef].
      */
     private val shortcodeFieldForEntityRef: String? = null
 ) {
@@ -260,7 +260,7 @@ class EntityDef(
     val isConcrete: Boolean = this.isAbstract == false
 
 
-    val hasRefDtoDef = this.nameFieldForEntityRef != null
+    val hasRefDtoDef = this.displayNameFieldForEntityRef != null
 
 
     /**
@@ -274,7 +274,7 @@ class EntityDef(
     val entityRefDef: EntityRefDef
         get() {
 
-            requireNotNull(this.nameFieldForEntityRef) { "nameFieldForEntityRef for entity $entityBaseName must not be null if entityRefDef is required." }
+            requireNotNull(this.displayNameFieldForEntityRef) { "displayNameFieldForEntityRef for entity $entityBaseName must not be null if entityRefDef is required." }
 
             if (primaryKeyFields.size > 1) {
                 throw ModelDefinitionException("YAGNI: EntityRef DTOs are not yet supported for Entities with composite primary keys")
@@ -283,7 +283,7 @@ class EntityDef(
             val primaryKeyEntityFieldDef = primaryKeyFields.firstOrNull()
                 ?: throw RuntimeException("Entity $entityBaseName has no primary key field")
 
-            val nameEntityFieldDef = findFieldByName(this.nameFieldForEntityRef)
+            val displayNameEntityFieldDef = findFieldByName(this.displayNameFieldForEntityRef)
 
             val shortcodeEntityFieldDef = this.shortcodeFieldForEntityRef?.let { findFieldByName(it) }
 
@@ -291,7 +291,7 @@ class EntityDef(
                 packageName,
                 DtoBaseName(entityBaseName.value),
                 primaryKeyEntityFieldDef,
-                nameEntityFieldDef,
+                displayNameEntityFieldDef,
                 entityRepoClassDef,
                 shortcodeEntityFieldDef
             )
@@ -314,7 +314,7 @@ class EntityDef(
                 JoinFetchDtoDef(
                     packageName = this.packageName,
                     otherSideDisplayName = otherSide.displayName.replace(" ", ""),
-                    nameTableColumnName = otherSide.entityDef.entityRefDef.nameEntityFieldDef.tableColumnName.value,
+                    displayNameTableColumnName = otherSide.entityDef.entityRefDef.displayNameEntityFieldDef.tableColumnName.value,
                     joinEntitySchemaAndTableName = m2m.entityDef.schemaAndTableName,
                     otherSideIdTableColumnName = m2m.idTableColumnName(otherSide.entityDef),
                     thisSideIdTableColumnName = m2m.idTableColumnName(this),
@@ -763,12 +763,12 @@ class EntityDef(
 
     init {
 
-        nameFieldForEntityRef?.let { findFieldByNameOrNull(it)
-            ?: throw IllegalStateException("nameFieldForEntityRef references a non-existent field $nameFieldForEntityRef on entity $entityBaseName")
+        displayNameFieldForEntityRef?.let { findFieldByNameOrNull(it)
+            ?: throw IllegalStateException("displayNameFieldForEntityRef references a non-existent field $displayNameFieldForEntityRef on entity $entityBaseName")
         }
 
         shortcodeFieldForEntityRef?.let {
-            check(nameFieldForEntityRef != null) { "shortcodeFieldForEntityRef requires nameFieldForEntityRef on entity $entityBaseName" }
+            check(displayNameFieldForEntityRef != null) { "shortcodeFieldForEntityRef requires displayNameFieldForEntityRef on entity $entityBaseName" }
             findFieldByNameOrNull(it)
                 ?: throw IllegalStateException("shortcodeFieldForEntityRef references a non-existent field $it on entity $entityBaseName")
         }

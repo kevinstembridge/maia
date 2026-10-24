@@ -495,7 +495,6 @@ abstract class AbstractSpec protected constructor(
         withHandcodedDao: WithHandCodedDao = WithHandCodedDao.FALSE,
         leftEntity: ReferencedEntity,
         rightEntity: ReferencedEntity,
-        nameFieldForEntityRef: String? = null,
         init: (ManyToManyEntityDefBuilder.() -> Unit)? = null
     ): ManyToManyEntityDef {
 
@@ -513,9 +512,10 @@ abstract class AbstractSpec protected constructor(
             withHandcodedDao,
             withHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
             leftEntity,
-            rightEntity,
-            nameFieldForEntityRef
+            rightEntity
         ) {
+
+            manyToManyBuilder.displayNameFieldForEntityRef?.let { refDtoFieldNames(it, manyToManyBuilder.shortcodeFieldForEntityRef) }
 
             manyToManyBuilder.description?.let { description(it.value) }
 
@@ -555,7 +555,6 @@ abstract class AbstractSpec protected constructor(
         withHandCodedEntityDao: WithHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
         leftEntity: ReferencedEntity,
         rightEntity: ReferencedEntity,
-        nameFieldForEntityRef: String? = null,
         init: (EntityDefBuilder.() -> Unit)? = null
     ): ManyToManyEntityDef {
 
@@ -570,7 +569,6 @@ abstract class AbstractSpec protected constructor(
             deletable,
             allowDeleteAll,
             allowFindAll,
-            nameFieldForEntityRef,
             withHandcodedDao,
             withHandCodedEntityDao,
             defaultSchemaName,
@@ -676,8 +674,6 @@ abstract class AbstractSpec protected constructor(
         allowFindAll: AllowFindAll = AllowFindAll.FALSE,
         withHandcodedDao: WithHandCodedDao = WithHandCodedDao.FALSE,
         withHandcodedEntityDao: WithHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
-        nameFieldForEntityRef: String? = null,
-        shortcodeFieldForEntityRef: String? = null,
         init: EntityDefBuilder.() -> Unit
     ): EntityDef {
 
@@ -692,11 +688,9 @@ abstract class AbstractSpec protected constructor(
             deletable,
             allowDeleteAll,
             allowFindAll,
-            nameFieldForEntityRef,
             withHandcodedDao,
             withHandcodedEntityDao,
-            this.defaultSchemaName,
-            shortcodeFieldForEntityRef = shortcodeFieldForEntityRef
+            this.defaultSchemaName
         )
 
         builder.init()

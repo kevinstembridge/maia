@@ -272,12 +272,12 @@ class EntityDetailDtoRepoRenderer(private val entityDetailViewDef: EntityDetailV
                 |            $tripleQuote
                 |            select
                 |                other.id,
-                |                other.${otherSideEntity.entityDef.entityRefDef.nameEntityFieldDef.tableColumnName}
+                |                other.${otherSideEntity.entityDef.entityRefDef.displayNameEntityFieldDef.tableColumnName}
                 |            from ${otherSideEntity.entityDef.schemaAndTableName} other
                 |            join ${manyToManyEntityDef.entityDef.schemaAndTableName} mtm
                 |                on other.id = mtm.${otherSideIdTableColumnName}
                 |            where mtm.${thisSideIdTableColumnName} = :entityId${effectiveRangeClause}
-                |            order by other.${otherSideEntity.entityDef.entityRefDef.nameEntityFieldDef.tableColumnName}
+                |            order by other.${otherSideEntity.entityDef.entityRefDef.displayNameEntityFieldDef.tableColumnName}
                 |            $tripleQuote.trimIndent(),
                 |            SqlParams().apply {
                 |                addValue("entityId", entityId)

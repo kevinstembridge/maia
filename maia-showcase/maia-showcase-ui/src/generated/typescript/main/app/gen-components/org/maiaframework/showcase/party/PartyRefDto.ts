@@ -3,6 +3,6 @@
 
 
 export interface PartyRefDto {
+    displayName: string;
     id: string;
-    name: string;
 }

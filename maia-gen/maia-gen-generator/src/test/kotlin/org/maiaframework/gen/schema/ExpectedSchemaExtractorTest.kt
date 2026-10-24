@@ -100,10 +100,12 @@ class ExpectedSchemaExtractorTest {
     fun `extracts a separate table for a many-to-many join entity`() {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
-            val left = entity("com.example", "Left", nameFieldForEntityRef = "name") {
+            val left = entity("com.example", "Left") {
+                refDtoFieldNames("name")
                 field("name", FieldTypes.string) { lengthConstraint(max = 50) }
             }
-            val right = entity("com.example", "Right", nameFieldForEntityRef = "name") {
+            val right = entity("com.example", "Right") {
+                refDtoFieldNames("name")
                 field("name", FieldTypes.string) { lengthConstraint(max = 50) }
             }
             // Field names deliberately omit a trailing "Id" — simpleManyToManyEntity ultimately

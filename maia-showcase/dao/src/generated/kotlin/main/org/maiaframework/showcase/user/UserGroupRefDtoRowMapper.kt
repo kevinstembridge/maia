@@ -13,11 +13,11 @@ class UserGroupRefDtoRowMapper : MaiaRowMapper<UserGroupRefDto> {
     override fun mapRow(rsa: ResultSetAdapter): UserGroupRefDto {
 
         val id = rsa.readDomainId("id")
-        val name = rsa.readString("name")
+        val displayName = rsa.readString("name")
 
         return UserGroupRefDto(
+            displayName,
             id,
-            name,
         )
 
     }

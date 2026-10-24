@@ -101,8 +101,8 @@ class EmailAddressRepo(private val dao: EmailAddressDao) {
 
         val entity = findByPrimaryKey(emailAddress)
         return EmailAddressRefDto(
-            entity.emailAddress,
-            entity.emailAddress
+            id = entity.emailAddress,
+            displayName = entity.emailAddress
         )
 
     }

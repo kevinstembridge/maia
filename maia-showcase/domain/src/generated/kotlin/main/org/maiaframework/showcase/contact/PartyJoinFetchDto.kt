@@ -9,12 +9,12 @@ import java.time.Instant
 
 
 data class PartyJoinFetchDto(
+    val displayName: String,
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
     val entityId: DomainId,
     val id: DomainId,
     val isPrimaryContact: Boolean,
-    val name: String,
     val purposes: List<EmailAddressPurpose>
 ) {
 

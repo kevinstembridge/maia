@@ -70,7 +70,7 @@ class OrganizationFetchForEditDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaR
             RoleJoinFetchDto(
                 id = rsa.readDomainId("id"),
                 entityId = rsa.readDomainId("entity_id"),
-                name = rsa.readString("display_name"),
+                displayName = rsa.readString("display_name"),
                 effectiveFrom = rsa.readInstantOrNull("effective_from"),
                 effectiveTo = rsa.readInstantOrNull("effective_to"),
             )

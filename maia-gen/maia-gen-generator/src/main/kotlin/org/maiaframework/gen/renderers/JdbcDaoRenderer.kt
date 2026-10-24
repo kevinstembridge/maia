@@ -2141,7 +2141,7 @@ class JdbcDaoRenderer(
 
                 listOf(
                     "$tableOrAlias.id as ${foreignKeyFieldDef.foreignKeyFieldName}Id",
-                    "$tableOrAlias.${entityRefDef.nameEntityFieldDef.tableColumnName} as ${foreignKeyFieldDef.foreignKeyFieldName}Name"
+                    "$tableOrAlias.${entityRefDef.displayNameEntityFieldDef.tableColumnName} as ${foreignKeyFieldDef.foreignKeyFieldName}Name"
                 )
 
             }

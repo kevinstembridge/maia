@@ -13,11 +13,11 @@ class PartyRefDtoRowMapper : MaiaRowMapper<PartyRefDto> {
     override fun mapRow(rsa: ResultSetAdapter): PartyRefDto {
 
         val id = rsa.readDomainId("id")
-        val name = rsa.readString("display_name")
+        val displayName = rsa.readString("display_name")
 
         return PartyRefDto(
+            displayName,
             id,
-            name,
         )
 
     }

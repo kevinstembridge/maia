@@ -35,7 +35,7 @@ class EntityDetailViewContentHtmlRenderer(private val entityDetailViewDef: Entit
                 append("""
                     |    <div class="detail-row">
                     |      <div class="detail-label">${classFieldDef.displayName}</div>
-                    |      <div class="detail-value">{{detailDto.${classFieldDef.classFieldName}.name$pipes}}</div>
+                    |      <div class="detail-value">{{detailDto.${classFieldDef.classFieldName}.displayName$pipes}}</div>
                     |    </div>
                     |""".trimMargin()
                 )
@@ -56,7 +56,7 @@ class EntityDetailViewContentHtmlRenderer(private val entityDetailViewDef: Entit
                     |    <div class="detail-row">
                     |      <div class="detail-label">${classFieldDef.displayName}</div>
                     |      <div class="detail-value">
-                    |        @for (item of detailDto.${classFieldDef.classFieldName}; track item.id) {<span>{{item.name}}</span>}
+                    |        @for (item of detailDto.${classFieldDef.classFieldName}; track item.id) {<span>{{item.displayName}}</span>}
                     |      </div>
                     |    </div>
                     |""".trimMargin()

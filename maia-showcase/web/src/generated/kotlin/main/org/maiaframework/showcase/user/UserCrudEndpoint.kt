@@ -29,8 +29,8 @@ class UserCrudEndpoint(val crudService: UserCrudService) {
         val entity = this.crudService.create(createDto)
 
         return UserRefDto(
-            entity.id,
-            entity.displayName
+            id = entity.id,
+            displayName = entity.displayName
         )
 
     }

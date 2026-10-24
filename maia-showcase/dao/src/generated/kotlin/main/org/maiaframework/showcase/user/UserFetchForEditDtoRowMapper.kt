@@ -79,7 +79,7 @@ class UserFetchForEditDtoRowMapper(private val jdbcOps: JdbcOps) : MaiaRowMapper
             UserGroupJoinFetchDto(
                 id = rsa.readDomainId("id"),
                 entityId = rsa.readDomainId("entity_id"),
-                name = rsa.readString("name"),
+                displayName = rsa.readString("name"),
                 effectiveFrom = rsa.readInstantOrNull("effective_from"),
                 effectiveTo = rsa.readInstantOrNull("effective_to"),
             )

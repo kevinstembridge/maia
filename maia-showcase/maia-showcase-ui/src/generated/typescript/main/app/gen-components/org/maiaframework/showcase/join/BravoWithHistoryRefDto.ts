@@ -3,6 +3,6 @@
 
 
 export interface BravoWithHistoryRefDto {
+    displayName: string;
     id: string;
-    name: string;
 }

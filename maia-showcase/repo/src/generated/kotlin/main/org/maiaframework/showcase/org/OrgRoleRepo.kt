@@ -156,8 +156,8 @@ class OrgRoleRepo(private val dao: OrgRoleDao) {
 
         val entity = findByPrimaryKey(id)
         return OrgRoleRefDto(
-            entity.id,
-            entity.displayName
+            id = entity.id,
+            displayName = entity.displayName
         )
 
     }

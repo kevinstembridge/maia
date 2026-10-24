@@ -133,10 +133,10 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         "Party",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        nameFieldForEntityRef = "displayName",
         versioned = true,
         recordVersionHistory = true,
     ) {
+        refDtoFieldNames("displayName")
         isAbstract = true
         tableName(name = "party", viewName = "v_party")
         field("displayName", FieldTypes.string) {
@@ -164,8 +164,8 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val orgRoleEntityDef = entity(
         "org.maiaframework.showcase.org", "OrgRole",
         recordVersionHistory = true,
-        nameFieldForEntityRef = "displayName"
     ) {
+        refDtoFieldNames("displayName")
         field("key", orgRoleKeyStringType) {
             unique()
         }
@@ -184,8 +184,8 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val orgEntityDef = entity(
         "org.maiaframework.showcase.org",
         "Organization",
-        nameFieldForEntityRef = "orgName",
     ) {
+        refDtoFieldNames("orgName")
         superclass(partyEntityDef)
         typeDiscriminator("ORG")
         field("orgName", FieldTypes.string) {
@@ -277,8 +277,8 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val userEntityDef = entity(
         "org.maiaframework.showcase.user",
         "User",
-        nameFieldForEntityRef = "displayName",
     ) {
+        refDtoFieldNames("displayName")
         superclass(personEntityDef)
         typeDiscriminator("USR")
         field("authorities", fieldListOf(ValueClassDefs.authority)) {
@@ -357,8 +357,8 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         "org.maiaframework.showcase.user",
         "UserGroup",
         recordVersionHistory = true,
-        nameFieldForEntityRef = "name",
     ) {
+        refDtoFieldNames("name")
         moduleName("ops")
         typeDiscriminator("UG")
         field("name", FieldTypes.string) {
@@ -464,8 +464,8 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val emailAddressEntityDef = entity(
         "org.maiaframework.showcase.contact",
         "EmailAddress",
-        nameFieldForEntityRef = "emailAddress",
     ) {
+        refDtoFieldNames("emailAddress")
         moduleName("ops")
         field("emailAddress", emailAddressStringType) {
             primaryKey()

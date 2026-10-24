@@ -30,8 +30,8 @@ class BravoWithHistoryCrudEndpoint(val crudService: BravoWithHistoryCrudService)
         val entity = this.crudService.create(createDto)
 
         return BravoWithHistoryRefDto(
-            entity.id,
-            entity.someString
+            id = entity.id,
+            displayName = entity.someString
         )
 
     }

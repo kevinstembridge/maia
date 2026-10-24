@@ -59,12 +59,10 @@ class EntityDefBuilder(
     private val deletable: Deletable = Deletable.FALSE,
     private val allowDeleteAll: AllowDeleteAll,
     private val allowFindAll: AllowFindAll,
-    private val nameFieldForEntityRef: String?,
     private val withHandcodedDao: WithHandCodedDao = WithHandCodedDao.FALSE,
     private val withHandcodedEntityDao: WithHandCodedEntityDao = WithHandCodedEntityDao.FALSE,
     defaultSchemaName: SchemaName,
-    private val isManyToManyJoinEntity: Boolean = false,
-    private val shortcodeFieldForEntityRef: String? = null
+    private val isManyToManyJoinEntity: Boolean = false
 ) {
 
 
@@ -122,6 +120,12 @@ class EntityDefBuilder(
     private var effectiveRangeDef: EffectiveRangeDef? = null
 
 
+    private var displayNameFieldForEntityRef: String? = null
+
+
+    private var shortcodeFieldForEntityRef: String? = null
+
+
     fun build(): EntityDef {
 
         val entityFieldDefs = buildEntityFieldDefs()
@@ -159,7 +163,7 @@ class EntityDefBuilder(
             recordVersionHistory,
             this.versioned,
             isHistoryEntity = false,
-            this.nameFieldForEntityRef,
+            this.displayNameFieldForEntityRef,
             stagingEntityFieldDefs = emptyList(),
             this.effectiveRangeDef,
             this.cacheableDef,
@@ -274,6 +278,23 @@ class EntityDefBuilder(
     fun description(description: String) {
 
         this.description = Description(description)
+
+    }
+
+
+    /**
+     * Declares the fields that populate this entity's Entity ref DTO: the display name shown in
+     * dropdowns that select this entity, and an optional shortcode.
+     */
+    fun refDtoFieldNames(
+        displayNameFieldName: String,
+        shortcodeFieldName: String? = null
+    ) {
+
+        require(this.displayNameFieldForEntityRef == null) { "refDtoFieldNames already set; cannot call refDtoFieldNames more than once" }
+
+        this.displayNameFieldForEntityRef = displayNameFieldName
+        this.shortcodeFieldForEntityRef = shortcodeFieldName
 
     }
 

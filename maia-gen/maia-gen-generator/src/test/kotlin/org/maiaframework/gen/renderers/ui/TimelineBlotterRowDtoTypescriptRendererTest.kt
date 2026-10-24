@@ -24,8 +24,8 @@ class TimelineBlotterRowDtoTypescriptRendererTest {
                 "com.example",
                 "Widget",
                 recordVersionHistory = true,
-                nameFieldForEntityRef = "name"
             ) {
+                refDtoFieldNames("name")
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
                 field("address", addressDto) { fieldDisplayName("Address") }
             }

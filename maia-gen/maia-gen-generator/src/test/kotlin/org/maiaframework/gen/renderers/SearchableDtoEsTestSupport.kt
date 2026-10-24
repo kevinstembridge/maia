@@ -68,7 +68,8 @@ class SearchableDtoEsTestSpec : AbstractSpec(AppKey("Test")) {
 class EsRefreshListenerTestSpec(autoRefresh: Boolean = true) : AbstractSpec(AppKey("Test")) {
 
 
-    val region = entity("com.example", "Region", nameFieldForEntityRef = "name", deletable = Deletable.TRUE) {
+    val region = entity("com.example", "Region", deletable = Deletable.TRUE) {
+        refDtoFieldNames("name")
         field("name", FieldTypes.string) {
             fieldDisplayName("Name")
             editableByUser()
@@ -81,7 +82,8 @@ class EsRefreshListenerTestSpec(autoRefresh: Boolean = true) : AbstractSpec(AppK
     }
 
 
-    val customer = entity("com.example", "Customer", nameFieldForEntityRef = "name", deletable = Deletable.TRUE) {
+    val customer = entity("com.example", "Customer", deletable = Deletable.TRUE) {
+        refDtoFieldNames("name")
         field("name", FieldTypes.string) {
             fieldDisplayName("Name")
             editableByUser()
@@ -142,7 +144,8 @@ class EsRefreshListenerTestSpec(autoRefresh: Boolean = true) : AbstractSpec(AppK
     }
 
 
-    val left = entity("com.example", "Left", nameFieldForEntityRef = "name", deletable = Deletable.TRUE) {
+    val left = entity("com.example", "Left", deletable = Deletable.TRUE) {
+        refDtoFieldNames("name")
         field("name", FieldTypes.string) {
             fieldDisplayName("Name")
             editableByUser()
@@ -155,7 +158,8 @@ class EsRefreshListenerTestSpec(autoRefresh: Boolean = true) : AbstractSpec(AppK
     }
 
 
-    val right = entity("com.example", "Right", nameFieldForEntityRef = "name", deletable = Deletable.TRUE) {
+    val right = entity("com.example", "Right", deletable = Deletable.TRUE) {
+        refDtoFieldNames("name")
         field("name", FieldTypes.string) {
             fieldDisplayName("Name")
             editableByUser()

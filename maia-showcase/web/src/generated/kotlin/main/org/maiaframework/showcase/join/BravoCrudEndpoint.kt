@@ -30,8 +30,8 @@ class BravoCrudEndpoint(val crudService: BravoCrudService) {
         val entity = this.crudService.create(createDto)
 
         return BravoRefDto(
-            entity.id,
-            entity.someString
+            id = entity.id,
+            displayName = entity.someString
         )
 
     }

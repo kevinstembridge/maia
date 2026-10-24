@@ -3,10 +3,10 @@
 
 
 export interface LeftJoinFetchDto {
+    displayName: string;
     effectiveFrom?: string;
     effectiveTo?: string;
     entityId: string;
     id: string;
-    name: string;
     someIntOnComplex: number;
 }

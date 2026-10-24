@@ -27,8 +27,8 @@ class OrganizationCrudEndpoint(val crudService: OrganizationCrudService) {
         val entity = this.crudService.create(createDto)
 
         return OrganizationRefDto(
-            entity.id,
-            entity.orgName
+            id = entity.id,
+            displayName = entity.orgName
         )
 
     }

@@ -9,7 +9,7 @@ import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 class JoinFetchDtoDef(
     packageName: PackageName,
     otherSideDisplayName: String,
-    val nameTableColumnName: String,
+    val displayNameTableColumnName: String,
     val joinEntitySchemaAndTableName: String,
     val otherSideIdTableColumnName: String,
     val thisSideIdTableColumnName: String,
@@ -26,7 +26,7 @@ class JoinFetchDtoDef(
         listOf(
             ClassFieldDef.aClassField("id", FieldTypes.domainId).build(),
             ClassFieldDef.aClassField("entityId", FieldTypes.domainId).build(),
-            ClassFieldDef.aClassField("name", FieldTypes.string).build(),
+            ClassFieldDef.aClassField("displayName", FieldTypes.string).build(),
             ClassFieldDef.aClassField("effectiveFrom", FieldTypes.instant).nullable().build(),
             ClassFieldDef.aClassField("effectiveTo", FieldTypes.instant).nullable().build(),
         ) + extraFields

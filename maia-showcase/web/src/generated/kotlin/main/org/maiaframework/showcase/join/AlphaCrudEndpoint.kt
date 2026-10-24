@@ -30,8 +30,8 @@ class AlphaCrudEndpoint(val crudService: AlphaCrudService) {
         val entity = this.crudService.create(createDto)
 
         return AlphaRefDto(
-            entity.id,
-            entity.someString
+            id = entity.id,
+            displayName = entity.someString
         )
 
     }

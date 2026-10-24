@@ -302,7 +302,7 @@ object MatFormFieldRenderer {
         }
 
         val valueExpr = if (htmlFormField.isTypeahead) {
-            "formGroup.getRawValue().${fieldName}?.name"
+            "formGroup.getRawValue().${fieldName}?.displayName"
         } else {
             "formGroup.getRawValue().${fieldName}"
         }
@@ -338,7 +338,7 @@ object MatFormFieldRenderer {
         }
 
         val valueExpr = if (isNamedReference) {
-            "fetchedDto()?.${fieldName}?.name"
+            "fetchedDto()?.${fieldName}?.displayName"
         } else {
             "fetchedDto()?.${fieldName}"
         }

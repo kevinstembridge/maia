@@ -11,7 +11,7 @@ class EntityRefDef(
     val packageName: PackageName,
     val dtoBaseName: DtoBaseName,
     val pkEntityFieldDef: EntityFieldDef,
-    val nameEntityFieldDef: EntityFieldDef,
+    val displayNameEntityFieldDef: EntityFieldDef,
     val entityRepoClassDef: ClassDef,
     val shortcodeEntityFieldDef: EntityFieldDef? = null
 ) {
@@ -23,7 +23,7 @@ class EntityRefDef(
         DtoSuffix("Dto"),
         listOfNotNull(
             aClassField("id", pkEntityFieldDef.fieldType).build(),
-            aClassField("name", nameEntityFieldDef.fieldType).build(),
+            aClassField("displayName", displayNameEntityFieldDef.fieldType).build(),
             shortcodeEntityFieldDef?.let { aClassField("shortcode", it.fieldType).build() },
         )
     ).build()
@@ -36,7 +36,7 @@ class EntityRefDef(
         dtoDef.fqcn,
         listOfNotNull(
             EntityFieldRowMapperFieldDef(ClassFieldName("id"), pkEntityFieldDef, pkEntityFieldDef.tableColumnName.value),
-            EntityFieldRowMapperFieldDef(ClassFieldName("name"), nameEntityFieldDef, nameEntityFieldDef.tableColumnName.value),
+            EntityFieldRowMapperFieldDef(ClassFieldName("displayName"), displayNameEntityFieldDef, displayNameEntityFieldDef.tableColumnName.value),
             shortcodeEntityFieldDef?.let { EntityFieldRowMapperFieldDef(ClassFieldName("shortcode"), it, it.tableColumnName.value) }
         ),
         dtoDef.rowMapperClassDef,
@@ -54,10 +54,10 @@ class EntityRefDef(
     fun constructionFrom(entityVar: String, indent: String): String {
 
         val args = listOfNotNull(
-            pkEntityFieldDef,
-            nameEntityFieldDef,
-            shortcodeEntityFieldDef
-        ).joinToString(",\n") { "$indent    $entityVar.${it.classFieldName}" }
+            "id" to pkEntityFieldDef,
+            "displayName" to displayNameEntityFieldDef,
+            shortcodeEntityFieldDef?.let { "shortcode" to it }
+        ).joinToString(",\n") { (dtoFieldName, entityFieldDef) -> "$indent    $dtoFieldName = $entityVar.${entityFieldDef.classFieldName}" }
 
         return "$dtoUqcn(\n$args\n$indent)"
 

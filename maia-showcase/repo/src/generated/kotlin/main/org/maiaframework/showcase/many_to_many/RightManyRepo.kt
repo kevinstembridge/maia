@@ -145,8 +145,8 @@ class RightManyRepo(private val dao: RightManyDao) {
 
         val entity = findByPrimaryKey(id)
         return RightManyRefDto(
-            entity.id,
-            entity.someString
+            id = entity.id,
+            displayName = entity.someString
         )
 
     }

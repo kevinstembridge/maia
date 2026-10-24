@@ -3,6 +3,6 @@
 
 
 export interface AlphaWithHistoryRefDto {
+    displayName: string;
     id: string;
-    name: string;
 }

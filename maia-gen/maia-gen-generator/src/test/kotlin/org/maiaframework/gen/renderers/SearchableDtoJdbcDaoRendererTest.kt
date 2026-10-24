@@ -72,12 +72,14 @@ class SearchableDtoJdbcDaoRendererTest {
             field("doors")
         }
 
-        val owner = entity("com.example", "Owner", nameFieldForEntityRef = "name") {
+        val owner = entity("com.example", "Owner") {
+            refDtoFieldNames("name")
             field("name", FieldTypes.string)
             crud {}
         }
 
-        val asset = entity("com.example", "Asset", nameFieldForEntityRef = "label") {
+        val asset = entity("com.example", "Asset") {
+            refDtoFieldNames("label")
             field("label", FieldTypes.string)
             crud {}
         }

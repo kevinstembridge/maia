@@ -7,8 +7,8 @@ import org.maiaframework.domain.contact.EmailAddress
 
 
 data class EmailAddressRefDto(
-    val id: EmailAddress,
-    val name: EmailAddress
+    val displayName: EmailAddress,
+    val id: EmailAddress
 ) {
 
 

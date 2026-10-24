@@ -3,6 +3,6 @@
 
 
 export interface UserRefDto {
+    displayName: string;
     id: string;
-    name: string;
 }

@@ -111,8 +111,8 @@ class UserGroupRepo(private val dao: UserGroupDao) {
 
         val entity = findByPrimaryKey(id)
         return UserGroupRefDto(
-            entity.id,
-            entity.name
+            id = entity.id,
+            displayName = entity.name
         )
 
     }

@@ -8,11 +8,11 @@ import java.time.Instant
 
 
 data class RightUserEffectiveJoinFetchDto(
+    val displayName: String,
     val effectiveFrom: Instant?,
     val effectiveTo: Instant?,
     val entityId: DomainId,
-    val id: DomainId,
-    val name: String
+    val id: DomainId
 ) {
 
 

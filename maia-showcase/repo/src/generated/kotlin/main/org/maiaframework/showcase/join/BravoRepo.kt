@@ -152,8 +152,8 @@ class BravoRepo(private val dao: BravoDao) {
 
         val entity = findByPrimaryKey(id)
         return BravoRefDto(
-            entity.id,
-            entity.someString
+            id = entity.id,
+            displayName = entity.someString
         )
 
     }

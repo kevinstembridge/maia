@@ -3,6 +3,6 @@
 
 
 export interface AlphaAgGridRefDto {
+    displayName: string;
     id: string;
-    name: string;
 }

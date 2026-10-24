@@ -942,10 +942,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val alphaEntityDef = entity(
         "org.maiaframework.showcase.join",
         "Alpha",
-        nameFieldForEntityRef = "someString",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
     ) {
+        refDtoFieldNames("someString")
         field("someInt", FieldTypes.int) {
             fieldDisplayName("Some Int")
             editableByUser()
@@ -1035,10 +1035,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val bravoEntityDef = entity(
         "org.maiaframework.showcase.join",
         "Bravo",
-        nameFieldForEntityRef = "someString",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
+        refDtoFieldNames("someString")
         foreignKey("alpha", alphaEntityDef) {
             fieldDisplayName("Alpha")
             typeaheadField(alphaTypeaheadDef)
@@ -1308,10 +1308,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val alphaAgGridEntityDef = entity(
         "org.maiaframework.showcase.join",
         "AlphaAgGrid",
-        nameFieldForEntityRef = "someString",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
+        refDtoFieldNames("someString")
         field("someInt", FieldTypes.int)
         field("someString", FieldTypes.string) {
             lengthConstraint(max = 100)
@@ -1322,10 +1322,10 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val bravoAgGridEntityDef = entity(
         "org.maiaframework.showcase.join",
         "BravoAgGrid",
-        nameFieldForEntityRef = "someString",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
+        refDtoFieldNames("someString")
         foreignKey("alpha", alphaAgGridEntityDef)
         field("someInt", FieldTypes.int)
         field("someString", FieldTypes.string) {
@@ -1411,11 +1411,11 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val alphaWithHistoryEntityDef = entity(
         "org.maiaframework.showcase.join",
         "AlphaWithHistory",
-        nameFieldForEntityRef = "someString",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
         recordVersionHistory = true,
     ) {
+        refDtoFieldNames("someString")
         field("someInt", FieldTypes.int) {
             fieldDisplayName("Some Int")
             editableByUser()
@@ -1501,11 +1501,11 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val bravoWithHistoryEntityDef = entity(
         "org.maiaframework.showcase.join",
         "BravoWithHistory",
-        nameFieldForEntityRef = "someString",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
         recordVersionHistory = true,
     ) {
+        refDtoFieldNames("someString")
         foreignKey("alpha", alphaWithHistoryEntityDef) {
             fieldDisplayName("Alpha")
             editableByUser()
@@ -1579,9 +1579,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "LeftMany",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        nameFieldForEntityRef = "someString",
         recordVersionHistory = true,
     ) {
+        refDtoFieldNames("someString")
         field("someInt", FieldTypes.int) {
             fieldDisplayName("Some Int")
             editableByUser()
@@ -1633,9 +1633,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "RightMany",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        nameFieldForEntityRef = "someString",
         recordVersionHistory = true
     ) {
+        refDtoFieldNames("someString")
         field("someInt", FieldTypes.int) {
             fieldDisplayName("Some Int")
             editableByUser()

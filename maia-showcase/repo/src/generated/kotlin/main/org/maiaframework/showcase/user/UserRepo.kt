@@ -118,8 +118,8 @@ class UserRepo(private val dao: UserDao) {
 
         val entity = findByPrimaryKey(id)
         return UserRefDto(
-            entity.id,
-            entity.displayName
+            id = entity.id,
+            displayName = entity.displayName
         )
 
     }

@@ -13,11 +13,11 @@ class OrganizationRefDtoRowMapper : MaiaRowMapper<OrganizationRefDto> {
     override fun mapRow(rsa: ResultSetAdapter): OrganizationRefDto {
 
         val id = rsa.readDomainId("id")
-        val name = rsa.readString("org_name")
+        val displayName = rsa.readString("org_name")
 
         return OrganizationRefDto(
+            displayName,
             id,
-            name,
         )
 
     }

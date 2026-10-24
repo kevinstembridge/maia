@@ -152,8 +152,8 @@ class BravoWithHistoryRepo(private val dao: BravoWithHistoryDao) {
 
         val entity = findByPrimaryKey(id)
         return BravoWithHistoryRefDto(
-            entity.id,
-            entity.someString
+            id = entity.id,
+            displayName = entity.someString
         )
 
     }

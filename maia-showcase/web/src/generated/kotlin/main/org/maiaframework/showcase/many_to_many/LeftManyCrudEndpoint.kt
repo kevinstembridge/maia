@@ -30,8 +30,8 @@ class LeftManyCrudEndpoint(val crudService: LeftManyCrudService) {
         val entity = this.crudService.create(createDto)
 
         return LeftManyRefDto(
-            entity.id,
-            entity.someString
+            id = entity.id,
+            displayName = entity.someString
         )
 
     }

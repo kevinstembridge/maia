@@ -76,8 +76,8 @@ class LeftFetchForEditRightEntitiesTest : AbstractBlackBoxTest() {
                 "createdTimestamp": "${leftEntity.createdTimestamp}",
                 "id": "${leftEntity.id}",
                 "rightEntities": [
-                    {"id": "${join1.id}", "entityId": "${rightEntity1.id}", "name": "${rightEntity1.someString}"},
-                    {"id": "${join2.id}", "entityId": "${rightEntity2.id}", "name": "${rightEntity2.someString}"}
+                    {"id": "${join1.id}", "entityId": "${rightEntity1.id}", "displayName": "${rightEntity1.someString}"},
+                    {"id": "${join2.id}", "entityId": "${rightEntity2.id}", "displayName": "${rightEntity2.someString}"}
                 ],
                 "someInt": ${leftEntity.someInt},
                 "someString": "${leftEntity.someString}"

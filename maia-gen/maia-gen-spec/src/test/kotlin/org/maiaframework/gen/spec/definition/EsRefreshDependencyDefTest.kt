@@ -51,12 +51,14 @@ class EsRefreshDependencyDefTest {
             field("shippingRegionName", "shippingCustomer.region.name")
         }
 
-        val left = entity("com.example", "Left", nameFieldForEntityRef = "name") {
+        val left = entity("com.example", "Left") {
+            refDtoFieldNames("name")
             field("name", FieldTypes.string)
             crud {}
         }
 
-        val right = entity("com.example", "Right", nameFieldForEntityRef = "name") {
+        val right = entity("com.example", "Right") {
+            refDtoFieldNames("name")
             field("name", FieldTypes.string)
             field("notInEntityRef", FieldTypes.int)
             crud {}
@@ -201,7 +203,8 @@ class EsRefreshDependencyDefTest {
 
     private class SelfManyToManySpec : AbstractSpec(AppKey("Test")) {
 
-        val person = entity("com.example", "Person", nameFieldForEntityRef = "name") {
+        val person = entity("com.example", "Person") {
+            refDtoFieldNames("name")
             field("name", FieldTypes.string)
             crud {}
         }
@@ -232,12 +235,14 @@ class EsRefreshDependencyDefTest {
 
     private class ShortcodeSpec : AbstractSpec(AppKey("Test")) {
 
-        val item = entity("com.example", "Item", nameFieldForEntityRef = "name") {
+        val item = entity("com.example", "Item") {
+            refDtoFieldNames("name")
             field("name", FieldTypes.string)
             crud {}
         }
 
-        val tag = entity("com.example", "Tag", nameFieldForEntityRef = "name", shortcodeFieldForEntityRef = "code") {
+        val tag = entity("com.example", "Tag") {
+            refDtoFieldNames("name", "code")
             field("name", FieldTypes.string)
             field("code", FieldTypes.string)
             field("notInEntityRef", FieldTypes.int)
@@ -262,12 +267,14 @@ class EsRefreshDependencyDefTest {
 
     private class JoinWithoutListenerSpec : AbstractSpec(AppKey("Test")) {
 
-        val left = entity("com.example", "Left", nameFieldForEntityRef = "name") {
+        val left = entity("com.example", "Left") {
+            refDtoFieldNames("name")
             field("name", FieldTypes.string)
             crud {}
         }
 
-        val right = entity("com.example", "Right", nameFieldForEntityRef = "name") {
+        val right = entity("com.example", "Right") {
+            refDtoFieldNames("name")
             field("name", FieldTypes.string)
             crud {}
         }
@@ -308,12 +315,14 @@ class EsRefreshDependencyDefTest {
             field("countryName", "country.name")
         }
 
-        val owner = entity("com.example", "Owner", nameFieldForEntityRef = "name") {
+        val owner = entity("com.example", "Owner") {
+            refDtoFieldNames("name")
             field("name", FieldTypes.string)
             crud {}
         }
 
-        val label = entity("com.example", "Label", nameFieldForEntityRef = "name") {
+        val label = entity("com.example", "Label") {
+            refDtoFieldNames("name")
             field("code", FieldTypes.string) { primaryKey() }
             field("name", FieldTypes.string)
             crud {}

@@ -7,8 +7,8 @@ import org.maiaframework.domain.DomainId
 
 
 data class UserRefDto(
-    val id: DomainId,
-    val name: String
+    val displayName: String,
+    val id: DomainId
 ) {
 
 

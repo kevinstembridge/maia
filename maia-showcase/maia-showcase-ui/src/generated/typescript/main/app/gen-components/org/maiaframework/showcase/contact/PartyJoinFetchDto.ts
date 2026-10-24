@@ -5,12 +5,12 @@ import {EmailAddressPurpose} from '@app/gen-components/org/maiaframework/domain/
 
 
 export interface PartyJoinFetchDto {
+    displayName: string;
     effectiveFrom?: string;
     effectiveTo?: string;
     entityId: string;
     id: string;
     isPrimaryContact: boolean;
-    name: string;
     purposes: ReadonlyArray<EmailAddressPurpose>;
 }
 

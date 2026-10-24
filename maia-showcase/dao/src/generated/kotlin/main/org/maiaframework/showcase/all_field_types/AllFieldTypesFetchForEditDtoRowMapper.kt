@@ -23,15 +23,15 @@ class AllFieldTypesFetchForEditDtoRowMapper : MaiaRowMapper<AllFieldTypesFetchFo
     override fun mapRow(rsa: ResultSetAdapter): AllFieldTypesFetchForEditDto {
 
         val createdBy = PartyRefDto(
-            rsa.readDomainId("createdById"),
-            rsa.readString("createdByName"),
+            id = rsa.readDomainId("createdById"),
+            displayName = rsa.readString("createdByName"),
         )
         val createdByUsername = rsa.readString("createdByUsername")
         val createdTimestamp = rsa.readInstant("createdTimestamp")
         val id = rsa.readDomainId("id")
         val lastModifiedBy = PartyRefDto(
-            rsa.readDomainId("lastModifiedById"),
-            rsa.readString("lastModifiedByName"),
+            id = rsa.readDomainId("lastModifiedById"),
+            displayName = rsa.readString("lastModifiedByName"),
         )
         val lastModifiedByUsername = rsa.readString("lastModifiedByUsername")
         val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")

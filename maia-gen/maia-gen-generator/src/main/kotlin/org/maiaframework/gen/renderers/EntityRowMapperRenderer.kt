@@ -112,7 +112,7 @@ class EntityRowMapperRenderer(
 //
 //                    appendLine("            ${entityRefDef.dtoUqcn}(")
 //                    renderRowMapperField(idEntityFieldDef, idResultSetFieldName, indent = 12)
-//                    renderRowMapperField(entityRefDef.nameEntityFieldDef, nameResultSetFieldName, indent = 12)
+//                    renderRowMapperField(entityRefDef.displayNameEntityFieldDef, nameResultSetFieldName, indent = 12)
 //                    appendLine("            ),")
 //
 //                }
