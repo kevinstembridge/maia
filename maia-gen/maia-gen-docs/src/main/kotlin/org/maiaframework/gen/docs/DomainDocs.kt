@@ -39,7 +39,7 @@ private fun `render index`(entities: List<SpecEntity>): String {
     val sections = entities.groupBy { it.specName }.entries.joinToString("\n") { (specName, group) ->
         val items = group.joinToString("\n") {
             val name = it.entityDef.entityBaseName.toString()
-            "<li><a href=\"entities/${escape(name)}.html\">${escape(name)}</a></li>"
+            "<li><a href=\"entities/${escape(name)}.html\">${escape(name)}</a>${`render index badges`(it.entityDef)}</li>"
         }
         "<h2>${escape(specName)}</h2>\n<ul>\n$items\n</ul>"
     }
@@ -78,6 +78,8 @@ private fun `render entity page`(specEntity: SpecEntity): String {
         <tr><th>Name</th><th>Type</th><th>Nullable</th><th>Inherited</th></tr>
         $fieldRows
         </table>
+        ${`render crud panel`(entityDef)}
+        ${`render caching panel`(entityDef)}
     """.trimIndent()
 
     return page(name, "../", body)
@@ -123,4 +125,4 @@ private val STYLESHEET = """
     th { background: #eceff1; }
     dt { font-weight: bold; float: left; clear: left; width: 10rem; }
     dd { margin-left: 10rem; }
-""".trimIndent() + "\n"
+""".trimIndent() + "\n" + CRUD_CACHING_STYLES
