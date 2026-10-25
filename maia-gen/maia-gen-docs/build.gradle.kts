@@ -7,6 +7,7 @@ dependencies {
     implementation(platform(project(":maia-platform")))
 
     implementation(project(":maia-gen:maia-gen-spec"))
+    implementation(project(":maia-gen:maia-gen-generator"))
 
     testImplementation(platform(project(":maia-platform")))
     testImplementation("org.assertj:assertj-core")
