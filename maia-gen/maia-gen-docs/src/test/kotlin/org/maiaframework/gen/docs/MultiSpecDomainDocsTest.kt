@@ -138,19 +138,54 @@ class MultiSpecDomainDocsTest {
     @Test
     fun `fails clearly when a Spec class cannot be loaded`() {
 
-        assertThatThrownBy { loadSpecs(listOf(OrdersApplicationSpec::class.java.name, "com.nope.MissingSpec")) }
+        assertThatThrownBy { runDomainDocs(listOf(OrdersApplicationSpec::class.java.name, "com.nope.MissingSpec"), outputDir) }
             .hasMessageContaining("com.nope.MissingSpec")
 
     }
 
 
+    object FirstGroup {
+
+        class SharedNameSpec : ApplicationSpec("com.example.first") {
+
+            override val modelDefs: List<ModelDef> = listOf(OrdersModelSpec().modelDef)
+
+        }
+
+    }
+
+
+    object SecondGroup {
+
+        class SharedNameSpec : ApplicationSpec("com.example.second") {
+
+            override val modelDefs: List<ModelDef> = listOf(BillingModelSpec().modelDef)
+
+        }
+
+    }
+
+
     @Test
-    fun `loads Specs by class name`() {
+    fun `Specs sharing a simple name are grouped separately and shown by qualified name`() {
 
-        val specs = loadSpecs(listOf(OrdersApplicationSpec::class.java.name))
+        generateDomainDocs(listOf(FirstGroup.SharedNameSpec(), SecondGroup.SharedNameSpec()), outputDir)
 
-        assertThat(specs).hasSize(1)
-        assertThat(specs[0]).isInstanceOf(OrdersApplicationSpec::class.java)
+        val index = outputDir.resolve("index.html").readText()
+        assertThat(index)
+            .contains("<h2>${FirstGroup.SharedNameSpec::class.java.name}</h2>")
+            .contains("<h2>${SecondGroup.SharedNameSpec::class.java.name}</h2>")
+        assertThat(outputDir.resolve("entities/Order.html").readText()).contains(FirstGroup.SharedNameSpec::class.java.name)
+
+    }
+
+
+    @Test
+    fun `Specs with distinct simple names are shown by simple name`() {
+
+        generateDomainDocs(listOf(OrdersApplicationSpec()), outputDir)
+
+        assertThat(outputDir.resolve("index.html").readText()).contains("<h2>OrdersApplicationSpec</h2>")
 
     }
 

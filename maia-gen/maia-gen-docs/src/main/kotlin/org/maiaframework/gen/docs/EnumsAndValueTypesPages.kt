@@ -19,11 +19,6 @@ import java.nio.file.Path
 import kotlin.io.path.writeText
 
 
-private const val ENUMS_PAGE = "enums.html"
-
-private const val VALUE_TYPES_PAGE = "value-types.html"
-
-
 /**
  * Returns the HTML for the type cell of a field: a link to the enums or value types page when the
  * field uses an enum or value type (directly or as a list/set element), else the escaped type name.
@@ -31,10 +26,10 @@ private const val VALUE_TYPES_PAGE = "value-types.html"
  */
 internal fun `render field type cell`(fieldType: FieldType, root: String): String {
 
-    val target = `enum or value type of`(fieldType) ?: return escape(fieldType.unqualifiedToString)
+    val target = `enum or value type of`(fieldType) ?: return escapeHtml(fieldType.unqualifiedToString)
 
     val page = if (target is EnumDef) ENUMS_PAGE else VALUE_TYPES_PAGE
-    val link = "<a href=\"$root$page#${escape(`key of`(target))}\">${escape(`name of`(target))}</a>"
+    val link = link("$root$page#${`key of`(target)}", `name of`(target))
 
     return when (fieldType) {
         is ListFieldType -> "List&lt;$link&gt;"
@@ -91,9 +86,8 @@ private fun `collect usages`(specs: List<ApplicationSpec>): Map<String, List<Str
         .forEach { entityDef ->
             entityDef.entityFieldsNotInherited.forEach { field ->
                 `enum or value type of`(field.fieldType)?.let { target ->
-                    val entityName = escape(entityDef.entityBaseName.toString())
                     usages.getOrPut(`key of`(target)) { mutableListOf() }
-                        .add("<a href=\"entities/$entityName.html\">$entityName</a>.${escape(field.classFieldName.toString())}")
+                        .add("${entityLink(entityDef, "$ENTITIES_DIR/")}.${escapeHtml(field.classFieldName.toString())}")
                 }
             }
         }
@@ -114,16 +108,19 @@ private fun `render used by`(usages: List<String>?): String {
 
 private fun `render enums page`(specs: List<ApplicationSpec>, usages: Map<String, List<String>>): String {
 
-    val sections = specs.flatMap { spec -> spec.applicationModelDef.enumDefs.map { spec.javaClass.simpleName to it } }
+    val specNames = specDisplayNames(specs)
+
+    val sections = specs.flatMap { spec -> spec.applicationModelDef.enumDefs.map { specKey(spec) to it } }
         .sortedBy { it.second.uqcn.toString() }
-        .joinToString("\n") { (specName, enumDef) ->
+        .joinToString("\n") { (specKey, enumDef) ->
+            val specName = specNames.getValue(specKey)
             val rows = enumDef.enumValueDefs.joinToString("\n") {
-                "<tr><td>${escape(it.name)}</td><td>${escape(it.displayName?.value ?: "")}</td></tr>"
+                "<tr><td>${escapeHtml(it.name)}</td><td>${escapeHtml(it.displayName?.value ?: "")}</td></tr>"
             }
             """
-            <section id="${escape(enumDef.fqcn.toString())}">
-            <h2>${escape(enumDef.uqcn.toString())}</h2>
-            <p>Spec: ${escape(specName)}</p>
+            <section id="${escapeHtml(enumDef.fqcn.toString())}">
+            <h2>${escapeHtml(enumDef.uqcn.toString())}</h2>
+            <p>Spec: ${escapeHtml(specName)}</p>
             <table>
             <tr><th>Value</th><th>Display name</th></tr>
             $rows
@@ -133,28 +130,31 @@ private fun `render enums page`(specs: List<ApplicationSpec>, usages: Map<String
             """.trimIndent()
         }
 
-    return page("Enums", "", "<h1>Enums</h1>\n$sections")
+    return renderPage("Enums", "", "<h1>Enums</h1>\n$sections")
 
 }
 
 
 private fun `render value types page`(specs: List<ApplicationSpec>, usages: Map<String, List<String>>): String {
 
+    val specNames = specDisplayNames(specs)
+
     val sections = specs.flatMap { spec ->
         val def = spec.applicationModelDef
         val all: List<SimpleTypeDef> = def.stringTypeDefs + def.intTypeDefs + def.longTypeDefs + def.booleanTypeDefs
-        all.map { spec.javaClass.simpleName to it }
+        all.map { specKey(spec) to it }
     }.sortedBy { it.second.uqcn.toString() }
-        .joinToString("\n") { (specName, typeDef) ->
+        .joinToString("\n") { (specKey, typeDef) ->
+            val specName = specNames.getValue(specKey)
             val properties = buildList {
                 add("Underlying kind" to `kind of`(typeDef))
                 if (typeDef is StringTypeDef) add("Case mode" to typeDef.caseMode.name)
                 add("Provided" to if (typeDef.isNotProvided) "no" else "yes")
-            }.joinToString("\n") { "<dt>${escape(it.first)}</dt><dd>${escape(it.second)}</dd>" }
+            }.joinToString("\n") { "<dt>${escapeHtml(it.first)}</dt><dd>${escapeHtml(it.second)}</dd>" }
             """
-            <section id="${escape(typeDef.fqcn.toString())}">
-            <h2>${escape(typeDef.uqcn.toString())}</h2>
-            <p>Spec: ${escape(specName)}</p>
+            <section id="${escapeHtml(typeDef.fqcn.toString())}">
+            <h2>${escapeHtml(typeDef.uqcn.toString())}</h2>
+            <p>Spec: ${escapeHtml(specName)}</p>
             <dl>
             $properties
             </dl>
@@ -163,7 +163,7 @@ private fun `render value types page`(specs: List<ApplicationSpec>, usages: Map<
             """.trimIndent()
         }
 
-    return page("Value types", "", "<h1>Value types</h1>\n$sections")
+    return renderPage("Value types", "", "<h1>Value types</h1>\n$sections")
 
 }
 

@@ -7,12 +7,7 @@ import org.maiaframework.gen.spec.definition.EntityDef
  * Entity pages all live in the same directory, so a link to another Entity (in any Spec) is just
  * its file name. Entities are keyed by base name, which is unique across the merged Specs.
  */
-private fun `entity link`(entityDef: EntityDef): String {
-
-    val name = escape(entityDef.entityBaseName.toString())
-    return "<a href=\"$name.html\">$name</a>"
-
-}
+private fun `entity link`(entityDef: EntityDef) = entityLink(entityDef, "")
 
 
 private fun `same entity`(a: EntityDef, b: EntityDef) = a.entityBaseName == b.entityBaseName
@@ -30,7 +25,7 @@ internal fun `render structure rows`(entityDef: EntityDef, allEntities: List<Ent
         rows += "<dt>Subclasses</dt><dd>${subclasses.joinToString(", ") { `entity link`(it) }}</dd>"
     }
 
-    entityDef.typeDiscriminatorOrNull?.let { rows += "<dt>Type discriminator</dt><dd>${escape(it.value)}</dd>" }
+    entityDef.typeDiscriminatorOrNull?.let { rows += "<dt>Type discriminator</dt><dd>${escapeHtml(it.value)}</dd>" }
 
     entityDef.historyEntityDef?.let { rows += "<dt>History entity</dt><dd>${`entity link`(it)}</dd>" }
 
@@ -46,10 +41,11 @@ internal fun `render structure rows`(entityDef: EntityDef, allEntities: List<Ent
     rows += "<dt>Many-to-many join</dt><dd>${yesNo(entityDef.isManyToManyJoinEntity)}</dd>"
 
     if (entityDef.isManyToManyJoinEntity) {
-        val association = allEntities
+        val associations = allEntities
             .flatMap { it.manyToManyAssociations }
-            .firstOrNull { `same entity`(it.entityDef, entityDef) }
-        if (association != null) {
+            .filter { `same entity`(it.entityDef, entityDef) }
+            .distinctBy { it.leftEntity.entityDef.entityBaseName to it.rightEntity.entityDef.entityBaseName }
+        associations.forEach { association ->
             rows += "<dt>Left side</dt><dd>${`entity link`(association.leftEntity.entityDef)}</dd>"
             rows += "<dt>Right side</dt><dd>${`entity link`(association.rightEntity.entityDef)}</dd>"
         }
@@ -86,7 +82,7 @@ private fun `outgoing references`(entityDef: EntityDef) = entityDef.entityFields
 internal fun `render relationship panels`(entityDef: EntityDef, allEntities: List<EntityDef>): String {
 
     val outgoing = `outgoing references`(entityDef).joinToString("\n") { (field, target) ->
-        "<tr><td>${escape(field.classFieldName.toString())}</td><td>${`entity link`(target)}</td></tr>"
+        "<tr><td>${escapeHtml(field.classFieldName.toString())}</td><td>${`entity link`(target)}</td></tr>"
     }
 
     val incoming = allEntities.flatMap { other ->
@@ -94,7 +90,7 @@ internal fun `render relationship panels`(entityDef: EntityDef, allEntities: Lis
             .filter { (_, target) -> `same entity`(target, entityDef) }
             .map { (field, _) -> other to field }
     }.joinToString("\n") { (other, field) ->
-        "<tr><td>${`entity link`(other)}</td><td>${escape(field.classFieldName.toString())}</td></tr>"
+        "<tr><td>${`entity link`(other)}</td><td>${escapeHtml(field.classFieldName.toString())}</td></tr>"
     }
 
     return """

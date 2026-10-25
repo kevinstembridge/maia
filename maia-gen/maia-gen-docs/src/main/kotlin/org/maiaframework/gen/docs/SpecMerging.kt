@@ -3,19 +3,20 @@ package org.maiaframework.gen.docs
 import org.maiaframework.gen.spec.ApplicationSpec
 
 
-/**
- * Instantiates the Specs with the given fully qualified class names, failing with a clear message
- * if any class cannot be loaded or instantiated.
- */
-fun loadSpecs(classNames: List<String>): List<ApplicationSpec> = classNames.map { className ->
+/** A Spec is identified by its fully qualified class name. */
+internal fun specKey(spec: ApplicationSpec): String = spec.javaClass.name
 
-    try {
-        Class.forName(className).getDeclaredConstructor().newInstance() as ApplicationSpec
-    } catch (e: Exception) {
-        throw IllegalArgumentException("Unable to load Spec class '$className': ${e.javaClass.simpleName}: ${e.message}", e)
-    } catch (e: LinkageError) {
-        throw IllegalArgumentException("Unable to load Spec class '$className': ${e.javaClass.simpleName}: ${e.message}", e)
-    }
+
+/**
+ * Maps each Spec's [specKey] to the name to display for it: the simple class name, or the fully
+ * qualified name when two Specs share a simple name.
+ */
+internal fun specDisplayNames(specs: List<ApplicationSpec>): Map<String, String> {
+
+    val classes = specs.map { it.javaClass }.distinctBy { it.name }
+    val simpleNameCounts = classes.groupingBy { it.simpleName }.eachCount()
+
+    return classes.associate { it.name to if (simpleNameCounts.getValue(it.simpleName) > 1) it.name else it.simpleName }
 
 }
 
@@ -25,30 +26,32 @@ fun loadSpecs(classNames: List<String>): List<ApplicationSpec> = classNames.map 
  */
 internal fun `fail on name clashes`(specs: List<ApplicationSpec>) {
 
+    val displayNames = specDisplayNames(specs)
     val entityOwners = mutableMapOf<String, String>()
     val tableOwners = mutableMapOf<String, Pair<String, String>>()
 
     specs.forEach { spec ->
 
-        val specName = spec.javaClass.simpleName
+        val specKey = specKey(spec)
+        val specName = displayNames.getValue(specKey)
 
         spec.applicationModelDef.entityHierarchies.map { it.entityDef }.forEach { entityDef ->
 
             val entityName = entityDef.entityBaseName.toString()
-            val previousSpec = entityOwners.put(entityName, specName)
+            val previousSpecKey = entityOwners.put(entityName, specKey)
 
-            check(previousSpec == null || previousSpec == specName) {
-                "Entity name clash: Entity '$entityName' is declared by both $previousSpec and $specName"
+            check(previousSpecKey == null || previousSpecKey == specKey) {
+                "Entity name clash: Entity '$entityName' is declared by both ${displayNames.getValue(previousSpecKey!!)} and $specName"
             }
 
             if (entityDef.superclassEntityDef == null) {
 
                 val table = entityDef.schemaAndTableName
-                val previous = tableOwners.put(table, specName to entityName)
+                val previous = tableOwners.put(table, specKey to entityName)
 
                 check(previous == null || previous.second == entityName) {
-                    "Table name clash: table '$table' is used by Entity '${previous!!.second}' (${previous.first}) " +
-                        "and Entity '$entityName' ($specName)"
+                    "Table name clash: table '$table' is used by Entity '${previous!!.second}' " +
+                        "(${displayNames.getValue(previous.first)}) and Entity '$entityName' ($specName)"
                 }
 
             }

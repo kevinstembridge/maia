@@ -15,62 +15,64 @@ fun generateDomainDocs(specs: List<ApplicationSpec>, outputDir: Path) {
 
     `fail on name clashes`(specs)
 
+    val specNames = specDisplayNames(specs)
+
     val entities = specs.flatMap { spec ->
-        spec.applicationModelDef.entityHierarchies.map { SpecEntity(spec.javaClass.simpleName, it.entityDef) }
+        spec.applicationModelDef.entityHierarchies.map { SpecEntity(specKey(spec), it.entityDef) }
     }.sortedBy { it.entityDef.entityBaseName.value }
 
-    val entitiesDir = outputDir.resolve("entities").createDirectories()
+    val entitiesDir = outputDir.resolve(ENTITIES_DIR).createDirectories()
 
-    outputDir.resolve("style.css").writeText(STYLESHEET)
+    outputDir.resolve(STYLESHEET_FILE).writeText(STYLESHEET)
     `write enums and value types pages`(specs, outputDir)
-    outputDir.resolve("index.html").writeText(`render index`(entities))
+    outputDir.resolve(INDEX_PAGE).writeText(`render index`(entities, specNames))
 
     writeTablePages(specs, outputDir)
 
     entities.forEach {
-        entitiesDir.resolve("${it.entityDef.entityBaseName}.html").writeText(`render entity page`(it, entities.map { e -> e.entityDef }))
+        entitiesDir.resolve(entityPageFileName(it.entityDef))
+            .writeText(`render entity page`(it, specNames.getValue(it.specKey), entities.map { e -> e.entityDef }))
     }
 
 }
 
 
-private data class SpecEntity(val specName: String, val entityDef: EntityDef)
+private data class SpecEntity(val specKey: String, val entityDef: EntityDef)
 
 
-private fun `render index`(entities: List<SpecEntity>): String {
+private fun `render index`(entities: List<SpecEntity>, specNames: Map<String, String>): String {
 
-    val sections = entities.groupBy { it.specName }.entries.joinToString("\n") { (specName, group) ->
+    val sections = entities.groupBy { it.specKey }.entries.joinToString("\n") { (specKey, group) ->
         val items = group.joinToString("\n") {
-            val name = it.entityDef.entityBaseName.toString()
-            "<li><a href=\"entities/${escape(name)}.html\">${escape(name)}</a>${`render index badges`(it.entityDef)}</li>"
+            "<li>${entityLink(it.entityDef, "$ENTITIES_DIR/")}${`render index badges`(it.entityDef)}</li>"
         }
-        "<h2>${escape(specName)}</h2>\n<ul>\n$items\n</ul>"
+        "<h2>${escapeHtml(specNames.getValue(specKey))}</h2>\n<ul>\n$items\n</ul>"
     }
 
-    return page("Domain docs", "", "<h1>Domain docs</h1>\n$sections")
+    return renderPage("Domain docs", "", "<h1>Domain docs</h1>\n$sections")
 
 }
 
 
-private fun `render entity page`(specEntity: SpecEntity, allEntities: List<EntityDef>): String {
+private fun `render entity page`(specEntity: SpecEntity, specName: String, allEntities: List<EntityDef>): String {
 
     val entityDef = specEntity.entityDef
-    val name = escape(entityDef.entityBaseName.toString())
-    val description = entityDef.description?.value?.let { "<p>${escape(it)}</p>" } ?: ""
+    val name = entityDef.entityBaseName.toString()
+    val description = entityDef.description?.value?.let { "<p>${escapeHtml(it)}</p>" } ?: ""
 
     val fieldRows = entityDef.allEntityFields.joinToString("\n") {
         val fieldName = it.classFieldName
         val inheritedCell = `render inherited cell`(entityDef, fieldName.toString())
-        "<tr><td>${escape(fieldName.toString())}</td><td>${`render field type cell`(it.fieldType, "../")}</td>" +
-            "<td>${if (it.nullable) "yes" else "no"}</td><td>$inheritedCell</td></tr>"
+        "<tr><td>${escapeHtml(fieldName.toString())}</td><td>${`render field type cell`(it.fieldType, PARENT_ROOT)}</td>" +
+            "<td>${yesNo(it.nullable)}</td><td>$inheritedCell</td></tr>"
     }
 
     val body = """
-        <h1>$name</h1>
+        <h1>${escapeHtml(name)}</h1>
         $description
         <dl>
-        <dt>Spec</dt><dd>${escape(specEntity.specName)}</dd>
-        <dt>Table</dt><dd>${tableLinkFor(entityDef, "../")}</dd>
+        <dt>Spec</dt><dd>${escapeHtml(specName)}</dd>
+        <dt>Table</dt><dd>${tableLinkFor(entityDef, PARENT_ROOT)}</dd>
         <dt>Abstract</dt><dd>${yesNo(!entityDef.isConcrete)}</dd>
         <dt>Versioned</dt><dd>${yesNo(entityDef.versioned.value)}</dd>
         <dt>Version history</dt><dd>${yesNo(entityDef.withVersionHistory.value)}</dd>
@@ -86,47 +88,6 @@ private fun `render entity page`(specEntity: SpecEntity, allEntities: List<Entit
         ${`render caching panel`(entityDef)}
     """.trimIndent()
 
-    return page(name, "../", body)
+    return renderPage(name, PARENT_ROOT, body)
 
 }
-
-
-internal fun page(title: String, root: String, body: String): String = """
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-    <meta charset="utf-8">
-    <title>${escape(title)}</title>
-    <link rel="stylesheet" href="${root}style.css">
-    </head>
-    <body>
-    <header><nav><a href="${root}index.html">Index</a><a href="${root}tables/index.html">Tables</a><a href="${root}enums.html">Enums</a><a href="${root}value-types.html">Value types</a></nav></header>
-    <main>
-    $body
-    </main>
-    </body>
-    </html>
-""".trimIndent() + "\n"
-
-
-internal fun yesNo(value: Boolean) = if (value) "yes" else "no"
-
-
-internal fun escape(text: String): String = text
-    .replace("&", "&amp;")
-    .replace("<", "&lt;")
-    .replace(">", "&gt;")
-    .replace("\"", "&quot;")
-
-
-private val STYLESHEET = """
-    body { font-family: sans-serif; margin: 0; color: #222; }
-    header { background: #263238; padding: 0.75rem 1.5rem; }
-    header a { color: #fff; text-decoration: none; margin-right: 1rem; }
-    main { padding: 1rem 1.5rem; max-width: 70rem; }
-    table { border-collapse: collapse; }
-    th, td { border: 1px solid #ccc; padding: 0.25rem 0.75rem; text-align: left; }
-    th { background: #eceff1; }
-    dt { font-weight: bold; float: left; clear: left; width: 10rem; }
-    dd { margin-left: 10rem; }
-""".trimIndent() + "\n" + CRUD_CACHING_STYLES

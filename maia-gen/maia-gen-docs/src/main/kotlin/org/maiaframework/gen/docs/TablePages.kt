@@ -20,13 +20,19 @@ internal fun writeTablePages(specs: List<ApplicationSpec>, outputDir: Path) {
 
     val entries = specs.flatMap { spec ->
         val hierarchies = spec.applicationModelDef.rootEntityHierarchies
-        val tables = ExpectedSchemaExtractor().extract(hierarchies)
-        tables.zip(hierarchies).map { (table, hierarchy) -> TableEntry(table, hierarchy.entityDefs) }
+        val hierarchiesByTable = hierarchies.associateBy { tableKeyFor(it.entityDef) }
+        ExpectedSchemaExtractor().extract(hierarchies).map { table ->
+            val hierarchy = checkNotNull(hierarchiesByTable[table.schemaAndTableName]) {
+                "Unable to match table '${table.schemaAndTableName}' to an Entity hierarchy; " +
+                    "known tables: ${hierarchiesByTable.keys.sorted()}"
+            }
+            TableEntry(table, hierarchy.entityDefs)
+        }
     }.sortedBy { it.table.schemaAndTableName }
 
-    val tablesDir = outputDir.resolve("tables").createDirectories()
+    val tablesDir = outputDir.resolve(TABLES_DIR).createDirectories()
 
-    tablesDir.resolve("index.html").writeText(`render tables index`(entries))
+    tablesDir.resolve(TABLES_INDEX_PAGE).writeText(`render tables index`(entries))
 
     entries.forEach {
         tablesDir.resolve(tablePageFileName(it.table.schemaAndTableName)).writeText(`render table page`(it, entries))
@@ -44,11 +50,15 @@ internal fun tableLinkFor(entityDef: EntityDef, root: String): String {
         rootEntityDef = rootEntityDef.superclassEntityDef ?: break
     }
 
-    val key = "${rootEntityDef.schemaName}.${rootEntityDef.tableName.rawTableName}"
+    val key = tableKeyFor(rootEntityDef)
 
-    return "<a href=\"${root}tables/${tablePageFileName(key)}\">${escape(key)}</a>"
+    return link("$root$TABLES_DIR/${tablePageFileName(key)}", key)
 
 }
+
+
+/** The `schema.table` key of the table backing [rootEntityDef], matching [ExpectedTableDef.schemaAndTableName]. */
+private fun tableKeyFor(rootEntityDef: EntityDef) = "${rootEntityDef.schemaName}.${rootEntityDef.tableName.rawTableName}"
 
 
 private fun tablePageFileName(schemaAndTableName: String) =
@@ -59,10 +69,10 @@ private fun `render tables index`(entries: List<TableEntry>): String {
 
     val items = entries.joinToString("\n") {
         val name = it.table.schemaAndTableName
-        "<li><a href=\"${tablePageFileName(name)}\">${escape(name)}</a></li>"
+        "<li>${link(tablePageFileName(name), name)}</li>"
     }
 
-    return page("Tables", "../", "<h1>Tables</h1>\n<ul>\n$items\n</ul>")
+    return renderPage("Tables", PARENT_ROOT, "<h1>Tables</h1>\n<ul>\n$items\n</ul>")
 
 }
 
@@ -70,20 +80,17 @@ private fun `render tables index`(entries: List<TableEntry>): String {
 private fun `render table page`(entry: TableEntry, allEntries: List<TableEntry>): String {
 
     val table = entry.table
-    val name = escape(table.schemaAndTableName)
+    val name = escapeHtml(table.schemaAndTableName)
 
-    val entityLinks = entry.entityDefs.joinToString(", ") {
-        val entityName = escape(it.entityBaseName.toString())
-        "<a href=\"../entities/$entityName.html\">$entityName</a>"
-    }
+    val entityLinks = entry.entityDefs.joinToString(", ") { entityLink(it, "$PARENT_ROOT$ENTITIES_DIR/") }
 
     val columnRows = table.columns.joinToString("\n") {
-        "<tr><td>${escape(it.name.value)}</td><td>${escape(it.postgresType)}</td>" +
+        "<tr><td>${escapeHtml(it.name.value)}</td><td>${escapeHtml(it.postgresType)}</td>" +
             "<td>${yesNo(it.nullable)}</td><td>${yesNo(it.isPrimaryKey)}</td></tr>"
     }
 
     val indexRows = (table.indexes + table.exclusionIndexes).joinToString("\n") {
-        "<tr><td>${escape(it.name)}</td><td>${escape(it.columns.joinToString(", ") { c -> c.value })}</td>" +
+        "<tr><td>${escapeHtml(it.name)}</td><td>${escapeHtml(it.columns.joinToString(", ") { c -> c.value })}</td>" +
             "<td>${yesNo(it.unique)}</td></tr>"
     }
 
@@ -91,20 +98,20 @@ private fun `render table page`(entry: TableEntry, allEntries: List<TableEntry>)
 
     fun tableRef(referenced: String) =
         if (referenced in knownTables) {
-            "<a href=\"${tablePageFileName(referenced)}\">${escape(referenced)}</a>"
+            link(tablePageFileName(referenced), referenced)
         } else {
-            escape(referenced)
+            escapeHtml(referenced)
         }
 
     val simpleForeignKeyRows = table.foreignKeys.map {
-        "<tr><td>${escape(it.columnName.value)}</td><td>${tableRef(it.referencedSchemaAndTable)}</td>" +
-            "<td>${escape(it.referencedColumn.value)}</td></tr>"
+        "<tr><td>${escapeHtml(it.columnName.value)}</td><td>${tableRef(it.referencedSchemaAndTable)}</td>" +
+            "<td>${escapeHtml(it.referencedColumn.value)}</td></tr>"
     }
 
     val compositeForeignKeyRows = table.compositeForeignKeys.map {
-        "<tr><td>${escape(it.columnNames.joinToString(", ") { c -> c.value })}</td>" +
+        "<tr><td>${escapeHtml(it.columnNames.joinToString(", ") { c -> c.value })}</td>" +
             "<td>${tableRef(it.referencedSchemaAndTable)}</td>" +
-            "<td>${escape(it.referencedColumns.joinToString(", ") { c -> c.value })}</td></tr>"
+            "<td>${escapeHtml(it.referencedColumns.joinToString(", ") { c -> c.value })}</td></tr>"
     }
 
     val foreignKeyRows = (simpleForeignKeyRows + compositeForeignKeyRows).joinToString("\n")
@@ -131,6 +138,6 @@ private fun `render table page`(entry: TableEntry, allEntries: List<TableEntry>)
         </table>
     """.trimIndent()
 
-    return page(table.schemaAndTableName, "../", body)
+    return renderPage(table.schemaAndTableName, PARENT_ROOT, body)
 
 }

@@ -4,12 +4,6 @@ import org.maiaframework.gen.spec.definition.AuthorityDef
 import org.maiaframework.gen.spec.definition.EntityDef
 
 
-internal const val CRUD_CACHING_STYLES =
-    ".badge { font-size: 0.75rem; padding: 0 0.4rem; border-radius: 0.6rem; margin-left: 0.4rem; color: #fff; }\n" +
-        ".badge-crud { background: #2e7d32; }\n" +
-        ".badge-cached { background: #1565c0; }\n"
-
-
 private fun `is crud enabled`(entityDef: EntityDef): Boolean {
 
     val crudDef = entityDef.crudDef
@@ -59,8 +53,8 @@ internal fun `render crud panel`(entityDef: EntityDef): String {
         $rows
         </table>
         <dl>
-        <dt>CRUD listener</dt><dd>${yesNoText(entityDef.crudDef.withCrudListener.value)}</dd>
-        <dt>REST API</dt><dd>${yesNoText(apiExposed)}</dd>
+        <dt>CRUD listener</dt><dd>${yesNo(entityDef.crudDef.withCrudListener.value)}</dd>
+        <dt>REST API</dt><dd>${yesNo(apiExposed)}</dd>
         </dl>
     """.trimIndent()
 
@@ -83,13 +77,3 @@ internal fun `render caching panel`(entityDef: EntityDef): String {
     return "<h2>Caching</h2>\n<p>$text</p>"
 
 }
-
-
-private fun yesNoText(value: Boolean) = if (value) "yes" else "no"
-
-
-private fun escapeHtml(text: String): String = text
-    .replace("&", "&amp;")
-    .replace("<", "&lt;")
-    .replace(">", "&gt;")
-    .replace("\"", "&quot;")
