@@ -111,6 +111,7 @@ private fun `render enums page`(specs: List<ApplicationSpec>, usages: Map<String
     val specNames = specDisplayNames(specs)
 
     val sections = specs.flatMap { spec -> spec.applicationModelDef.enumDefs.map { specKey(spec) to it } }
+        .distinctBy { it.second.fqcn.toString() }
         .sortedBy { it.second.uqcn.toString() }
         .joinToString("\n") { (specKey, enumDef) ->
             val specName = specNames.getValue(specKey)
@@ -143,7 +144,8 @@ private fun `render value types page`(specs: List<ApplicationSpec>, usages: Map<
         val def = spec.applicationModelDef
         val all: List<SimpleTypeDef> = def.stringTypeDefs + def.intTypeDefs + def.longTypeDefs + def.booleanTypeDefs
         all.map { specKey(spec) to it }
-    }.sortedBy { it.second.uqcn.toString() }
+    }.distinctBy { it.second.fqcn.toString() }
+        .sortedBy { it.second.uqcn.toString() }
         .joinToString("\n") { (specKey, typeDef) ->
             val specName = specNames.getValue(specKey)
             val properties = buildList {
@@ -166,6 +168,19 @@ private fun `render value types page`(specs: List<ApplicationSpec>, usages: Map<
     return renderPage("Value types", "", "<h1>Value types</h1>\n$sections")
 
 }
+
+
+/** What the Enums page shows for an enum, so two enums with the same name and signature are one shared enum. */
+internal fun `enum signature`(enumDef: EnumDef): List<Pair<String, String?>> =
+    enumDef.enumValueDefs.map { it.name to it.displayName?.value }
+
+
+/** What the Value types page shows for a value type, so two with the same name and signature are one shared type. */
+internal fun `value type signature`(typeDef: SimpleTypeDef): List<String> = listOf(
+    `kind of`(typeDef),
+    (typeDef as? StringTypeDef)?.caseMode?.name ?: "",
+    typeDef.isNotProvided.toString()
+)
 
 
 private fun `kind of`(typeDef: SimpleTypeDef): String = when (typeDef) {

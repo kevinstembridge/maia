@@ -22,20 +22,46 @@ internal fun specDisplayNames(specs: List<ApplicationSpec>): Map<String, String>
 
 
 /**
- * Fails if two Specs declare Entities with the same name, or root Entities backed by the same table.
+ * Fails if two Specs declare Entities with the same name, root Entities backed by the same table,
+ * or enums or value types with the same name but a different definition. Identical declarations,
+ * such as the framework's built-in enums, are one shared type and are listed under the first Spec that declares them.
  */
 internal fun `fail on name clashes`(specs: List<ApplicationSpec>) {
 
     val displayNames = specDisplayNames(specs)
     val entityOwners = mutableMapOf<String, String>()
     val tableOwners = mutableMapOf<String, Pair<String, String>>()
+    val enumOwners = mutableMapOf<String, Pair<String, Any>>()
+    val valueTypeOwners = mutableMapOf<String, Pair<String, Any>>()
 
     specs.forEach { spec ->
 
         val specKey = specKey(spec)
         val specName = displayNames.getValue(specKey)
 
-        spec.applicationModelDef.entityHierarchies.map { it.entityDef }.forEach { entityDef ->
+        val modelDef = spec.applicationModelDef
+
+        modelDef.enumDefs.forEach { enumDef ->
+            val name = enumDef.fqcn.toString()
+            val signature = `enum signature`(enumDef)
+            val previous = enumOwners.getOrPut(name) { specKey to signature }
+            check(previous.second == signature) {
+                "Enum name clash: enum '$name' is declared differently by ${displayNames.getValue(previous.first)} and $specName"
+            }
+        }
+
+        val valueTypeDefs = modelDef.stringTypeDefs + modelDef.intTypeDefs + modelDef.longTypeDefs + modelDef.booleanTypeDefs
+
+        valueTypeDefs.forEach { typeDef ->
+            val name = typeDef.fqcn.toString()
+            val signature = `value type signature`(typeDef)
+            val previous = valueTypeOwners.getOrPut(name) { specKey to signature }
+            check(previous.second == signature) {
+                "Value type name clash: value type '$name' is declared differently by ${displayNames.getValue(previous.first)} and $specName"
+            }
+        }
+
+        modelDef.entityHierarchies.map { it.entityDef }.forEach { entityDef ->
 
             val entityName = entityDef.entityBaseName.toString()
             val previousSpecKey = entityOwners.put(entityName, specKey)

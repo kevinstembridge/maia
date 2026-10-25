@@ -81,6 +81,50 @@ class MultiSpecDomainDocsTest {
     }
 
 
+    class ColourModelSpec : AbstractSpec(AppKey("MultiColour")) {
+
+        val colour = enumDef("com.shared", "Colour") { value("RED") }
+
+        val sku = stringType("com.shared", "Sku") { alwaysUpperCase() }
+
+    }
+
+
+    class ColourApplicationSpec : ApplicationSpec("com.shared") {
+
+        override val modelDefs: List<ModelDef> = listOf(ColourModelSpec().modelDef)
+
+    }
+
+
+    class OtherColourModelSpec : AbstractSpec(AppKey("MultiOtherColour")) {
+
+        val colour = enumDef("com.shared", "Colour") { value("BLUE") }
+
+    }
+
+
+    class OtherColourApplicationSpec : ApplicationSpec("com.shared") {
+
+        override val modelDefs: List<ModelDef> = listOf(OtherColourModelSpec().modelDef)
+
+    }
+
+
+    class OtherSkuModelSpec : AbstractSpec(AppKey("MultiOtherSku")) {
+
+        val sku = stringType("com.shared", "Sku")
+
+    }
+
+
+    class OtherSkuApplicationSpec : ApplicationSpec("com.shared") {
+
+        override val modelDefs: List<ModelDef> = listOf(OtherSkuModelSpec().modelDef)
+
+    }
+
+
     @TempDir
     lateinit var outputDir: Path
 
@@ -131,6 +175,33 @@ class MultiSpecDomainDocsTest {
             .hasMessageContaining("table")
             .hasMessageContaining("Order")
             .hasMessageContaining("Purchase")
+
+    }
+
+
+    @Test
+    fun `fails clearly when two Specs declare an enum with the same name but different values`() {
+
+        assertThatThrownBy {
+            generateDomainDocs(listOf(ColourApplicationSpec(), OtherColourApplicationSpec()), outputDir)
+        }
+            .hasMessageContaining("Enum")
+            .hasMessageContaining("com.shared.Colour")
+            .hasMessageContaining("ColourApplicationSpec")
+            .hasMessageContaining("OtherColourApplicationSpec")
+
+    }
+
+
+    @Test
+    fun `fails clearly when two Specs declare a value type with the same name but different definitions`() {
+
+        assertThatThrownBy {
+            generateDomainDocs(listOf(ColourApplicationSpec(), OtherSkuApplicationSpec()), outputDir)
+        }
+            .hasMessageContaining("Value type")
+            .hasMessageContaining("com.shared.Sku")
+            .hasMessageContaining("OtherSkuApplicationSpec")
 
     }
 
