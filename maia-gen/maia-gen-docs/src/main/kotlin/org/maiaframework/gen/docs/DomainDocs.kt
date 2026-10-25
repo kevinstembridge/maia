@@ -13,6 +13,8 @@ import kotlin.io.path.writeText
  */
 fun generateDomainDocs(specs: List<ApplicationSpec>, outputDir: Path) {
 
+    `fail on name clashes`(specs)
+
     val entities = specs.flatMap { spec ->
         spec.applicationModelDef.entityHierarchies.map { SpecEntity(spec.javaClass.simpleName, it.entityDef) }
     }.sortedBy { it.entityDef.entityBaseName.value }
