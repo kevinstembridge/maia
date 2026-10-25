@@ -22,6 +22,8 @@ fun generateDomainDocs(specs: List<ApplicationSpec>, outputDir: Path) {
     outputDir.resolve("style.css").writeText(STYLESHEET)
     outputDir.resolve("index.html").writeText(`render index`(entities))
 
+    writeTablePages(specs, outputDir)
+
     entities.forEach {
         entitiesDir.resolve("${it.entityDef.entityBaseName}.html").writeText(`render entity page`(it))
     }
@@ -67,6 +69,7 @@ private fun `render entity page`(specEntity: SpecEntity): String {
         $description
         <dl>
         <dt>Spec</dt><dd>${escape(specEntity.specName)}</dd>
+        <dt>Table</dt><dd>${tableLinkFor(entityDef, "../")}</dd>
         <dt>Abstract</dt><dd>${yesNo(!entityDef.isConcrete)}</dd>
         <dt>Versioned</dt><dd>${yesNo(entityDef.versioned.value)}</dd>
         <dt>Version history</dt><dd>${yesNo(entityDef.withVersionHistory.value)}</dd>
@@ -83,7 +86,7 @@ private fun `render entity page`(specEntity: SpecEntity): String {
 }
 
 
-private fun page(title: String, root: String, body: String): String = """
+internal fun page(title: String, root: String, body: String): String = """
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -92,7 +95,7 @@ private fun page(title: String, root: String, body: String): String = """
     <link rel="stylesheet" href="${root}style.css">
     </head>
     <body>
-    <header><nav><a href="${root}index.html">Index</a></nav></header>
+    <header><nav><a href="${root}index.html">Index</a><a href="${root}tables/index.html">Tables</a></nav></header>
     <main>
     $body
     </main>
@@ -101,10 +104,10 @@ private fun page(title: String, root: String, body: String): String = """
 """.trimIndent() + "\n"
 
 
-private fun yesNo(value: Boolean) = if (value) "yes" else "no"
+internal fun yesNo(value: Boolean) = if (value) "yes" else "no"
 
 
-private fun escape(text: String): String = text
+internal fun escape(text: String): String = text
     .replace("&", "&amp;")
     .replace("<", "&lt;")
     .replace(">", "&gt;")
