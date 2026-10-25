@@ -30,6 +30,10 @@ _Avoid_: Manual code
 The reference application in `maia-showcase` that exercises every Generator feature and is the target of the Playwright integration tests.
 _Avoid_: Demo, example app
 
+**Domain docs**:
+A static HTML site describing the domain model declared by one or more Specs: Entities, database tables, enums and value types. Derived from the Specs alone, never committed.
+_Avoid_: API docs, Javadoc
+
 ### Entities and types
 
 **Entity**:
