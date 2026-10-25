@@ -16,7 +16,7 @@ class SingletonPostgresqlContainer(
 
     companion object {
 
-        val instance = SingletonPostgresqlContainer("postgres:16")
+        val instance = SingletonPostgresqlContainer("postgres:18")
 
     }
 
