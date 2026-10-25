@@ -62,6 +62,12 @@ abstract class MaiaGenerationExtension @Inject constructor(objects: ObjectFactor
     val schemaCheckIgnoreTables = objects.listProperty(String::class.java)
 
 
+    val domainDocsSpecClassNames = objects.listProperty(String::class.java)
+
+
+    val domainDocsOutputDir = objects.directoryProperty()
+
+
     @Nested
     abstract fun getDependencies(): MaiaGenerationDependencies // = objects.newInstance(MaiaGenerationDependencies::class.java)
 

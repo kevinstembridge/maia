@@ -13,6 +13,8 @@ import kotlin.io.path.writeText
  */
 fun generateDomainDocs(specs: List<ApplicationSpec>, outputDir: Path) {
 
+    `fail on name clashes`(specs)
+
     val entities = specs.flatMap { spec ->
         spec.applicationModelDef.entityHierarchies.map { SpecEntity(spec.javaClass.simpleName, it.entityDef) }
     }.sortedBy { it.entityDef.entityBaseName.value }
@@ -22,6 +24,8 @@ fun generateDomainDocs(specs: List<ApplicationSpec>, outputDir: Path) {
     outputDir.resolve("style.css").writeText(STYLESHEET)
     `write enums and value types pages`(specs, outputDir)
     outputDir.resolve("index.html").writeText(`render index`(entities))
+
+    writeTablePages(specs, outputDir)
 
     entities.forEach {
         entitiesDir.resolve("${it.entityDef.entityBaseName}.html").writeText(`render entity page`(it))
@@ -38,7 +42,7 @@ private fun `render index`(entities: List<SpecEntity>): String {
     val sections = entities.groupBy { it.specName }.entries.joinToString("\n") { (specName, group) ->
         val items = group.joinToString("\n") {
             val name = it.entityDef.entityBaseName.toString()
-            "<li><a href=\"entities/${escape(name)}.html\">${escape(name)}</a></li>"
+            "<li><a href=\"entities/${escape(name)}.html\">${escape(name)}</a>${`render index badges`(it.entityDef)}</li>"
         }
         "<h2>${escape(specName)}</h2>\n<ul>\n$items\n</ul>"
     }
@@ -68,6 +72,7 @@ private fun `render entity page`(specEntity: SpecEntity): String {
         $description
         <dl>
         <dt>Spec</dt><dd>${escape(specEntity.specName)}</dd>
+        <dt>Table</dt><dd>${tableLinkFor(entityDef, "../")}</dd>
         <dt>Abstract</dt><dd>${yesNo(!entityDef.isConcrete)}</dd>
         <dt>Versioned</dt><dd>${yesNo(entityDef.versioned.value)}</dd>
         <dt>Version history</dt><dd>${yesNo(entityDef.withVersionHistory.value)}</dd>
@@ -77,6 +82,8 @@ private fun `render entity page`(specEntity: SpecEntity): String {
         <tr><th>Name</th><th>Type</th><th>Nullable</th><th>Inherited</th></tr>
         $fieldRows
         </table>
+        ${`render crud panel`(entityDef)}
+        ${`render caching panel`(entityDef)}
     """.trimIndent()
 
     return page(name, "../", body)
@@ -93,7 +100,7 @@ internal fun page(title: String, root: String, body: String): String = """
     <link rel="stylesheet" href="${root}style.css">
     </head>
     <body>
-    <header><nav><a href="${root}index.html">Index</a><a href="${root}enums.html">Enums</a><a href="${root}value-types.html">Value types</a></nav></header>
+    <header><nav><a href="${root}index.html">Index</a><a href="${root}tables/index.html">Tables</a><a href="${root}enums.html">Enums</a><a href="${root}value-types.html">Value types</a></nav></header>
     <main>
     $body
     </main>
@@ -102,7 +109,7 @@ internal fun page(title: String, root: String, body: String): String = """
 """.trimIndent() + "\n"
 
 
-private fun yesNo(value: Boolean) = if (value) "yes" else "no"
+internal fun yesNo(value: Boolean) = if (value) "yes" else "no"
 
 
 internal fun escape(text: String): String = text
@@ -122,4 +129,4 @@ private val STYLESHEET = """
     th { background: #eceff1; }
     dt { font-weight: bold; float: left; clear: left; width: 10rem; }
     dd { margin-left: 10rem; }
-""".trimIndent() + "\n"
+""".trimIndent() + "\n" + CRUD_CACHING_STYLES

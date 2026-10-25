@@ -35,6 +35,12 @@ abstract class MaiaGenerationPlugin : Plugin<Project> {
 
         `register the maiaSchemaCheck task`(project, extension)
 
+        `add domain-docs conventions to the MaiaGenExtension`(project, extension)
+
+        `register the maiaDomainDocsImplementation configuration`(project, extension)
+
+        `register the maiaDomainDocs task`(project, extension)
+
         `configure the IdeaPlugin for generated output dirs`(project, extension)
 
         `add the generated output dirs as SourceSets`(project, extension)
@@ -163,6 +169,49 @@ abstract class MaiaGenerationPlugin : Plugin<Project> {
             ignoreErrors.set(extension.schemaCheckIgnoreErrors)
             fixSqlOutputFile.set(extension.schemaCheckFixSqlOutputFile)
             ignoreTables.set(extension.schemaCheckIgnoreTables)
+
+        }
+
+    }
+
+
+    private fun `add domain-docs conventions to the MaiaGenExtension`(
+        project: Project,
+        extension: MaiaGenerationExtension
+    ) {
+
+        extension.domainDocsOutputDir.convention(project.layout.buildDirectory.dir("maia-docs"))
+
+    }
+
+
+    private fun `register the maiaDomainDocsImplementation configuration`(
+        project: Project,
+        extension: MaiaGenerationExtension
+    ) {
+
+        project.configurations.register("maiaDomainDocsImplementation") {
+            fromDependencyCollector(extension.getDependencies().getImplementation())
+        }
+
+        project.dependencies.add("maiaDomainDocsImplementation", "org.maiaframework:maia-gen-docs")
+
+    }
+
+
+    private fun `register the maiaDomainDocs task`(
+        project: Project,
+        extension: MaiaGenerationExtension
+    ) {
+
+        project.tasks.register("maiaDomainDocs", MaiaDomainDocsTask::class.java) {
+
+            description = "Generates static HTML documentation of the domain model from the configured Specs."
+            group = "documentation"
+
+            domainDocsClasspath.from(project.configurations.getByName("maiaDomainDocsImplementation"))
+            specClassNames.set(extension.domainDocsSpecClassNames)
+            outputDir.set(extension.domainDocsOutputDir)
 
         }
 
