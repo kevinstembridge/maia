@@ -22,6 +22,7 @@ fun generateDomainDocs(specs: List<ApplicationSpec>, outputDir: Path) {
     val entitiesDir = outputDir.resolve("entities").createDirectories()
 
     outputDir.resolve("style.css").writeText(STYLESHEET)
+    `write enums and value types pages`(specs, outputDir)
     outputDir.resolve("index.html").writeText(`render index`(entities))
 
     writeTablePages(specs, outputDir)
@@ -60,7 +61,7 @@ private fun `render entity page`(specEntity: SpecEntity, allEntities: List<Entit
     val fieldRows = entityDef.allEntityFields.joinToString("\n") {
         val fieldName = it.classFieldName
         val inheritedCell = `render inherited cell`(entityDef, fieldName.toString())
-        "<tr><td>${escape(fieldName.toString())}</td><td>${escape(it.fieldType.unqualifiedToString)}</td>" +
+        "<tr><td>${escape(fieldName.toString())}</td><td>${`render field type cell`(it.fieldType, "../")}</td>" +
             "<td>${if (it.nullable) "yes" else "no"}</td><td>$inheritedCell</td></tr>"
     }
 
@@ -99,7 +100,7 @@ internal fun page(title: String, root: String, body: String): String = """
     <link rel="stylesheet" href="${root}style.css">
     </head>
     <body>
-    <header><nav><a href="${root}index.html">Index</a><a href="${root}tables/index.html">Tables</a></nav></header>
+    <header><nav><a href="${root}index.html">Index</a><a href="${root}tables/index.html">Tables</a><a href="${root}enums.html">Enums</a><a href="${root}value-types.html">Value types</a></nav></header>
     <main>
     $body
     </main>
