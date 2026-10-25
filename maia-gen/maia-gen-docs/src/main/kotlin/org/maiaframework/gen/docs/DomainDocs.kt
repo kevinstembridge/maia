@@ -27,7 +27,7 @@ fun generateDomainDocs(specs: List<ApplicationSpec>, outputDir: Path) {
     writeTablePages(specs, outputDir)
 
     entities.forEach {
-        entitiesDir.resolve("${it.entityDef.entityBaseName}.html").writeText(`render entity page`(it))
+        entitiesDir.resolve("${it.entityDef.entityBaseName}.html").writeText(`render entity page`(it, entities.map { e -> e.entityDef }))
     }
 
 }
@@ -51,17 +51,15 @@ private fun `render index`(entities: List<SpecEntity>): String {
 }
 
 
-private fun `render entity page`(specEntity: SpecEntity): String {
+private fun `render entity page`(specEntity: SpecEntity, allEntities: List<EntityDef>): String {
 
     val entityDef = specEntity.entityDef
     val name = escape(entityDef.entityBaseName.toString())
     val description = entityDef.description?.value?.let { "<p>${escape(it)}</p>" } ?: ""
 
-    val inherited = entityDef.superclassEntityDef?.allEntityFields?.map { it.classFieldName }?.toSet() ?: emptySet()
-
     val fieldRows = entityDef.allEntityFields.joinToString("\n") {
         val fieldName = it.classFieldName
-        val inheritedCell = if (fieldName in inherited) "yes" else "no"
+        val inheritedCell = `render inherited cell`(entityDef, fieldName.toString())
         "<tr><td>${escape(fieldName.toString())}</td><td>${escape(it.fieldType.unqualifiedToString)}</td>" +
             "<td>${if (it.nullable) "yes" else "no"}</td><td>$inheritedCell</td></tr>"
     }
@@ -75,12 +73,14 @@ private fun `render entity page`(specEntity: SpecEntity): String {
         <dt>Abstract</dt><dd>${yesNo(!entityDef.isConcrete)}</dd>
         <dt>Versioned</dt><dd>${yesNo(entityDef.versioned.value)}</dd>
         <dt>Version history</dt><dd>${yesNo(entityDef.withVersionHistory.value)}</dd>
+        ${`render structure rows`(entityDef, allEntities)}
         </dl>
         <h2>Fields</h2>
         <table>
         <tr><th>Name</th><th>Type</th><th>Nullable</th><th>Inherited</th></tr>
         $fieldRows
         </table>
+        ${`render relationship panels`(entityDef, allEntities)}
         ${`render crud panel`(entityDef)}
         ${`render caching panel`(entityDef)}
     """.trimIndent()
