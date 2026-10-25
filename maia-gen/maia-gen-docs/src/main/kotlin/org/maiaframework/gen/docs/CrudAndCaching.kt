@@ -16,10 +16,20 @@ private fun `is crud enabled`(entityDef: EntityDef): Boolean {
 }
 
 
+private fun `has crud operations`(entityDef: EntityDef): Boolean {
+
+    val ops = entityDef.crudDef.crudOperationDefs
+    return ops.createOperationDef != null
+        || ops.updateOperationDef != null
+        || ops.deleteOperationDef != null
+
+}
+
+
 /** Small CRUD and cached badges for the index entry of an Entity. */
 internal fun `render index badges`(entityDef: EntityDef): String {
 
-    val crud = if (`is crud enabled`(entityDef)) " <span class=\"badge badge-crud\">CRUD</span>" else ""
+    val crud = if (`has crud operations`(entityDef)) " <span class=\"badge badge-crud\">CRUD</span>" else ""
     val cached = if (entityDef.cacheableDef != null) " <span class=\"badge badge-cached\">cached</span>" else ""
     return crud + cached
 

@@ -131,6 +131,7 @@ class DomainDocsCrudCachingTest {
 
         assertThat(indexItem("Gadget")).contains("badge-crud").contains("badge-cached")
         assertThat(indexItem("Plain")).doesNotContain("badge-crud").doesNotContain("badge-cached")
+        assertThat(indexItem("ListenerOnly")).doesNotContain("badge-crud")
 
     }
 
