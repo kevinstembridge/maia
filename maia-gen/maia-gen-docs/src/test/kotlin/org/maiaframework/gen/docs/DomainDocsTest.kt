@@ -54,6 +54,22 @@ class DomainDocsTest {
 
 
     @Test
+    fun `index shows a summary of entity, field, table and column counts`() {
+
+        generateDomainDocs(listOf(WidgetApplicationSpec()), outputDir)
+
+        val index = outputDir.resolve("index.html").readText()
+
+        assertThat(index)
+            .contains("<dt>Entities</dt><dd>1</dd>")
+            .contains("<dt>Database tables</dt><dd>1</dd>")
+            .containsPattern("<dt>Entity fields</dt><dd>\\d+</dd>")
+            .containsPattern("<dt>Database columns</dt><dd>\\d+</dd>")
+
+    }
+
+
+    @Test
     fun `Entity page shows description, spec, flags and fields with nullability`() {
 
         generateDomainDocs(listOf(WidgetApplicationSpec()), outputDir)

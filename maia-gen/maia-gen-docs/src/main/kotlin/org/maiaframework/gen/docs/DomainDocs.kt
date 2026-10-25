@@ -25,9 +25,10 @@ fun generateDomainDocs(specs: List<ApplicationSpec>, outputDir: Path) {
 
     outputDir.resolve(STYLESHEET_FILE).writeText(STYLESHEET)
     `write enums and value types pages`(specs, outputDir)
-    outputDir.resolve(INDEX_PAGE).writeText(`render index`(entities, specNames))
 
-    writeTablePages(specs, outputDir)
+    val tables = writeTablePages(specs, outputDir)
+
+    outputDir.resolve(INDEX_PAGE).writeText(`render index`(entities, tables, specNames))
 
     entities.forEach {
         entitiesDir.resolve(entityPageFileName(it.entityDef))
@@ -40,7 +41,7 @@ fun generateDomainDocs(specs: List<ApplicationSpec>, outputDir: Path) {
 private data class SpecEntity(val specKey: String, val entityDef: EntityDef)
 
 
-private fun `render index`(entities: List<SpecEntity>, specNames: Map<String, String>): String {
+private fun `render index`(entities: List<SpecEntity>, tables: List<TableEntry>, specNames: Map<String, String>): String {
 
     val sections = entities.groupBy { it.specKey }.entries.joinToString("\n") { (specKey, group) ->
         val items = group.joinToString("\n") {
@@ -49,7 +50,26 @@ private fun `render index`(entities: List<SpecEntity>, specNames: Map<String, St
         "<h2>${escapeHtml(specNames.getValue(specKey))}</h2>\n<ul>\n$items\n</ul>"
     }
 
-    return renderPage("Domain docs", "", "<h1>Domain docs</h1>\n$sections")
+    return renderPage("Domain Docs", "", "<h1>Domain Docs</h1>\n${`render summary`(entities, tables)}\n$sections")
+
+}
+
+
+private fun `render summary`(entities: List<SpecEntity>, tables: List<TableEntry>): String {
+
+    // Fields are counted where declared, so inherited fields are not counted again for each subclass.
+    val entityFieldCount = entities.sumOf { it.entityDef.entityFieldsNotInherited.size }
+    val columnCount = tables.sumOf { it.table.columns.size }
+
+    return """
+        <h2>Summary</h2>
+        <dl>
+        <dt>Entities</dt><dd>${entities.size}</dd>
+        <dt>Entity fields</dt><dd>$entityFieldCount</dd>
+        <dt>Database tables</dt><dd>${tables.size}</dd>
+        <dt>Database columns</dt><dd>$columnCount</dd>
+        </dl>
+    """.trimIndent()
 
 }
 

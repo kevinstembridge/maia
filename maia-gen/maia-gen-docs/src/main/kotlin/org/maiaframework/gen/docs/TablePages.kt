@@ -9,14 +9,14 @@ import kotlin.io.path.createDirectories
 import kotlin.io.path.writeText
 
 
-private data class TableEntry(val table: ExpectedTableDef, val entityDefs: List<EntityDef>)
+internal data class TableEntry(val table: ExpectedTableDef, val entityDefs: List<EntityDef>)
 
 
 /**
  * Writes the Tables section: `tables/index.html` plus one page per database table, derived from the Entity
  * definitions. Entities in an inheritance hierarchy share the table of their root Entity.
  */
-internal fun writeTablePages(specs: List<ApplicationSpec>, outputDir: Path) {
+internal fun writeTablePages(specs: List<ApplicationSpec>, outputDir: Path): List<TableEntry> {
 
     val entries = specs.flatMap { spec ->
         val hierarchies = spec.applicationModelDef.rootEntityHierarchies
@@ -37,6 +37,8 @@ internal fun writeTablePages(specs: List<ApplicationSpec>, outputDir: Path) {
     entries.forEach {
         tablesDir.resolve(tablePageFileName(it.table.schemaAndTableName)).writeText(`render table page`(it, entries))
     }
+
+    return entries
 
 }
 
