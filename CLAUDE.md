@@ -16,7 +16,7 @@ The command to run a full clean build is...
 
 ### Issue tracker
 
-Issues are tracked in GitHub Issues (`kevinstembridge/maia`) via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+Issues are tracked as local markdown files under `.scratch/<feature-slug>/`. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 
