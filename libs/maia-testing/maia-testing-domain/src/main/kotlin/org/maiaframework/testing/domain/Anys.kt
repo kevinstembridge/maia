@@ -7,6 +7,7 @@ import org.maiaframework.domain.country.CountryCodeAlpha3
 import org.maiaframework.domain.net.IpAddress
 import org.maiaframework.domain.party.FirstName
 import org.maiaframework.domain.party.LastName
+import java.net.URI
 import java.net.URL
 import java.time.Instant
 import java.time.LocalDate
@@ -87,7 +88,14 @@ object Anys {
 
     fun anyOrgWebsiteURL(): URL {
 
-        return URL("https://${anyOf(domainNames)}")
+        return URI("https://${anyOf(domainNames)}").toURL()
+
+    }
+
+
+    fun anyUniqueOrgWebsiteURL(): URL {
+
+        return URI("https://${anyOf(domainNames)}/${UUID.randomUUID()}").toURL()
 
     }
 
