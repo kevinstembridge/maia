@@ -1020,7 +1020,7 @@ class AngularSignalFormComponentRenderer(
 
         val requestDtoType = this.angularFormDef.requestDtoDef.uqcn
 
-        if (typeaheadFields.isEmpty() && localDateFields.isEmpty() && chipFields.isEmpty() && timestampedFields.isEmpty()) {
+        if (angularFormDef.context == null && typeaheadFields.isEmpty() && localDateFields.isEmpty() && chipFields.isEmpty() && timestampedFields.isEmpty()) {
 
             appendLine("            const requestDto = value as $requestDtoType;")
             return
@@ -1029,6 +1029,11 @@ class AngularSignalFormComponentRenderer(
 
         appendLine("            const requestDto = {")
         appendLine("                ...value,")
+
+        // The context comes from the dialog data, not from a form field.
+        this.angularFormDef.context?.let {
+            appendLine("                context: this.context,")
+        }
 
         typeaheadFields.forEach { fieldDef ->
 
