@@ -14,7 +14,7 @@ import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.ParameterizedType
 
 class SearchDtoDef(
-    packageName: PackageName,
+    private val packageName: PackageName,
     val dtoBaseName: DtoBaseName,
     dtoSuffix: DtoSuffix,
     dtoClassFields: List<ClassFieldDef>,
@@ -30,10 +30,19 @@ class SearchDtoDef(
     val generateFindById: GenerateFindById,
     val withGeneratedEndpoint: WithGeneratedEndpoint,
     val withGeneratedTypescriptService: WithGeneratedTypescriptService,
+    /** Trailing version suffix such as `_v0002`, or empty. Appended last to the DTO name and to every name derived from it. */
+    private val versionSuffix: String = "",
 ) {
 
 
-    val dtoDef = DtoDefBuilder(packageName, dtoBaseName, dtoSuffix, dtoClassFields)
+    private val unversionedUqcn = dtoBaseName.withSuffix(dtoSuffix).value
+
+
+    /** A class derived from this DTO: the version-less DTO name, then [suffix], then the version suffix. */
+    private fun derivedFqcn(suffix: String) = packageName.uqcn("$unversionedUqcn$suffix$versionSuffix")
+
+
+    val dtoDef = DtoDefBuilder(packageName, dtoBaseName, DtoSuffix("${dtoSuffix.value}$versionSuffix"), dtoClassFields)
         .withCharacteristic(DtoCharacteristic.RESPONSE_DTO)
         .build()
 
@@ -47,13 +56,10 @@ class SearchDtoDef(
     val angularComponentNames = AngularComponentNames(packageName, dtoBaseName.value)
 
 
-    private val searchServiceClassName = "${uqcn}SearchService"
+    val searchServiceFqcn = derivedFqcn("SearchService")
 
 
-    val searchServiceFqcn = packageName.uqcn(searchServiceClassName)
-
-
-    val searchEndpointClassDef = aClassDef(fqcn.withSuffix("SearchEndpoint"))
+    val searchEndpointClassDef = aClassDef(derivedFqcn("SearchEndpoint"))
         .withClassAnnotation(AnnotationDefs.SPRING_REST_CONTROLLER)
         .build()
 
@@ -63,26 +69,26 @@ class SearchDtoDef(
         .build()
 
 
-    val esDocMapperClassDef = aClassDef(fqcn.withSuffix("EsDocMapper"))
+    val esDocMapperClassDef = aClassDef(derivedFqcn("EsDocMapper"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .build()
 
 
-    val dtoRepoClassDef = aClassDef(fqcn.withSuffix("Repo"))
+    val dtoRepoClassDef = aClassDef(derivedFqcn("Repo"))
         .withClassAnnotation(AnnotationDefs.SPRING_REPOSITORY)
         .build()
 
 
-    val fieldNameMapperClassDef = aClassDef(fqcn.withSuffix("FieldNameMapper"))
+    val fieldNameMapperClassDef = aClassDef(derivedFqcn("FieldNameMapper"))
         .ofType(ClassType.OBJECT)
         .build()
 
 
-    val csvHelperClassDef = aClassDef(fqcn.withSuffix("CsvHelper"))
+    val csvHelperClassDef = aClassDef(derivedFqcn("CsvHelper"))
         .withInterface(ParameterizedType(Fqcns.CSV_WRITER_HELPER, ParameterizedType(fqcn)))
         .build()
 
-    val documentMapperClassDef = aClassDef(fqcn.withSuffix("DocumentMapper"))
+    val documentMapperClassDef = aClassDef(derivedFqcn("DocumentMapper"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .build()
 

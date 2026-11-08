@@ -121,7 +121,7 @@ class EsDocDef(
 
 
     val fieldEnumDef = if (renderFieldEnum) {
-        val builder = EnumDefBuilder(packageName.uqcn(this.dtoDef.uqcn.withSuffix("Field")))
+        val builder = EnumDefBuilder(packageName.uqcn("${esDocBaseName}EsDocField$versionSuffix"))
         fields.forEach { builder.value(it.classFieldDef.classFieldName.value) }
         builder.build()
     } else {

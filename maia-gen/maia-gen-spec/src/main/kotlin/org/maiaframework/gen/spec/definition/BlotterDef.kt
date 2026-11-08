@@ -118,7 +118,7 @@ class BlotterDef(
     val actionColumnFields = blotterColumnDefs.filterIsInstance<BlotterActionColumnDef>()
 
 
-    val blotterComponent = AngularComponentNames(this.packageName, "${dtoBaseName}Blotter$versionSuffix")
+    val blotterComponent = AngularComponentNames(this.packageName, "${dtoBaseName}Blotter", versionSuffix)
 
 
     val agGridDatasourceImportStatement = blotterComponent.agGridDatasourceImportStatement
@@ -181,7 +181,7 @@ class BlotterDef(
     val searchDtoDef = SearchDtoDef(
         packageName,
         dtoBaseName,
-        DtoSuffix("BlotterRowDto$versionSuffix"),
+        DtoSuffix("BlotterRowDto"),
         dtoClassFields,
         defaultSortModel = emptyList(),
         dataSourceType = blotterSourceDef.dataSourceType,
@@ -194,7 +194,8 @@ class BlotterDef(
         withGeneratedFindAllFunction,
         GenerateFindById.FALSE,
         withGeneratedEndpoint,
-        withGeneratedTypescriptService
+        withGeneratedTypescriptService,
+        versionSuffix
     )
 
 
