@@ -31,7 +31,7 @@ import org.maiaframework.showcase.join.BravoEntity
 import org.maiaframework.showcase.join.BravoEsEsIndexControl_v0001
 import org.maiaframework.showcase.join.BravoEsBlotterRowDtoSearchService
 import org.maiaframework.showcase.join.BravoEsEsIndexMeta_v0001
-import org.maiaframework.showcase.join.BravoEsV1IndexService
+import org.maiaframework.showcase.join.BravoEsIndexService_v0001
 import org.maiaframework.showcase.join.BravoUpdate_alphaRequestDto
 import org.maiaframework.showcase.join.BravoUpdate_someStringRequestDto
 import org.maiaframework.showcase.many_to_many.LeftJoinRequestDto
@@ -42,7 +42,7 @@ import org.maiaframework.showcase.many_to_many.LeftManyEntity
 import org.maiaframework.showcase.many_to_many.LeftManyEntityMeta
 import org.maiaframework.showcase.many_to_many.LeftManyEsEsIndexControl_v0001
 import org.maiaframework.showcase.many_to_many.LeftManyEsEsIndexMeta_v0001
-import org.maiaframework.showcase.many_to_many.LeftManyEsV1IndexService
+import org.maiaframework.showcase.many_to_many.LeftManyEsIndexService_v0001
 import org.maiaframework.showcase.many_to_many.LeftManyUpdateRequestDto
 import org.maiaframework.showcase.many_to_many.LeftToRightComplexDao
 import org.maiaframework.showcase.many_to_many.LeftToRightComplexEntity
@@ -103,11 +103,11 @@ class EsDocAutoRefreshIntegrationTest : AbstractBlackBoxTest() {
 
 
     @Autowired
-    private lateinit var bravoEsIndexService: BravoEsV1IndexService
+    private lateinit var bravoEsIndexService: BravoEsIndexService_v0001
 
 
     @Autowired
-    private lateinit var leftManyEsIndexService: LeftManyEsV1IndexService
+    private lateinit var leftManyEsIndexService: LeftManyEsIndexService_v0001
 
 
     @Autowired
@@ -332,7 +332,7 @@ class EsDocAutoRefreshIntegrationTest : AbstractBlackBoxTest() {
         assertThat(bravoDao.findByPrimaryKey(bravo.id).someString).isEqualTo("updated")
         assertThat(getDoc(bravoIndex, bravo.id).source()!!["dtoStringFromBravo"]).isEqualTo("original")
 
-        bravoEsIndexService.refreshIndex(JobMetrics("test-refreshBravoEsV1Index"))
+        bravoEsIndexService.refreshIndex(JobMetrics("test-refreshBravoEsIndex_v0001"))
 
         assertThat(getDoc(bravoIndex, bravo.id).source()!!["dtoStringFromBravo"]).isEqualTo("updated")
 
@@ -365,7 +365,7 @@ class EsDocAutoRefreshIntegrationTest : AbstractBlackBoxTest() {
         assertThat(getDoc(bravoIndex, lost.id).found()).isFalse()
         assertThat(getDoc(bravoIndex, bogusId).found()).isTrue()
 
-        bravoEsIndexService.refreshIndex(JobMetrics("test-refreshBravoEsV1Index"))
+        bravoEsIndexService.refreshIndex(JobMetrics("test-refreshBravoEsIndex_v0001"))
 
         assertThat(getDoc(bravoIndex, lost.id).source()!!["dtoStringFromBravo"]).isEqualTo("lost")
         assertThat(getDoc(bravoIndex, kept.id).found()).isTrue()
@@ -535,7 +535,7 @@ class EsDocAutoRefreshIntegrationTest : AbstractBlackBoxTest() {
         // documented limitation: no CrudService event, so the doc is stale until the scheduled job runs
         assertThat(rightEntitiesOf(left.id)).isEmpty()
 
-        leftManyEsIndexService.refreshIndex(JobMetrics("test-refreshLeftManyEsV1Index"))
+        leftManyEsIndexService.refreshIndex(JobMetrics("test-refreshLeftManyEsIndex_v0001"))
 
         assertThat(rightEntitiesOf(left.id)).containsExactly(right.id.value to "right")
 
@@ -574,7 +574,7 @@ class EsDocAutoRefreshIntegrationTest : AbstractBlackBoxTest() {
         createBravo(alpha)
         elasticsearchClient.indices().delete { r -> r.index(bravoIndex.value) }
 
-        bravoEsIndexService.refreshIndex(JobMetrics("test-refreshBravoEsV1Index"))
+        bravoEsIndexService.refreshIndex(JobMetrics("test-refreshBravoEsIndex_v0001"))
 
         val properties = elasticsearchClient.indices().getMapping { r -> r.index(bravoIndex.value) }
             .get(bravoIndex.value)!!.mappings().properties()

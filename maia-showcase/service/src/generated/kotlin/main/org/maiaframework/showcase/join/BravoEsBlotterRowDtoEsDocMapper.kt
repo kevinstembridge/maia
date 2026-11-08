@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 class BravoEsBlotterRowDtoEsDocMapper {
 
 
-    fun mapEsDoc(esDoc: BravoEsV1EsDoc): BravoEsBlotterRowDto {
+    fun mapEsDoc(esDoc: BravoEsEsDoc_v0001): BravoEsBlotterRowDto {
 
         return BravoEsBlotterRowDto(
             esDoc.createdTimestamp,

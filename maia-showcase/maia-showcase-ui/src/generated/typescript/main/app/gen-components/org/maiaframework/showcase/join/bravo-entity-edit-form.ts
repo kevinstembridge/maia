@@ -9,7 +9,7 @@ import {MatInputModule} from '@angular/material/input';
 import {Router} from '@angular/router';
 import {BravoFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoFetchForEditDto';
 import {BravoUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoUpdateRequestDto';
-import {AlphaTypeaheadV1Component} from '@app/gen-components/org/maiaframework/showcase/join/alpha-typeahead-v1';
+import {AlphaTypeaheadComponent_v0001} from '@app/gen-components/org/maiaframework/showcase/join/alpha-typeahead-v0001';
 import {BravoCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {firstValueFrom} from 'rxjs';
@@ -18,7 +18,7 @@ import {firstValueFrom} from 'rxjs';
 
 @Component({
     imports: [
-        AlphaTypeaheadV1Component,
+        AlphaTypeaheadComponent_v0001,
         FormField,
         MatButtonModule,
         MatFormFieldModule,

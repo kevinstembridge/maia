@@ -35,14 +35,14 @@
             }
 
         </mat-form-field>
-        <app-right-many-typeahead-v1
+        <app-right-many-typeahead-v0001
             chips
             label="Right Simple Entities"
             placeholder="Search Right Simple Entities..."
             [selected]="selectedRightSimpleEntities()"
             (added)="addRightSimpleEntity($event)"
             (removed)="removeRightSimpleEntity($event)"
-        ></app-right-many-typeahead-v1>
+        ></app-right-many-typeahead-v0001>
         <div class="join-entries">
             @for (join of rightSystemEffectiveJoinsForm; track join) {
                 <div class="join-entry">
@@ -58,11 +58,11 @@
         </button>
         @if (showRightSystemEffectiveJoinForm()) {
             <div class="join-mini-form">
-                <app-right-many-typeahead-v1
+                <app-right-many-typeahead-v0001
                     [formField]="addRightSystemEffectiveJoinForm.entity"
                     label="Right System Effective Entities"
                     placeholder="Search Right System Effective Entities..."
-                ></app-right-many-typeahead-v1>
+                ></app-right-many-typeahead-v0001>
                 <button mat-flat-button type="button" (click)="confirmAddRightSystemEffectiveJoin()">Add</button>
                 <button mat-flat-button type="button" (click)="cancelAddRightSystemEffectiveJoin()">Cancel</button>
             </div>
@@ -82,11 +82,11 @@
         </button>
         @if (showRightSystemSingleEffectiveJoinForm()) {
             <div class="join-mini-form">
-                <app-right-many-typeahead-v1
+                <app-right-many-typeahead-v0001
                     [formField]="addRightSystemSingleEffectiveJoinForm.entity"
                     label="Right System Single Effective Entities"
                     placeholder="Search Right System Single Effective Entities..."
-                ></app-right-many-typeahead-v1>
+                ></app-right-many-typeahead-v0001>
                 <button mat-flat-button type="button" (click)="confirmAddRightSystemSingleEffectiveJoin()">Add</button>
                 <button mat-flat-button type="button" (click)="cancelAddRightSystemSingleEffectiveJoin()">Cancel</button>
             </div>
@@ -134,11 +134,11 @@
         </button>
         @if (showRightUserEffectiveJoinForm()) {
             <div class="join-mini-form">
-                <app-right-many-typeahead-v1
+                <app-right-many-typeahead-v0001
                     [formField]="addRightUserEffectiveJoinForm.entity"
                     label="Right User Effective Entities"
                     placeholder="Search Right User Effective Entities..."
-                ></app-right-many-typeahead-v1>
+                ></app-right-many-typeahead-v0001>
                 <mat-form-field appearance="outline">
                     <mat-label>Effective From Date</mat-label>
                     <input matInput [matDatepicker]="effectiveFromPickerrightUserEffective"
@@ -186,11 +186,11 @@
         </button>
         @if (showRightJoinForm()) {
             <div class="join-mini-form">
-                <app-right-many-typeahead-v1
+                <app-right-many-typeahead-v0001
                     [formField]="addRightJoinForm.entity"
                     label="Right Entities"
                     placeholder="Search Right Entities..."
-                ></app-right-many-typeahead-v1>
+                ></app-right-many-typeahead-v0001>
                 <mat-form-field appearance="outline">
                     <mat-label>Some Int On Complex</mat-label>
                     <input matInput type="number" [formField]="addRightJoinForm.someIntOnComplex" />

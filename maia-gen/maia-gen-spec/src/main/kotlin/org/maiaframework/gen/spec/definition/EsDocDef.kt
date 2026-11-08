@@ -36,16 +36,17 @@ class EsDocDef(
     val idField: ClassFieldDef
 
 
-    private val dtoSuffix = DtoSuffix("EsDoc")
+    /** Trailing version suffix such as `_v0004`. */
+    val versionSuffix = "_v${padWithLeadingZeroes(esDocVersion, 4)}"
 
 
-    val esDocBaseNameAndVersion = esDocBaseName.withSuffix("V$esDocVersion")
+    private val dtoSuffix = DtoSuffix("EsDoc$versionSuffix")
 
 
     private val allClassFields = fields.map { it.classFieldDef }
 
 
-    val dtoDef = DtoDefBuilder(packageName, esDocBaseNameAndVersion, dtoSuffix, allClassFields)
+    val dtoDef = DtoDefBuilder(packageName, esDocBaseName, dtoSuffix, allClassFields)
         .withCharacteristic(DtoCharacteristic.ELASTIC_SEARCH_DOC, DtoCharacteristic.RESPONSE_DTO)
         .build()
 
@@ -81,16 +82,16 @@ class EsDocDef(
         .build()
 
 
-    val refreshEsIndexJobName = "refresh${esDocBaseNameAndVersion}Index"
+    val refreshEsIndexJobName = "refresh${esDocBaseName}Index$versionSuffix"
 
 
-    val indexServiceClassDef = aClassDef(packageName.uqcn("${esDocBaseNameAndVersion}IndexService"))
+    val indexServiceClassDef = aClassDef(packageName.uqcn("${esDocBaseName}IndexService$versionSuffix"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .withInterface(ParameterizedType(Fqcns.ES_REFRESH_TARGET))
         .build()
 
 
-    val refreshIndexJobClassDef = aClassDef(packageName.uqcn("Refresh${esDocBaseNameAndVersion.firstToUpper()}IndexJob"))
+    val refreshIndexJobClassDef = aClassDef(packageName.uqcn("Refresh${esDocBaseName.firstToUpper()}IndexJob$versionSuffix"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .withInterface(ParameterizedType(Fqcns.MAIA_JOB))
         .build()
@@ -105,12 +106,12 @@ class EsDocDef(
      * For a hand-built EsDoc that watches entities through foreign-key paths: the generated repo holding the
      * `findRootIdsVia<Entity>` queries that the refresh listeners call.
      */
-    val refreshRepoClassDef = aClassDef(packageName.uqcn("${esDocBaseNameAndVersion}EsRefreshRepo"))
+    val refreshRepoClassDef = aClassDef(packageName.uqcn("${esDocBaseName}EsRefreshRepo$versionSuffix"))
         .withClassAnnotation(AnnotationDefs.SPRING_REPOSITORY)
         .build()
 
 
-    val esDocRepoClassDef = aClassDef(this.dtoDef.fqcn.withSuffix("Repo"))
+    val esDocRepoClassDef = aClassDef(Fqcn.valueOf(packageName, Uqcn("${esDocBaseName}EsDocRepo$versionSuffix")))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .build()
 

@@ -27,7 +27,7 @@ class BravoEsBlotterRowDtoSearchService(
             searchModel,
             this.indexName,
             BravoEsBlotterRowDtoFieldNameMapper.mappingFunction,
-            BravoEsV1EsDoc::class.java,
+            BravoEsEsDoc_v0001::class.java,
             { esDoc -> esDocMapper.mapEsDoc(esDoc) }
         )
 

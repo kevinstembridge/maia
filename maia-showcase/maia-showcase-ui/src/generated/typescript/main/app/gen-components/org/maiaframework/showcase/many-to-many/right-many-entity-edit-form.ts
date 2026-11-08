@@ -10,10 +10,10 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from '@angular/material/timepicker';
 import {Router} from '@angular/router';
-import {LeftManyTypeaheadV1EsDoc} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftManyTypeaheadV1EsDoc';
+import {LeftManyTypeaheadEsDoc_v0001} from '@app/gen-components/org/maiaframework/showcase/many-to-many/LeftManyTypeaheadEsDoc_v0001';
 import {RightManyFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightManyFetchForEditDto';
 import {RightManyUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/many-to-many/RightManyUpdateRequestDto';
-import {LeftManyTypeaheadV1Component} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-typeahead-v1';
+import {LeftManyTypeaheadComponent_v0001} from '@app/gen-components/org/maiaframework/showcase/many-to-many/left-many-typeahead-v0001';
 import {RightManyCrudService} from '@app/gen-components/org/maiaframework/showcase/many-to-many/right-many-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {firstValueFrom} from 'rxjs';
@@ -23,7 +23,7 @@ import {firstValueFrom} from 'rxjs';
 @Component({
     imports: [
         FormField,
-        LeftManyTypeaheadV1Component,
+        LeftManyTypeaheadComponent_v0001,
         MatButtonModule,
         MatDatepicker,
         MatDatepickerInput,
@@ -78,7 +78,7 @@ export class RightManyEntityEditForm implements OnInit {
     fetchedDto = signal<RightManyFetchForEditDto | null>(null);
 
 
-    selectedLeftSimpleEntities = signal<LeftManyTypeaheadV1EsDoc[]>([]);
+    selectedLeftSimpleEntities = signal<LeftManyTypeaheadEsDoc_v0001[]>([]);
 
 
     leftSystemEffectiveJoins = signal<{
@@ -96,7 +96,7 @@ export class RightManyEntityEditForm implements OnInit {
     showLeftSystemEffectiveJoinForm = signal(false);
 
 
-    addLeftSystemEffectiveJoinModel = signal<{ entity: LeftManyTypeaheadV1EsDoc | null; effectiveFrom: Date | null; effectiveTo: Date | null }>({ entity: null, effectiveFrom: null, effectiveTo: null });
+    addLeftSystemEffectiveJoinModel = signal<{ entity: LeftManyTypeaheadEsDoc_v0001 | null; effectiveFrom: Date | null; effectiveTo: Date | null }>({ entity: null, effectiveFrom: null, effectiveTo: null });
 
 
     addLeftSystemEffectiveJoinForm = form(this.addLeftSystemEffectiveJoinModel);
@@ -117,7 +117,7 @@ export class RightManyEntityEditForm implements OnInit {
     showLeftSystemSingleEffectiveJoinForm = signal(false);
 
 
-    addLeftSystemSingleEffectiveJoinModel = signal<{ entity: LeftManyTypeaheadV1EsDoc | null; effectiveFrom: Date | null; effectiveTo: Date | null }>({ entity: null, effectiveFrom: null, effectiveTo: null });
+    addLeftSystemSingleEffectiveJoinModel = signal<{ entity: LeftManyTypeaheadEsDoc_v0001 | null; effectiveFrom: Date | null; effectiveTo: Date | null }>({ entity: null, effectiveFrom: null, effectiveTo: null });
 
 
     addLeftSystemSingleEffectiveJoinForm = form(this.addLeftSystemSingleEffectiveJoinModel);
@@ -138,7 +138,7 @@ export class RightManyEntityEditForm implements OnInit {
     showLeftUserEffectiveJoinForm = signal(false);
 
 
-    addLeftUserEffectiveJoinModel = signal<{ entity: LeftManyTypeaheadV1EsDoc | null; effectiveFrom: Date | null; effectiveTo: Date | null }>({ entity: null, effectiveFrom: null, effectiveTo: null });
+    addLeftUserEffectiveJoinModel = signal<{ entity: LeftManyTypeaheadEsDoc_v0001 | null; effectiveFrom: Date | null; effectiveTo: Date | null }>({ entity: null, effectiveFrom: null, effectiveTo: null });
 
 
     addLeftUserEffectiveJoinForm = form(this.addLeftUserEffectiveJoinModel);
@@ -160,7 +160,7 @@ export class RightManyEntityEditForm implements OnInit {
     showLeftJoinForm = signal(false);
 
 
-    addLeftJoinModel = signal<{ entity: LeftManyTypeaheadV1EsDoc | null; effectiveFrom: Date | null; effectiveTo: Date | null; someIntOnComplex: number | null }>({ entity: null, effectiveFrom: null, effectiveTo: null, someIntOnComplex: null });
+    addLeftJoinModel = signal<{ entity: LeftManyTypeaheadEsDoc_v0001 | null; effectiveFrom: Date | null; effectiveTo: Date | null; someIntOnComplex: number | null }>({ entity: null, effectiveFrom: null, effectiveTo: null, someIntOnComplex: null });
 
 
     addLeftJoinForm = form(this.addLeftJoinModel);
@@ -225,14 +225,14 @@ export class RightManyEntityEditForm implements OnInit {
     }
 
 
-    addLeftSimpleEntity(entity: LeftManyTypeaheadV1EsDoc): void {
+    addLeftSimpleEntity(entity: LeftManyTypeaheadEsDoc_v0001): void {
         this.selectedLeftSimpleEntities.update(selected =>
             selected.some(e => e.id === entity.id) ? selected : [...selected, entity]
         );
     }
 
 
-    removeLeftSimpleEntity(entity: LeftManyTypeaheadV1EsDoc): void {
+    removeLeftSimpleEntity(entity: LeftManyTypeaheadEsDoc_v0001): void {
         this.selectedLeftSimpleEntities.update(selected => selected.filter(e => e.id !== entity.id));
     }
 

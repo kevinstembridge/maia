@@ -18,7 +18,7 @@ import org.maiaframework.showcase.filter_sample.AgGridFilterSampleDtoDao
 import org.maiaframework.showcase.filter_sample.AgGridFilterSampleEsBlotterRowDtoSearchService
 import org.maiaframework.showcase.filter_sample.AgGridFilterSampleEsEsIndexControl_v0001
 import org.maiaframework.showcase.filter_sample.AgGridFilterSampleEsEsIndexMeta_v0001
-import org.maiaframework.showcase.filter_sample.AgGridFilterSampleEsV1IndexService
+import org.maiaframework.showcase.filter_sample.AgGridFilterSampleEsIndexService_v0001
 import org.springframework.beans.factory.annotation.Autowired
 import tools.jackson.databind.json.JsonMapper
 
@@ -53,7 +53,7 @@ class AgGridFilterParityIntegrationTest : AbstractBlackBoxTest() {
 
 
     @Autowired
-    private lateinit var esIndexService: AgGridFilterSampleEsV1IndexService
+    private lateinit var esIndexService: AgGridFilterSampleEsIndexService_v0001
 
 
     @Autowired
@@ -77,7 +77,7 @@ class AgGridFilterParityIntegrationTest : AbstractBlackBoxTest() {
         }
 
         this.esIndexControl.createIndex()
-        this.esIndexService.refreshIndex(JobMetrics("test-refreshAgGridFilterSampleEsV1Index"))
+        this.esIndexService.refreshIndex(JobMetrics("test-refreshAgGridFilterSampleEsIndex_v0001"))
         this.elasticsearchClient.indices().refresh { it.index(index.value) }
 
     }

@@ -86,9 +86,9 @@ class HandBuiltEsDocCrudListenerRendererTest {
         val rendered = render(PartySpec(), dir)
 
         assertThat(rendered.keys).containsExactly(
-            "PartyV1EsRefreshPartyCrudListener",
-            "PartyV1EsRefreshPartyEmailCrudListener",
-            "PartyV1EsRefreshPersonCrudListener"
+            "PartyEsRefreshPartyCrudListener_v0001",
+            "PartyEsRefreshPartyEmailCrudListener_v0001",
+            "PartyEsRefreshPersonCrudListener_v0001"
         )
 
     }
@@ -97,13 +97,13 @@ class HandBuiltEsDocCrudListenerRendererTest {
     @Test
     fun `listener is a service implementing the entity crud listener with the index service`(@TempDir dir: File) {
 
-        val source = render(PartySpec(), dir).getValue("PartyV1EsRefreshPartyCrudListener")
+        val source = render(PartySpec(), dir).getValue("PartyEsRefreshPartyCrudListener_v0001")
 
         assertThat(source).contains("package com.example.party")
         assertThat(source).contains("@Service")
         assertThat(source).contains(") : PartyCrudListener {")
         assertThat(source).contains("private val collector: EsRefreshCollector")
-        assertThat(source).contains("private val indexService: PartyV1IndexService")
+        assertThat(source).contains("private val indexService: PartyIndexService_v0001")
         assertThat(source).doesNotContain("repo")
 
     }
@@ -112,7 +112,7 @@ class HandBuiltEsDocCrudListenerRendererTest {
     @Test
     fun `source entity watching named fields refreshes its own id only when they change`(@TempDir dir: File) {
 
-        val source = render(PartySpec(), dir).getValue("PartyV1EsRefreshPartyCrudListener")
+        val source = render(PartySpec(), dir).getValue("PartyEsRefreshPartyCrudListener_v0001")
 
         assertThat(source).contains("this.collector.enlistRefresh(this.indexService, listOf(entity.id))")
         assertThat(source).contains("if (before.displayName != after.displayName) {")
@@ -123,7 +123,7 @@ class HandBuiltEsDocCrudListenerRendererTest {
     @Test
     fun `subclass refreshes the shared id when its watched fields change`(@TempDir dir: File) {
 
-        val source = render(PartySpec(), dir).getValue("PartyV1EsRefreshPersonCrudListener")
+        val source = render(PartySpec(), dir).getValue("PartyEsRefreshPersonCrudListener_v0001")
 
         assertThat(source).contains(") : PersonCrudListener {")
         assertThat(source).contains("if (before.firstName != after.firstName) {")
@@ -135,7 +135,7 @@ class HandBuiltEsDocCrudListenerRendererTest {
     @Test
     fun `child reads the root id from its foreign key before and after an update`(@TempDir dir: File) {
 
-        val source = render(PartySpec(), dir).getValue("PartyV1EsRefreshPartyEmailCrudListener")
+        val source = render(PartySpec(), dir).getValue("PartyEsRefreshPartyEmailCrudListener_v0001")
 
         assertThat(source).contains("override fun onPartyEmailEntityCreated(entity: PartyEmailEntity) {")
         assertThat(source).contains("this.collector.enlistRefresh(this.indexService, listOf(entity.party))")

@@ -28,8 +28,8 @@ class SearchableDtoEsIndexServiceRendererTest {
         assertThat(source).contains("import org.maiaframework.elasticsearch.refresh.EsRefreshTarget")
         assertThat(source).contains("@Component")
         assertThat(source).containsPattern("\\) : EsRefreshTarget \\{")
-        assertThat(source).contains("class ChildEsV1IndexService(")
-        assertThat(source).contains("private val esDocRepo: ChildEsV1EsDocRepo")
+        assertThat(source).contains("class ChildEsIndexService_v0001(")
+        assertThat(source).contains("private val esDocRepo: ChildEsEsDocRepo_v0001")
 
     }
 
@@ -92,7 +92,7 @@ class SearchableDtoEsIndexServiceRendererTest {
         assertThat(source).contains("import org.springframework.transaction.annotation.Transactional")
         assertThat(source).contains("    @Transactional(readOnly = true)\n    fun refreshIndex(jm: JobMetrics) {")
         assertThat(source).contains("this.esDocRepo.findAllAsSequence().chunked(chunkSize)")
-        assertThat(source).contains("childEsV1IndexService.bulkUpsert.chunkSize")
+        assertThat(source).contains("childEsIndexService_v0001.bulkUpsert.chunkSize")
         assertThat(source).contains("removeDeletedRecordsFromIndex(currentIds, jm)")
         assertThat(source).contains("this.esIndexOps.removeDeletedRecordsFromIndex(currentIds, this.indexResolvedName, chunkSize, jm)")
         assertThat(source).contains("EsDocHolder(esDoc.id.value, esDoc, this.indexResolvedName)")
@@ -108,9 +108,9 @@ class SearchableDtoEsIndexServiceRendererTest {
         val v1 = render(1, dir1)
         val v2 = render(2, dir2)
 
-        assertThat(v1).contains("class ChildEsV1IndexService(").doesNotContain("ChildEsV2")
-        assertThat(v2).contains("class ChildEsV2IndexService(").doesNotContain("ChildEsV1")
-        assertThat(v2).contains("ChildEsV2EsDocRepo")
+        assertThat(v1).contains("class ChildEsIndexService_v0001(").doesNotContain("ChildEsV2")
+        assertThat(v2).contains("class ChildEsIndexService_v0002(").doesNotContain("ChildEsV1")
+        assertThat(v2).contains("ChildEsEsDocRepo_v0002")
 
     }
 

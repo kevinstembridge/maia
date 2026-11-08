@@ -42,7 +42,7 @@ class BravoCrudPlaywrightTest : AbstractPlaywrightTest() {
         elasticsearchClient.index { r ->
             r.index(indexName)
                 .id(alphaFixture.id.value)
-                .document(AlphaTypeaheadV1EsDoc(id = alphaFixture.id, someString = alphaFixture.someString))
+                .document(AlphaTypeaheadEsDoc_v0001(id = alphaFixture.id, someString = alphaFixture.someString))
         }
 
         elasticsearchClient.indices().refresh { r ->

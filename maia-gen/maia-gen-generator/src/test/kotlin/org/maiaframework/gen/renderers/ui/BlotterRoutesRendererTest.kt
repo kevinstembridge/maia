@@ -33,12 +33,12 @@ class BlotterRoutesRendererTest {
 
         BlotterRoutesRenderer(spec.widgetBlotterPage).renderToDir(tempDir)
 
-        val routes = tempDir.walkTopDown().single { it.name == "widget-v1-blotter-routes.ts" }.readText()
+        val routes = tempDir.walkTopDown().single { it.name == "widget-blotter-routes.ts" }.readText()
 
         assertThat(routes)
-            .contains("export const widgetV1BlotterRoutes: Routes = [")
-            .contains("path: 'ops/widget-v1-blotter',")
-            .contains("import('./widget-v1-blotter-page').then(m => m.WidgetV1BlotterPage)")
+            .contains("export const widgetBlotterRoutes: Routes = [")
+            .contains("path: 'ops/widget-blotter',")
+            .contains("import('./widget-blotter-page').then(m => m.WidgetBlotterPage)")
             .doesNotContain("authorities")
 
     }

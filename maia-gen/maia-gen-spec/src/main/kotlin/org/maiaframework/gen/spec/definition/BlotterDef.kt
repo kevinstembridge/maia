@@ -9,6 +9,7 @@ import org.maiaframework.gen.spec.definition.flags.WithGeneratedTypescriptServic
 import org.maiaframework.gen.spec.definition.flags.WithPreAuthorize
 import org.maiaframework.gen.spec.definition.lang.Nullability
 import org.maiaframework.gen.spec.definition.lang.PackageName
+import org.maiaframework.lang.text.StringFunctions
 
 
 class BlotterDef(
@@ -30,7 +31,9 @@ class BlotterDef(
     val searchModelType: SearchModelType,
     val paginationPageSize: Int? = DEFAULT_PAGINATION_PAGE_SIZE,
     urlBaseName: DtoBaseName = dtoBaseName,
-    apiVersion: Int? = null
+    apiVersion: Int? = null,
+    /** Trailing version suffix such as `_v0002`, or empty when the blotter is not versioned. */
+    val versionSuffix: String = ""
 ) {
 
 
@@ -112,7 +115,7 @@ class BlotterDef(
     val actionColumnFields = blotterColumnDefs.filterIsInstance<BlotterActionColumnDef>()
 
 
-    val blotterComponent = AngularComponentNames(this.packageName, "${dtoBaseName}Blotter")
+    val blotterComponent = AngularComponentNames(this.packageName, "${dtoBaseName}Blotter$versionSuffix")
 
 
     val agGridDatasourceImportStatement = blotterComponent.agGridDatasourceImportStatement
@@ -130,7 +133,7 @@ class BlotterDef(
     val blotterServiceImportStatement = blotterComponent.serviceImportStatement
 
 
-    private val ngMatTableComponentKebabCase = "${dtoBaseName.toKebabCase()}-blotter"
+    private val ngMatTableComponentKebabCase = "${dtoBaseName.toKebabCase()}-blotter${StringFunctions.toKebabCase(versionSuffix)}"
 
 
     val blotterScssPath = blotterComponent.componentScssRenderedFilePath
@@ -175,7 +178,7 @@ class BlotterDef(
     val searchDtoDef = SearchDtoDef(
         packageName,
         dtoBaseName,
-        DtoSuffix("BlotterRowDto"),
+        DtoSuffix("BlotterRowDto$versionSuffix"),
         dtoClassFields,
         defaultSortModel = emptyList(),
         dataSourceType = blotterSourceDef.dataSourceType,

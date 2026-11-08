@@ -25,7 +25,8 @@ class BlotterDefBuilder(
     private val blotterSourceDef: BlotterSourceDef,
     private val searchModelType: SearchModelType,
     private val urlBaseName: DtoBaseName = dtoBaseName,
-    private val apiVersion: Int? = null
+    private val apiVersion: Int? = null,
+    private val versionSuffix: String = ""
 ) {
 
 
@@ -64,7 +65,8 @@ class BlotterDefBuilder(
             this.searchModelType,
             this.paginationPageSize,
             this.urlBaseName,
-            this.apiVersion
+            this.apiVersion,
+            this.versionSuffix
         )
 
     }
