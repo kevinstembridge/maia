@@ -27,7 +27,7 @@ class AgGridFilterSampleEsBlotterRowDtoSearchService(
             searchModel,
             this.indexName,
             AgGridFilterSampleEsBlotterRowDtoFieldNameMapper.mappingFunction,
-            AgGridFilterSampleEsEsDoc_v0001::class.java,
+            AgGridFilterSampleEsV1EsDoc::class.java,
             { esDoc -> esDocMapper.mapEsDoc(esDoc) }
         )
 

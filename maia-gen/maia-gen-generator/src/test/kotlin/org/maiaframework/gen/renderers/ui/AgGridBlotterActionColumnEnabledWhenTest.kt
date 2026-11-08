@@ -84,7 +84,7 @@ class AgGridBlotterActionColumnEnabledWhenTest {
 
         AgGridBlotterComponentRenderer(spec.widgetBlotter, null, null, null, false, null).renderToDir(tempDir)
 
-        return tempDir.walkTopDown().single { it.name.endsWith("-blotter-v0001.ts") }.readText()
+        return tempDir.walkTopDown().single { it.name.endsWith("-blotter.ts") }.readText()
 
     }
 

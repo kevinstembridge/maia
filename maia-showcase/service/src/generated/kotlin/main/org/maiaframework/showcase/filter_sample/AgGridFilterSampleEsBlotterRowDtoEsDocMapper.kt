@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 class AgGridFilterSampleEsBlotterRowDtoEsDocMapper {
 
 
-    fun mapEsDoc(esDoc: AgGridFilterSampleEsEsDoc_v0001): AgGridFilterSampleEsBlotterRowDto {
+    fun mapEsDoc(esDoc: AgGridFilterSampleEsV1EsDoc): AgGridFilterSampleEsBlotterRowDto {
 
         return AgGridFilterSampleEsBlotterRowDto(
             esDoc.dateNullable,

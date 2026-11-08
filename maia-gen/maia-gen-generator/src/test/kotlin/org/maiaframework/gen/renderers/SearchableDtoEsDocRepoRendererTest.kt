@@ -26,7 +26,7 @@ class SearchableDtoEsDocRepoRendererTest {
         val source = render(1, dir)
 
         assertThat(source).contains("@Component")
-        assertThat(source).contains("class ChildEsEsDocRepo_v0001(")
+        assertThat(source).contains("class ChildEsV1EsDocRepo(")
         assertThat(source).contains("private val dtoRepo: ChildEsDtoRepo")
 
     }
@@ -37,9 +37,9 @@ class SearchableDtoEsDocRepoRendererTest {
 
         val source = render(1, dir)
 
-        assertThat(source).contains("fun findByIds(ids: Collection<DomainId>): List<ChildEsEsDoc_v0001> {")
+        assertThat(source).contains("fun findByIds(ids: Collection<DomainId>): List<ChildEsV1EsDoc> {")
         assertThat(source).contains("return this.dtoRepo.findByIds(ids).map { buildEsDoc(it) }")
-        assertThat(source).contains("fun findAllAsSequence(): Sequence<ChildEsEsDoc_v0001> {")
+        assertThat(source).contains("fun findAllAsSequence(): Sequence<ChildEsV1EsDoc> {")
         assertThat(source).contains("return this.dtoRepo.findAllAsSequence().map { buildEsDoc(it) }")
         assertThat(source).contains("import org.maiaframework.domain.DomainId")
         assertThat(source).doesNotContain(".toList()")
@@ -53,8 +53,8 @@ class SearchableDtoEsDocRepoRendererTest {
         val source = render(1, dir)
         val esDocDef = spec.esDto.esDocDefs.single { it.esDocVersion == 1 }
 
-        assertThat(source).contains("private fun buildEsDoc(dto: ChildEsDto): ChildEsEsDoc_v0001 {")
-        assertThat(source).contains("return ChildEsEsDoc_v0001(")
+        assertThat(source).contains("private fun buildEsDoc(dto: ChildEsDto): ChildEsV1EsDoc {")
+        assertThat(source).contains("return ChildEsV1EsDoc(")
 
         val names = esDocDef.fields.map { it.classFieldDef.classFieldName.value }
         assertThat(names).contains("parentName", "title", "id")
@@ -69,8 +69,8 @@ class SearchableDtoEsDocRepoRendererTest {
     @Test
     fun `each version renders its own repo class`(@TempDir dir1: File, @TempDir dir2: File) {
 
-        assertThat(render(1, dir1)).contains("class ChildEsEsDocRepo_v0001(")
-        assertThat(render(2, dir2)).contains("class ChildEsEsDocRepo_v0002(").contains("List<ChildEsEsDoc_v0002>")
+        assertThat(render(1, dir1)).contains("class ChildEsV1EsDocRepo(")
+        assertThat(render(2, dir2)).contains("class ChildEsV2EsDocRepo(").contains("List<ChildEsV2EsDoc>")
 
     }
 

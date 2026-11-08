@@ -34,13 +34,13 @@ class TypeaheadDef(
     private val typeaheadNameKebab = toKebabCase(typeaheadName)
 
 
-    private val versionSuffix = VersionSuffix.of(indexVersion)
+    private val typeaheadNameAndVersion = "${typeaheadName}V$indexVersion"
 
 
-    val angularServiceFileName = "${typeaheadNameKebab}-api-service${VersionSuffix.kebab(indexVersion)}"
+    val angularServiceFileName = "${typeaheadNameKebab}-v${indexVersion}-api.service"
 
 
-    val angularServiceClassName = "${typeaheadName}ApiService$versionSuffix"
+    val angularServiceClassName = "${typeaheadNameAndVersion}ApiService"
 
 
     val endpointUrl = "/api/v${indexVersion}/${typeaheadNameKebab}"
@@ -60,41 +60,41 @@ class TypeaheadDef(
 
     val entityCrudApiDef = entityDef?.entityCrudApiDef?.also {
         require(it.entityDef.crudDef.withCrudListener.value) {
-            "Typeahead $typeaheadName$versionSuffix keeps its index in step through the CrudListener of entity " +
+            "Typeahead $typeaheadNameAndVersion keeps its index in step through the CrudListener of entity " +
                 "${it.entityDef.entityBaseName}, but that entity declares withCrudListener(false) in its crud {} block"
         }
     }
 
 
-    val esIndexClassDef = aClassDef(packageName.uqcn("${typeaheadName}EsIndex$versionSuffix"))
+    val esIndexClassDef = aClassDef(packageName.uqcn("${typeaheadNameAndVersion}EsIndex"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .build()
 
 
-    val serviceClassDef = aClassDef(packageName.uqcn("${typeaheadName}SearchService$versionSuffix"))
+    val serviceClassDef = aClassDef(packageName.uqcn("${typeaheadNameAndVersion}SearchService"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .build()
 
 
     val crudListenerClassDef = entityCrudApiDef?.let {
-        aClassDef(packageName.uqcn("${typeaheadName}CrudListenerImpl$versionSuffix"))
+        aClassDef(packageName.uqcn("${typeaheadNameAndVersion}CrudListenerImpl"))
             .withClassAnnotation(AnnotationDefs.SPRING_SERVICE)
             .withInterfaces(ParameterizedType(it.entityDef.crudListenerClassDef.fqcn))
             .build()
     }
 
 
-    val indexServiceClassDef = aClassDef(packageName.uqcn("${typeaheadName}IndexService$versionSuffix"))
+    val indexServiceClassDef = aClassDef(packageName.uqcn("${typeaheadNameAndVersion}IndexService"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .build()
 
 
-    val endpointClassDef = aClassDef(packageName.uqcn("${typeaheadName}SearchEndpoint$versionSuffix"))
+    val endpointClassDef = aClassDef(packageName.uqcn("${typeaheadNameAndVersion}SearchEndpoint"))
         .withClassAnnotation(AnnotationDefs.SPRING_REST_CONTROLLER)
         .build()
 
 
-    val refreshIndexJobClassDef = aClassDef(packageName.uqcn("Refresh${typeaheadName}IndexJob$versionSuffix"))
+    val refreshIndexJobClassDef = aClassDef(packageName.uqcn("Refresh${typeaheadNameAndVersion}IndexJob"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .withInterface(ParameterizedType(Fqcns.MAIA_JOB))
         .build()
@@ -138,13 +138,13 @@ class TypeaheadDef(
     val typescriptServiceImport = TypescriptImport(angularServiceClassName, "@app/gen-components/${packageName.asTypescriptDirs()}/${this.angularServiceFileName}")
 
 
-    val angularComponentFileName = "$typeaheadNameKebab${VersionSuffix.kebab(indexVersion)}"
+    val angularComponentFileName = "${typeaheadNameKebab}-v${indexVersion}"
 
 
-    val angularComponentClassName = "${typeaheadName}Component$versionSuffix"
+    val angularComponentClassName = "${typeaheadNameAndVersion}Component"
 
 
-    val angularComponentSelector = "app-$typeaheadNameKebab${VersionSuffix.kebab(indexVersion)}"
+    val angularComponentSelector = "app-${typeaheadNameKebab}-v${indexVersion}"
 
 
     val typescriptComponentRenderedFilePath = "app/gen-components/${packageName.asTypescriptDirs()}/${this.angularComponentFileName}.ts"

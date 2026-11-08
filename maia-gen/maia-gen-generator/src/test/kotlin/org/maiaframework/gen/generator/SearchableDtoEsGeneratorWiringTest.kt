@@ -32,9 +32,9 @@ class SearchableDtoEsGeneratorWiringTest {
         val derived = derivedEsDocDefs(applicationModelDef)
 
         assertThat(derived).containsExactlyElementsOf(spec.esDto.esDocDefs)
-        assertThat(derived.map { it.uqcn.value }).containsExactlyInAnyOrder("ChildEsEsDoc_v0001", "ChildEsEsDoc_v0002")
-        assertThat(applicationModelDef.esDocsDefs.map { it.uqcn.value }).contains("ManualEsDoc_v0001")
-        assertThat(derived).doesNotContainAnyElementsOf(applicationModelDef.esDocsDefs.filter { it.uqcn.value == "ManualEsDoc_v0001" })
+        assertThat(derived.map { it.uqcn.value }).containsExactlyInAnyOrder("ChildEsV1EsDoc", "ChildEsV2EsDoc")
+        assertThat(applicationModelDef.esDocsDefs.map { it.uqcn.value }).contains("ManualV1EsDoc")
+        assertThat(derived).doesNotContainAnyElementsOf(applicationModelDef.esDocsDefs.filter { it.uqcn.value == "ManualV1EsDoc" })
 
     }
 
@@ -47,11 +47,11 @@ class SearchableDtoEsGeneratorWiringTest {
         val names = kotlinFilesIn(dir).map { it.name }
 
         assertThat(names).containsExactlyInAnyOrder(
-            "ChildEsEsDocRepo_v0001.kt", "ChildEsIndexService_v0001.kt",
-            "ChildEsEsRefreshChildCrudListener_v0001.kt", "ChildEsEsRefreshParentCrudListener_v0001.kt",
-            "ChildEsEsDocRepo_v0002.kt", "ChildEsIndexService_v0002.kt",
-            "ChildEsEsRefreshChildCrudListener_v0002.kt", "ChildEsEsRefreshParentCrudListener_v0002.kt",
-            "ParentTypeaheadIndexService_v0001.kt", "ParentTypeaheadEsDocRepo_v0001.kt"
+            "ChildEsV1EsDocRepo.kt", "ChildEsV1IndexService.kt",
+            "ChildEsV1EsRefreshChildCrudListener.kt", "ChildEsV1EsRefreshParentCrudListener.kt",
+            "ChildEsV2EsDocRepo.kt", "ChildEsV2IndexService.kt",
+            "ChildEsV2EsRefreshChildCrudListener.kt", "ChildEsV2EsRefreshParentCrudListener.kt",
+            "ParentTypeaheadV1IndexService.kt", "ParentTypeaheadV1EsDocRepo.kt"
         )
 
     }
@@ -69,28 +69,28 @@ class SearchableDtoEsGeneratorWiringTest {
         val listenerNames = kotlinFilesIn(dir).map { it.name }.filter { "EsRefresh" in it }
 
         assertThat(listenerNames).containsExactlyInAnyOrder(
-            "OrderEsEsRefreshOrderCrudListener_v0001.kt",
-            "OrderEsEsRefreshCustomerCrudListener_v0001.kt",
-            "OrderEsEsRefreshRegionCrudListener_v0001.kt",
-            "OrderEsEsRefreshOrderCrudListener_v0002.kt",
-            "OrderEsEsRefreshCustomerCrudListener_v0002.kt",
-            "OrderEsEsRefreshRegionCrudListener_v0002.kt",
-            "OrderMixedEsEsRefreshOrderCrudListener_v0001.kt",
-            "OrderIdOnlyEsEsRefreshOrderCrudListener_v0001.kt",
-            "LeftEsEsRefreshLeftCrudListener_v0001.kt",
-            "LeftEsEsRefreshLeftRightCrudCrudListener_v0001.kt",
-            "LeftEsEsRefreshRightCrudListener_v0001.kt",
-            "LeftSimpleEsEsRefreshLeftCrudListener_v0001.kt",
-            "LeftSimpleEsEsRefreshRightCrudListener_v0001.kt",
-            "LeftCodedEsEsRefreshLeftCrudListener_v0001.kt",
-            "LeftCodedEsEsRefreshLeftRightCodedCrudListener_v0001.kt",
-            "RightEsEsRefreshRightCrudListener_v0001.kt",
-            "RightEsEsRefreshLeftRightCrudCrudListener_v0001.kt",
-            "RightEsEsRefreshLeftCrudListener_v0001.kt"
+            "OrderEsV1EsRefreshOrderCrudListener.kt",
+            "OrderEsV1EsRefreshCustomerCrudListener.kt",
+            "OrderEsV1EsRefreshRegionCrudListener.kt",
+            "OrderEsV2EsRefreshOrderCrudListener.kt",
+            "OrderEsV2EsRefreshCustomerCrudListener.kt",
+            "OrderEsV2EsRefreshRegionCrudListener.kt",
+            "OrderMixedEsV1EsRefreshOrderCrudListener.kt",
+            "OrderIdOnlyEsV1EsRefreshOrderCrudListener.kt",
+            "LeftEsV1EsRefreshLeftCrudListener.kt",
+            "LeftEsV1EsRefreshLeftRightCrudCrudListener.kt",
+            "LeftEsV1EsRefreshRightCrudListener.kt",
+            "LeftSimpleEsV1EsRefreshLeftCrudListener.kt",
+            "LeftSimpleEsV1EsRefreshRightCrudListener.kt",
+            "LeftCodedEsV1EsRefreshLeftCrudListener.kt",
+            "LeftCodedEsV1EsRefreshLeftRightCodedCrudListener.kt",
+            "RightEsV1EsRefreshRightCrudListener.kt",
+            "RightEsV1EsRefreshLeftRightCrudCrudListener.kt",
+            "RightEsV1EsRefreshLeftCrudListener.kt"
         )
 
         // the non auto-refresh version still gets its index service
-        assertThat(kotlinFilesIn(dir).map { it.name }).contains("OrderMixedEsIndexService_v0002.kt")
+        assertThat(kotlinFilesIn(dir).map { it.name }).contains("OrderMixedEsV2IndexService.kt")
 
     }
 
@@ -105,8 +105,8 @@ class SearchableDtoEsGeneratorWiringTest {
         ElasticServiceModuleGenerator(context(dir)).generateSource(noAutoRefreshModelDef)
 
         assertThat(kotlinFilesIn(dir).map { it.name }.filter { it.startsWith("OrderEs") }).containsExactlyInAnyOrder(
-            "OrderEsEsDocRepo_v0001.kt", "OrderEsIndexService_v0001.kt",
-            "OrderEsEsDocRepo_v0002.kt", "OrderEsIndexService_v0002.kt"
+            "OrderEsV1EsDocRepo.kt", "OrderEsV1IndexService.kt",
+            "OrderEsV2EsDocRepo.kt", "OrderEsV2IndexService.kt"
         )
 
     }

@@ -329,7 +329,7 @@ private fun esRefreshListenerClassDef(
     dependency: EsRefreshDependencyDef
 ): ClassDef {
 
-    val className = "${esDocDef.esDocBaseName}EsRefresh${dependency.entityDef.entityBaseName}CrudListener${esDocDef.versionSuffix}"
+    val className = "${esDocDef.esDocBaseName}V${esDocDef.esDocVersion}EsRefresh${dependency.entityDef.entityBaseName}CrudListener"
 
     return aClassDef(esDocDef.packageName.uqcn(className))
         .withClassAnnotation(AnnotationDefs.SPRING_SERVICE)

@@ -12,12 +12,12 @@ class EsDocBlotterVersioningTest {
 
     private val spec = object : AbstractSpec(AppKey("Test")) {
 
-        val widgetEsDoc_v0002 = esDoc("com.example", "Widget", esDocVersion = 2, indexDescription = "Widgets") {
+        val widgetV2EsDoc = esDoc("com.example", "Widget", esDocVersion = 2, indexDescription = "Widgets") {
             autoRefresh(false)
             field("id", FieldTypes.string) { isIdField() }
         }
 
-        val widgetBlotter = blotter(widgetEsDoc_v0002) {
+        val widgetBlotter = blotter(widgetV2EsDoc) {
             moduleName("ops")
             columnFromDto(fieldPathInSourceData = "id", dtoFieldName = "id") { header("ID") }
         }
@@ -30,8 +30,8 @@ class EsDocBlotterVersioningTest {
 
         val blotterDef = spec.widgetBlotter
 
-        assertThat(blotterDef.dtoUqcn.value).isEqualTo("WidgetBlotterRowDto_v0002")
-        assertThat(blotterDef.blotterComponent.componentName).isEqualTo("WidgetBlotter_v0002")
+        assertThat(blotterDef.dtoUqcn.value).isEqualTo("WidgetV2BlotterRowDto")
+        assertThat(blotterDef.blotterComponent.componentName).isEqualTo("WidgetV2Blotter")
 
     }
 

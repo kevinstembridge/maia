@@ -68,39 +68,39 @@ class SearchableDtoEsDocCrudListenerRendererTest {
      */
     private val expectedListeners: Map<SearchableDtoDef, List<String>> = linkedMapOf(
         spec.orderDto to listOf(
-            "OrderEsEsRefreshCustomerCrudListener_v0001",
-            "OrderEsEsRefreshOrderCrudListener_v0001",
-            "OrderEsEsRefreshRegionCrudListener_v0001",
-            "OrderEsEsRefreshCustomerCrudListener_v0002",
-            "OrderEsEsRefreshOrderCrudListener_v0002",
-            "OrderEsEsRefreshRegionCrudListener_v0002"
+            "OrderEsV1EsRefreshCustomerCrudListener",
+            "OrderEsV1EsRefreshOrderCrudListener",
+            "OrderEsV1EsRefreshRegionCrudListener",
+            "OrderEsV2EsRefreshCustomerCrudListener",
+            "OrderEsV2EsRefreshOrderCrudListener",
+            "OrderEsV2EsRefreshRegionCrudListener"
         ),
-        spec.orderMixedDto to listOf("OrderMixedEsEsRefreshOrderCrudListener_v0001"),
-        spec.orderIdOnlyDto to listOf("OrderIdOnlyEsEsRefreshOrderCrudListener_v0001"),
+        spec.orderMixedDto to listOf("OrderMixedEsV1EsRefreshOrderCrudListener"),
+        spec.orderIdOnlyDto to listOf("OrderIdOnlyEsV1EsRefreshOrderCrudListener"),
         spec.leftDto to listOf(
-            "LeftEsEsRefreshLeftCrudListener_v0001",
-            "LeftEsEsRefreshLeftRightCrudCrudListener_v0001",
-            "LeftEsEsRefreshRightCrudListener_v0001"
+            "LeftEsV1EsRefreshLeftCrudListener",
+            "LeftEsV1EsRefreshLeftRightCrudCrudListener",
+            "LeftEsV1EsRefreshRightCrudListener"
         ),
         spec.leftSimpleDto to listOf(
-            "LeftSimpleEsEsRefreshLeftCrudListener_v0001",
-            "LeftSimpleEsEsRefreshRightCrudListener_v0001"
+            "LeftSimpleEsV1EsRefreshLeftCrudListener",
+            "LeftSimpleEsV1EsRefreshRightCrudListener"
         ),
         // the join entity reads the root id from its foreign key, so it gets a listener despite having no reverse join
         spec.leftCodedDto to listOf(
-            "LeftCodedEsEsRefreshLeftCrudListener_v0001",
-            "LeftCodedEsEsRefreshLeftRightCodedCrudListener_v0001"
+            "LeftCodedEsV1EsRefreshLeftCrudListener",
+            "LeftCodedEsV1EsRefreshLeftRightCodedCrudListener"
         ),
         spec.rightDto to listOf(
-            "RightEsEsRefreshLeftCrudListener_v0001",
-            "RightEsEsRefreshLeftRightCrudCrudListener_v0001",
-            "RightEsEsRefreshRightCrudListener_v0001"
+            "RightEsV1EsRefreshLeftCrudListener",
+            "RightEsV1EsRefreshLeftRightCrudCrudListener",
+            "RightEsV1EsRefreshRightCrudListener"
         ),
         SearchableDtoEsTestSupport.spec.esDto to listOf(
-            "ChildEsEsRefreshChildCrudListener_v0001",
-            "ChildEsEsRefreshParentCrudListener_v0001",
-            "ChildEsEsRefreshChildCrudListener_v0002",
-            "ChildEsEsRefreshParentCrudListener_v0002"
+            "ChildEsV1EsRefreshChildCrudListener",
+            "ChildEsV1EsRefreshParentCrudListener",
+            "ChildEsV2EsRefreshChildCrudListener",
+            "ChildEsV2EsRefreshParentCrudListener"
         )
     )
 
@@ -120,35 +120,35 @@ class SearchableDtoEsDocCrudListenerRendererTest {
 
         val sources = renderAll(spec.orderDto, dir)
 
-        val customerV1 = sources.getValue("OrderEsEsRefreshCustomerCrudListener_v0001")
+        val customerV1 = sources.getValue("OrderEsV1EsRefreshCustomerCrudListener")
 
         assertThat(customerV1).contains("package com.example\n")
         assertThat(customerV1).contains("import org.maiaframework.elasticsearch.refresh.EsRefreshCollector\n")
         assertThat(customerV1).contains("import org.springframework.stereotype.Service\n")
         assertThat(customerV1).contains(
             "@Service\n" +
-                "class OrderEsEsRefreshCustomerCrudListener_v0001(\n" +
+                "class OrderEsV1EsRefreshCustomerCrudListener(\n" +
                 "    private val collector: EsRefreshCollector,\n" +
-                "    private val indexService: OrderEsIndexService_v0001,\n" +
+                "    private val indexService: OrderEsV1IndexService,\n" +
                 "    private val repo: OrderEsDtoRepo\n" +
                 ") : CustomerCrudListener {\n"
         )
 
-        assertThat(sources.getValue("OrderEsEsRefreshCustomerCrudListener_v0002")).contains(
+        assertThat(sources.getValue("OrderEsV2EsRefreshCustomerCrudListener")).contains(
             "@Service\n" +
-                "class OrderEsEsRefreshCustomerCrudListener_v0002(\n" +
+                "class OrderEsV2EsRefreshCustomerCrudListener(\n" +
                 "    private val collector: EsRefreshCollector,\n" +
-                "    private val indexService: OrderEsIndexService_v0002,\n" +
+                "    private val indexService: OrderEsV2IndexService,\n" +
                 "    private val repo: OrderEsDtoRepo\n" +
                 ") : CustomerCrudListener {\n"
         )
 
         // the root listener needs no repo
-        assertThat(sources.getValue("OrderEsEsRefreshOrderCrudListener_v0001")).contains(
+        assertThat(sources.getValue("OrderEsV1EsRefreshOrderCrudListener")).contains(
             "@Service\n" +
-                "class OrderEsEsRefreshOrderCrudListener_v0001(\n" +
+                "class OrderEsV1EsRefreshOrderCrudListener(\n" +
                 "    private val collector: EsRefreshCollector,\n" +
-                "    private val indexService: OrderEsIndexService_v0001\n" +
+                "    private val indexService: OrderEsV1IndexService\n" +
                 ") : OrderCrudListener {\n"
         )
 
@@ -158,11 +158,11 @@ class SearchableDtoEsDocCrudListenerRendererTest {
     @Test
     fun `listener class kdoc explains triggers, reconciliation and the two-phase membership rule`(@TempDir dir: File) {
 
-        val source = renderAll(spec.leftDto, dir).getValue("LeftEsEsRefreshRightCrudListener_v0001")
+        val source = renderAll(spec.leftDto, dir).getValue("LeftEsV1EsRefreshRightCrudListener")
         val kdoc = source.substringBefore("@Service\n")
 
         assertThat(kdoc).contains("/**")
-        assertThat(kdoc).contains("[LeftEsIndexService_v0001]")
+        assertThat(kdoc).contains("[LeftEsV1IndexService]")
         assertThat(kdoc).contains("refreshIndex")
         assertThat(kdoc).contains("importers")
         assertThat(kdoc).contains("after commit")
@@ -173,7 +173,7 @@ class SearchableDtoEsDocCrudListenerRendererTest {
     @Test
     fun `root without many-to-many refreshes its own id and diffs its watched fields`(@TempDir dir: File) {
 
-        val source = renderAll(spec.orderDto, dir).getValue("OrderEsEsRefreshOrderCrudListener_v0001")
+        val source = renderAll(spec.orderDto, dir).getValue("OrderEsV1EsRefreshOrderCrudListener")
 
         assertThat(functionText(source, "    override fun onOrderEntityCreated(")).isEqualTo(
             function(
@@ -208,7 +208,7 @@ class SearchableDtoEsDocCrudListenerRendererTest {
     @Test
     fun `root dto selecting only its id has nothing to diff on update`(@TempDir dir: File) {
 
-        val source = renderAll(spec.orderIdOnlyDto, dir).getValue("OrderIdOnlyEsEsRefreshOrderCrudListener_v0001")
+        val source = renderAll(spec.orderIdOnlyDto, dir).getValue("OrderIdOnlyEsV1EsRefreshOrderCrudListener")
 
         assertThat(source).contains("\n    override fun onOrderEntityUpdated(before: OrderEntity, after: OrderEntity) {}\n")
         assertThat(functionText(source, "    override fun onOrderEntityCreated(")).isEqualTo(
@@ -224,7 +224,7 @@ class SearchableDtoEsDocCrudListenerRendererTest {
     @Test
     fun `root with a many-to-many refreshes its own id on any update`(@TempDir dir: File) {
 
-        val source = renderAll(spec.leftDto, dir).getValue("LeftEsEsRefreshLeftCrudListener_v0001")
+        val source = renderAll(spec.leftDto, dir).getValue("LeftEsV1EsRefreshLeftCrudListener")
 
         assertThat(functionText(source, "    override fun onLeftEntityUpdated(")).isEqualTo(
             function(
@@ -247,7 +247,7 @@ class SearchableDtoEsDocCrudListenerRendererTest {
     fun `path entity resolves roots on watched change and before delete`(@TempDir dir: File) {
 
         val sources = renderAll(spec.orderDto, dir)
-        val customer = sources.getValue("OrderEsEsRefreshCustomerCrudListener_v0001")
+        val customer = sources.getValue("OrderEsV1EsRefreshCustomerCrudListener")
 
         assertThat(customer).contains("\n    override fun onCustomerEntityCreated(entity: CustomerEntity) {}\n")
 
@@ -271,7 +271,7 @@ class SearchableDtoEsDocCrudListenerRendererTest {
         assertThat(customer).contains("\n    override fun onCustomerEntityDeleted(entity: CustomerEntity) {}\n")
         assertThat(customer).doesNotContain("notShown")
 
-        val region = sources.getValue("OrderEsEsRefreshRegionCrudListener_v0001")
+        val region = sources.getValue("OrderEsV1EsRefreshRegionCrudListener")
 
         assertThat(functionText(region, "    override fun onRegionEntityUpdated(")).isEqualTo(
             function(
@@ -289,7 +289,7 @@ class SearchableDtoEsDocCrudListenerRendererTest {
     @Test
     fun `many-to-many other side resolves old roots before the update and new roots after commit`(@TempDir dir: File) {
 
-        val source = renderAll(spec.leftDto, dir).getValue("LeftEsEsRefreshRightCrudListener_v0001")
+        val source = renderAll(spec.leftDto, dir).getValue("LeftEsV1EsRefreshRightCrudListener")
 
         assertThat(source).contains("\n    override fun onRightEntityCreated(entity: RightEntity) {}\n")
 
@@ -323,13 +323,13 @@ class SearchableDtoEsDocCrudListenerRendererTest {
     @Test
     fun `many-to-many join entity reads the root id straight from its foreign key to the root`(@TempDir dir: File) {
 
-        val source = renderAll(spec.leftDto, dir).getValue("LeftEsEsRefreshLeftRightCrudCrudListener_v0001")
+        val source = renderAll(spec.leftDto, dir).getValue("LeftEsV1EsRefreshLeftRightCrudCrudListener")
 
         assertThat(source).contains(
             "@Service\n" +
-                "class LeftEsEsRefreshLeftRightCrudCrudListener_v0001(\n" +
+                "class LeftEsV1EsRefreshLeftRightCrudCrudListener(\n" +
                 "    private val collector: EsRefreshCollector,\n" +
-                "    private val indexService: LeftEsIndexService_v0001\n" +
+                "    private val indexService: LeftEsV1IndexService\n" +
                 ") : LeftRightCrudCrudListener {\n"
         )
         assertThat(source).doesNotContain("repo")
@@ -367,7 +367,7 @@ class SearchableDtoEsDocCrudListenerRendererTest {
     @Test
     fun `join entity listener uses the foreign key to the root, not the other side`(@TempDir dir: File) {
 
-        val source = renderAll(spec.rightDto, dir).getValue("RightEsEsRefreshLeftRightCrudCrudListener_v0001")
+        val source = renderAll(spec.rightDto, dir).getValue("RightEsV1EsRefreshLeftRightCrudCrudListener")
 
         assertThat(functionText(source, "    override fun onLeftRightCrudEntityCreated(")).isEqualTo(
             function(

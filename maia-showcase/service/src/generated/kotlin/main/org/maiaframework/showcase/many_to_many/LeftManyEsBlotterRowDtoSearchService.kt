@@ -27,7 +27,7 @@ class LeftManyEsBlotterRowDtoSearchService(
             searchModel,
             this.indexName,
             LeftManyEsBlotterRowDtoFieldNameMapper.mappingFunction,
-            LeftManyEsEsDoc_v0001::class.java,
+            LeftManyEsV1EsDoc::class.java,
             { esDoc -> esDocMapper.mapEsDoc(esDoc) }
         )
 

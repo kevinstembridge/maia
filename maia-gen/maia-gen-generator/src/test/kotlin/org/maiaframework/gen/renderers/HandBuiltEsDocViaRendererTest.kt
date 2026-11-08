@@ -156,7 +156,7 @@ class HandBuiltEsDocViaRendererTest {
         EsDocRefreshRepoRenderer(spec.orderEsDoc, applicationModelDef).renderToDir(dir)
         val source = SearchableDtoEsTestSupport.singleKotlinFileIn(dir)
 
-        assertThat(source).contains("class OrderSummaryEsRefreshRepo_v0001(")
+        assertThat(source).contains("class OrderSummaryV1EsRefreshRepo(")
         assertThat(source).contains("private val jdbcOps: JdbcOps")
         assertThat(source).contains("fun findRootIdsViaCustomer(id: DomainId): List<DomainId> {")
         assertThat(source).contains("fun findRootIdsViaRegion(id: DomainId): List<DomainId> {")
@@ -174,9 +174,9 @@ class HandBuiltEsDocViaRendererTest {
 
         EsRefreshListeners.renderersFor(spec.orderEsDoc).forEach { it.renderToDir(dir) }
 
-        val region = SearchableDtoEsTestSupport.kotlinFilesIn(dir).single { it.nameWithoutExtension == "OrderSummaryEsRefreshRegionCrudListener_v0001" }.readText()
+        val region = SearchableDtoEsTestSupport.kotlinFilesIn(dir).single { it.nameWithoutExtension == "OrderSummaryV1EsRefreshRegionCrudListener" }.readText()
 
-        assertThat(region).contains("private val repo: OrderSummaryEsRefreshRepo_v0001")
+        assertThat(region).contains("private val repo: OrderSummaryV1EsRefreshRepo")
         assertThat(region).contains("if (before.name != after.name) {")
         assertThat(region).contains("this.repo.findRootIdsViaRegion(afterId)")
         assertThat(region).contains("this.collector.enlistRefreshNow(this.indexService) { this.repo.findRootIdsViaRegion(entity.id) }")

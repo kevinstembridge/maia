@@ -53,7 +53,7 @@ class ManyToManyEffectiveRangeCrudPlaywrightTest : AbstractPlaywrightTest() {
         listOf(rightGamma, rightDelta).forEach { entity ->
             esIndexOps.upsert(EsDocHolder(
                 id = entity.id.toString(),
-                doc = RightManyTypeaheadEsDoc_v0001(id = entity.id, someString = entity.someString),
+                doc = RightManyTypeaheadV1EsDoc(id = entity.id, someString = entity.someString),
                 indexName = indexNameFactory.indexNameFrom(RightManyTypeaheadEsIndexMeta_v0001.indexBaseNameAndVersion)
             ))
         }

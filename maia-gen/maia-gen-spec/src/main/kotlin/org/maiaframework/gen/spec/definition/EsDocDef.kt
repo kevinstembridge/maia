@@ -12,6 +12,7 @@ import org.maiaframework.gen.spec.definition.lang.Fqcn
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.ParameterizedType
 import org.maiaframework.gen.spec.definition.lang.Uqcn
+import org.maiaframework.lang.text.StringFunctions.padWithLeadingZeroes
 
 class EsDocDef(
     val packageName: PackageName,
@@ -35,17 +36,16 @@ class EsDocDef(
     val idField: ClassFieldDef
 
 
-    /** Trailing version suffix such as `_v0004`. */
-    val versionSuffix = VersionSuffix.of(esDocVersion)
+    private val dtoSuffix = DtoSuffix("EsDoc")
 
 
-    private val dtoSuffix = DtoSuffix("EsDoc$versionSuffix")
+    val esDocBaseNameAndVersion = esDocBaseName.withSuffix("V$esDocVersion")
 
 
     private val allClassFields = fields.map { it.classFieldDef }
 
 
-    val dtoDef = DtoDefBuilder(packageName, esDocBaseName, dtoSuffix, allClassFields)
+    val dtoDef = DtoDefBuilder(packageName, esDocBaseNameAndVersion, dtoSuffix, allClassFields)
         .withCharacteristic(DtoCharacteristic.ELASTIC_SEARCH_DOC, DtoCharacteristic.RESPONSE_DTO)
         .build()
 
@@ -58,13 +58,13 @@ class EsDocDef(
 
     val esDocMetaClassFqcn = Fqcn.valueOf(
         packageName,
-        Uqcn(esDocBaseName.value).withSuffix("EsIndexMeta$versionSuffix")
+        Uqcn(esDocBaseName.value).withSuffix("EsIndexMeta_v${padWithLeadingZeroes(this.esDocVersion, 4)}")
     )
 
 
     private val esDocIndexControlFqcn = Fqcn.valueOf(
         packageName,
-        Uqcn(esDocBaseName.value).withSuffix("EsIndexControl$versionSuffix")
+        Uqcn(esDocBaseName.value).withSuffix("EsIndexControl_v${padWithLeadingZeroes(this.esDocVersion, 4)}")
     )
 
 
@@ -81,16 +81,16 @@ class EsDocDef(
         .build()
 
 
-    val refreshEsIndexJobName = "refresh${esDocBaseName}Index$versionSuffix"
+    val refreshEsIndexJobName = "refresh${esDocBaseNameAndVersion}Index"
 
 
-    val indexServiceClassDef = aClassDef(packageName.uqcn("${esDocBaseName}IndexService$versionSuffix"))
+    val indexServiceClassDef = aClassDef(packageName.uqcn("${esDocBaseNameAndVersion}IndexService"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .withInterface(ParameterizedType(Fqcns.ES_REFRESH_TARGET))
         .build()
 
 
-    val refreshIndexJobClassDef = aClassDef(packageName.uqcn("Refresh${esDocBaseName.firstToUpper()}IndexJob$versionSuffix"))
+    val refreshIndexJobClassDef = aClassDef(packageName.uqcn("Refresh${esDocBaseNameAndVersion.firstToUpper()}IndexJob"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .withInterface(ParameterizedType(Fqcns.MAIA_JOB))
         .build()
@@ -105,12 +105,12 @@ class EsDocDef(
      * For a hand-built EsDoc that watches entities through foreign-key paths: the generated repo holding the
      * `findRootIdsVia<Entity>` queries that the refresh listeners call.
      */
-    val refreshRepoClassDef = aClassDef(packageName.uqcn("${esDocBaseName}EsRefreshRepo$versionSuffix"))
+    val refreshRepoClassDef = aClassDef(packageName.uqcn("${esDocBaseNameAndVersion}EsRefreshRepo"))
         .withClassAnnotation(AnnotationDefs.SPRING_REPOSITORY)
         .build()
 
 
-    val esDocRepoClassDef = aClassDef(packageName.uqcn("${esDocBaseName}EsDocRepo$versionSuffix"))
+    val esDocRepoClassDef = aClassDef(this.dtoDef.fqcn.withSuffix("Repo"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .build()
 
@@ -121,7 +121,7 @@ class EsDocDef(
 
 
     val fieldEnumDef = if (renderFieldEnum) {
-        val builder = EnumDefBuilder(packageName.uqcn("${esDocBaseName}EsDocField$versionSuffix"))
+        val builder = EnumDefBuilder(packageName.uqcn(this.dtoDef.uqcn.withSuffix("Field")))
         fields.forEach { builder.value(it.classFieldDef.classFieldName.value) }
         builder.build()
     } else {

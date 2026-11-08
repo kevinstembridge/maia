@@ -66,7 +66,7 @@ class RightManyCrudPlaywrightTest : AbstractPlaywrightTest() {
         esIndexOps.upsert(
             EsDocHolder(
                 id = leftManyEntity.id.toString(),
-                doc = LeftManyTypeaheadEsDoc_v0001(id = leftManyEntity.id, someString = leftManyEntity.someString),
+                doc = LeftManyTypeaheadV1EsDoc(id = leftManyEntity.id, someString = leftManyEntity.someString),
                 indexName = indexNameFactory.indexNameFrom(LeftManyTypeaheadEsIndexMeta_v0001.indexBaseNameAndVersion)
             )
         )

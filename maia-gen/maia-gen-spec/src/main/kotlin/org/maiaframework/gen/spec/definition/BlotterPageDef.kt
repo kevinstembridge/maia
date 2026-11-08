@@ -21,7 +21,7 @@ class BlotterPageDef(
     )
 
 
-    val blotterComponentSelector = "app-${blotterDef.dtoBaseName.toKebabCase()}-blotter${blotterDef.versionSuffixKebab}"
+    val blotterComponentSelector = "app-${blotterDef.dtoBaseName.toKebabCase()}-blotter"
 
 
     private val modulePath = if (blotterDef.moduleName == null) "" else "${blotterDef.moduleName.value}/"
@@ -30,12 +30,12 @@ class BlotterPageDef(
     val routePath = "$modulePath${blotterDef.dtoBaseName.toKebabCase()}-blotter"
 
 
-    val blotterComponentClassName = "${blotterDef.dtoBaseName}Blotter${blotterDef.versionSuffix}"
+    val blotterComponentClassName = "${blotterDef.dtoBaseName}Blotter"
 
 
     val blotterComponentTypescriptImport = TypescriptImport(
         name = blotterComponentClassName,
-        from = "@$genDir/${blotterDef.dtoBaseName.toKebabCase()}-blotter${blotterDef.versionSuffixKebab}"
+        from = "@$genDir/${blotterDef.dtoBaseName.toKebabCase()}-blotter"
     )
 
 

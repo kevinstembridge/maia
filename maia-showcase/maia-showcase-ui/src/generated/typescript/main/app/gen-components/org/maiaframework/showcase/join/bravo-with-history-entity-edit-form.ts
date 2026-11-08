@@ -9,7 +9,7 @@ import {MatInputModule} from '@angular/material/input';
 import {Router} from '@angular/router';
 import {BravoWithHistoryFetchForEditDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoWithHistoryFetchForEditDto';
 import {BravoWithHistoryUpdateRequestDto} from '@app/gen-components/org/maiaframework/showcase/join/BravoWithHistoryUpdateRequestDto';
-import {AlphaWithHistoryTypeaheadComponent_v0001} from '@app/gen-components/org/maiaframework/showcase/join/alpha-with-history-typeahead-v0001';
+import {AlphaWithHistoryTypeaheadV1Component} from '@app/gen-components/org/maiaframework/showcase/join/alpha-with-history-typeahead-v1';
 import {BravoWithHistoryCrudService} from '@app/gen-components/org/maiaframework/showcase/join/bravo-with-history-crud-service';
 import {ProblemDetail} from '@maia/maia-ui';
 import {firstValueFrom} from 'rxjs';
@@ -18,7 +18,7 @@ import {firstValueFrom} from 'rxjs';
 
 @Component({
     imports: [
-        AlphaWithHistoryTypeaheadComponent_v0001,
+        AlphaWithHistoryTypeaheadV1Component,
         FormField,
         MatButtonModule,
         MatFormFieldModule,
