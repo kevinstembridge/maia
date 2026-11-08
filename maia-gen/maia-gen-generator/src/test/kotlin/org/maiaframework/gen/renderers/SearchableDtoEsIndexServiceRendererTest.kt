@@ -108,8 +108,8 @@ class SearchableDtoEsIndexServiceRendererTest {
         val v1 = render(1, dir1)
         val v2 = render(2, dir2)
 
-        assertThat(v1).contains("class ChildEsIndexService_v0001(").doesNotContain("ChildEsV2")
-        assertThat(v2).contains("class ChildEsIndexService_v0002(").doesNotContain("ChildEsV1")
+        assertThat(v1).contains("class ChildEsIndexService_v0001(").doesNotContain("ChildEsIndexService_v0002")
+        assertThat(v2).contains("class ChildEsIndexService_v0002(").doesNotContain("ChildEsIndexService_v0001")
         assertThat(v2).contains("ChildEsEsDocRepo_v0002")
 
     }

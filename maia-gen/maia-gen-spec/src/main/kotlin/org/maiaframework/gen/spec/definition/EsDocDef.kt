@@ -12,7 +12,6 @@ import org.maiaframework.gen.spec.definition.lang.Fqcn
 import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.ParameterizedType
 import org.maiaframework.gen.spec.definition.lang.Uqcn
-import org.maiaframework.lang.text.StringFunctions.padWithLeadingZeroes
 
 class EsDocDef(
     val packageName: PackageName,
@@ -37,7 +36,7 @@ class EsDocDef(
 
 
     /** Trailing version suffix such as `_v0004`. */
-    val versionSuffix = "_v${padWithLeadingZeroes(esDocVersion, 4)}"
+    val versionSuffix = VersionSuffix.of(esDocVersion)
 
 
     private val dtoSuffix = DtoSuffix("EsDoc$versionSuffix")
@@ -59,13 +58,13 @@ class EsDocDef(
 
     val esDocMetaClassFqcn = Fqcn.valueOf(
         packageName,
-        Uqcn(esDocBaseName.value).withSuffix("EsIndexMeta_v${padWithLeadingZeroes(this.esDocVersion, 4)}")
+        Uqcn(esDocBaseName.value).withSuffix("EsIndexMeta$versionSuffix")
     )
 
 
     private val esDocIndexControlFqcn = Fqcn.valueOf(
         packageName,
-        Uqcn(esDocBaseName.value).withSuffix("EsIndexControl_v${padWithLeadingZeroes(this.esDocVersion, 4)}")
+        Uqcn(esDocBaseName.value).withSuffix("EsIndexControl$versionSuffix")
     )
 
 
@@ -111,7 +110,7 @@ class EsDocDef(
         .build()
 
 
-    val esDocRepoClassDef = aClassDef(Fqcn.valueOf(packageName, Uqcn("${esDocBaseName}EsDocRepo$versionSuffix")))
+    val esDocRepoClassDef = aClassDef(packageName.uqcn("${esDocBaseName}EsDocRepo$versionSuffix"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
         .build()
 

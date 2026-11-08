@@ -88,7 +88,7 @@ Indices are created on demand, not at startup: the index service checks that the
 ## Operating notes
 
 * `maia.elasticsearch.refresh.chunkSize` (default 1000) controls the after-commit refresh chunking.
-* `<indexServiceName>.bulkUpsert.chunkSize` and `<indexServiceName>.bulkDelete.chunkSize` (service class name with a lower-case first letter, e.g. `bravoEsV1IndexService.bulkUpsert.chunkSize`) control the scheduled job.
+* `<indexServiceName>.bulkUpsert.chunkSize` and `<indexServiceName>.bulkDelete.chunkSize` (service class name with a lower-case first letter, e.g. `bravoEsIndexService_v0001.bulkUpsert.chunkSize`) control the scheduled job.
 * Run the `Refresh<Name>V<n>IndexJob` regularly; it is the safety net for everything listed under limitations.
 
 ## Tests

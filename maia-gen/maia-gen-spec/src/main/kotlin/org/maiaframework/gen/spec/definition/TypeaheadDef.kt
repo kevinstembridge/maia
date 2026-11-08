@@ -7,7 +7,6 @@ import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.lang.ParameterizedType
 import org.maiaframework.gen.spec.definition.lang.TypescriptImport
 import org.maiaframework.lang.text.StringFunctions
-import org.maiaframework.lang.text.StringFunctions.padWithLeadingZeroes
 import org.maiaframework.lang.text.StringFunctions.toKebabCase
 
 class TypeaheadDef(
@@ -35,10 +34,10 @@ class TypeaheadDef(
     private val typeaheadNameKebab = toKebabCase(typeaheadName)
 
 
-    private val versionSuffix = "_v${padWithLeadingZeroes(indexVersion, 4)}"
+    private val versionSuffix = VersionSuffix.of(indexVersion)
 
 
-    val angularServiceFileName = "${typeaheadNameKebab}-api-service-v${padWithLeadingZeroes(indexVersion, 4)}"
+    val angularServiceFileName = "${typeaheadNameKebab}-api-service${VersionSuffix.kebab(indexVersion)}"
 
 
     val angularServiceClassName = "${typeaheadName}ApiService$versionSuffix"
@@ -139,13 +138,13 @@ class TypeaheadDef(
     val typescriptServiceImport = TypescriptImport(angularServiceClassName, "@app/gen-components/${packageName.asTypescriptDirs()}/${this.angularServiceFileName}")
 
 
-    val angularComponentFileName = "$typeaheadNameKebab-v${padWithLeadingZeroes(indexVersion, 4)}"
+    val angularComponentFileName = "$typeaheadNameKebab${VersionSuffix.kebab(indexVersion)}"
 
 
     val angularComponentClassName = "${typeaheadName}Component$versionSuffix"
 
 
-    val angularComponentSelector = "app-$typeaheadNameKebab-v${padWithLeadingZeroes(indexVersion, 4)}"
+    val angularComponentSelector = "app-$typeaheadNameKebab${VersionSuffix.kebab(indexVersion)}"
 
 
     val typescriptComponentRenderedFilePath = "app/gen-components/${packageName.asTypescriptDirs()}/${this.angularComponentFileName}.ts"

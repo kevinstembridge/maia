@@ -1,7 +1,6 @@
 package org.maiaframework.gen.spec.definition
 
 import org.maiaframework.gen.spec.definition.lang.TypescriptImport
-import org.maiaframework.lang.text.StringFunctions.toKebabCase
 
 
 class BlotterPageDef(
@@ -22,7 +21,7 @@ class BlotterPageDef(
     )
 
 
-    val blotterComponentSelector = "app-${blotterDef.dtoBaseName.toKebabCase()}-blotter${toKebabCase(blotterDef.versionSuffix)}"
+    val blotterComponentSelector = "app-${blotterDef.dtoBaseName.toKebabCase()}-blotter${blotterDef.versionSuffixKebab}"
 
 
     private val modulePath = if (blotterDef.moduleName == null) "" else "${blotterDef.moduleName.value}/"
@@ -36,7 +35,7 @@ class BlotterPageDef(
 
     val blotterComponentTypescriptImport = TypescriptImport(
         name = blotterComponentClassName,
-        from = "@$genDir/${blotterDef.dtoBaseName.toKebabCase()}-blotter${toKebabCase(blotterDef.versionSuffix)}"
+        from = "@$genDir/${blotterDef.dtoBaseName.toKebabCase()}-blotter${blotterDef.versionSuffixKebab}"
     )
 
 

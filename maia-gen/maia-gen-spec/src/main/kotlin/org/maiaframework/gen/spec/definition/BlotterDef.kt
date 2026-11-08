@@ -37,6 +37,9 @@ class BlotterDef(
 ) {
 
 
+    val versionSuffixKebab = StringFunctions.toKebabCase(versionSuffix)
+
+
     val isPaginated get() = paginationPageSize != null
 
 
@@ -133,7 +136,7 @@ class BlotterDef(
     val blotterServiceImportStatement = blotterComponent.serviceImportStatement
 
 
-    private val ngMatTableComponentKebabCase = "${dtoBaseName.toKebabCase()}-blotter${StringFunctions.toKebabCase(versionSuffix)}"
+    private val ngMatTableComponentKebabCase = "${dtoBaseName.toKebabCase()}-blotter$versionSuffixKebab"
 
 
     val blotterScssPath = blotterComponent.componentScssRenderedFilePath
