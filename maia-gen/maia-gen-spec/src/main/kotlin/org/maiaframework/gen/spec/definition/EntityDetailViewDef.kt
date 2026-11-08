@@ -64,7 +64,6 @@ class EntityDetailViewDef(
 
     val editPermission by lazy {
         this.entityDef.crudDef.crudOperationDefs.updateOperationDef?.authorityDef
-            ?: throw RuntimeException("No edit permission defined for entity '${entityDef.entityBaseName}'")
     }
 
 

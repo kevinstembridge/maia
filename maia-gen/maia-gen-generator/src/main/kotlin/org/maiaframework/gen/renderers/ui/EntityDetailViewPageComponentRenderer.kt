@@ -76,13 +76,15 @@ class EntityDetailViewPageComponentRenderer(
             |    );
             |""".trimMargin())
 
-        this.authoritiesDef?.let {
+        val editPermission = this.entityDetailViewDef.editPermission
+
+        if (this.authoritiesDef != null && editPermission != null) {
 
             append("""
                 |
                 |
                 |    protected get canEdit(): boolean {
-                |        return this.authService.currentUserHasThisAuthority(${it.enumDef.uqcn}.${entityDetailViewDef.editPermission.name});
+                |        return this.authService.currentUserHasThisAuthority(${this.authoritiesDef.enumDef.uqcn}.${editPermission.name});
                 |    }
                 |
                 |
@@ -91,6 +93,18 @@ class EntityDetailViewPageComponentRenderer(
                 |        if (id) {
                 |            this.router.navigate(['${this.entityDetailViewDef.editPageUrl}', id]);
                 |        }
+                |    }
+                |""".trimMargin())
+
+        } else {
+
+            append("""
+                |
+                |
+                |    protected readonly canEdit = false;
+                |
+                |
+                |    onEditClicked(): void {
                 |    }
                 |""".trimMargin())
 
@@ -109,16 +123,27 @@ class EntityDetailViewPageComponentRenderer(
         }
 
         entityDetailViewDef.entityDef.historyBlotterDef?.let { historyDef ->
-            append("""
-                |
-                |
-                |    onHistoryClicked(): void {
-                |        const id = this.entityId();
-                |        if (id) {
-                |            this.router.navigate(['/${historyDef.routePath}', id]);
-                |        }
-                |    }
-                |""".trimMargin())
+            if (historyDef.isJoinEntityHistory) {
+                // The history route of a join entity shows the whole history table and takes no id.
+                append("""
+                    |
+                    |
+                    |    onHistoryClicked(): void {
+                    |        this.router.navigate(['/${historyDef.routePath}']);
+                    |    }
+                    |""".trimMargin())
+            } else {
+                append("""
+                    |
+                    |
+                    |    onHistoryClicked(): void {
+                    |        const id = this.entityId();
+                    |        if (id) {
+                    |            this.router.navigate(['/${historyDef.routePath}', id]);
+                    |        }
+                    |    }
+                    |""".trimMargin())
+            }
         }
 
         timelineBlotterDef?.let { timelineDef ->
