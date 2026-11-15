@@ -22,6 +22,16 @@ object EsDocMappingTypes {
     val `object` = ObjectEsDocMappingType()
 
 
+    /** scaling factor is 10^[scale], so values are exact to [scale] decimal places */
+    fun scaledFloat(scale: Int): ScaledFloatEsDocMappingType {
+
+        var factor = 1L
+        repeat(scale) { factor *= 10L }
+        return ScaledFloatEsDocMappingType(factor)
+
+    }
+
+
     val searchAsYouType = SearchAsYouTypeEsDocMappingType()
 
 

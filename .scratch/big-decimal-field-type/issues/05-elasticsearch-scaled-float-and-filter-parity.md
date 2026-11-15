@@ -4,9 +4,9 @@
 
 **Blocked by:** 04
 
-**Status:** ready-for-agent
+**Status:** resolved
 
-- [ ] New parameterised `EsDocMappingTypes` entry for `scaled_float` takes the scaling factor from the field's scale
-- [ ] BigDecimal number-filter scenarios in `filterparity` pass on both Postgres and Elasticsearch with identical rows
-- [ ] Field type KDoc states the 64-bit overflow limit
-- [ ] Both backends run in Testcontainers in the full build
+- [x] New parameterised `EsDocMappingTypes` entry for `scaled_float` takes the scaling factor from the field's scale
+- [x] BigDecimal number-filter scenarios in `filterparity` pass on both Postgres and Elasticsearch with identical rows
+- [x] Field type KDoc states the 64-bit overflow limit
+- [x] Both backends run in Testcontainers in the full build

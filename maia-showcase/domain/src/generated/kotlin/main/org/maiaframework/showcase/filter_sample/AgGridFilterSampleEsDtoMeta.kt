@@ -12,6 +12,8 @@ object AgGridFilterSampleEsDtoMeta {
     fun fieldNameToColumnName(dtoFieldName: String): String {
 
         return when(dtoFieldName) {
+            "amountNullable" -> "maia.ag_grid_filter_sample.amount_nullable"
+            "amountRequired" -> "maia.ag_grid_filter_sample.amount_required"
             "dateNullable" -> "maia.ag_grid_filter_sample.date_nullable"
             "dateRequired" -> "maia.ag_grid_filter_sample.date_required"
             "decimalNullable" -> "maia.ag_grid_filter_sample.decimal_nullable"
@@ -26,7 +28,7 @@ object AgGridFilterSampleEsDtoMeta {
             "tags" -> "maia.ag_grid_filter_sample.tags"
             "textNullable" -> "maia.ag_grid_filter_sample.text_nullable"
             "textRequired" -> "maia.ag_grid_filter_sample.text_required"
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [dateNullable, dateRequired, decimalNullable, decimalRequired, flagNullable, flagRequired, id, instantNullable, instantRequired, intNullable, intRequired, tags, textNullable, textRequired]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [amountNullable, amountRequired, dateNullable, dateRequired, decimalNullable, decimalRequired, flagNullable, flagRequired, id, instantNullable, instantRequired, intNullable, intRequired, tags, textNullable, textRequired]")
         }
 
     }
@@ -35,6 +37,8 @@ object AgGridFilterSampleEsDtoMeta {
     fun fieldNameToJdbcType(dtoFieldName: String): JdbcCompatibleType {
 
         return when(dtoFieldName) {
+            "amountNullable" -> JdbcCompatibleType.decimal
+            "amountRequired" -> JdbcCompatibleType.decimal
             "dateNullable" -> JdbcCompatibleType.date
             "dateRequired" -> JdbcCompatibleType.date
             "decimalNullable" -> JdbcCompatibleType.decimal
@@ -49,7 +53,7 @@ object AgGridFilterSampleEsDtoMeta {
             "tags" -> JdbcCompatibleType.text_array
             "textNullable" -> JdbcCompatibleType.text
             "textRequired" -> JdbcCompatibleType.text
-            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [dateNullable, dateRequired, decimalNullable, decimalRequired, flagNullable, flagRequired, id, instantNullable, instantRequired, intNullable, intRequired, tags, textNullable, textRequired]")
+            else -> throw IllegalArgumentException("Unknown field name [$dtoFieldName]. Expected one of [amountNullable, amountRequired, dateNullable, dateRequired, decimalNullable, decimalRequired, flagNullable, flagRequired, id, instantNullable, instantRequired, intNullable, intRequired, tags, textNullable, textRequired]")
         }
 
     }

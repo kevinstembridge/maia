@@ -28,6 +28,8 @@ class AgGridFilterSampleEsV1EsDocRepo(private val dtoRepo: AgGridFilterSampleEsD
     private fun buildEsDoc(dto: AgGridFilterSampleEsDto): AgGridFilterSampleEsV1EsDoc {
 
         return AgGridFilterSampleEsV1EsDoc(
+            amountNullable = dto.amountNullable,
+            amountRequired = dto.amountRequired,
             dateNullable = dto.dateNullable,
             dateRequired = dto.dateRequired,
             decimalNullable = dto.decimalNullable,

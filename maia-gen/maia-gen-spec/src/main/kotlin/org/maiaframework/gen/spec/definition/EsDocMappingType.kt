@@ -33,6 +33,28 @@ class LongEsDocMappingType internal constructor() : EsDocMappingType("long_")
 class ObjectEsDocMappingType internal constructor() : EsDocMappingType("object")
 
 
+/**
+ * `scaled_float`: a float stored as a signed 64-bit long equal to `value * scalingFactor`. Parameterised, so each
+ * instance carries its own scaling factor (10^scale for a BigDecimal field).
+ */
+class ScaledFloatEsDocMappingType internal constructor(
+    val scalingFactor: Long
+) : EsDocMappingType("scaledFloat") {
+
+
+    override fun equals(other: Any?): Boolean {
+        return other is ScaledFloatEsDocMappingType && scalingFactor == other.scalingFactor
+    }
+
+
+    override fun hashCode(): Int {
+        return scalingFactor.hashCode()
+    }
+
+
+}
+
+
 class SearchAsYouTypeEsDocMappingType internal constructor() : EsDocMappingType("searchAsYouType")
 
 

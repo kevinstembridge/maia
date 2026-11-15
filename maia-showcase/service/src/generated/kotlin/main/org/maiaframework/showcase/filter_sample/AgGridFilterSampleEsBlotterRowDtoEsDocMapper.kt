@@ -13,6 +13,8 @@ class AgGridFilterSampleEsBlotterRowDtoEsDocMapper {
     fun mapEsDoc(esDoc: AgGridFilterSampleEsV1EsDoc): AgGridFilterSampleEsBlotterRowDto {
 
         return AgGridFilterSampleEsBlotterRowDto(
+            esDoc.amountNullable,
+            esDoc.amountRequired,
             esDoc.dateNullable,
             esDoc.dateRequired,
             esDoc.decimalNullable,
