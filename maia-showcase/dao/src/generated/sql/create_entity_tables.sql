@@ -204,9 +204,9 @@ CREATE TABLE maia.all_field_types (
     last_modified_by_id uuid NOT NULL REFERENCES maia.party(id),
     last_modified_by_name text NOT NULL,
     last_modified_timestamp timestamp(3) with time zone NOT NULL,
-    some_big_decimal decimal NOT NULL,
-    some_big_decimal_modifiable decimal NOT NULL,
-    some_big_decimal_nullable decimal NULL,
+    some_big_decimal NUMERIC(19,4) NOT NULL,
+    some_big_decimal_modifiable NUMERIC(10,2) NOT NULL,
+    some_big_decimal_nullable NUMERIC(19,4) NULL,
     some_boolean boolean NOT NULL,
     some_boolean_nullable boolean NULL,
     some_boolean_type boolean NOT NULL,
@@ -251,12 +251,12 @@ CREATE UNIQUE INDEX all_field_types_some_string_type_uidx ON maia.all_field_type
 CREATE INDEX all_field_types_some_boolean_some_string_modifiable_idx ON maia.all_field_types(some_boolean, some_string_modifiable);
 
 
-CREATE TABLE maia.cached_decimal (
+CREATE TABLE maia.cached_big_decimal (
     created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
-    some_decimal decimal NOT NULL,
-    some_decimal_nullable decimal NULL,
-    some_decimal_scaled decimal NOT NULL,
+    some_big_decimal NUMERIC(19,4) NOT NULL,
+    some_big_decimal_nullable NUMERIC(19,4) NULL,
+    some_big_decimal_scaled NUMERIC(10,2) NOT NULL,
     PRIMARY KEY(id)
 );
 
@@ -432,8 +432,8 @@ CREATE TABLE maia.charlie (
 
 
 CREATE TABLE maia.ag_grid_filter_sample (
-    amount_nullable decimal NULL,
-    amount_required decimal NOT NULL,
+    amount_nullable NUMERIC(19,4) NULL,
+    amount_required NUMERIC(19,4) NOT NULL,
     created_timestamp timestamp(3) with time zone NOT NULL,
     date_nullable date NULL,
     date_required date NOT NULL,

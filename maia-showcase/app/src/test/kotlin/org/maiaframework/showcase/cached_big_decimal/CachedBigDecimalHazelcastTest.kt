@@ -1,4 +1,4 @@
-package org.maiaframework.showcase.cached_decimal
+package org.maiaframework.showcase.cached_big_decimal
 
 import com.hazelcast.core.HazelcastInstance
 import org.assertj.core.api.Assertions.assertThat
@@ -10,7 +10,7 @@ import java.math.BigDecimal
 import java.time.Instant
 
 
-class CachedDecimalHazelcastTest : AbstractBlackBoxTest() {
+class CachedBigDecimalHazelcastTest : AbstractBlackBoxTest() {
 
 
     @Autowired
@@ -20,7 +20,7 @@ class CachedDecimalHazelcastTest : AbstractBlackBoxTest() {
     @Test
     fun `BigDecimal fields round trip through Hazelcast with exact value and scale`() {
 
-        val entity = CachedDecimalEntity(
+        val entity = CachedBigDecimalEntity(
             Instant.now(),
             DomainId.newId(),
             BigDecimal("123456789.12345678"),
@@ -30,12 +30,12 @@ class CachedDecimalHazelcastTest : AbstractBlackBoxTest() {
 
         val actual = roundTrip(entity)
 
-        assertThat(actual.someDecimal).isEqualTo(BigDecimal("123456789.12345678"))
-        assertThat(actual.someDecimal.scale()).isEqualTo(8)
-        assertThat(actual.someDecimalScaled).isEqualTo(BigDecimal("1.50"))
-        assertThat(actual.someDecimalScaled.scale()).isEqualTo(2)
-        assertThat(actual.someDecimalNullable).isEqualTo(BigDecimal("-0.000"))
-        assertThat(actual.someDecimalNullable!!.scale()).isEqualTo(3)
+        assertThat(actual.someBigDecimal).isEqualTo(BigDecimal("123456789.12345678"))
+        assertThat(actual.someBigDecimal.scale()).isEqualTo(8)
+        assertThat(actual.someBigDecimalScaled).isEqualTo(BigDecimal("1.50"))
+        assertThat(actual.someBigDecimalScaled.scale()).isEqualTo(2)
+        assertThat(actual.someBigDecimalNullable).isEqualTo(BigDecimal("-0.000"))
+        assertThat(actual.someBigDecimalNullable!!.scale()).isEqualTo(3)
 
     }
 
@@ -43,7 +43,7 @@ class CachedDecimalHazelcastTest : AbstractBlackBoxTest() {
     @Test
     fun `null BigDecimal round trips through Hazelcast`() {
 
-        val entity = CachedDecimalEntity(
+        val entity = CachedBigDecimalEntity(
             Instant.now(),
             DomainId.newId(),
             BigDecimal("1.0"),
@@ -51,14 +51,14 @@ class CachedDecimalHazelcastTest : AbstractBlackBoxTest() {
             BigDecimal("2.00"),
         )
 
-        assertThat(roundTrip(entity).someDecimalNullable).isNull()
+        assertThat(roundTrip(entity).someBigDecimalNullable).isNull()
 
     }
 
 
-    private fun roundTrip(entity: CachedDecimalEntity): CachedDecimalEntity {
+    private fun roundTrip(entity: CachedBigDecimalEntity): CachedBigDecimalEntity {
 
-        val map = this.hazelcastInstance.getMap<String, CachedDecimalEntity>("cached-decimal-test")
+        val map = this.hazelcastInstance.getMap<String, CachedBigDecimalEntity>("cached-big-decimal-test")
         map.put(entity.id.value, entity)
         return map.get(entity.id.value)!!
 

@@ -5,6 +5,7 @@ import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.EntityHierarchy
 import org.maiaframework.gen.spec.definition.jdbc.TableColumnName
+import org.maiaframework.gen.spec.definition.lang.BigDecimalFieldType
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
@@ -87,6 +88,19 @@ class ExpectedSchemaExtractor {
     }
 
 
+    private fun ddlTypeFor(sqlFieldDef: SqlFieldDef): String {
+
+        val fieldType = sqlFieldDef.fieldType
+
+        return if (fieldType is BigDecimalFieldType) {
+            "NUMERIC(${fieldType.precision},${fieldType.scale})"
+        } else {
+            "${fieldType.jdbcCompatibleType.postgresDataType}${sqlFieldDef.sizeConstraint}"
+        }
+
+    }
+
+
     private fun `determine expected columns`(
         entityHierarchy: EntityHierarchy,
         sqlFieldsForColumns: List<SqlFieldDef>
@@ -99,7 +113,8 @@ class ExpectedSchemaExtractor {
                 name = sqlFieldDef.tableColumnName,
                 postgresType = "${sqlFieldDef.fieldType.jdbcCompatibleType.postgresDataType}${sqlFieldDef.sizeConstraint}",
                 nullable = sqlFieldDef.nullable,
-                isPrimaryKey = sqlFieldDef.isPrimaryKey
+                isPrimaryKey = sqlFieldDef.isPrimaryKey,
+                ddlType = ddlTypeFor(sqlFieldDef)
             )
         }
 

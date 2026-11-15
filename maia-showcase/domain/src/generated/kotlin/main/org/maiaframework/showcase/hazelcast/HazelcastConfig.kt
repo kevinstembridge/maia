@@ -5,8 +5,8 @@ package org.maiaframework.showcase.hazelcast
 
 import com.hazelcast.config.MapConfig
 import com.hazelcast.nio.serialization.compact.CompactSerializer
-import org.maiaframework.showcase.cached_decimal.CachedDecimalEntity
-import org.maiaframework.showcase.cached_decimal.CachedDecimalSerializer
+import org.maiaframework.showcase.cached_big_decimal.CachedBigDecimalEntity
+import org.maiaframework.showcase.cached_big_decimal.CachedBigDecimalSerializer
 import org.maiaframework.showcase.composite_pk.CompositePrimaryKeyEntity
 import org.maiaframework.showcase.composite_pk.CompositePrimaryKeyEntityPk
 import org.maiaframework.showcase.composite_pk.CompositePrimaryKeyPkSerializer
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class HazelcastConfig(
-    private val cachedDecimalSerializer: CachedDecimalSerializer,
+    private val cachedBigDecimalSerializer: CachedBigDecimalSerializer,
     private val compositePrimaryKeyPkSerializer: CompositePrimaryKeyPkSerializer,
     private val compositePrimaryKeySerializer: CompositePrimaryKeySerializer,
     private val simpleSerializer: SimpleSerializer
@@ -26,7 +26,7 @@ class HazelcastConfig(
 
 
     val serializers: List<CompactSerializer<out Any>> = listOf(
-        cachedDecimalSerializer,
+        cachedBigDecimalSerializer,
         simpleSerializer,
         compositePrimaryKeySerializer,
         compositePrimaryKeyPkSerializer,

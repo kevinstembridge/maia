@@ -103,7 +103,7 @@ class CreateTableSqlRenderer(
                     " REFERENCES ${it.referencedSchemaAndTable}(${it.referencedColumn})"
                 } ?: ""
 
-                "${columnDef.name} ${columnDef.postgresType} $nullSuffix$foreignKey"
+                "${columnDef.name} ${columnDef.ddlType} $nullSuffix$foreignKey"
 
             }
 
