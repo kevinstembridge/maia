@@ -132,7 +132,9 @@ data class ClassFieldDef(
     val isVersionField = this.classFieldName == ClassFieldName.version
 
 
-    val defaultFormFieldValue = providedDefaultFormFieldValue ?: fieldType.defaultFormFieldValue
+    /** A nullable BigDecimal starts empty in a form, since "0" would be a real value rather than an absent one. */
+    val defaultFormFieldValue = providedDefaultFormFieldValue
+        ?: if (nullable && fieldType is BigDecimalFieldType) "\"\"" else fieldType.defaultFormFieldValue
 
 
     init {

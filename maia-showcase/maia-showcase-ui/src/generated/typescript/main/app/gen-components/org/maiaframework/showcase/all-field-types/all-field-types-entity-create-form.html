@@ -44,6 +44,12 @@
                 matInput
             />
 
+            @if (dialogForm.someBigDecimalNullable().touched() && dialogForm.someBigDecimalNullable().invalid()) {
+                @for (error of dialogForm.someBigDecimalNullable().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
+            }
+
         </mat-form-field>
         <mat-checkbox
             [formField]="dialogForm.someBoolean"
