@@ -251,6 +251,16 @@ CREATE UNIQUE INDEX all_field_types_some_string_type_uidx ON maia.all_field_type
 CREATE INDEX all_field_types_some_boolean_some_string_modifiable_idx ON maia.all_field_types(some_boolean, some_string_modifiable);
 
 
+CREATE TABLE maia.cached_decimal (
+    created_timestamp timestamp(3) with time zone NOT NULL,
+    id uuid NOT NULL,
+    some_decimal decimal NOT NULL,
+    some_decimal_nullable decimal NULL,
+    some_decimal_scaled decimal NOT NULL,
+    PRIMARY KEY(id)
+);
+
+
 CREATE TABLE maia.simple (
     created_timestamp timestamp(3) with time zone NOT NULL,
     id uuid NOT NULL,
