@@ -104,10 +104,34 @@ class AgGridFilterParityIntegrationTest : AbstractBlackBoxTest() {
         val ids = this.postgresSearch.search(searchModel).results.map { it.id }
 
         assertThat(ids).containsExactly(
+            AgGridFilterSeed.idOf("amount-tiny"),
+            AgGridFilterSeed.idOf("amount-tiny-plus"),
             AgGridFilterSeed.idOf("amount-nine"),
             AgGridFilterSeed.idOf("amount-ten"),
             AgGridFilterSeed.idOf("amount-big"),
             AgGridFilterSeed.idOf("amount-big-plus"),
+        )
+
+    }
+
+
+    @Test
+    fun `elasticsearch sorts a BigDecimal column numerically`() {
+
+        val searchModel = AgGridSearchModel(
+            filterModel = this.jsonMapper.readTree(numberFilter("amountRequired", "inRange", 0.00005, 11)),
+            sortModel = listOf(AgGridSortModelItem("amountRequired", "asc")),
+            startRow = 0,
+            endRow = 1000,
+        )
+
+        val ids = this.esSearch.search(searchModel).hits.map { it.id }
+
+        assertThat(ids).containsExactly(
+            AgGridFilterSeed.idOf("amount-tiny"),
+            AgGridFilterSeed.idOf("amount-tiny-plus"),
+            AgGridFilterSeed.idOf("amount-nine"),
+            AgGridFilterSeed.idOf("amount-ten"),
         )
 
     }

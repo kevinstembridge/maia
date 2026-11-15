@@ -137,8 +137,14 @@ class BooleanTypeFieldType internal constructor(
  * An exact decimal stored as `NUMERIC(precision,scale)`. Unlike most Field types it is not a singleton:
  * each instance carries its own precision and scale.
  *
- * Note that Elasticsearch indexes this type as a `scaled_float`, which stores a signed 64-bit long, so values above
- * about 9.2x10^14 at scale 4 cannot be indexed even though Postgres accepts them (see ADR-0006).
+ * Elasticsearch indexes this type as a `scaled_float` with a scaling factor of 10^scale. Two limits apply that
+ * Postgres does not have (see ADR-0006):
+ *
+ * - `scaled_float` stores a signed 64-bit long, so values above about 9.2x10^14 at scale 4 (Long.MAX / 10^scale)
+ *   overflow and cannot be indexed even though Postgres accepts them.
+ * - Elasticsearch converts through a double, so values are only exact while `value * 10^scale` is below 2^53, about
+ *   9.0x10^11 at scale 4. Above that, values differing only in the last decimal places index as equal (1e14 and
+ *   1e14 + 0.0001 are the same ES value), so ES filters and sorts can disagree with Postgres.
  */
 class BigDecimalFieldType internal constructor(
     val precision: Int,
@@ -147,7 +153,7 @@ class BigDecimalFieldType internal constructor(
     Fqcn.BIG_DECIMAL,
     TypescriptCompatibleTypes.string,
     "NUMERIC($precision,$scale)",
-    EsDocMappingTypes.double,
+    EsDocMappingTypes.scaledFloat(scale),
     HazelcastCompatibleType.DECIMAL,
     defaultFormFieldValue = "\"0\""
 ) {

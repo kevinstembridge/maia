@@ -10,6 +10,7 @@ import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.KeywordEsDocMappingType
 import org.maiaframework.gen.spec.definition.LongEsDocMappingType
 import org.maiaframework.gen.spec.definition.ObjectEsDocMappingType
+import org.maiaframework.gen.spec.definition.ScaledFloatEsDocMappingType
 import org.maiaframework.gen.spec.definition.SearchAsYouTypeEsDocMappingType
 import org.maiaframework.gen.spec.definition.TextAndKeywordEsDocMappingType
 import org.maiaframework.gen.spec.definition.TextEsDocMappingType
@@ -74,13 +75,16 @@ class EsIndexMetaClassRenderer(private val esDocDef: EsDocDef) : AbstractKotlinR
 
     private fun renderProperty(fieldPath: String, esDocFieldDef: EsDocFieldDef) {
 
-        when (esDocFieldDef.mappingType) {
+        val mappingType = esDocFieldDef.mappingType
+
+        when (mappingType) {
             is BooleanEsDocMappingType -> appendLineFor(fieldPath, esDocFieldDef.mappingType)
             is DateEsDocMappingType -> appendLineFor(fieldPath, esDocFieldDef.mappingType)
             is DoubleEsDocMappingType -> appendLineFor(fieldPath, esDocFieldDef.mappingType)
             is KeywordEsDocMappingType -> appendLineFor(fieldPath, esDocFieldDef.mappingType)
             is LongEsDocMappingType -> appendLineFor(fieldPath, esDocFieldDef.mappingType)
             is ObjectEsDocMappingType -> appendLineFor(fieldPath, esDocFieldDef.mappingType)
+            is ScaledFloatEsDocMappingType -> appendScaledFloatLine(fieldPath, mappingType)
             is SearchAsYouTypeEsDocMappingType -> appendLineFor(fieldPath, esDocFieldDef.mappingType)
             is TextAndKeywordEsDocMappingType -> renderPropertyWithRawKeywordField(fieldPath)
             is TextEsDocMappingType -> appendLineFor(fieldPath, esDocFieldDef.mappingType)
@@ -95,6 +99,13 @@ class EsIndexMetaClassRenderer(private val esDocDef: EsDocDef) : AbstractKotlinR
         val builderMethodName = if (mappingType is ObjectEsDocMappingType) "`$mappingType`" else "$mappingType"
 
         appendLine("            m.properties(\"$fieldName\", Property.of { p -> p.$builderMethodName { it } })")
+
+    }
+
+
+    private fun appendScaledFloatLine(fieldName: String, mappingType: ScaledFloatEsDocMappingType) {
+
+        appendLine("            m.properties(\"$fieldName\", Property.of { p -> p.scaledFloat { it.scalingFactor(${mappingType.scalingFactor}.0) } })")
 
     }
 

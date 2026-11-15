@@ -10,6 +10,8 @@ object AgGridFilterSampleEsBlotterRowDtoFieldNameMapper {
 
     val mappingFunction: (String) -> String = {
         when (it) {
+            "amountNullable" -> "amountNullable"
+            "amountRequired" -> "amountRequired"
             "dateNullable" -> "dateNullable"
             "dateRequired" -> "dateRequired"
             "decimalNullable" -> "decimalNullable"

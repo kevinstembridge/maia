@@ -76,4 +76,21 @@ class BigDecimalFieldTypeTest {
     }
 
 
+
+    @Test
+    fun `elasticsearch mapping is a scaled_float with a scaling factor of ten to the scale`() {
+
+        val default = FieldTypes.bigDecimal.elasticMappingType as ScaledFloatEsDocMappingType
+        assertThat(default.scalingFactor).isEqualTo(10_000L)
+        assertThat(default.value).isEqualTo("scaledFloat")
+
+        val twoDp = FieldTypes.bigDecimal(10, 2).elasticMappingType as ScaledFloatEsDocMappingType
+        assertThat(twoDp.scalingFactor).isEqualTo(100L)
+
+        val zeroDp = FieldTypes.bigDecimal(10, 0).elasticMappingType as ScaledFloatEsDocMappingType
+        assertThat(zeroDp.scalingFactor).isEqualTo(1L)
+
+    }
+
+
 }

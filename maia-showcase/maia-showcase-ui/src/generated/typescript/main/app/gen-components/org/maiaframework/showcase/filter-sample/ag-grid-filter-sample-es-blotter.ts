@@ -48,6 +48,8 @@ export class AgGridFilterSampleEsBlotter {
         { field: 'intNullable', headerName: 'Int Nullable', cellDataType: 'number', filter: true },
         { field: 'decimalRequired', headerName: 'Decimal Required', cellDataType: 'number', filter: true },
         { field: 'decimalNullable', headerName: 'Decimal Nullable', cellDataType: 'number', filter: true },
+        { field: 'amountRequired', headerName: 'Amount Required', cellDataType: 'number', filter: true, valueGetter: (params) => params.data?.amountRequired == null ? null : Number(params.data.amountRequired), valueFormatter: (params) => params.data?.amountRequired ?? '' },
+        { field: 'amountNullable', headerName: 'Amount Nullable', cellDataType: 'number', filter: true, valueGetter: (params) => params.data?.amountNullable == null ? null : Number(params.data.amountNullable), valueFormatter: (params) => params.data?.amountNullable ?? '' },
         { field: 'dateRequired', headerName: 'Date Required', cellDataType: 'dateString', filter: true },
         { field: 'dateNullable', headerName: 'Date Nullable', cellDataType: 'dateString', filter: true },
         { field: 'instantRequired', headerName: 'Instant Required', cellDataType: 'dateTimeString', filter: true },

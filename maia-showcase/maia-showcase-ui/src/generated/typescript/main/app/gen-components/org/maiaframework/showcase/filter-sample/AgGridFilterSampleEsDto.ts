@@ -3,6 +3,8 @@
 
 
 export interface AgGridFilterSampleEsDto {
+    amountNullable?: string;
+    amountRequired: string;
     dateNullable?: string;
     dateRequired: string;
     decimalNullable?: number;

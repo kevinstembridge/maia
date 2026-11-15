@@ -14,6 +14,8 @@ class AgGridFilterSampleEsDtoFieldNameConverter : SearchFieldNameConverter {
     override fun convertFieldName(fieldName: String): String {
 
         return when(fieldName) {
+            "amountNullable" -> "amount_nullable"
+            "amountRequired" -> "amount_required"
             "dateNullable" -> "date_nullable"
             "dateRequired" -> "date_required"
             "decimalNullable" -> "decimal_nullable"

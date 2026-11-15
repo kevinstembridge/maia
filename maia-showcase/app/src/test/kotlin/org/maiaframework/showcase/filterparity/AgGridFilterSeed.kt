@@ -89,7 +89,10 @@ object AgGridFilterSeed {
         SeedRow("date-after-midnight", dateRequired = LocalDate.of(2024, 3, 16), dateNullable = LocalDate.of(2024, 3, 16), instantRequired = Instant.parse("2024-03-16T00:00:00Z"), instantNullable = Instant.parse("2024-03-16T00:00:00Z")),
 
         // BigDecimal rows. amountRequired is 0 on every row above. The two "big" rows differ only in the 4th decimal
-        // place at 1e14, where a double comparison cannot tell them apart.
+        // place at 1e14, where a double comparison cannot tell them apart. The two "tiny" rows differ in the 4th decimal place
+        // at a magnitude where doubles (and so Elasticsearch's scaled_float) are still exact.
+        SeedRow("amount-tiny", amountRequired = BigDecimal("0.0001")),
+        SeedRow("amount-tiny-plus", amountRequired = BigDecimal("0.0002")),
         SeedRow("amount-nine", amountRequired = BigDecimal("9.0000"), amountNullable = BigDecimal("9.0000")),
         SeedRow("amount-ten", amountRequired = BigDecimal("10.0000"), amountNullable = BigDecimal("10.0000")),
         SeedRow("amount-big", amountRequired = BigDecimal("100000000000000.0000")),

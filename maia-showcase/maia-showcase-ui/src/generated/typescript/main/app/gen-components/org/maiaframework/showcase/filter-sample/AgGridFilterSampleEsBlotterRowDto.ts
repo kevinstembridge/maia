@@ -3,6 +3,8 @@
 
 
 export interface AgGridFilterSampleEsBlotterRowDto {
+    amountNullable?: string;
+    amountRequired: string;
     dateNullable?: string;
     dateRequired: string;
     decimalNullable?: number;

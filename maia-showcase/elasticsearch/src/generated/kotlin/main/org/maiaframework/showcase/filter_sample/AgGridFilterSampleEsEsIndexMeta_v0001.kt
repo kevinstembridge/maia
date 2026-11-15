@@ -26,6 +26,8 @@ object AgGridFilterSampleEsEsIndexMeta_v0001 {
 
 
     val typeMapping = TypeMapping.of { m ->
+            m.properties("amountNullable", Property.of { p -> p.scaledFloat { it.scalingFactor(10000.0) } })
+            m.properties("amountRequired", Property.of { p -> p.scaledFloat { it.scalingFactor(10000.0) } })
             m.properties("dateNullable", Property.of { p -> p.date { it } })
             m.properties("dateRequired", Property.of { p -> p.date { it } })
             m.properties("decimalNullable", Property.of { p -> p.double_ { it } })
