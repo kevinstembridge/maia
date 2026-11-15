@@ -13,6 +13,9 @@ export interface AllFieldTypesEntityDetailViewDto {
     lastModifiedBy: PartyRefDto;
     lastModifiedByUsername: string;
     lastModifiedTimestamp: string;
+    someBigDecimal: string;
+    someBigDecimalModifiable: string;
+    someBigDecimalNullable?: string;
     someBoolean: boolean;
     someBooleanNullable?: boolean;
     someBooleanType: boolean;

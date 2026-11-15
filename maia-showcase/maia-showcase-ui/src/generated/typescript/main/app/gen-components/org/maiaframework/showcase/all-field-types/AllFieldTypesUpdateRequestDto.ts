@@ -4,6 +4,8 @@
 
 export interface AllFieldTypesUpdateRequestDto {
     id: string;
+    someBigDecimalModifiable: string;
+    someBigDecimalNullable?: string;
     someInstantModifiable: string;
     someInstantModifiableNullable?: string;
     someIntModifiable: number;

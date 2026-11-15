@@ -133,6 +133,53 @@ class BooleanTypeFieldType internal constructor(
 }
 
 
+/**
+ * An exact decimal stored as `NUMERIC(precision,scale)`. Unlike most Field types it is not a singleton:
+ * each instance carries its own precision and scale.
+ *
+ * Note that Elasticsearch indexes this type as a `scaled_float`, which stores a signed 64-bit long, so values above
+ * about 9.2x10^14 at scale 4 cannot be indexed even though Postgres accepts them (see ADR-0006).
+ */
+class BigDecimalFieldType internal constructor(
+    val precision: Int,
+    val scale: Int
+) : FieldType(
+    Fqcn.BIG_DECIMAL,
+    TypescriptCompatibleTypes.string,
+    "NUMERIC($precision,$scale)",
+    EsDocMappingTypes.double,
+    HazelcastCompatibleType.DECIMAL,
+    defaultFormFieldValue = "\"0\""
+) {
+
+
+    init {
+        require(precision >= 1) { "BigDecimal precision must be at least 1 but was $precision" }
+        require(scale in 0..precision) { "BigDecimal scale must be between 0 and the precision ($precision) but was $scale" }
+    }
+
+
+    override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.decimal
+
+
+    override fun unwrap(): FieldType {
+        return this
+    }
+
+
+    override fun equals(other: Any?): Boolean {
+        return other is BigDecimalFieldType && precision == other.precision && scale == other.scale
+    }
+
+
+    override fun hashCode(): Int {
+        return 31 * precision + scale
+    }
+
+
+}
+
+
 class IntFieldType internal constructor() : FieldType(
     Fqcn.INT,
     TypescriptCompatibleTypes.number,
@@ -544,6 +591,7 @@ private fun jdbcCompatibleTypeForListOrSet(parameterFieldType: FieldType): JdbcC
         is JoinFetchDtoFieldType -> TODO("YAGNI?")
         is EntityRefFieldType -> TODO("YAGNI?")
         is InstantFieldType -> TODO("YAGNI?")
+        is BigDecimalFieldType -> JdbcCompatibleType.decimal_array
         is IntFieldType -> JdbcCompatibleType.integer_array
         is IntTypeFieldType -> JdbcCompatibleType.integer_array
         is IntValueClassFieldType -> JdbcCompatibleType.integer_array

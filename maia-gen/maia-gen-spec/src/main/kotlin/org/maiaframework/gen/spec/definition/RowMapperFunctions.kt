@@ -15,6 +15,7 @@ import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
+import org.maiaframework.gen.spec.definition.lang.BigDecimalFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
@@ -91,6 +92,7 @@ object RowMapperFunctions {
             is EntityRefFieldType -> TODO()
             is InstantFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
             is IntFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
+            is BigDecimalFieldType -> renderForPlainFieldType(indentStr, rsaGetterFunctionName, resultSetColumnName, orElseClause)
             is IntTypeFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter)
             is IntValueClassFieldType -> renderForValueWrapper(fieldType, indentStr, rsaGetterFunctionName, resultSetColumnName, fqcnImporter)
             is ListFieldType -> renderForListField(entityFieldDef, fieldType, indentStr, resultSetColumnName, fqcnImporter)
@@ -194,6 +196,7 @@ object RowMapperFunctions {
             is EntityRefFieldType -> TODO()
             is InstantFieldType -> "${indentStr}rsa.readListOfInstants(\"${resultSetColumnName}\")"
             is IntFieldType -> TODO()
+            is BigDecimalFieldType -> TODO()
             is IntTypeFieldType -> TODO()
             is IntValueClassFieldType -> TODO()
             is ListFieldType -> TODO()

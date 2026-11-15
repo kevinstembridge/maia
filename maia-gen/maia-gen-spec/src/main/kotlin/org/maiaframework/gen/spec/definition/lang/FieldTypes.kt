@@ -23,6 +23,12 @@ import org.maiaframework.jdbc.JdbcCompatibleType
 object FieldTypes {
 
 
+    val bigDecimal = BigDecimalFieldType(19, 4)
+
+
+    fun bigDecimal(precision: Int, scale: Int) = BigDecimalFieldType(precision, scale)
+
+
     val int = IntFieldType()
 
 
@@ -166,6 +172,7 @@ object FieldTypes {
         is EntityRefFieldType -> false
         is InstantFieldType -> false
         is IntFieldType -> false
+        is BigDecimalFieldType -> false
         is IntTypeFieldType -> false
         is IntValueClassFieldType -> false
         is ListFieldType -> false
@@ -202,6 +209,7 @@ object FieldTypes {
             is EntityRefFieldType -> false
             is InstantFieldType -> false
             is IntFieldType -> true
+            is BigDecimalFieldType -> true
             is IntTypeFieldType -> true
             is IntValueClassFieldType -> true
             is ListFieldType -> false
@@ -240,6 +248,7 @@ object FieldTypes {
             is EntityRefFieldType -> false
             is InstantFieldType -> false
             is IntFieldType -> false
+            is BigDecimalFieldType -> false
             is IntTypeFieldType -> false
             is IntValueClassFieldType -> false
             is ListFieldType -> false
@@ -278,6 +287,7 @@ object FieldTypes {
             is EntityRefFieldType -> false
             is InstantFieldType -> false
             is IntFieldType -> false
+            is BigDecimalFieldType -> false
             is IntTypeFieldType -> false
             is IntValueClassFieldType -> false
             is ListFieldType -> false
@@ -316,6 +326,7 @@ object FieldTypes {
             is EntityRefFieldType -> false
             is InstantFieldType -> false
             is IntFieldType -> false
+            is BigDecimalFieldType -> false
             is IntTypeFieldType -> true
             is IntValueClassFieldType -> true
             is ListFieldType -> false

@@ -13,6 +13,7 @@ import org.maiaframework.showcase.types.SomeProvidedIntType
 import org.maiaframework.showcase.types.SomeProvidedLongType
 import org.maiaframework.showcase.types.SomeProvidedStringType
 import org.maiaframework.showcase.types.SomeStringType
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
 import java.time.Period
@@ -26,6 +27,9 @@ class AllFieldTypesEntity(
     val lastModifiedBy: DomainId,
     val lastModifiedByUsername: String,
     val lastModifiedTimestamp: Instant,
+    val someBigDecimal: BigDecimal,
+    val someBigDecimalModifiable: BigDecimal,
+    val someBigDecimalNullable: BigDecimal?,
     val someBoolean: Boolean,
     val someBooleanNullable: Boolean?,
     val someBooleanType: SomeBooleanType,
@@ -73,6 +77,9 @@ class AllFieldTypesEntity(
                 "lastModifiedBy = '" + this.lastModifiedBy + '\'' + ", " + 
                 "lastModifiedByUsername = '" + this.lastModifiedByUsername + '\'' + ", " + 
                 "lastModifiedTimestamp = '" + this.lastModifiedTimestamp + '\'' + ", " + 
+                "someBigDecimal = '" + this.someBigDecimal + '\'' + ", " + 
+                "someBigDecimalModifiable = '" + this.someBigDecimalModifiable + '\'' + ", " + 
+                "someBigDecimalNullable = '" + this.someBigDecimalNullable + '\'' + ", " + 
                 "someBoolean = '" + this.someBoolean + '\'' + ", " + 
                 "someBooleanNullable = '" + this.someBooleanNullable + '\'' + ", " + 
                 "someBooleanType = '" + this.someBooleanType + '\'' + ", " + 
@@ -125,6 +132,9 @@ class AllFieldTypesEntity(
             createdBy: DomainId,
             createdByUsername: String,
             lastModifiedByUsername: String,
+            someBigDecimal: BigDecimal,
+            someBigDecimalModifiable: BigDecimal,
+            someBigDecimalNullable: BigDecimal?,
             someBoolean: Boolean,
             someBooleanNullable: Boolean?,
             someBooleanType: SomeBooleanType,
@@ -174,6 +184,9 @@ class AllFieldTypesEntity(
                 lastModifiedBy,
                 lastModifiedByUsername,
                 lastModifiedTimestamp,
+                someBigDecimal,
+                someBigDecimalModifiable,
+                someBigDecimalNullable,
                 someBoolean,
                 someBooleanNullable,
                 someBooleanType,

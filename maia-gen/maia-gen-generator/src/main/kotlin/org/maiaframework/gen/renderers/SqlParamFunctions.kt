@@ -16,6 +16,7 @@ import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
+import org.maiaframework.gen.spec.definition.lang.BigDecimalFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
@@ -55,6 +56,7 @@ object SqlParamFunctions {
             is EntityRefFieldType -> "addValue"
             is InstantFieldType -> "addValue"
             is IntFieldType -> "addValue"
+            is BigDecimalFieldType -> "addValue"
             is IntTypeFieldType -> "addValue"
             is IntValueClassFieldType -> "addValue"
             is ListFieldType -> sqlParamAddFunctionForListField(fieldType)
@@ -93,6 +95,7 @@ object SqlParamFunctions {
             is EntityRefFieldType -> TODO()
             is InstantFieldType -> "addListOfInstants"
             is IntFieldType -> TODO()
+            is BigDecimalFieldType -> TODO()
             is IntTypeFieldType -> TODO()
             is IntValueClassFieldType -> TODO()
             is ListFieldType -> TODO()
@@ -131,6 +134,7 @@ object SqlParamFunctions {
             is EntityRefFieldType -> ""
             is InstantFieldType -> ""
             is IntFieldType -> ""
+            is BigDecimalFieldType -> ""
             is IntTypeFieldType -> ""
             is IntValueClassFieldType -> ""
             is ListFieldType -> sqlParamMapperFunctionForListField(fieldType.parameterFieldType)
@@ -169,6 +173,7 @@ object SqlParamFunctions {
             is EntityRefFieldType -> ""
             is InstantFieldType -> ""
             is IntFieldType -> ""
+            is BigDecimalFieldType -> ""
             is IntTypeFieldType -> ""
             is IntValueClassFieldType -> ""
             is ListFieldType -> ""
@@ -220,6 +225,7 @@ object SqlParamFunctions {
                 is EntityRefFieldType -> TODO("YAGNI")
                 is InstantFieldType -> lineAppender("${indent}addListOfInstants(\"$fieldName\", $entityNamePrefix$fieldName)")
                 is IntFieldType -> TODO("YAGNI")
+                is BigDecimalFieldType -> TODO("YAGNI")
                 is IntTypeFieldType -> TODO("YAGNI")
                 is IntValueClassFieldType -> TODO("YAGNI")
                 is ListFieldType -> TODO("YAGNI")

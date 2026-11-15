@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.UUID
@@ -446,7 +447,9 @@ class AllFieldTypesDaoTest : AbstractBlackBoxTest() {
         val expectedEntity = entityBuilder.copy(
                 someInstantModifiable = modifiedInstant,
                 someStringModifiable = modifiedString,
-                someInstantModifiableNullable = null
+                someInstantModifiableNullable = null,
+                someBigDecimalModifiable = BigDecimal("12345.60"),
+                someBigDecimalNullable = null
         ).build()
 
 
@@ -456,6 +459,8 @@ class AllFieldTypesDaoTest : AbstractBlackBoxTest() {
             someInstantModifiable(modifiedInstant)
             someStringModifiable(modifiedString)
             someInstantModifiableNullable(null)
+            someBigDecimalModifiable(BigDecimal("12345.60"))
+            someBigDecimalNullable(null)
         }
 
         this.allFieldTypesDao.setFields(entityUpdater)
@@ -621,6 +626,9 @@ class AllFieldTypesDaoTest : AbstractBlackBoxTest() {
         assertThat(actual.someInstantModifiable).isEqualTo(expected.someInstantModifiable.truncatedTo(ChronoUnit.MILLIS))
         assertThat(actual.someInstantModifiableNullable).isEqualTo(expected.someInstantModifiableNullable?.truncatedTo(ChronoUnit.MILLIS))
         assertThat(actual.someInstantNullable).isEqualTo(expected.someInstantNullable?.truncatedTo(ChronoUnit.MILLIS))
+        assertThat(actual.someBigDecimal).isEqualTo(expected.someBigDecimal)
+        assertThat(actual.someBigDecimalModifiable).isEqualTo(expected.someBigDecimalModifiable)
+        assertThat(actual.someBigDecimalNullable).isEqualTo(expected.someBigDecimalNullable)
         assertThat(actual.someInt).isEqualTo(expected.someInt)
         assertThat(actual.someIntModifiable).isEqualTo(expected.someIntModifiable)
         assertThat(actual.someIntNullable).isEqualTo(expected.someIntNullable)

@@ -5,6 +5,9 @@ import {SomeEnum} from '@app/gen-components/org/maiaframework/showcase/enums/Som
 
 
 export interface AllFieldTypesCreateRequestDto {
+    someBigDecimal: string;
+    someBigDecimalModifiable: string;
+    someBigDecimalNullable?: string;
     someBoolean: boolean;
     someBooleanNullable?: boolean;
     someBooleanType: boolean;

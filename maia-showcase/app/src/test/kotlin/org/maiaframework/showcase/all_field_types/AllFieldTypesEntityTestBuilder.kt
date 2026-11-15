@@ -27,6 +27,7 @@ import org.maiaframework.testing.domain.Anys.anyPeriod
 import org.maiaframework.testing.domain.Anys.anyString
 import org.maiaframework.testing.domain.Anys.anyStringOrNull
 import org.maiaframework.testing.domain.Anys.anyUniqueString
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
 import java.time.Period
@@ -40,6 +41,9 @@ data class AllFieldTypesEntityTestBuilder(
     val lastModifiedById: DomainId = createdById,
     val lastModifiedByUsername: String = createdByUsername,
     val lastModifiedTimestamp: Instant = anyInstant(),
+    val someBigDecimal: BigDecimal = BigDecimal.valueOf(anyInt().toLong(), 4),
+    val someBigDecimalModifiable: BigDecimal = BigDecimal.valueOf(anyInt().toLong(), 2),
+    val someBigDecimalNullable: BigDecimal? = anyIntOrNull()?.let { BigDecimal.valueOf(it.toLong(), 4) },
     val someBoolean: Boolean = anyBoolean(),
     val someBooleanNullable: Boolean? = anyBooleanOrNull(),
     val someBooleanType: SomeBooleanType = SomeBooleanType(anyBoolean()),
@@ -96,6 +100,9 @@ data class AllFieldTypesEntityTestBuilder(
             this.lastModifiedById,
             this.lastModifiedByUsername,
             this.lastModifiedTimestamp,
+            this.someBigDecimal,
+            this.someBigDecimalModifiable,
+            this.someBigDecimalNullable,
             this.someBoolean,
             this.someBooleanNullable,
             this.someBooleanType,

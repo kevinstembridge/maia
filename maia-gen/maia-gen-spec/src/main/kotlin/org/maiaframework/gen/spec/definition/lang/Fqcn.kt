@@ -114,6 +114,7 @@ class Fqcn private constructor(private val rawFqcn: String) : Comparable<Fqcn> {
     companion object {
 
         val ANY = valueOf("kotlin.Any")
+        val BIG_DECIMAL = valueOf("java.math.BigDecimal")
         val BOOLEAN = valueOf("kotlin.Boolean")
         val BYTE = valueOf("kotlin.Byte")
         val DOUBLE = valueOf("kotlin.Double")

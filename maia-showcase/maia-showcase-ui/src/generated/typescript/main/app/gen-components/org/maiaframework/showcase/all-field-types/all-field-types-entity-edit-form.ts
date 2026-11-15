@@ -55,6 +55,8 @@ export class AllFieldTypesEntityEditForm implements OnInit {
 
     dialogFormModel = signal<Omit<Required<AllFieldTypesUpdateRequestDto>, 'someIntModifiable' | 'someIntNullable'> & { someIntModifiable: number | null; someIntNullable: number | null }>({
         id: '',
+        someBigDecimalModifiable: "0",
+        someBigDecimalNullable: "0",
         someInstantModifiable: '',
         someInstantModifiableNullable: '',
         someIntModifiable: 0,
@@ -67,6 +69,7 @@ export class AllFieldTypesEntityEditForm implements OnInit {
 
 
     dialogForm = form(this.dialogFormModel, (schemaPath) => {
+        required(schemaPath.someBigDecimalModifiable, { message: 'Some BigDecimal Modifiable is required.' });
         required(schemaPath.someInstantModifiable, { message: 'Some Instant Modifiable is required.' });
         required(schemaPath.someIntModifiable, { message: 'Some Int Modifiable is required.' });
         required(schemaPath.someLocalDateModifiable, { message: 'Some LocalDate Modifiable is required.' });
@@ -105,6 +108,8 @@ export class AllFieldTypesEntityEditForm implements OnInit {
                 this.dialogFormModel.update(model => ({
                     ...model,
                     id: dto.id,
+                    someBigDecimalModifiable: dto.someBigDecimalModifiable,
+                    someBigDecimalNullable: dto.someBigDecimalNullable ?? model.someBigDecimalNullable,
                     someInstantModifiable: dto.someInstantModifiable,
                     someInstantModifiableNullable: dto.someInstantModifiableNullable ?? model.someInstantModifiableNullable,
                     someIntModifiable: dto.someIntModifiable,

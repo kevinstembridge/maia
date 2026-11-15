@@ -28,6 +28,9 @@ class AllFieldTypesEntityRowMapper : MaiaRowMapper<AllFieldTypesEntity> {
         val lastModifiedBy = rsa.readDomainId("last_modified_by_id")
         val lastModifiedByUsername = rsa.readString("last_modified_by_name")
         val lastModifiedTimestamp = rsa.readInstant("last_modified_timestamp")
+        val someBigDecimal = rsa.readBigDecimal("some_big_decimal")
+        val someBigDecimalModifiable = rsa.readBigDecimal("some_big_decimal_modifiable")
+        val someBigDecimalNullable = rsa.readBigDecimalOrNull("some_big_decimal_nullable")
         val someBoolean = rsa.readBoolean("some_boolean")
         val someBooleanNullable = rsa.readBooleanOrNull("some_boolean_nullable")
         val someBooleanType = rsa.readBoolean("some_boolean_type") { SomeBooleanType(it) }
@@ -71,6 +74,9 @@ class AllFieldTypesEntityRowMapper : MaiaRowMapper<AllFieldTypesEntity> {
                 lastModifiedBy,
                 lastModifiedByUsername,
                 lastModifiedTimestamp,
+                someBigDecimal,
+                someBigDecimalModifiable,
+                someBigDecimalNullable,
                 someBoolean,
                 someBooleanNullable,
                 someBooleanType,

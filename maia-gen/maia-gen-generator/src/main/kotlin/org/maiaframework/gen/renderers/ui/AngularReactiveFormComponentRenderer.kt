@@ -20,6 +20,7 @@ import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
+import org.maiaframework.gen.spec.definition.lang.BigDecimalFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
@@ -1146,6 +1147,7 @@ class AngularReactiveFormComponentRenderer(
                 is JoinFetchDtoFieldType -> TODO("YAGNI?")
                 is InstantFieldType -> `add imports for date and time pickers`()
                 is IntFieldType -> {}
+                is BigDecimalFieldType -> {}
                 is IntTypeFieldType -> {}
                 is IntValueClassFieldType -> {}
                 is ListFieldType -> {

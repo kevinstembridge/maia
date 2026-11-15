@@ -19,6 +19,7 @@ import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
+import org.maiaframework.gen.spec.definition.lang.BigDecimalFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
@@ -138,6 +139,7 @@ class HazelcastSerializerRenderer(
             is EntityRefFieldType -> TODO()
             is InstantFieldType -> `render read for Instant`(field, fieldType)
             is IntFieldType -> `render read for Int`(field)
+            is BigDecimalFieldType -> `render read for BigDecimal`(field)
             is IntTypeFieldType -> TODO()
             is IntValueClassFieldType -> TODO()
             is ListFieldType -> `render read for List`(field, fieldType)
@@ -176,6 +178,14 @@ class HazelcastSerializerRenderer(
     private fun `render read for Int`(field: ClassFieldDef) {
 
         `render read for ordinary field`(field)
+
+    }
+
+
+    private fun `render read for BigDecimal`(field: ClassFieldDef) {
+
+        val bang = if (field.nullable) "" else "!!"
+        appendLine("        val ${field.classFieldName} = reader.readDecimal(\"${field.classFieldName}\")$bang")
 
     }
 
@@ -233,6 +243,7 @@ class HazelcastSerializerRenderer(
             is EntityRefFieldType -> TODO()
             is InstantFieldType -> TODO()
             is IntFieldType -> TODO()
+            is BigDecimalFieldType -> TODO()
             is IntTypeFieldType -> TODO()
             is IntValueClassFieldType -> TODO()
             is ListFieldType -> TODO("YAGNI?")
@@ -275,6 +286,7 @@ class HazelcastSerializerRenderer(
             is EntityRefFieldType -> TODO()
             is InstantFieldType -> TODO()
             is IntFieldType -> TODO()
+            is BigDecimalFieldType -> TODO()
             is IntTypeFieldType -> TODO()
             is IntValueClassFieldType -> TODO()
             is ListFieldType -> TODO()
@@ -405,6 +417,7 @@ class HazelcastSerializerRenderer(
             is EntityRefFieldType -> TODO("YAGNI?")
             is InstantFieldType -> TODO("YAGNI?")
             is IntFieldType -> TODO("YAGNI?")
+            is BigDecimalFieldType -> TODO("YAGNI?")
             is IntTypeFieldType -> TODO()
             is IntValueClassFieldType -> TODO()
             is ListFieldType -> TODO("YAGNI?")
@@ -440,6 +453,7 @@ class HazelcastSerializerRenderer(
             is EntityRefFieldType -> TODO()
             is InstantFieldType -> TODO()
             is IntFieldType -> TODO()
+            is BigDecimalFieldType -> TODO()
             is IntTypeFieldType -> TODO()
             is IntValueClassFieldType -> TODO()
             is ListFieldType -> TODO()
@@ -472,6 +486,7 @@ class HazelcastSerializerRenderer(
                     is EntityRefFieldType -> TODO()
                     is InstantFieldType -> TODO()
                     is IntFieldType -> TODO()
+                    is BigDecimalFieldType -> TODO()
                     is IntTypeFieldType -> TODO()
                     is IntValueClassFieldType -> TODO()
                     is ListFieldType -> TODO()
@@ -633,6 +648,7 @@ class HazelcastSerializerRenderer(
 
         return when (fieldType.hazelcastCompatibleType) {
             HazelcastCompatibleType.BOOLEAN -> "${prefix}Boolean"
+            HazelcastCompatibleType.DECIMAL -> "readDecimal"
             HazelcastCompatibleType.COMPACT -> "${prefix}Compact$suffix"
             HazelcastCompatibleType.INT8 -> "${prefix}Int8$suffix"
             HazelcastCompatibleType.INT32 -> "${prefix}Int32$suffix"
@@ -694,6 +710,7 @@ class HazelcastSerializerRenderer(
             is EntityRefFieldType -> TODO()
             is InstantFieldType -> `render write for Instant`(field)
             is IntFieldType -> `render write for`(field)
+            is BigDecimalFieldType -> `render write for`(field)
             is IntTypeFieldType -> `render write for IntType`(field)
             is IntValueClassFieldType -> `render write for Int Value class`(field)
             is ListFieldType -> `render write for List`(field, fieldType)
@@ -824,6 +841,7 @@ class HazelcastSerializerRenderer(
             is EntityRefFieldType -> TODO()
             is InstantFieldType -> TODO()
             is IntFieldType -> TODO()
+            is BigDecimalFieldType -> TODO()
             is IntTypeFieldType -> TODO()
             is IntValueClassFieldType -> TODO()
             is ListFieldType -> TODO()
@@ -900,6 +918,7 @@ class HazelcastSerializerRenderer(
             is EntityRefFieldType -> TODO()
             is InstantFieldType -> TODO()
             is IntFieldType -> TODO()
+            is BigDecimalFieldType -> TODO()
             is IntTypeFieldType -> TODO()
             is IntValueClassFieldType -> TODO()
             is ListFieldType -> TODO()
@@ -941,6 +960,7 @@ class HazelcastSerializerRenderer(
             is EntityRefFieldType -> TODO("YAGNI?")
             is InstantFieldType -> TODO("YAGNI?")
             is IntFieldType -> TODO("YAGNI?")
+            is BigDecimalFieldType -> TODO("YAGNI?")
             is IntTypeFieldType -> TODO()
             is IntValueClassFieldType -> TODO()
             is ListFieldType -> TODO("YAGNI?")
@@ -986,6 +1006,7 @@ class HazelcastSerializerRenderer(
             is EntityRefFieldType -> TODO()
             is InstantFieldType -> TODO()
             is IntFieldType -> TODO()
+            is BigDecimalFieldType -> TODO()
             is IntTypeFieldType -> TODO()
             is IntValueClassFieldType -> TODO()
             is ListFieldType -> TODO()
@@ -1029,6 +1050,7 @@ class HazelcastSerializerRenderer(
             is EntityRefFieldType -> TODO()
             is InstantFieldType -> TODO()
             is IntFieldType -> TODO()
+            is BigDecimalFieldType -> TODO()
             is IntTypeFieldType -> TODO()
             is IntValueClassFieldType -> TODO()
             is ListFieldType -> TODO()
@@ -1072,6 +1094,7 @@ class HazelcastSerializerRenderer(
             is EntityRefFieldType -> TODO()
             is InstantFieldType -> TODO()
             is IntFieldType -> TODO()
+            is BigDecimalFieldType -> TODO()
             is IntTypeFieldType -> TODO()
             is IntValueClassFieldType -> TODO()
             is ListFieldType -> TODO()
@@ -1122,6 +1145,7 @@ class HazelcastSerializerRenderer(
             is EntityRefFieldType -> TODO("YAGNI?")
             is InstantFieldType -> TODO("YAGNI?")
             is IntFieldType -> TODO("YAGNI?")
+            is BigDecimalFieldType -> TODO("YAGNI?")
             is IntTypeFieldType -> TODO("YAGNI?")
             is IntValueClassFieldType -> TODO("YAGNI?")
             is ListFieldType -> TODO("YAGNI?")
@@ -1175,6 +1199,7 @@ class HazelcastSerializerRenderer(
             is EntityRefFieldType -> TODO()
             is InstantFieldType -> TODO()
             is IntFieldType -> TODO()
+            is BigDecimalFieldType -> TODO()
             is IntTypeFieldType -> TODO()
             is IntValueClassFieldType -> TODO()
             is ListFieldType -> TODO()
@@ -1204,6 +1229,7 @@ class HazelcastSerializerRenderer(
                     is EntityRefFieldType -> TODO()
                     is InstantFieldType -> TODO()
                     is IntFieldType -> TODO()
+                    is BigDecimalFieldType -> TODO()
                     is IntTypeFieldType -> TODO()
                     is IntValueClassFieldType -> TODO()
                     is ListFieldType -> TODO()
@@ -1287,6 +1313,7 @@ class HazelcastSerializerRenderer(
             is EntityRefFieldType -> TODO()
             is InstantFieldType -> TODO()
             is IntFieldType -> TODO()
+            is BigDecimalFieldType -> TODO()
             is IntTypeFieldType -> TODO()
             is IntValueClassFieldType -> TODO()
             is ListFieldType -> TODO()
@@ -1330,6 +1357,7 @@ class HazelcastSerializerRenderer(
 
         return when (fieldType.hazelcastCompatibleType) {
             HazelcastCompatibleType.BOOLEAN -> "writeBoolean"
+            HazelcastCompatibleType.DECIMAL -> "writeDecimal"
             HazelcastCompatibleType.COMPACT -> "writeCompact"
             HazelcastCompatibleType.INT8 -> "${prefix}Int8"
             HazelcastCompatibleType.INT32 -> "${prefix}Int32"

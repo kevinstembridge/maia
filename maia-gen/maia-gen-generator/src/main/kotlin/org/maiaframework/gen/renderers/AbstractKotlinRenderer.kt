@@ -454,6 +454,7 @@ abstract class AbstractKotlinRenderer protected constructor(
             is EntityRefFieldType -> addImportFor(fieldType.fqcn)
             is InstantFieldType -> addImportFor(fieldType.fqcn)
             is IntFieldType -> addImportFor(fieldType.fqcn)
+            is BigDecimalFieldType -> addImportFor(fieldType.fqcn)
             is IntTypeFieldType -> addImportFor(fieldType.fqcn)
             is IntValueClassFieldType -> addImportFor(fieldType.fqcn)
             is ListFieldType -> {

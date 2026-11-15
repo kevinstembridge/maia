@@ -21,6 +21,7 @@ import org.maiaframework.showcase.types.SomeProvidedIntType
 import org.maiaframework.showcase.types.SomeProvidedLongType
 import org.maiaframework.showcase.types.SomeProvidedStringType
 import org.maiaframework.showcase.types.SomeStringType
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
 import java.time.Period
@@ -29,6 +30,14 @@ import java.time.Period
 @JsonIgnoreProperties(ignoreUnknown = true)
 class AllFieldTypesCreateRequestDto
 @JsonCreator constructor(
+    @field:NotNull
+    @param:JsonProperty("someBigDecimal", access = JsonProperty.Access.READ_WRITE) 
+    private val someBigDecimal_raw: BigDecimal?,
+    @field:NotNull
+    @param:JsonProperty("someBigDecimalModifiable", access = JsonProperty.Access.READ_WRITE) 
+    private val someBigDecimalModifiable_raw: BigDecimal?,
+    @param:JsonProperty("someBigDecimalNullable", access = JsonProperty.Access.READ_WRITE) 
+    val someBigDecimalNullable: BigDecimal?,
     @field:NotNull
     @param:JsonProperty("someBoolean", access = JsonProperty.Access.READ_WRITE) 
     private val someBoolean_raw: Boolean?,
@@ -130,6 +139,14 @@ class AllFieldTypesCreateRequestDto
     @param:JsonProperty("someStringTypeNullable", access = JsonProperty.Access.READ_WRITE) 
     someStringTypeNullable: String?
 ) {
+
+
+    @get:JsonIgnore
+    val someBigDecimal: BigDecimal by lazy { someBigDecimal_raw!! }
+
+
+    @get:JsonIgnore
+    val someBigDecimalModifiable: BigDecimal by lazy { someBigDecimalModifiable_raw!! }
 
 
     @get:JsonIgnore
@@ -262,6 +279,8 @@ class AllFieldTypesCreateRequestDto
     override fun toString(): String {
 
         return "AllFieldTypesCreateRequestDto{" +
+                "someBigDecimal = '" + this.someBigDecimal + '\'' + ", " + 
+                "someBigDecimalModifiable = '" + this.someBigDecimalModifiable + '\'' + ", " + 
                 "someBoolean = '" + this.someBoolean + '\'' + ", " + 
                 "someBooleanType = '" + this.someBooleanType + '\'' + ", " + 
                 "someBooleanTypeProvided = '" + this.someBooleanTypeProvided + '\'' + ", " + 
@@ -281,6 +300,7 @@ class AllFieldTypesCreateRequestDto
                 "someString = '" + this.someString + '\'' + ", " + 
                 "someStringModifiable = '" + this.someStringModifiable + '\'' + ", " + 
                 "someStringType = '" + this.someStringType + '\'' + ", " + 
+                "someBigDecimalNullable = '" + this.someBigDecimalNullable + '\'' + ", " + 
                 "someBooleanNullable = '" + this.someBooleanNullable + '\'' + ", " + 
                 "someBooleanTypeNullable = '" + this.someBooleanTypeNullable + '\'' + ", " + 
                 "someBooleanTypeProvidedNullable = '" + this.someBooleanTypeProvidedNullable + '\'' + ", " + 

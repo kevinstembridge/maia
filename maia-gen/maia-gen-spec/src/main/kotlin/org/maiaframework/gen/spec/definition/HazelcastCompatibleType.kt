@@ -3,6 +3,7 @@ package org.maiaframework.gen.spec.definition
 enum class HazelcastCompatibleType(val kotlinUqcn: String) {
 
     BOOLEAN("Boolean"),
+    DECIMAL("BigDecimal"),
     COMPACT("YAGNI"),
     INT8("Byte"),
     INT32("Integer"),

@@ -334,6 +334,7 @@ data class ClassFieldDef(
             is EntityRefFieldType -> TODO("YAGNI?")
             is InstantFieldType -> "readInstant$nullableSuffix"
             is IntFieldType -> "readInt$nullableSuffix"
+            is BigDecimalFieldType -> "readBigDecimal$nullableSuffix"
             is IntTypeFieldType -> "readInt$nullableSuffix"
             is IntValueClassFieldType -> "readInt$nullableSuffix"
             is ListFieldType -> "TODO" //TODO("YAGNI?") //"read$nullableSuffix"

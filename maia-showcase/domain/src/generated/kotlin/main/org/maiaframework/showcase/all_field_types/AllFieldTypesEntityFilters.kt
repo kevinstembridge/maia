@@ -17,6 +17,7 @@ import org.maiaframework.showcase.types.SomeProvidedIntType
 import org.maiaframework.showcase.types.SomeProvidedLongType
 import org.maiaframework.showcase.types.SomeProvidedStringType
 import org.maiaframework.showcase.types.SomeStringType
+import java.math.BigDecimal
 import java.sql.Timestamp
 import java.sql.Types
 import java.time.Instant
@@ -104,6 +105,30 @@ class AllFieldTypesEntityFilters {
         get() {
 
             return FieldFilter("last_modified_timestamp", Types.TIMESTAMP, this.sqlParamCounter) { value -> value?.let { Timestamp.from(it) } }
+
+        }
+
+
+    val someBigDecimal: FieldFilter<BigDecimal> 
+        get() {
+
+            return FieldFilter("some_big_decimal", Types.NUMERIC, this.sqlParamCounter) { value -> value }
+
+        }
+
+
+    val someBigDecimalModifiable: FieldFilter<BigDecimal> 
+        get() {
+
+            return FieldFilter("some_big_decimal_modifiable", Types.NUMERIC, this.sqlParamCounter) { value -> value }
+
+        }
+
+
+    val someBigDecimalNullable: FieldFilter<BigDecimal?> 
+        get() {
+
+            return FieldFilter("some_big_decimal_nullable", Types.NUMERIC, this.sqlParamCounter) { value -> value }
 
         }
 
