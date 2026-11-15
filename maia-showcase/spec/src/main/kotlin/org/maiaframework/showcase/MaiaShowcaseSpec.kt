@@ -504,6 +504,19 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val allFieldTypesBlotterPageDef = blotterPage(allFieldTypesBlotterDef)
 
 
+    val cachedDecimalEntityDef = entity(
+        "org.maiaframework.showcase.cached_decimal",
+        "CachedDecimal",
+        deletable = Deletable.TRUE,
+        allowDeleteAll = AllowDeleteAll.TRUE
+    ) {
+        cacheable {  }
+        field("someDecimal", FieldTypes.bigDecimal)
+        field("someDecimalScaled", FieldTypes.bigDecimal(10, 2))
+        field("someDecimalNullable", FieldTypes.bigDecimal) { nullable() }
+    }
+
+
     val simpleEntityDef = entity(
         "org.maiaframework.showcase.simple",
         "Simple",
