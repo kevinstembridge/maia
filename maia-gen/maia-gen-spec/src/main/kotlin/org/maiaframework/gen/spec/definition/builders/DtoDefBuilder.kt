@@ -31,8 +31,20 @@ class DtoDefBuilder(
         return aClassDef(packageName.uqcn(dtoBaseName.withSuffix(dtoSuffix).value))
             .ofType(ClassType.DATA_CLASS)
             .withClassAnnotation(*annotationDefs)
-            .withFieldDefsNotInherited(classFields)
+            .withFieldDefsNotInherited(classFields.map { withWireFormatAnnotations(it) })
             .build()
+
+    }
+
+
+    /** BigDecimal values travel as JSON strings so that no precision is lost in transit (see ADR-0006). */
+    private fun withWireFormatAnnotations(classFieldDef: ClassFieldDef): ClassFieldDef {
+
+        if (classFieldDef.fieldType !is BigDecimalFieldType) {
+            return classFieldDef
+        }
+
+        return classFieldDef.copy(annotationDefs = (classFieldDef.annotationDefs + AnnotationDefs.JSON_FORMAT_STRING).toSortedSet())
 
     }
 

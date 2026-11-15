@@ -4,9 +4,9 @@
 
 **Blocked by:** 01
 
-**Status:** ready-for-agent
+**Status:** resolved
 
-- [ ] Nullable and modifiable BigDecimal fields are in the Showcase Spec, migration and regenerated code
-- [ ] Generated DTO properties serialise and deserialise BigDecimal as a JSON string
-- [ ] A black-box create, update and read through the web layer returns exact string values and honours the `(10, 2)` scale
-- [ ] `AllFieldTypesEntityTestBuilder`, the validation tests and the security tests cover the new fields and pass
+- [x] Nullable and modifiable BigDecimal fields are in the Showcase Spec, migration and regenerated code
+- [x] Generated DTO properties serialise and deserialise BigDecimal as a JSON string
+- [x] A black-box create, update and read through the web layer returns exact string values and honours the `(10, 2)` scale
+- [x] `AllFieldTypesEntityTestBuilder`, the validation tests and the security tests cover the new fields and pass
