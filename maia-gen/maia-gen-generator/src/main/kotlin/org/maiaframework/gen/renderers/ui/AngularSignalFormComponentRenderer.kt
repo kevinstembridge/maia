@@ -635,8 +635,8 @@ class AngularSignalFormComponentRenderer(
 
             addImport("@angular/forms/signals", "validate")
 
-            val pattern = BigDecimalFormPattern.regexFor(bigDecimalFieldType.precision, bigDecimalFieldType.scale)
-            val integerDigits = bigDecimalFieldType.precision - bigDecimalFieldType.scale
+            val pattern = BigDecimalFormPattern.regexFor(bigDecimalFieldType)
+            val integerDigits = bigDecimalFieldType.integerDigits
             val scale = bigDecimalFieldType.scale
 
             append($$"""
@@ -646,7 +646,7 @@ class AngularSignalFormComponentRenderer(
                 |            }
                 |            return /$$pattern/.test(value())
                 |                ? null
-                |                : { kind: 'invalidDecimal', message: '$$fieldLabel must be a decimal number with at most $$integerDigits integer digits and at most $$scale decimal digits.' };
+                |                : { kind: 'invalidBigDecimal', message: '$$fieldLabel must be a decimal number with at most $$integerDigits integer digits and at most $$scale decimal digits.' };
                 |        });
                 |""".trimMargin())
 

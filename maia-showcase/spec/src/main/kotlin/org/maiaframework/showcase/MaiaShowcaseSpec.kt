@@ -510,16 +510,16 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val allFieldTypesBlotterPageDef = blotterPage(allFieldTypesBlotterDef)
 
 
-    val cachedDecimalEntityDef = entity(
-        "org.maiaframework.showcase.cached_decimal",
-        "CachedDecimal",
+    val cachedBigDecimalEntityDef = entity(
+        "org.maiaframework.showcase.cached_big_decimal",
+        "CachedBigDecimal",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
         cacheable {  }
-        field("someDecimal", FieldTypes.bigDecimal)
-        field("someDecimalScaled", FieldTypes.bigDecimal(10, 2))
-        field("someDecimalNullable", FieldTypes.bigDecimal) { nullable() }
+        field("someBigDecimal", FieldTypes.bigDecimal)
+        field("someBigDecimalScaled", FieldTypes.bigDecimal(10, 2))
+        field("someBigDecimalNullable", FieldTypes.bigDecimal) { nullable() }
     }
 
 

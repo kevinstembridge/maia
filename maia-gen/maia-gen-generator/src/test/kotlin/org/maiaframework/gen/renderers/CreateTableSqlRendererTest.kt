@@ -51,6 +51,29 @@ class CreateTableSqlRendererTest {
     }
 
     @Test
+    fun `renders BigDecimal columns as NUMERIC with precision and scale`(@TempDir tempDir: File) {
+
+        val spec = object : AbstractSpec(AppKey("Test")) {
+
+            val priced = entity("com.example", "Priced") {
+                field("amount", FieldTypes.bigDecimal)
+                field("rate", FieldTypes.bigDecimal(10, 2)) { nullable() }
+            }
+
+        }
+
+        val renderer = CreateTableSqlRenderer(spec.modelDef.rootEntityHierarchies, "create_tables.sql")
+        renderer.renderToDir(tempDir)
+
+        val sql = tempDir.resolve("create_tables.sql").readText()
+
+        assertThat(sql).contains("amount NUMERIC(19,4) NOT NULL")
+        assertThat(sql).contains("rate NUMERIC(10,2) NULL")
+
+    }
+
+
+    @Test
     fun `renders a single merged table with a type_discriminator column for a subclass hierarchy`(@TempDir tempDir: File) {
 
         val spec = object : AbstractSpec(AppKey("Test")) {

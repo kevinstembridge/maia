@@ -126,7 +126,7 @@ export class AllFieldTypesEntityCreateForm {
             }
             return /^-?\d{1,15}(\.\d{1,4})?$/.test(value())
                 ? null
-                : { kind: 'invalidDecimal', message: 'Some BigDecimal must be a decimal number with at most 15 integer digits and at most 4 decimal digits.' };
+                : { kind: 'invalidBigDecimal', message: 'Some BigDecimal must be a decimal number with at most 15 integer digits and at most 4 decimal digits.' };
         });
         required(schemaPath.someBigDecimalModifiable, { message: 'Some BigDecimal Modifiable is required.' });
         validate(schemaPath.someBigDecimalModifiable, ({value}) => {
@@ -135,7 +135,7 @@ export class AllFieldTypesEntityCreateForm {
             }
             return /^-?\d{1,8}(\.\d{1,2})?$/.test(value())
                 ? null
-                : { kind: 'invalidDecimal', message: 'Some BigDecimal Modifiable must be a decimal number with at most 8 integer digits and at most 2 decimal digits.' };
+                : { kind: 'invalidBigDecimal', message: 'Some BigDecimal Modifiable must be a decimal number with at most 8 integer digits and at most 2 decimal digits.' };
         });
         validate(schemaPath.someBigDecimalNullable, ({value}) => {
             if (!value()) {
@@ -143,7 +143,7 @@ export class AllFieldTypesEntityCreateForm {
             }
             return /^-?\d{1,15}(\.\d{1,4})?$/.test(value())
                 ? null
-                : { kind: 'invalidDecimal', message: 'Some BigDecimal Nullable must be a decimal number with at most 15 integer digits and at most 4 decimal digits.' };
+                : { kind: 'invalidBigDecimal', message: 'Some BigDecimal Nullable must be a decimal number with at most 15 integer digits and at most 4 decimal digits.' };
         });
         required(schemaPath.someInstant, { message: 'Some Instant is required.' });
         required(schemaPath.someInstantModifiable, { message: 'Some Instant Modifiable is required.' });

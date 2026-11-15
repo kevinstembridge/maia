@@ -165,6 +165,10 @@ class BigDecimalFieldType internal constructor(
     }
 
 
+    /** The number of digits allowed before the decimal point. */
+    val integerDigits: Int = precision - scale
+
+
     override val jdbcCompatibleType: JdbcCompatibleType = JdbcCompatibleType.decimal
 
 
