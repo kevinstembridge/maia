@@ -18,6 +18,7 @@ class AllFieldTypesEditPage(
 
 
     fun fillEditForm(
+        someBigDecimalModifiable: String = "200.25",
         someIntModifiable: String = "200",
         someLocalDateModifiable: String = "06/01/2026",
         someInstantModifiableDate: String = "06/01/2026",
@@ -31,6 +32,7 @@ class AllFieldTypesEditPage(
         page.waitForFunction(
             "() => (document.querySelector('input[name=\"someStringModifiable\"], input[id=\"someStringModifiable\"]')?.value ?? '') !== ''"
         )
+        page.inputForField("someBigDecimalModifiable").fill(someBigDecimalModifiable)
         page.inputForField("someIntModifiable").fill(someIntModifiable)
         page.inputForField("someLocalDateModifiable").fill(someLocalDateModifiable)
         page.inputForField("someInstantModifiable").fill(someInstantModifiableDate)

@@ -11,6 +11,7 @@ import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.validation.EmailConstraintDef
 import org.maiaframework.gen.spec.definition.validation.NotBlankConstraintDef
 import org.maiaframework.gen.spec.definition.validation.NotNullConstraintDef
+import org.maiaframework.gen.spec.definition.lang.BigDecimalFieldType
 import org.maiaframework.gen.spec.definition.validation.PeriodConstraintDef
 import org.maiaframework.gen.spec.definition.validation.UrlConstraintDef
 
@@ -625,6 +626,27 @@ class AngularSignalFormComponentRenderer(
                 |            return /^[-+]?P(?=.*[YMWD])([-+]?\d+Y)?([-+]?\d+M)?([-+]?\d+W)?([-+]?\d+D)?$/i.test(value())
                 |                ? null
                 |                : { kind: 'invalidPeriod', message: '$$fieldLabel must be a valid period, such as P1Y2M3D.' };
+                |        });
+                |""".trimMargin())
+
+        }
+
+        (classFieldDef.fieldType as? BigDecimalFieldType)?.let { bigDecimalFieldType ->
+
+            addImport("@angular/forms/signals", "validate")
+
+            val pattern = BigDecimalFormPattern.regexFor(bigDecimalFieldType.precision, bigDecimalFieldType.scale)
+            val integerDigits = bigDecimalFieldType.precision - bigDecimalFieldType.scale
+            val scale = bigDecimalFieldType.scale
+
+            append($$"""
+                |        validate(schemaPath.$$classFieldName, ({value}) => {
+                |            if (!value()) {
+                |                return null;
+                |            }
+                |            return /$$pattern/.test(value())
+                |                ? null
+                |                : { kind: 'invalidDecimal', message: '$$fieldLabel must be a decimal number with at most $$integerDigits integer digits and at most $$scale decimal digits.' };
                 |        });
                 |""".trimMargin())
 

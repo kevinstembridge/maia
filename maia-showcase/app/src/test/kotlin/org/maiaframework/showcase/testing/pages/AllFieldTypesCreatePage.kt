@@ -22,6 +22,8 @@ class AllFieldTypesCreatePage(
 
 
     fun fillCreateForm(
+        someBigDecimal: String = "12345.6789",
+        someBigDecimalModifiable: String = "100.50",
         someInt: String = "42",
         someIntModifiable: String = "100",
         someIntType: String = "1",
@@ -45,6 +47,8 @@ class AllFieldTypesCreatePage(
         page.checkboxForField("someBooleanType").click()
         page.checkboxForField("someBooleanTypeProvided").click()
 
+        page.inputForField("someBigDecimal").fill(someBigDecimal)
+        page.inputForField("someBigDecimalModifiable").fill(someBigDecimalModifiable)
         page.inputForField("someInt").fill(someInt)
         page.inputForField("someIntModifiable").fill(someIntModifiable)
         page.inputForField("someIntType").fill(someIntType)
