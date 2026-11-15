@@ -12,6 +12,7 @@ import jakarta.validation.constraints.NotNull
 import org.hibernate.validator.constraints.Length
 import org.maiaframework.common.validation.PeriodConstraint
 import org.maiaframework.domain.DomainId
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
 import java.time.Period
@@ -23,6 +24,11 @@ class AllFieldTypesUpdateRequestDto
     @field:NotNull
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
+    @field:NotNull
+    @param:JsonProperty("someBigDecimalModifiable", access = JsonProperty.Access.READ_WRITE) 
+    private val someBigDecimalModifiable_raw: BigDecimal?,
+    @param:JsonProperty("someBigDecimalNullable", access = JsonProperty.Access.READ_WRITE) 
+    val someBigDecimalNullable: BigDecimal?,
     @field:NotNull
     @param:JsonProperty("someInstantModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val someInstantModifiable_raw: Instant?,
@@ -55,6 +61,10 @@ class AllFieldTypesUpdateRequestDto
 
 
     @get:JsonIgnore
+    val someBigDecimalModifiable: BigDecimal by lazy { someBigDecimalModifiable_raw!! }
+
+
+    @get:JsonIgnore
     val someInstantModifiable: Instant by lazy { someInstantModifiable_raw!! }
 
 
@@ -83,12 +93,14 @@ class AllFieldTypesUpdateRequestDto
 
         return "AllFieldTypesUpdateRequestDto{" +
                 "id = '" + this.id + '\'' + ", " + 
+                "someBigDecimalModifiable = '" + this.someBigDecimalModifiable + '\'' + ", " + 
                 "someInstantModifiable = '" + this.someInstantModifiable + '\'' + ", " + 
                 "someIntModifiable = '" + this.someIntModifiable + '\'' + ", " + 
                 "someListOfStrings = '" + this.someListOfStrings + '\'' + ", " + 
                 "someLocalDateModifiable = '" + this.someLocalDateModifiable + '\'' + ", " + 
                 "somePeriodModifiable = '" + this.somePeriodModifiable + '\'' + ", " + 
                 "someStringModifiable = '" + this.someStringModifiable + '\'' + ", " + 
+                "someBigDecimalNullable = '" + this.someBigDecimalNullable + '\'' + ", " + 
                 "someInstantModifiableNullable = '" + this.someInstantModifiableNullable + '\'' + ", " + 
                 "someIntNullable = '" + this.someIntNullable + '\'' +
                 "}"

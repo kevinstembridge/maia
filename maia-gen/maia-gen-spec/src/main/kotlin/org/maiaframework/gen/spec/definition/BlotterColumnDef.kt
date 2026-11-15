@@ -17,6 +17,7 @@ import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
+import org.maiaframework.gen.spec.definition.lang.BigDecimalFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
@@ -85,6 +86,7 @@ class BlotterColumnDef(
             is EntityRefFieldType -> "id"
             is InstantFieldType -> "date"
             is IntFieldType -> "number"
+            is BigDecimalFieldType -> "number"
             is IntTypeFieldType -> "number"
             is IntValueClassFieldType -> "number"
             is ListFieldType -> "text"
@@ -123,6 +125,7 @@ class BlotterColumnDef(
             is EntityRefFieldType -> "equals"
             is InstantFieldType -> "equals"
             is IntFieldType -> "equals"
+            is BigDecimalFieldType -> "equals"
             is IntTypeFieldType -> "equals"
             is IntValueClassFieldType -> "equals"
             is ListFieldType -> "equals"
@@ -161,6 +164,7 @@ class BlotterColumnDef(
             is EntityRefFieldType -> AgGridCellDataType.text
             is InstantFieldType -> AgGridCellDataType.dateTimeString
             is IntFieldType -> AgGridCellDataType.number
+            is BigDecimalFieldType -> AgGridCellDataType.number
             is IntTypeFieldType -> AgGridCellDataType.number
             is IntValueClassFieldType -> AgGridCellDataType.number
             is ListFieldType -> AgGridCellDataType.text

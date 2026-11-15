@@ -35,6 +35,9 @@ class AllFieldTypesFetchForEditDtoRowMapper : MaiaRowMapper<AllFieldTypesFetchFo
         )
         val lastModifiedByUsername = rsa.readString("lastModifiedByUsername")
         val lastModifiedTimestamp = rsa.readInstant("lastModifiedTimestamp")
+        val someBigDecimal = rsa.readBigDecimal("someBigDecimal")
+        val someBigDecimalModifiable = rsa.readBigDecimal("someBigDecimalModifiable")
+        val someBigDecimalNullable = rsa.readBigDecimalOrNull("someBigDecimalNullable")
         val someBoolean = rsa.readBoolean("someBoolean")
         val someBooleanNullable = rsa.readBooleanOrNull("someBooleanNullable")
         val someBooleanType = rsa.readBoolean("someBooleanType") { SomeBooleanType(it) }
@@ -78,6 +81,9 @@ class AllFieldTypesFetchForEditDtoRowMapper : MaiaRowMapper<AllFieldTypesFetchFo
             lastModifiedBy,
             lastModifiedByUsername,
             lastModifiedTimestamp,
+            someBigDecimal,
+            someBigDecimalModifiable,
+            someBigDecimalNullable,
             someBoolean,
             someBooleanNullable,
             someBooleanType,

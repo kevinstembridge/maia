@@ -15,6 +15,7 @@ import org.maiaframework.showcase.types.SomeProvidedLongType
 import org.maiaframework.showcase.types.SomeProvidedStringType
 import org.maiaframework.showcase.types.SomeStringType
 import org.springframework.stereotype.Component
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
 import java.time.Period
@@ -41,6 +42,12 @@ class AllFieldTypesEntityFieldConverter : EntityFieldConverter {
             "last_modified_by_name" -> // lastModifiedByUsername
                 return inputValue
             "last_modified_timestamp" -> // lastModifiedTimestamp
+                return inputValue
+            "some_big_decimal" -> // someBigDecimal
+                return inputValue
+            "some_big_decimal_modifiable" -> // someBigDecimalModifiable
+                return inputValue
+            "some_big_decimal_nullable" -> // someBigDecimalNullable
                 return inputValue
             "some_boolean" -> // someBoolean
                 return inputValue

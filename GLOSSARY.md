@@ -76,6 +76,10 @@ _Avoid_: Validity period, active dates
 The Spec-level type of an Entity field, which determines its database column, wire format, user-interface input and search mapping. A decimal Field type carries a precision and a scale.
 _Avoid_: Data type, column type
 
+**BigDecimal**:
+A Field type for exact decimals, declared in a Spec as `FieldTypes.bigDecimal` (precision 19, scale 4) or `FieldTypes.bigDecimal(precision, scale)`. It is stored as `NUMERIC(precision,scale)` and sent over the wire as a JSON string.
+_Avoid_: Decimal, Money
+
 **Microtype**:
 A class wrapping a primitive to give a field its own domain type, declared in a Spec with `stringType`, `intType`, `longType` or `booleanType`.
 _Avoid_: Type, wrapper type

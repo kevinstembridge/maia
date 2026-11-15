@@ -5,6 +5,7 @@ package org.maiaframework.showcase.all_field_types
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.persist.FieldUpdate
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
 import java.time.Period
@@ -32,6 +33,20 @@ data class AllFieldTypesEntityUpdater(
         fun build(): AllFieldTypesEntityUpdater {
 
             return AllFieldTypesEntityUpdater(this.fields, this.id)
+
+        }
+
+
+        fun someBigDecimalModifiable(someBigDecimalModifiable: BigDecimal) {
+
+            this.fields.add(FieldUpdate("someBigDecimalModifiable", "some_big_decimal_modifiable", someBigDecimalModifiable))
+
+        }
+
+
+        fun someBigDecimalNullable(someBigDecimalNullable: BigDecimal?) {
+
+            this.fields.add(FieldUpdate("someBigDecimalNullable", "some_big_decimal_nullable", someBigDecimalNullable))
 
         }
 

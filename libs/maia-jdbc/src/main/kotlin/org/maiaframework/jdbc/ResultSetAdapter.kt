@@ -1,6 +1,7 @@
 package org.maiaframework.jdbc
 
 import org.maiaframework.domain.DomainId
+import java.math.BigDecimal
 import java.net.URL
 import java.sql.Date
 import java.sql.ResultSet
@@ -257,6 +258,26 @@ class ResultSetAdapter(private val underlying: ResultSet) {
             } else {
                 actual
             }
+
+        } catch (e: SQLException) {
+            throw MaiaDataAccessException(e)
+        }
+
+    }
+
+
+    fun readBigDecimal(columnName: String): BigDecimal {
+
+        return readBigDecimalOrNull(columnName) ?: throw NullResultSetFieldException(columnName)
+
+    }
+
+
+    fun readBigDecimalOrNull(columnName: String): BigDecimal? {
+
+        try {
+
+            return this.underlying.getBigDecimal(columnName)
 
         } catch (e: SQLException) {
             throw MaiaDataAccessException(e)

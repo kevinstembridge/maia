@@ -3,6 +3,48 @@
         @if (problemDetail()) {
             <p class="alert alert-warning" role="alert">{{ problemDetail()!.title }}</p>
         }
+        <mat-form-field appearance="outline">
+            <mat-label>Some BigDecimal</mat-label>
+            <input
+                [formField]="dialogForm.someBigDecimal"
+                id="someBigDecimal"
+                type="text"
+                matInput
+            />
+
+            @if (dialogForm.someBigDecimal().touched() && dialogForm.someBigDecimal().invalid()) {
+                @for (error of dialogForm.someBigDecimal().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
+            }
+
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Some BigDecimal Modifiable</mat-label>
+            <input
+                [formField]="dialogForm.someBigDecimalModifiable"
+                id="someBigDecimalModifiable"
+                type="text"
+                matInput
+            />
+
+            @if (dialogForm.someBigDecimalModifiable().touched() && dialogForm.someBigDecimalModifiable().invalid()) {
+                @for (error of dialogForm.someBigDecimalModifiable().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
+            }
+
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Some BigDecimal Nullable</mat-label>
+            <input
+                [formField]="dialogForm.someBigDecimalNullable"
+                id="someBigDecimalNullable"
+                type="text"
+                matInput
+            />
+
+        </mat-form-field>
         <mat-checkbox
             [formField]="dialogForm.someBoolean"
             id="someBoolean"

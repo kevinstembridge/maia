@@ -18,6 +18,7 @@ import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
+import org.maiaframework.gen.spec.definition.lang.BigDecimalFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
@@ -145,7 +146,7 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
                 addImportFor(Fqcns.SQL_TYPES)
                 val valueMappingText = valueMappingTextFor(fieldType)
                 val columnExpression = EffectiveTimestampRendererHelper.fieldFilterColumnExpression(entityDef, fieldDef)
-                appendLine("            return $returnType(\"$columnExpression\", Types.${fieldDef.fieldType.sqlType}, this.sqlParamCounter) { value -> $valueMappingText }")
+                appendLine("            return $returnType(\"$columnExpression\", Types.${fieldDef.fieldType.sqlType?.substringBefore("(")}, this.sqlParamCounter) { value -> $valueMappingText }")
             }
             blankLine()
             appendLine("        }")
@@ -177,6 +178,7 @@ class EntityFiltersRenderer(private val entityDef: EntityDef) : AbstractKotlinRe
                 "value?.let { Timestamp.from(it) }"
             }
             is IntFieldType -> "value"
+            is BigDecimalFieldType -> "value"
             is IntTypeFieldType -> "value?.value"
             is IntValueClassFieldType -> "value?.value"
             is ListFieldType -> TODO("YAGNI?")

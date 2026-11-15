@@ -16,6 +16,7 @@ import org.maiaframework.showcase.types.SomeLongType
 import org.maiaframework.showcase.types.SomeStringType
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import java.math.BigDecimal
 import java.sql.PreparedStatement
 import java.sql.Types
 import java.time.Instant
@@ -51,6 +52,9 @@ class AllFieldTypesDao(
                 last_modified_by_id,
                 last_modified_by_name,
                 last_modified_timestamp,
+                some_big_decimal,
+                some_big_decimal_modifiable,
+                some_big_decimal_nullable,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -93,6 +97,9 @@ class AllFieldTypesDao(
                 :lastModifiedBy,
                 :lastModifiedByUsername,
                 :lastModifiedTimestamp,
+                :someBigDecimal,
+                :someBigDecimalModifiable,
+                :someBigDecimalNullable,
                 :someBoolean,
                 :someBooleanNullable,
                 :someBooleanType,
@@ -137,6 +144,9 @@ class AllFieldTypesDao(
                 addValue("lastModifiedBy", entity.lastModifiedBy)
                 addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
                 addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
+                addValue("someBigDecimal", entity.someBigDecimal)
+                addValue("someBigDecimalModifiable", entity.someBigDecimalModifiable)
+                addValue("someBigDecimalNullable", entity.someBigDecimalNullable)
                 addValue("someBoolean", entity.someBoolean)
                 addValue("someBooleanNullable", entity.someBooleanNullable)
                 addValue("someBooleanType", entity.someBooleanType)
@@ -189,6 +199,9 @@ class AllFieldTypesDao(
                 last_modified_by_id,
                 last_modified_by_name,
                 last_modified_timestamp,
+                some_big_decimal,
+                some_big_decimal_modifiable,
+                some_big_decimal_nullable,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -231,6 +244,9 @@ class AllFieldTypesDao(
                 :lastModifiedBy,
                 :lastModifiedByUsername,
                 :lastModifiedTimestamp,
+                :someBigDecimal,
+                :someBigDecimalModifiable,
+                :someBigDecimalNullable,
                 :someBoolean,
                 :someBooleanNullable,
                 :someBooleanType,
@@ -276,6 +292,9 @@ class AllFieldTypesDao(
                     addValue("lastModifiedBy", entity.lastModifiedBy)
                     addValue("lastModifiedByUsername", entity.lastModifiedByUsername)
                     addValue("lastModifiedTimestamp", entity.lastModifiedTimestamp)
+                    addValue("someBigDecimal", entity.someBigDecimal)
+                    addValue("someBigDecimalModifiable", entity.someBigDecimalModifiable)
+                    addValue("someBigDecimalNullable", entity.someBigDecimalNullable)
                     addValue("someBoolean", entity.someBoolean)
                     addValue("someBooleanNullable", entity.someBooleanNullable)
                     addValue("someBooleanType", entity.someBooleanType)
@@ -814,6 +833,9 @@ class AllFieldTypesDao(
                 last_modified_by_v_party.display_name as lastModifiedByName,
                 maia.all_field_types.last_modified_by_name as lastModifiedByUsername,
                 maia.all_field_types.last_modified_timestamp as lastModifiedTimestamp,
+                maia.all_field_types.some_big_decimal as someBigDecimal,
+                maia.all_field_types.some_big_decimal_modifiable as someBigDecimalModifiable,
+                maia.all_field_types.some_big_decimal_nullable as someBigDecimalNullable,
                 maia.all_field_types.some_boolean as someBoolean,
                 maia.all_field_types.some_boolean_nullable as someBooleanNullable,
                 maia.all_field_types.some_boolean_type as someBooleanType,
@@ -877,6 +899,9 @@ class AllFieldTypesDao(
                 last_modified_by_id,
                 last_modified_by_name,
                 last_modified_timestamp,
+                some_big_decimal,
+                some_big_decimal_modifiable,
+                some_big_decimal_nullable,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -919,6 +944,9 @@ class AllFieldTypesDao(
                 :lastModifiedBy,
                 :lastModifiedByUsername,
                 :lastModifiedTimestamp,
+                :someBigDecimal,
+                :someBigDecimalModifiable,
+                :someBigDecimalNullable,
                 :someBoolean,
                 :someBooleanNullable,
                 :someBooleanType,
@@ -959,6 +987,8 @@ class AllFieldTypesDao(
                 last_modified_by_id = :lastModifiedBy,
                 last_modified_by_name = :lastModifiedByUsername,
                 last_modified_timestamp = :lastModifiedTimestamp,
+                some_big_decimal_modifiable = :someBigDecimalModifiable,
+                some_big_decimal_nullable = :someBigDecimalNullable,
                 some_instant_modifiable = :someInstantModifiable,
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
@@ -977,6 +1007,9 @@ class AllFieldTypesDao(
                 addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
                 addValue("lastModifiedTimestamp", upsertEntity.lastModifiedTimestamp)
+                addValue("someBigDecimal", upsertEntity.someBigDecimal)
+                addValue("someBigDecimalModifiable", upsertEntity.someBigDecimalModifiable)
+                addValue("someBigDecimalNullable", upsertEntity.someBigDecimalNullable)
                 addValue("someBoolean", upsertEntity.someBoolean)
                 addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
                 addValue("someBooleanType", upsertEntity.someBooleanType)
@@ -1036,6 +1069,9 @@ class AllFieldTypesDao(
                 last_modified_by_id,
                 last_modified_by_name,
                 last_modified_timestamp,
+                some_big_decimal,
+                some_big_decimal_modifiable,
+                some_big_decimal_nullable,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -1078,6 +1114,9 @@ class AllFieldTypesDao(
                 :lastModifiedBy,
                 :lastModifiedByUsername,
                 :lastModifiedTimestamp,
+                :someBigDecimal,
+                :someBigDecimalModifiable,
+                :someBigDecimalNullable,
                 :someBoolean,
                 :someBooleanNullable,
                 :someBooleanType,
@@ -1118,6 +1157,8 @@ class AllFieldTypesDao(
                 last_modified_by_id = :lastModifiedBy,
                 last_modified_by_name = :lastModifiedByUsername,
                 last_modified_timestamp = :lastModifiedTimestamp,
+                some_big_decimal_modifiable = :someBigDecimalModifiable,
+                some_big_decimal_nullable = :someBigDecimalNullable,
                 some_instant_modifiable = :someInstantModifiable,
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
@@ -1136,6 +1177,9 @@ class AllFieldTypesDao(
                 addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
                 addValue("lastModifiedTimestamp", upsertEntity.lastModifiedTimestamp)
+                addValue("someBigDecimal", upsertEntity.someBigDecimal)
+                addValue("someBigDecimalModifiable", upsertEntity.someBigDecimalModifiable)
+                addValue("someBigDecimalNullable", upsertEntity.someBigDecimalNullable)
                 addValue("someBoolean", upsertEntity.someBoolean)
                 addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
                 addValue("someBooleanType", upsertEntity.someBooleanType)
@@ -1195,6 +1239,9 @@ class AllFieldTypesDao(
                 last_modified_by_id,
                 last_modified_by_name,
                 last_modified_timestamp,
+                some_big_decimal,
+                some_big_decimal_modifiable,
+                some_big_decimal_nullable,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -1237,6 +1284,9 @@ class AllFieldTypesDao(
                 :lastModifiedBy,
                 :lastModifiedByUsername,
                 :lastModifiedTimestamp,
+                :someBigDecimal,
+                :someBigDecimalModifiable,
+                :someBigDecimalNullable,
                 :someBoolean,
                 :someBooleanNullable,
                 :someBooleanType,
@@ -1277,6 +1327,8 @@ class AllFieldTypesDao(
                 last_modified_by_id = :lastModifiedBy,
                 last_modified_by_name = :lastModifiedByUsername,
                 last_modified_timestamp = :lastModifiedTimestamp,
+                some_big_decimal_modifiable = :someBigDecimalModifiable,
+                some_big_decimal_nullable = :someBigDecimalNullable,
                 some_instant_modifiable = :someInstantModifiable,
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
@@ -1295,6 +1347,9 @@ class AllFieldTypesDao(
                 addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
                 addValue("lastModifiedTimestamp", upsertEntity.lastModifiedTimestamp)
+                addValue("someBigDecimal", upsertEntity.someBigDecimal)
+                addValue("someBigDecimalModifiable", upsertEntity.someBigDecimalModifiable)
+                addValue("someBigDecimalNullable", upsertEntity.someBigDecimalNullable)
                 addValue("someBoolean", upsertEntity.someBoolean)
                 addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
                 addValue("someBooleanType", upsertEntity.someBooleanType)
@@ -1354,6 +1409,9 @@ class AllFieldTypesDao(
                 last_modified_by_id,
                 last_modified_by_name,
                 last_modified_timestamp,
+                some_big_decimal,
+                some_big_decimal_modifiable,
+                some_big_decimal_nullable,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -1396,6 +1454,9 @@ class AllFieldTypesDao(
                 :lastModifiedBy,
                 :lastModifiedByUsername,
                 :lastModifiedTimestamp,
+                :someBigDecimal,
+                :someBigDecimalModifiable,
+                :someBigDecimalNullable,
                 :someBoolean,
                 :someBooleanNullable,
                 :someBooleanType,
@@ -1436,6 +1497,8 @@ class AllFieldTypesDao(
                 last_modified_by_id = :lastModifiedBy,
                 last_modified_by_name = :lastModifiedByUsername,
                 last_modified_timestamp = :lastModifiedTimestamp,
+                some_big_decimal_modifiable = :someBigDecimalModifiable,
+                some_big_decimal_nullable = :someBigDecimalNullable,
                 some_instant_modifiable = :someInstantModifiable,
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
@@ -1454,6 +1517,9 @@ class AllFieldTypesDao(
                 addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
                 addValue("lastModifiedTimestamp", upsertEntity.lastModifiedTimestamp)
+                addValue("someBigDecimal", upsertEntity.someBigDecimal)
+                addValue("someBigDecimalModifiable", upsertEntity.someBigDecimalModifiable)
+                addValue("someBigDecimalNullable", upsertEntity.someBigDecimalNullable)
                 addValue("someBoolean", upsertEntity.someBoolean)
                 addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
                 addValue("someBooleanType", upsertEntity.someBooleanType)
@@ -1513,6 +1579,9 @@ class AllFieldTypesDao(
                 last_modified_by_id,
                 last_modified_by_name,
                 last_modified_timestamp,
+                some_big_decimal,
+                some_big_decimal_modifiable,
+                some_big_decimal_nullable,
                 some_boolean,
                 some_boolean_nullable,
                 some_boolean_type,
@@ -1555,6 +1624,9 @@ class AllFieldTypesDao(
                 :lastModifiedBy,
                 :lastModifiedByUsername,
                 :lastModifiedTimestamp,
+                :someBigDecimal,
+                :someBigDecimalModifiable,
+                :someBigDecimalNullable,
                 :someBoolean,
                 :someBooleanNullable,
                 :someBooleanType,
@@ -1595,6 +1667,8 @@ class AllFieldTypesDao(
                 last_modified_by_id = :lastModifiedBy,
                 last_modified_by_name = :lastModifiedByUsername,
                 last_modified_timestamp = :lastModifiedTimestamp,
+                some_big_decimal_modifiable = :someBigDecimalModifiable,
+                some_big_decimal_nullable = :someBigDecimalNullable,
                 some_instant_modifiable = :someInstantModifiable,
                 some_instant_modifiable_nullable = :someInstantModifiableNullable,
                 some_int_modifiable = :someIntModifiable,
@@ -1613,6 +1687,9 @@ class AllFieldTypesDao(
                 addValue("lastModifiedBy", upsertEntity.lastModifiedBy)
                 addValue("lastModifiedByUsername", upsertEntity.lastModifiedByUsername)
                 addValue("lastModifiedTimestamp", upsertEntity.lastModifiedTimestamp)
+                addValue("someBigDecimal", upsertEntity.someBigDecimal)
+                addValue("someBigDecimalModifiable", upsertEntity.someBigDecimalModifiable)
+                addValue("someBigDecimalNullable", upsertEntity.someBigDecimalNullable)
                 addValue("someBoolean", upsertEntity.someBoolean)
                 addValue("someBooleanNullable", upsertEntity.someBooleanNullable)
                 addValue("someBooleanType", upsertEntity.someBooleanType)
@@ -1698,6 +1775,8 @@ class AllFieldTypesDao(
             "lastModifiedBy" -> sqlParams.addValue("lastModifiedBy", field.value as DomainId)
             "lastModifiedByUsername" -> sqlParams.addValue("lastModifiedByUsername", field.value as String)
             "lastModifiedTimestamp" -> sqlParams.addValue("lastModifiedTimestamp", field.value as Instant)
+            "someBigDecimalModifiable" -> sqlParams.addValue("someBigDecimalModifiable", field.value as BigDecimal)
+            "someBigDecimalNullable" -> sqlParams.addValue("someBigDecimalNullable", field.value as BigDecimal?)
             "someInstantModifiable" -> sqlParams.addValue("someInstantModifiable", field.value as Instant)
             "someInstantModifiableNullable" -> sqlParams.addValue("someInstantModifiableNullable", field.value as Instant?)
             "someIntModifiable" -> sqlParams.addValue("someIntModifiable", field.value as Int)

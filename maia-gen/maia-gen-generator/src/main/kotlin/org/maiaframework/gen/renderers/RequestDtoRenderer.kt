@@ -21,6 +21,7 @@ import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
+import org.maiaframework.gen.spec.definition.lang.BigDecimalFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
@@ -171,6 +172,7 @@ class RequestDtoRenderer(
                 is EntityRefFieldType -> renderGetterIfNonNullableField(field)
                 is InstantFieldType -> renderGetterIfNonNullableField(field)
                 is IntFieldType -> renderGetterIfNonNullableField(field)
+                is BigDecimalFieldType -> renderGetterIfNonNullableField(field)
                 is IntTypeFieldType -> renderGetterForValueWrapper(field)
                 is IntValueClassFieldType -> renderGetterForValueWrapper(field)
                 is ListFieldType -> if (field.nullable) renderGetterForNullableList(field) else renderGetterIfNonNullableField(field)

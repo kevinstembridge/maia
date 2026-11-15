@@ -1,6 +1,18 @@
 @if (detailDto$ | async; as detailDto) {
   <div>
     <div class="detail-row">
+      <div class="detail-label">Some BigDecimal</div>
+      <div class="detail-value">{{detailDto.someBigDecimal}}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Some BigDecimal Modifiable</div>
+      <div class="detail-value">{{detailDto.someBigDecimalModifiable}}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Some BigDecimal Nullable</div>
+      <div class="detail-value">{{detailDto.someBigDecimalNullable}}</div>
+    </div>
+    <div class="detail-row">
       <div class="detail-label">Some Boolean</div>
       <div class="detail-value">{{detailDto.someBoolean}}</div>
     </div>

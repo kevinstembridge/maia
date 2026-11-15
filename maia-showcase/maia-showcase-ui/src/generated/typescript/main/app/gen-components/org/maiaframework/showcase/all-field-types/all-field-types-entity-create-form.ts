@@ -78,6 +78,9 @@ export class AllFieldTypesEntityCreateForm {
 
 
     dialogFormModel = signal<Omit<Required<AllFieldTypesCreateRequestDto>, 'someInt' | 'someIntModifiable' | 'someIntNullable' | 'someIntType' | 'someIntTypeNullable' | 'someIntTypeProvided' | 'someIntTypeProvidedNullable' | 'someLongType' | 'someLongTypeNullable' | 'someLongTypeProvided' | 'someLongTypeProvidedNullable'> & { someInt: number | null; someIntModifiable: number | null; someIntNullable: number | null; someIntType: number | null; someIntTypeNullable: number | null; someIntTypeProvided: number | null; someIntTypeProvidedNullable: number | null; someLongType: number | null; someLongTypeNullable: number | null; someLongTypeProvided: number | null; someLongTypeProvidedNullable: number | null }>({
+        someBigDecimal: "0",
+        someBigDecimalModifiable: "0",
+        someBigDecimalNullable: "0",
         someBoolean: false,
         someBooleanNullable: false,
         someBooleanType: false,
@@ -116,6 +119,8 @@ export class AllFieldTypesEntityCreateForm {
 
 
     dialogForm = form(this.dialogFormModel, (schemaPath) => {
+        required(schemaPath.someBigDecimal, { message: 'Some BigDecimal is required.' });
+        required(schemaPath.someBigDecimalModifiable, { message: 'Some BigDecimal Modifiable is required.' });
         required(schemaPath.someInstant, { message: 'Some Instant is required.' });
         required(schemaPath.someInstantModifiable, { message: 'Some Instant Modifiable is required.' });
         required(schemaPath.someInt, { message: 'Some Int is required.' });

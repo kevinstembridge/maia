@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
 import java.time.Period
@@ -56,6 +57,9 @@ class AllFieldTypesCrudService(
         currentUser: MaiaUserDetails
     ): AllFieldTypesEntity {
 
+        val someBigDecimal: BigDecimal = createDto.someBigDecimal
+        val someBigDecimalModifiable: BigDecimal = createDto.someBigDecimalModifiable
+        val someBigDecimalNullable: BigDecimal? = createDto.someBigDecimalNullable
         val someBoolean: Boolean = createDto.someBoolean
         val someBooleanNullable: Boolean? = createDto.someBooleanNullable
         val someBooleanType: SomeBooleanType = createDto.someBooleanType
@@ -106,6 +110,9 @@ class AllFieldTypesCrudService(
             lastModifiedBy,
             lastModifiedByUsername,
             lastModifiedTimestamp,
+            someBigDecimal,
+            someBigDecimalModifiable,
+            someBigDecimalNullable,
             someBoolean,
             someBooleanNullable,
             someBooleanType,
@@ -209,15 +216,57 @@ class AllFieldTypesCrudService(
 
         val id = editDto.id
         val updater = AllFieldTypesEntityUpdater.forPrimaryKey(id) {
+            someBigDecimalModifiable(editDto.someBigDecimalModifiable)
             someInstantModifiable(editDto.someInstantModifiable)
             someIntModifiable(editDto.someIntModifiable)
             someListOfStrings(editDto.someListOfStrings)
             someLocalDateModifiable(editDto.someLocalDateModifiable)
             somePeriodModifiable(editDto.somePeriodModifiable)
             someStringModifiable(editDto.someStringModifiable)
+            someBigDecimalNullable(editDto.someBigDecimalNullable)
             someInstantModifiableNullable(editDto.someInstantModifiableNullable)
             someIntNullable(editDto.someIntNullable)
             lastModifiedBy(CurrentUserHolder.userId)
+            lastModifiedTimestamp(Instant.now())
+        }
+
+        setFields(updater)
+
+    }
+
+
+    @Transactional
+    @PreAuthorize("hasAuthority('WRITE')")
+    fun updateSomeBigDecimalModifiable(editDto: AllFieldTypesUpdate_someBigDecimalModifiableRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateSomeBigDecimalModifiable. currentUsername=${currentUsername}, dto=$editDto")
+
+        val updater = AllFieldTypesEntityUpdater.forPrimaryKey(editDto.id) {
+            someBigDecimalModifiable(editDto.someBigDecimalModifiable)
+            lastModifiedBy(CurrentUserHolder.userId)
+            lastModifiedByUsername(CurrentUserHolder.currentUsername)
+            lastModifiedTimestamp(Instant.now())
+        }
+
+        setFields(updater)
+
+    }
+
+
+    @Transactional
+    @PreAuthorize("hasAuthority('WRITE')")
+    fun updateSomeBigDecimalNullable(editDto: AllFieldTypesUpdate_someBigDecimalNullableRequestDto) {
+
+        val currentUsername = CurrentUserHolder.currentUsername
+
+        logger.info("BEGIN: updateSomeBigDecimalNullable. currentUsername=${currentUsername}, dto=$editDto")
+
+        val updater = AllFieldTypesEntityUpdater.forPrimaryKey(editDto.id) {
+            someBigDecimalNullable(editDto.someBigDecimalNullable)
+            lastModifiedBy(CurrentUserHolder.userId)
+            lastModifiedByUsername(CurrentUserHolder.currentUsername)
             lastModifiedTimestamp(Instant.now())
         }
 

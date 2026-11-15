@@ -144,6 +144,24 @@ class AllFieldTypesCrudEndpoint(val crudService: AllFieldTypesCrudService) {
     }
 
 
+    @PutMapping("/api/all-field-types/inline/some-big-decimal-modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('WRITE')")
+    fun updateSomeBigDecimalModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someBigDecimalModifiableRequestDto) {
+
+        this.crudService.updateSomeBigDecimalModifiable(editDto)
+
+    }
+
+
+    @PutMapping("/api/all-field-types/inline/some-big-decimal-nullable", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasAuthority('WRITE')")
+    fun updateSomeBigDecimalNullable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someBigDecimalNullableRequestDto) {
+
+        this.crudService.updateSomeBigDecimalNullable(editDto)
+
+    }
+
+
     @PutMapping("/api/all-field-types/inline/some-instant-modifiable", produces = [MediaType.APPLICATION_JSON_VALUE])
     @PreAuthorize("hasAuthority('WRITE')")
     fun updateSomeInstantModifiable(@RequestBody @Valid editDto: AllFieldTypesUpdate_someInstantModifiableRequestDto) {

@@ -4,6 +4,36 @@
             <p class="alert alert-warning" role="alert">{{ problemDetail()!.title }}</p>
         }
         <div class="detail-row">
+            <span class="detail-label">Some BigDecimal</span>
+            <span class="detail-value">{{ fetchedDto()?.someBigDecimal }}</span>
+        </div>
+        <mat-form-field appearance="outline">
+            <mat-label>Some BigDecimal Modifiable</mat-label>
+            <input
+                [formField]="dialogForm.someBigDecimalModifiable"
+                id="someBigDecimalModifiable"
+                type="text"
+                matInput
+            />
+
+            @if (dialogForm.someBigDecimalModifiable().touched() && dialogForm.someBigDecimalModifiable().invalid()) {
+                @for (error of dialogForm.someBigDecimalModifiable().errors(); track error) {
+                    <mat-error>{{ error.message }}</mat-error>
+                }
+            }
+
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Some BigDecimal Nullable</mat-label>
+            <input
+                [formField]="dialogForm.someBigDecimalNullable"
+                id="someBigDecimalNullable"
+                type="text"
+                matInput
+            />
+
+        </mat-form-field>
+        <div class="detail-row">
             <span class="detail-label">Some Boolean</span>
             <span class="detail-value">{{ fetchedDto()?.someBoolean }}</span>
         </div>

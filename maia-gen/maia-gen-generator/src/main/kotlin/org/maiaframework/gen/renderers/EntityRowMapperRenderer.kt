@@ -20,6 +20,7 @@ import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
+import org.maiaframework.gen.spec.definition.lang.BigDecimalFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
@@ -176,6 +177,7 @@ class EntityRowMapperRenderer(
             is EntityRefFieldType -> TODO("YAGNI?")
             is InstantFieldType -> renderForPlainField(indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
             is IntFieldType -> renderForPlainField(indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
+            is BigDecimalFieldType -> renderForPlainField(indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
             is IntTypeFieldType -> renderForValueWrapper(fieldType, indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
             is IntValueClassFieldType -> renderForValueWrapper(fieldType, indentStr, classFieldName, rsaGetterFunctionName, resultSetColumnName)
             is ListFieldType -> renderForListField(entityFieldDef, fieldType, indentStr, classFieldName, resultSetColumnName)
@@ -296,6 +298,7 @@ class EntityRowMapperRenderer(
             is EntityRefFieldType -> TODO("YAGNI?")
             is InstantFieldType -> appendLine("${indentStr}val $classFieldName = rsa.readListOfInstants(\"${resultSetColumnName}\")")
             is IntFieldType -> TODO("YAGNI?")
+            is BigDecimalFieldType -> TODO("YAGNI?")
             is IntTypeFieldType -> TODO("YAGNI?")
             is IntValueClassFieldType -> TODO("YAGNI?")
             is ListFieldType -> TODO("YAGNI?")

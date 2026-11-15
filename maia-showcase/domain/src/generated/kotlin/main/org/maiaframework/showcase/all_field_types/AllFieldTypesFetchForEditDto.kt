@@ -14,6 +14,7 @@ import org.maiaframework.showcase.types.SomeProvidedIntType
 import org.maiaframework.showcase.types.SomeProvidedLongType
 import org.maiaframework.showcase.types.SomeProvidedStringType
 import org.maiaframework.showcase.types.SomeStringType
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
 import java.time.Period
@@ -27,6 +28,9 @@ data class AllFieldTypesFetchForEditDto(
     val lastModifiedBy: PartyRefDto,
     val lastModifiedByUsername: String,
     val lastModifiedTimestamp: Instant,
+    val someBigDecimal: BigDecimal,
+    val someBigDecimalModifiable: BigDecimal,
+    val someBigDecimalNullable: BigDecimal?,
     val someBoolean: Boolean,
     val someBooleanNullable: Boolean?,
     val someBooleanType: SomeBooleanType,

@@ -31,6 +31,7 @@ import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
+import org.maiaframework.gen.spec.definition.lang.BigDecimalFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
@@ -965,6 +966,7 @@ class JdbcDaoRenderer(
             is EntityRefFieldType -> TODO("YAGNI?")
             is InstantFieldType -> TODO("YAGNI?")
             is IntFieldType -> "it"
+            is BigDecimalFieldType -> "it"
             is IntTypeFieldType -> "it.value"
             is IntValueClassFieldType -> "it.value"
             is ListFieldType -> TODO("YAGNI?")
@@ -2671,6 +2673,7 @@ class JdbcDaoRenderer(
             is EntityRefFieldType -> TODO()
             is InstantFieldType -> "field.value as ${fieldType.unqualifiedToString}${q}"
             is IntFieldType -> "field.value as ${fieldType.unqualifiedToString}${q}"
+            is BigDecimalFieldType -> "field.value as ${fieldType.unqualifiedToString}${q}"
             is IntTypeFieldType -> fieldValueAsClauseForValueWrapper(classFieldDef)
             is IntValueClassFieldType -> fieldValueAsClauseForValueWrapper(classFieldDef)
             is ListFieldType -> fieldValueAsClauseForListFieldType(fieldType, q)
@@ -2726,6 +2729,7 @@ class JdbcDaoRenderer(
             is EntityRefFieldType -> TODO()
             is InstantFieldType -> TODO()
             is IntFieldType -> TODO()
+            is BigDecimalFieldType -> TODO()
             is IntTypeFieldType -> TODO()
             is IntValueClassFieldType -> TODO()
             is ListFieldType -> TODO()

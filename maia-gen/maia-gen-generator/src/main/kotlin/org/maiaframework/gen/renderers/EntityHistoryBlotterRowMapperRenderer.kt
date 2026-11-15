@@ -16,6 +16,7 @@ import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
+import org.maiaframework.gen.spec.definition.lang.BigDecimalFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
@@ -132,6 +133,7 @@ class EntityHistoryBlotterRowMapperRenderer(
             is EntityRefFieldType -> TODO()
             is InstantFieldType -> appendLine("        val $fieldName = rsa.readInstant$orNull(\"$columnName\")")
             is IntFieldType -> appendLine("        val $fieldName = rsa.readInt$orNull(\"$columnName\")")
+            is BigDecimalFieldType -> appendLine("        val $fieldName = rsa.readBigDecimal$orNull(\"$columnName\")")
             is IntTypeFieldType -> {
                 addImportFor(fieldType.fqcn)
                 appendLine("        val $fieldName = rsa.readInt$orNull(\"$columnName\") { ${fieldType.uqcn}(it) }")

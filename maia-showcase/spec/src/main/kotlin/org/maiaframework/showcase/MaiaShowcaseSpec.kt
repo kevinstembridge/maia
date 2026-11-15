@@ -186,6 +186,18 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         allowFindAll = AllowFindAll.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE
     ) {
+        field("someBigDecimal", FieldTypes.bigDecimal) {
+            fieldDisplayName("Some BigDecimal")
+        }
+        field("someBigDecimalModifiable", FieldTypes.bigDecimal(10, 2)) {
+            fieldDisplayName("Some BigDecimal Modifiable")
+            editableByUser()
+        }
+        field("someBigDecimalNullable", FieldTypes.bigDecimal) {
+            fieldDisplayName("Some BigDecimal Nullable")
+            editableByUser()
+            nullable()
+        }
         field("someBoolean", FieldTypes.boolean) {
             fieldDisplayName("Some Boolean")
         }

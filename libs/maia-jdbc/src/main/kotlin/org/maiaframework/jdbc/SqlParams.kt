@@ -8,6 +8,7 @@ import org.maiaframework.types.IntType
 import org.maiaframework.types.LongType
 import org.maiaframework.types.StringType
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
+import java.math.BigDecimal
 import java.net.URL
 import java.sql.Date
 import java.sql.Timestamp
@@ -311,6 +312,26 @@ class SqlParams {
     ): SqlParams {
 
         return addValue(columnName, value, Types.NUMERIC)
+
+    }
+
+
+    fun addValue(
+        columnName: String,
+        value: BigDecimal?
+    ): SqlParams {
+
+        return addValue(columnName, value, Types.NUMERIC)
+
+    }
+
+
+    fun addValue(
+        dbColumn: DbColumn,
+        value: BigDecimal?
+    ): SqlParams {
+
+        return addValue(dbColumn.value, value)
 
     }
 

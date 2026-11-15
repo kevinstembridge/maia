@@ -15,6 +15,7 @@ import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
+import org.maiaframework.gen.spec.definition.lang.BigDecimalFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
@@ -65,6 +66,7 @@ fun renderWriteConversionForImplicitField(
         is EntityRefFieldType -> TODO("YAGNI?")
         is InstantFieldType -> renderer.appendLine("${indent}return $fieldName")
         is IntFieldType -> renderer.appendLine("${indent}return $fieldName")
+        is BigDecimalFieldType -> renderer.appendLine("${indent}return $fieldName")
         is IntTypeFieldType -> `render for value field wrapper`(fieldType, renderer, indent)
         is IntValueClassFieldType -> renderer.appendLine("${indent}return $fieldName")
         is ListFieldType -> `render for List field type`(fieldType, renderer, indent, fullCastPrefix, fieldName)
@@ -123,6 +125,7 @@ private fun `render for List field type`(
         is EntityRefFieldType -> TODO("YAGNI?")
         is InstantFieldType -> renderer.appendLine("${indent}return inputValue")
         is IntFieldType -> renderer.appendLine("${indent}return inputValue")
+        is BigDecimalFieldType -> renderer.appendLine("${indent}return inputValue")
         is IntTypeFieldType -> renderer.appendLine("${indent}return inputValue")
         is IntValueClassFieldType -> renderer.appendLine("${indent}return inputValue")
         is ListFieldType -> renderer.appendLine("${indent}return inputValue")

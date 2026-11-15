@@ -26,6 +26,7 @@ import org.maiaframework.gen.spec.definition.lang.FqcnFieldType
 import org.maiaframework.gen.spec.definition.lang.JoinFetchDtoFieldType
 import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.InstantFieldType
+import org.maiaframework.gen.spec.definition.lang.BigDecimalFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
@@ -124,6 +125,7 @@ open class TypescriptInterfaceDtoRenderer(
                 is EntityRefFieldType -> appendLine("    ${fieldDef.classFieldName}$nullableClause: ${fieldType.entityRefDef.dtoUqcn};")
                 is InstantFieldType -> renderForPlainField(fieldDef, nullableClause)
                 is IntFieldType -> renderForPlainField(fieldDef, nullableClause)
+                is BigDecimalFieldType -> renderForPlainField(fieldDef, nullableClause)
                 is IntTypeFieldType -> renderForPlainField(fieldDef, nullableClause)
                 is IntValueClassFieldType -> renderForPlainField(fieldDef, nullableClause)
                 is ListFieldType -> appendLine("    ${fieldDef.classFieldName}${nullableClause}: ReadonlyArray<${listElementType(fieldType)}>;")
@@ -180,6 +182,7 @@ open class TypescriptInterfaceDtoRenderer(
             is EntityRefFieldType -> parameterFieldType.uqcn.value
             is InstantFieldType -> "string"
             is IntFieldType -> "number"
+            is BigDecimalFieldType -> "string"
             is IntTypeFieldType -> "number"
             is IntValueClassFieldType -> "number"
             is ListFieldType -> TODO()

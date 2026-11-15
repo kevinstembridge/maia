@@ -26,6 +26,12 @@ object AllFieldTypesEntityMeta {
 
     const val lastModifiedTimestamp = "last_modified_timestamp"
 
+    const val someBigDecimal = "some_big_decimal"
+
+    const val someBigDecimalModifiable = "some_big_decimal_modifiable"
+
+    const val someBigDecimalNullable = "some_big_decimal_nullable"
+
     const val someBoolean = "some_boolean"
 
     const val someBooleanNullable = "some_boolean_nullable"
@@ -132,6 +138,9 @@ object AllFieldTypesEntityMeta {
             "lastModifiedBy" -> "last_modified_by_id"
             "lastModifiedByUsername" -> "last_modified_by_name"
             "lastModifiedTimestamp" -> "last_modified_timestamp"
+            "someBigDecimal" -> "some_big_decimal"
+            "someBigDecimalModifiable" -> "some_big_decimal_modifiable"
+            "someBigDecimalNullable" -> "some_big_decimal_nullable"
             "someBoolean" -> "some_boolean"
             "someBooleanNullable" -> "some_boolean_nullable"
             "someBooleanType" -> "some_boolean_type"
