@@ -4,9 +4,9 @@
 
 **Blocked by:** 02
 
-**Status:** ready-for-agent
+**Status:** resolved
 
-- [ ] Blotter column definition for BigDecimal is `number` with an `equals` default filter, with client-side string-to-number conversion
-- [ ] Sorting is numeric (9 sorts before 10)
-- [ ] Number-filter scenarios on a BigDecimal column are added to `filterparity` and pass on the Postgres backend
-- [ ] The Playwright blotter path through `AllFieldTypes` passes headless
+- [x] Blotter column definition for BigDecimal is `number` with an `equals` default filter, with client-side string-to-number conversion
+- [x] Sorting is numeric (9 sorts before 10)
+- [x] Number-filter scenarios on a BigDecimal column are added to `filterparity` and pass on the Postgres backend
+- [x] The Playwright blotter path through `AllFieldTypes` passes headless

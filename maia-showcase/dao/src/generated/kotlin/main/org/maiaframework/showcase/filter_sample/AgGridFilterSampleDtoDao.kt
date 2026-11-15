@@ -39,6 +39,8 @@ class AgGridFilterSampleDtoDao(private val jdbcOps: JdbcOps) {
 
         val sqlForPage = """
             select
+                maia.ag_grid_filter_sample.amount_nullable as amountNullable,
+                maia.ag_grid_filter_sample.amount_required as amountRequired,
                 maia.ag_grid_filter_sample.date_nullable as dateNullable,
                 maia.ag_grid_filter_sample.date_required as dateRequired,
                 maia.ag_grid_filter_sample.decimal_nullable as decimalNullable,

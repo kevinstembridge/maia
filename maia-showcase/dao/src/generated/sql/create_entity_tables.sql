@@ -432,6 +432,8 @@ CREATE TABLE maia.charlie (
 
 
 CREATE TABLE maia.ag_grid_filter_sample (
+    amount_nullable decimal NULL,
+    amount_required decimal NOT NULL,
     created_timestamp timestamp(3) with time zone NOT NULL,
     date_nullable date NULL,
     date_required date NOT NULL,

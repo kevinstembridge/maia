@@ -4,11 +4,14 @@
 package org.maiaframework.showcase.filter_sample
 
 import org.maiaframework.domain.DomainId
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
 
 
 class AgGridFilterSampleEntity(
+    val amountNullable: BigDecimal?,
+    val amountRequired: BigDecimal,
     val createdTimestamp: Instant,
     val dateNullable: LocalDate?,
     val dateRequired: LocalDate,
@@ -30,6 +33,8 @@ class AgGridFilterSampleEntity(
     override fun toString(): String {
 
         return "AgGridFilterSampleEntity{" +
+                "amountNullable = '" + this.amountNullable + '\'' + ", " + 
+                "amountRequired = '" + this.amountRequired + '\'' + ", " + 
                 "createdTimestamp = '" + this.createdTimestamp + '\'' + ", " + 
                 "dateNullable = '" + this.dateNullable + '\'' + ", " + 
                 "dateRequired = '" + this.dateRequired + '\'' + ", " + 
@@ -60,6 +65,8 @@ class AgGridFilterSampleEntity(
 
         @JvmStatic
         fun newInstance(
+            amountNullable: BigDecimal?,
+            amountRequired: BigDecimal,
             dateNullable: LocalDate?,
             dateRequired: LocalDate,
             decimalNullable: Double?,
@@ -79,6 +86,8 @@ class AgGridFilterSampleEntity(
             val id = newId()
 
             return AgGridFilterSampleEntity(
+                amountNullable,
+                amountRequired,
                 createdTimestamp,
                 dateNullable,
                 dateRequired,

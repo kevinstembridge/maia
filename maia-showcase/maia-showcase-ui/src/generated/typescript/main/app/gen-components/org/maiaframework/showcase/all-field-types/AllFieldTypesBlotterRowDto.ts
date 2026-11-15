@@ -11,6 +11,9 @@ export interface AllFieldTypesBlotterRowDto {
     lastModifiedBy: string;
     lastModifiedByUsername: string;
     lastModifiedTimestamp: string;
+    someBigDecimal: string;
+    someBigDecimalModifiable: string;
+    someBigDecimalNullable?: string;
     someBoolean: boolean;
     someBooleanNullable?: boolean;
     someBooleanType: boolean;

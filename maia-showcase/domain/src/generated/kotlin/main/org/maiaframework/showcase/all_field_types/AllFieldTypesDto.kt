@@ -3,6 +3,7 @@
 
 package org.maiaframework.showcase.all_field_types
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import org.maiaframework.domain.DomainId
 import org.maiaframework.showcase.enums.SomeEnum
 import org.maiaframework.showcase.types.SomeBooleanType
@@ -13,6 +14,7 @@ import org.maiaframework.showcase.types.SomeProvidedIntType
 import org.maiaframework.showcase.types.SomeProvidedLongType
 import org.maiaframework.showcase.types.SomeProvidedStringType
 import org.maiaframework.showcase.types.SomeStringType
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
 import java.time.Period
@@ -25,6 +27,9 @@ data class AllFieldTypesDto(
     val lastModifiedBy: DomainId,
     val lastModifiedByUsername: String,
     val lastModifiedTimestamp: Instant,
+    @get:JsonFormat(shape = JsonFormat.Shape.STRING) val someBigDecimal: BigDecimal,
+    @get:JsonFormat(shape = JsonFormat.Shape.STRING) val someBigDecimalModifiable: BigDecimal,
+    @get:JsonFormat(shape = JsonFormat.Shape.STRING) val someBigDecimalNullable: BigDecimal?,
     val someBoolean: Boolean,
     val someBooleanNullable: Boolean?,
     val someBooleanType: SomeBooleanType,

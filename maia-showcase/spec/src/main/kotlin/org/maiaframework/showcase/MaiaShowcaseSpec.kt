@@ -406,6 +406,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         field("someIntTypeNullable")
         field("someIntTypeProvided")
         field("someIntTypeProvidedNullable")
+        field("someBigDecimal")
+        field("someBigDecimalModifiable")
+        field("someBigDecimalNullable")
         field("someLongType")
         field("someLongTypeNullable")
         field("someLongTypeProvided")
@@ -465,6 +468,9 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         columnFromDto("someIntTypeNullable")
         columnFromDto("someIntTypeProvided")
         columnFromDto("someIntTypeProvidedNullable")
+        columnFromDto("someBigDecimal")
+        columnFromDto("someBigDecimalModifiable")
+        columnFromDto("someBigDecimalNullable")
         columnFromDto("someLongType")
         columnFromDto("someLongTypeNullable")
         columnFromDto("someLongTypeProvided")
@@ -1219,6 +1225,13 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
             fieldDisplayName("Decimal Nullable")
             nullable()
         }
+        field("amountRequired", FieldTypes.bigDecimal) {
+            fieldDisplayName("Amount Required")
+        }
+        field("amountNullable", FieldTypes.bigDecimal) {
+            fieldDisplayName("Amount Nullable")
+            nullable()
+        }
         field("dateRequired", FieldTypes.localDate) {
             fieldDisplayName("Date Required")
         }
@@ -1260,6 +1273,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         field("intNullable")
         field("decimalRequired")
         field("decimalNullable")
+        field("amountRequired")
+        field("amountNullable")
         field("dateRequired")
         field("dateNullable")
         field("instantRequired")

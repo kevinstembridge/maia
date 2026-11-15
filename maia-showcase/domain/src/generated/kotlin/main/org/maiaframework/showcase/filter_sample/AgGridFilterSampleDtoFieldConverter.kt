@@ -14,6 +14,10 @@ class AgGridFilterSampleDtoFieldConverter : SearchFieldConverter {
     override fun convertValue(tableColumnPath: String, inputValue: Any?): Any? {
 
         when(tableColumnPath) {
+            "amount_nullable" -> // amountNullable
+                return inputValue
+            "amount_required" -> // amountRequired
+                return inputValue
             "date_nullable" -> // dateNullable
                 return inputValue
             "date_required" -> // dateRequired
