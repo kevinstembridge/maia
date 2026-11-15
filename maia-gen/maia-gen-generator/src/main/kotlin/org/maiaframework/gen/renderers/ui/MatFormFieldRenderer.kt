@@ -12,6 +12,7 @@ import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 import org.maiaframework.gen.spec.definition.lang.IntFieldType
 import org.maiaframework.gen.spec.definition.lang.IntTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
+import org.maiaframework.gen.spec.definition.lang.BigDecimalFieldType
 import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.LongFieldType
 import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
@@ -449,7 +450,7 @@ object MatFormFieldRenderer {
             r.appendLine("$indent    </button>")
         }
 
-        if (classFieldDef.hasAnyValidationConstraints() || classFieldDef.isUnique) {
+        if (classFieldDef.hasAnyValidationConstraints() || classFieldDef.isUnique || classFieldDef.fieldType is BigDecimalFieldType) {
 
             r.blankLine()
             r.appendLine("$indent    @if (dialogForm.$classFieldName().touched() && dialogForm.$classFieldName().invalid()) {")

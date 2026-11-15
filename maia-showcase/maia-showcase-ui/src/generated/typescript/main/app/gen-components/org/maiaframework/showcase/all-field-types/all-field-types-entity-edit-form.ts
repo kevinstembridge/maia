@@ -56,7 +56,7 @@ export class AllFieldTypesEntityEditForm implements OnInit {
     dialogFormModel = signal<Omit<Required<AllFieldTypesUpdateRequestDto>, 'someIntModifiable' | 'someIntNullable'> & { someIntModifiable: number | null; someIntNullable: number | null }>({
         id: '',
         someBigDecimalModifiable: "0",
-        someBigDecimalNullable: "0",
+        someBigDecimalNullable: "",
         someInstantModifiable: '',
         someInstantModifiableNullable: '',
         someIntModifiable: 0,
@@ -70,6 +70,22 @@ export class AllFieldTypesEntityEditForm implements OnInit {
 
     dialogForm = form(this.dialogFormModel, (schemaPath) => {
         required(schemaPath.someBigDecimalModifiable, { message: 'Some BigDecimal Modifiable is required.' });
+        validate(schemaPath.someBigDecimalModifiable, ({value}) => {
+            if (!value()) {
+                return null;
+            }
+            return /^-?\d{1,8}(\.\d{1,2})?$/.test(value())
+                ? null
+                : { kind: 'invalidDecimal', message: 'Some BigDecimal Modifiable must be a decimal number with at most 8 integer digits and at most 2 decimal digits.' };
+        });
+        validate(schemaPath.someBigDecimalNullable, ({value}) => {
+            if (!value()) {
+                return null;
+            }
+            return /^-?\d{1,15}(\.\d{1,4})?$/.test(value())
+                ? null
+                : { kind: 'invalidDecimal', message: 'Some BigDecimal Nullable must be a decimal number with at most 15 integer digits and at most 4 decimal digits.' };
+        });
         required(schemaPath.someInstantModifiable, { message: 'Some Instant Modifiable is required.' });
         required(schemaPath.someIntModifiable, { message: 'Some Int Modifiable is required.' });
         required(schemaPath.someLocalDateModifiable, { message: 'Some LocalDate Modifiable is required.' });

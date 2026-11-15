@@ -80,7 +80,7 @@ export class AllFieldTypesEntityCreateForm {
     dialogFormModel = signal<Omit<Required<AllFieldTypesCreateRequestDto>, 'someInt' | 'someIntModifiable' | 'someIntNullable' | 'someIntType' | 'someIntTypeNullable' | 'someIntTypeProvided' | 'someIntTypeProvidedNullable' | 'someLongType' | 'someLongTypeNullable' | 'someLongTypeProvided' | 'someLongTypeProvidedNullable'> & { someInt: number | null; someIntModifiable: number | null; someIntNullable: number | null; someIntType: number | null; someIntTypeNullable: number | null; someIntTypeProvided: number | null; someIntTypeProvidedNullable: number | null; someLongType: number | null; someLongTypeNullable: number | null; someLongTypeProvided: number | null; someLongTypeProvidedNullable: number | null }>({
         someBigDecimal: "0",
         someBigDecimalModifiable: "0",
-        someBigDecimalNullable: "0",
+        someBigDecimalNullable: "",
         someBoolean: false,
         someBooleanNullable: false,
         someBooleanType: false,
@@ -120,7 +120,31 @@ export class AllFieldTypesEntityCreateForm {
 
     dialogForm = form(this.dialogFormModel, (schemaPath) => {
         required(schemaPath.someBigDecimal, { message: 'Some BigDecimal is required.' });
+        validate(schemaPath.someBigDecimal, ({value}) => {
+            if (!value()) {
+                return null;
+            }
+            return /^-?\d{1,15}(\.\d{1,4})?$/.test(value())
+                ? null
+                : { kind: 'invalidDecimal', message: 'Some BigDecimal must be a decimal number with at most 15 integer digits and at most 4 decimal digits.' };
+        });
         required(schemaPath.someBigDecimalModifiable, { message: 'Some BigDecimal Modifiable is required.' });
+        validate(schemaPath.someBigDecimalModifiable, ({value}) => {
+            if (!value()) {
+                return null;
+            }
+            return /^-?\d{1,8}(\.\d{1,2})?$/.test(value())
+                ? null
+                : { kind: 'invalidDecimal', message: 'Some BigDecimal Modifiable must be a decimal number with at most 8 integer digits and at most 2 decimal digits.' };
+        });
+        validate(schemaPath.someBigDecimalNullable, ({value}) => {
+            if (!value()) {
+                return null;
+            }
+            return /^-?\d{1,15}(\.\d{1,4})?$/.test(value())
+                ? null
+                : { kind: 'invalidDecimal', message: 'Some BigDecimal Nullable must be a decimal number with at most 15 integer digits and at most 4 decimal digits.' };
+        });
         required(schemaPath.someInstant, { message: 'Some Instant is required.' });
         required(schemaPath.someInstantModifiable, { message: 'Some Instant Modifiable is required.' });
         required(schemaPath.someInt, { message: 'Some Int is required.' });
