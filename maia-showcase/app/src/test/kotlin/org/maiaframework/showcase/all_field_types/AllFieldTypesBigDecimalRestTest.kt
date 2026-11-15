@@ -1,6 +1,7 @@
 package org.maiaframework.showcase.all_field_types
 
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.maiaframework.showcase.AbstractBlackBoxTest
 import org.maiaframework.webapp.domain.auth.MaiaUserDetails
@@ -13,6 +14,22 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import java.util.UUID
 
 class AllFieldTypesBigDecimalRestTest : AbstractBlackBoxTest() {
+
+
+    private val createdIds = mutableListOf<String>()
+
+
+    @AfterEach
+    fun deleteCreatedRows() {
+
+        // The create endpoint commits, so remove our rows to avoid polluting other tests (e.g. Playwright CRUD).
+        createdIds.forEach { id ->
+            jdbcOps.update("delete from ${AllFieldTypesEntityMeta.SCHEMA_AND_TABLE_NAME} where id = '$id'")
+        }
+
+        createdIds.clear()
+
+    }
 
 
     @Test
@@ -96,7 +113,7 @@ class AllFieldTypesBigDecimalRestTest : AbstractBlackBoxTest() {
 
         assertThat(result).hasStatus(HttpStatus.CREATED)
 
-        return jsonMapperRead(result.response.contentAsString)
+        return jsonMapperRead(result.response.contentAsString).also { createdIds.add(it) }
 
     }
 
