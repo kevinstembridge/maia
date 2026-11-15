@@ -6,6 +6,7 @@ package org.maiaframework.showcase.filter_sample
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.EntityFieldConverter
 import org.springframework.stereotype.Component
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
 
@@ -18,6 +19,10 @@ class AgGridFilterSampleEntityFieldConverter : EntityFieldConverter {
 
         when (tableColumnName) {
 
+            "amount_nullable" -> // amountNullable
+                return inputValue
+            "amount_required" -> // amountRequired
+                return inputValue
             "created_timestamp" -> // createdTimestamp
                 return inputValue
             "date_nullable" -> // dateNullable

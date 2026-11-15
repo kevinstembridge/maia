@@ -12,6 +12,8 @@ class AgGridFilterSampleEntityRowMapper : MaiaRowMapper<AgGridFilterSampleEntity
 
     override fun mapRow(rsa: ResultSetAdapter): AgGridFilterSampleEntity {
 
+        val amountNullable = rsa.readBigDecimalOrNull("amount_nullable")
+        val amountRequired = rsa.readBigDecimal("amount_required")
         val createdTimestamp = rsa.readInstant("created_timestamp")
         val dateNullable = rsa.readLocalDateOrNull("date_nullable")
         val dateRequired = rsa.readLocalDate("date_required")
@@ -29,6 +31,8 @@ class AgGridFilterSampleEntityRowMapper : MaiaRowMapper<AgGridFilterSampleEntity
         val textRequired = rsa.readString("text_required")
 
         return AgGridFilterSampleEntity(
+                amountNullable,
+                amountRequired,
                 createdTimestamp,
                 dateNullable,
                 dateRequired,

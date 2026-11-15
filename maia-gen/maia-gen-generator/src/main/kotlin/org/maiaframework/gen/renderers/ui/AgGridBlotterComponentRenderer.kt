@@ -12,6 +12,7 @@ import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 import org.maiaframework.gen.spec.definition.EntityEditPageDef
 import org.maiaframework.gen.spec.definition.Pipes
 import org.maiaframework.gen.spec.definition.flags.SearchModelType
+import org.maiaframework.gen.spec.definition.lang.BigDecimalFieldType
 import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 
@@ -588,6 +589,14 @@ class AgGridBlotterComponentRenderer(
             attributes["cellRenderer"] = AgGridCellRendererDefs.uuid.componentClassName
             // room for the short id, the copy icon that appears on hover, and the cell padding
             attributes["minWidth"] = UUID_COLUMN_MIN_WIDTH
+        }
+
+        if (blotterColumnDef.fieldType is BigDecimalFieldType) {
+            // The DTO carries the value as a string (ADR-0006). The grid sees a number so the number filter and
+            // sort work, but the cell shows the string exactly as stored; the server does the exact filtering.
+            val field = blotterColumnDef.dtoFieldName
+            attributes["valueGetter"] = "(params) => params.data?.$field == null ? null : Number(params.data.$field)"
+            attributes["valueFormatter"] = "(params) => params.data?.$field ?? ''"
         }
 
         if (blotterColumnDef.fieldType is ListFieldType) {

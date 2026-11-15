@@ -16,7 +16,12 @@ data class FilterScenario(
     val filterModelJson: String,
     val expectedKeys: Set<String> = emptySet(),
     val expectsRejection: Boolean = false,
+    val backends: Set<FilterBackend> = FilterBackend.entries.toSet(),
 )
+
+
+/** The backends a [FilterScenario] runs against. A scenario for a type not yet served by one backend omits it. */
+enum class FilterBackend { POSTGRES, ELASTICSEARCH }
 
 
 /**
@@ -28,6 +33,7 @@ object AgGridFilterScenarios {
     val all: List<FilterScenario> =
         TextFilterScenarios.all +
             NumberFilterScenarios.all +
+            BigDecimalFilterScenarios.all +
             DateFilterScenarios.all +
             SetFilterScenarios.all +
             BlankFilterScenarios.all +

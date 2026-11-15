@@ -32,6 +32,8 @@ class AgGridFilterSampleDao(
         jdbcOps.update(
             """
             insert into maia.ag_grid_filter_sample (
+                amount_nullable,
+                amount_required,
                 created_timestamp,
                 date_nullable,
                 date_required,
@@ -48,6 +50,8 @@ class AgGridFilterSampleDao(
                 text_nullable,
                 text_required
             ) values (
+                :amountNullable,
+                :amountRequired,
                 :createdTimestamp,
                 :dateNullable,
                 :dateRequired,
@@ -66,6 +70,8 @@ class AgGridFilterSampleDao(
             )
             """.trimIndent(),
             SqlParams().apply {
+                addValue("amountNullable", entity.amountNullable)
+                addValue("amountRequired", entity.amountRequired)
                 addValue("createdTimestamp", entity.createdTimestamp)
                 addValue("dateNullable", entity.dateNullable)
                 addValue("dateRequired", entity.dateRequired)
@@ -92,6 +98,8 @@ class AgGridFilterSampleDao(
         jdbcOps.batchUpdate(
             """
             insert into maia.ag_grid_filter_sample (
+                amount_nullable,
+                amount_required,
                 created_timestamp,
                 date_nullable,
                 date_required,
@@ -108,6 +116,8 @@ class AgGridFilterSampleDao(
                 text_nullable,
                 text_required
             ) values (
+                :amountNullable,
+                :amountRequired,
                 :createdTimestamp,
                 :dateNullable,
                 :dateRequired,
@@ -127,6 +137,8 @@ class AgGridFilterSampleDao(
             """.trimIndent(),
             entities.map { entity ->
                 SqlParams().apply {
+                    addValue("amountNullable", entity.amountNullable)
+                    addValue("amountRequired", entity.amountRequired)
                     addValue("createdTimestamp", entity.createdTimestamp)
                     addValue("dateNullable", entity.dateNullable)
                     addValue("dateRequired", entity.dateRequired)

@@ -8,6 +8,7 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.jdbc.sql.conditions.AndOr
 import org.maiaframework.jdbc.sql.conditions.SqlConditionOperator
+import java.math.BigDecimal
 import java.sql.Timestamp
 import java.sql.Types
 import java.time.Instant
@@ -40,6 +41,22 @@ class AgGridFilterSampleEntityFilters {
         return IterableFunctionFilter(filters.toList(), AndOr.nor)
 
     }
+
+
+    val amountNullable: FieldFilter<BigDecimal?> 
+        get() {
+
+            return FieldFilter("amount_nullable", Types.NUMERIC, this.sqlParamCounter) { value -> value }
+
+        }
+
+
+    val amountRequired: FieldFilter<BigDecimal> 
+        get() {
+
+            return FieldFilter("amount_required", Types.NUMERIC, this.sqlParamCounter) { value -> value }
+
+        }
 
 
     val createdTimestamp: FieldFilter<Instant> 

@@ -3,12 +3,16 @@
 
 package org.maiaframework.showcase.filter_sample
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import org.maiaframework.domain.DomainId
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
 
 
 data class AgGridFilterSampleDto(
+    @get:JsonFormat(shape = JsonFormat.Shape.STRING) val amountNullable: BigDecimal?,
+    @get:JsonFormat(shape = JsonFormat.Shape.STRING) val amountRequired: BigDecimal,
     val dateNullable: LocalDate?,
     val dateRequired: LocalDate,
     val decimalNullable: Double?,

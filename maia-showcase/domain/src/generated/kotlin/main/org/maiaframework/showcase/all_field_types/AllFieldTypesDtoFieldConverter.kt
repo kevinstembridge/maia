@@ -26,6 +26,12 @@ class AllFieldTypesDtoFieldConverter : SearchFieldConverter {
                 return inputValue
             "last_modified_timestamp" -> // lastModifiedTimestamp
                 return inputValue
+            "some_big_decimal" -> // someBigDecimal
+                return inputValue
+            "some_big_decimal_modifiable" -> // someBigDecimalModifiable
+                return inputValue
+            "some_big_decimal_nullable" -> // someBigDecimalNullable
+                return inputValue
             "some_boolean" -> // someBoolean
                 return inputValue
             "some_boolean_nullable" -> // someBooleanNullable

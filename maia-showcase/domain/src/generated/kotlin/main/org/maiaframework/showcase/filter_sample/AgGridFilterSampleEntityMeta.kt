@@ -12,6 +12,10 @@ import org.maiaframework.jdbc.TableName
 
 object AgGridFilterSampleEntityMeta {
 
+    const val amountNullable = "amount_nullable"
+
+    const val amountRequired = "amount_required"
+
     const val createdTimestamp = "created_timestamp"
 
     const val dateNullable = "date_nullable"
@@ -56,6 +60,8 @@ object AgGridFilterSampleEntityMeta {
     fun convertClassFieldNameToTableColumnName(classFieldName: String): String {
 
         return when(classFieldName) {
+            "amountNullable" -> "amount_nullable"
+            "amountRequired" -> "amount_required"
             "createdTimestamp" -> "created_timestamp"
             "dateNullable" -> "date_nullable"
             "dateRequired" -> "date_required"

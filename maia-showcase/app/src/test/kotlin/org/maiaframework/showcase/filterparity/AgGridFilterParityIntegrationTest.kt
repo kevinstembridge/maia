@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.search.AgGridSearchModel
+import org.maiaframework.domain.search.AgGridSortModelItem
 import org.maiaframework.elasticsearch.index.IndexNameFactory
 import org.maiaframework.jdbc.SqlParams
 import org.maiaframework.metrics.JobMetrics
@@ -31,9 +32,6 @@ import tools.jackson.databind.json.JsonMapper
  * Nothing here is specific to a filter type: add scenarios to the table, not to this class.
  */
 class AgGridFilterParityIntegrationTest : AbstractBlackBoxTest() {
-
-
-    private enum class Backend { POSTGRES, ELASTICSEARCH }
 
 
     @Autowired
@@ -93,11 +91,33 @@ class AgGridFilterParityIntegrationTest : AbstractBlackBoxTest() {
     }
 
 
+    @Test
+    fun `postgres sorts a BigDecimal column numerically`() {
+
+        val searchModel = AgGridSearchModel(
+            filterModel = this.jsonMapper.readTree(numberFilter("amountRequired", "greaterThan", 0)),
+            sortModel = listOf(AgGridSortModelItem("amountRequired", "asc")),
+            startRow = 0,
+            endRow = 1000,
+        )
+
+        val ids = this.postgresSearch.search(searchModel).results.map { it.id }
+
+        assertThat(ids).containsExactly(
+            AgGridFilterSeed.idOf("amount-nine"),
+            AgGridFilterSeed.idOf("amount-ten"),
+            AgGridFilterSeed.idOf("amount-big"),
+            AgGridFilterSeed.idOf("amount-big-plus"),
+        )
+
+    }
+
+
     @TestFactory
     fun `every scenario returns the same rows from both backends`(): List<DynamicTest> {
 
         return AgGridFilterScenarios.all.flatMap { scenario ->
-            Backend.entries.map { backend ->
+            scenario.backends.map { backend ->
                 DynamicTest.dynamicTest("${scenario.name} [$backend]") {
                     if (scenario.expectsRejection) {
                         assertThatThrownBy { search(backend, scenario) }.isInstanceOf(IllegalArgumentException::class.java)
@@ -112,7 +132,7 @@ class AgGridFilterParityIntegrationTest : AbstractBlackBoxTest() {
     }
 
 
-    private fun search(backend: Backend, scenario: FilterScenario): List<DomainId> {
+    private fun search(backend: FilterBackend, scenario: FilterScenario): List<DomainId> {
 
         val searchModel = AgGridSearchModel(
             filterModel = this.jsonMapper.readTree(scenario.filterModelJson),
@@ -122,8 +142,8 @@ class AgGridFilterParityIntegrationTest : AbstractBlackBoxTest() {
         )
 
         return when (backend) {
-            Backend.POSTGRES -> this.postgresSearch.search(searchModel).results.map { it.id }
-            Backend.ELASTICSEARCH -> this.esSearch.search(searchModel).hits.map { it.id }
+            FilterBackend.POSTGRES -> this.postgresSearch.search(searchModel).results.map { it.id }
+            FilterBackend.ELASTICSEARCH -> this.esSearch.search(searchModel).hits.map { it.id }
         }
 
     }

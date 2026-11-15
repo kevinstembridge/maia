@@ -2,6 +2,7 @@ package org.maiaframework.showcase.filterparity
 
 import org.maiaframework.domain.DomainId
 import org.maiaframework.showcase.filter_sample.AgGridFilterSampleEntity
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
 import java.util.UUID
@@ -23,6 +24,8 @@ data class SeedRow(
     val intNullable: Int? = null,
     val decimalRequired: Double = 0.0,
     val decimalNullable: Double? = null,
+    val amountRequired: BigDecimal = BigDecimal.ZERO,
+    val amountNullable: BigDecimal? = null,
     val dateRequired: LocalDate = LocalDate.of(2024, 1, 1),
     val dateNullable: LocalDate? = null,
     val instantRequired: Instant = Instant.parse("2024-01-01T00:00:00Z"),
@@ -37,6 +40,8 @@ data class SeedRow(
 
 
     fun toEntity() = AgGridFilterSampleEntity(
+        amountNullable = amountNullable,
+        amountRequired = amountRequired,
         createdTimestamp = Instant.parse("2024-01-01T00:00:00Z"),
         dateNullable = dateNullable,
         dateRequired = dateRequired,
@@ -82,6 +87,13 @@ object AgGridFilterSeed {
         SeedRow("date-at-midnight", dateRequired = LocalDate.of(2024, 3, 15), dateNullable = LocalDate.of(2024, 3, 15), instantRequired = Instant.parse("2024-03-15T00:00:00Z"), instantNullable = Instant.parse("2024-03-15T00:00:00Z")),
         SeedRow("date-end-of-day", dateRequired = LocalDate.of(2024, 3, 15), instantRequired = Instant.parse("2024-03-15T23:59:59.999Z")),
         SeedRow("date-after-midnight", dateRequired = LocalDate.of(2024, 3, 16), dateNullable = LocalDate.of(2024, 3, 16), instantRequired = Instant.parse("2024-03-16T00:00:00Z"), instantNullable = Instant.parse("2024-03-16T00:00:00Z")),
+
+        // BigDecimal rows. amountRequired is 0 on every row above. The two "big" rows differ only in the 4th decimal
+        // place at 1e14, where a double comparison cannot tell them apart.
+        SeedRow("amount-nine", amountRequired = BigDecimal("9.0000"), amountNullable = BigDecimal("9.0000")),
+        SeedRow("amount-ten", amountRequired = BigDecimal("10.0000"), amountNullable = BigDecimal("10.0000")),
+        SeedRow("amount-big", amountRequired = BigDecimal("100000000000000.0000")),
+        SeedRow("amount-big-plus", amountRequired = BigDecimal("100000000000000.0001")),
     )
 
     private val byKey = rows.associateBy { it.key }
