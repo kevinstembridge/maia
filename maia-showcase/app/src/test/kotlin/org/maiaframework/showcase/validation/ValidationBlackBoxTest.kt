@@ -17,6 +17,8 @@ class ValidationBlackBoxTest : AbstractBlackBoxTest() {
                 {
                     "detail": "Invalid request content.",
                     "fieldErrors": {
+                        "someBigDecimal_raw": ["must not be null"],
+                        "someBigDecimalModifiable_raw": ["must not be null"],
                         "someBoolean_raw": ["must not be null"],
                         "someBooleanType_raw": ["must not be null"],
                         "someBooleanTypeProvided_raw": ["must not be null"],

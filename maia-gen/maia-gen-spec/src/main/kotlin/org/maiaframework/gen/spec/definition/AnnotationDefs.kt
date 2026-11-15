@@ -1,11 +1,13 @@
 package org.maiaframework.gen.spec.definition
 
 import org.maiaframework.gen.spec.definition.lang.AnnotationDef
+import org.maiaframework.gen.spec.definition.lang.AnnotationUsageSite
 
 object AnnotationDefs {
 
     val JSON_CREATOR = AnnotationDef(Fqcns.JACKSON_JSON_CREATOR)
     val JSON_INCLUDE = AnnotationDef(Fqcns.JACKSON_JSON_INCLUDE, { "JsonInclude.Include.NON_EMPTY" }, emptyMap())
+    val JSON_FORMAT_STRING = AnnotationDef(Fqcns.JACKSON_JSON_FORMAT, attributes = mapOf("shape" to "JsonFormat.Shape.STRING"), usageSite = AnnotationUsageSite.get)
     val JSON_IGNORE_PROPERTIES = AnnotationDef(Fqcns.JACKSON_JSON_IGNORE_PROPERTIES, attributes = mapOf("ignoreUnknown" to "true"))
     val JSON_PROPERTY = AnnotationDef(Fqcns.JACKSON_JSON_PROPERTY)
     val SPRING_AUTOWIRED = AnnotationDef(Fqcns.SPRING_AUTOWIRED)

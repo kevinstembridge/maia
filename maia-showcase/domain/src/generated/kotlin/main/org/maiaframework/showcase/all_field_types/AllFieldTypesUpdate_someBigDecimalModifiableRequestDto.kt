@@ -4,6 +4,7 @@
 package org.maiaframework.showcase.all_field_types
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -18,6 +19,7 @@ class AllFieldTypesUpdate_someBigDecimalModifiableRequestDto
     @field:NotNull
     @param:JsonProperty("id", access = JsonProperty.Access.READ_WRITE) 
     private val id_raw: DomainId?,
+    @field:JsonFormat(shape = JsonFormat.Shape.STRING)
     @field:NotNull
     @param:JsonProperty("someBigDecimalModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val someBigDecimalModifiable_raw: BigDecimal?

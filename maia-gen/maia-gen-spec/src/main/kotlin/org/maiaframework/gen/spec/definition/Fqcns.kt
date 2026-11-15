@@ -39,6 +39,7 @@ object Fqcns {
     val HAZELCAST_MAP_CONFIG = Fqcn.valueOf("com.hazelcast.config.MapConfig")
     val HTTP_SERVLET_REQUEST = Fqcn.valueOf("jakarta.servlet.http.HttpServletRequest")
     val INT_TYPE = Fqcn.valueOf("org.maiaframework.types.IntType")
+    val JACKSON_JSON_FORMAT = Fqcn.valueOf("com.fasterxml.jackson.annotation.JsonFormat")
     val JACKSON_JSON_IGNORE =Fqcn.valueOf("com.fasterxml.jackson.annotation.JsonIgnore")
     val JACKSON_JSON_IGNORE_PROPERTIES =Fqcn.valueOf("com.fasterxml.jackson.annotation.JsonIgnoreProperties")
     val JACKSON_JSON_CREATOR = Fqcn.valueOf("com.fasterxml.jackson.annotation.JsonCreator")

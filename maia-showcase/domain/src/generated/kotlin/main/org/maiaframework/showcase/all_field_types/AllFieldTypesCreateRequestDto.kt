@@ -4,6 +4,7 @@
 package org.maiaframework.showcase.all_field_types
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -30,12 +31,15 @@ import java.time.Period
 @JsonIgnoreProperties(ignoreUnknown = true)
 class AllFieldTypesCreateRequestDto
 @JsonCreator constructor(
+    @field:JsonFormat(shape = JsonFormat.Shape.STRING)
     @field:NotNull
     @param:JsonProperty("someBigDecimal", access = JsonProperty.Access.READ_WRITE) 
     private val someBigDecimal_raw: BigDecimal?,
+    @field:JsonFormat(shape = JsonFormat.Shape.STRING)
     @field:NotNull
     @param:JsonProperty("someBigDecimalModifiable", access = JsonProperty.Access.READ_WRITE) 
     private val someBigDecimalModifiable_raw: BigDecimal?,
+    @field:JsonFormat(shape = JsonFormat.Shape.STRING)
     @param:JsonProperty("someBigDecimalNullable", access = JsonProperty.Access.READ_WRITE) 
     val someBigDecimalNullable: BigDecimal?,
     @field:NotNull

@@ -26,6 +26,8 @@ class CrudSecurityTest : AbstractBlackBoxTest() {
 
     private val validAllFieldTypesCreateJson = """
         {
+            "someBigDecimal": "1.5000",
+            "someBigDecimalModifiable": "1.50",
             "someBoolean": true,
             "someBooleanType": true,
             "someBooleanTypeProvided": true,
@@ -52,6 +54,7 @@ class CrudSecurityTest : AbstractBlackBoxTest() {
     private val validAllFieldTypesUpdateJson = """
         {
             "id": "$stubId",
+            "someBigDecimalModifiable": "1.50",
             "someInstantModifiable": "2024-01-01T00:00:00Z",
             "someIntModifiable": 1,
             "someListOfStrings": ["item"],

@@ -3,6 +3,7 @@ package org.maiaframework.gen.spec.definition
 
 import org.maiaframework.gen.spec.definition.builders.ClassDefBuilder.Companion.aClassDef
 import org.maiaframework.gen.spec.definition.flags.WithGeneratedEndpoint
+import org.maiaframework.gen.spec.definition.lang.BigDecimalFieldType
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.ClassType
@@ -24,8 +25,24 @@ class RequestDtoDef(
 
 
     val dtoFieldDefs = dtoFieldDefs
+        .map { withWireFormatAnnotations(it) }
         .sortedWith(compareBy<RequestDtoFieldDef> { it.classFieldDef.nullable }
             .thenBy { it.classFieldDef.classFieldName })
+
+
+    /** BigDecimal values travel as JSON strings so that no precision is lost in transit (see ADR-0006). */
+    private fun withWireFormatAnnotations(fieldDef: RequestDtoFieldDef): RequestDtoFieldDef {
+
+        val classFieldDef = fieldDef.classFieldDef
+
+        if (classFieldDef.fieldType !is BigDecimalFieldType) {
+            return fieldDef
+        }
+
+        val annotationDefs = (classFieldDef.annotationDefs + AnnotationDefs.JSON_FORMAT_STRING).toSortedSet()
+        return fieldDef.copy(classFieldDef = classFieldDef.copy(annotationDefs = annotationDefs))
+
+    }
 
 
     val classFieldDefs = this.dtoFieldDefs.map { it.classFieldDef }
