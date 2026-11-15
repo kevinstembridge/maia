@@ -72,6 +72,10 @@ _Avoid_: Pk and name, lookup, summary
 A pair of optional effective-from and effective-to bounds (timestamps or dates) on an Entity, managed either by the user or by the system, so that a record is only in force between them.
 _Avoid_: Validity period, active dates
 
+**Field type**:
+The Spec-level type of an Entity field, which determines its database column, wire format, user-interface input and search mapping. A decimal Field type carries a precision and a scale.
+_Avoid_: Data type, column type
+
 **Microtype**:
 A class wrapping a primitive to give a field its own domain type, declared in a Spec with `stringType`, `intType`, `longType` or `booleanType`.
 _Avoid_: Type, wrapper type
