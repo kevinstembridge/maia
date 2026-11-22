@@ -16,7 +16,7 @@ class CrudListenerTestSpec : AbstractSpec(AppKey("Test")) {
 
 
     /** Fully CRUD-enabled (and therefore listener-enabled) entity. */
-    val widget = entity("com.example", "Widget", deletable = Deletable.TRUE) {
+    val widget = entity("com.example", "Widget", recordVersionHistory = false, deletable = Deletable.TRUE) {
         field("name", FieldTypes.string) {
             fieldDisplayName("Name")
             editableByUser()
@@ -36,7 +36,7 @@ class CrudListenerTestSpec : AbstractSpec(AppKey("Test")) {
 
 
     /** References Widget, so Widget's delete function renders a foreign-key guard. */
-    val widgetPart = entity("com.example", "WidgetPart", deletable = Deletable.TRUE) {
+    val widgetPart = entity("com.example", "WidgetPart", recordVersionHistory = false, deletable = Deletable.TRUE) {
         field("label", FieldTypes.string) {
             fieldDisplayName("Label")
         }
@@ -45,7 +45,7 @@ class CrudListenerTestSpec : AbstractSpec(AppKey("Test")) {
 
 
     /** Listener-enabled but NOT deletable. */
-    val sprocket = entity("com.example", "Sprocket") {
+    val sprocket = entity("com.example", "Sprocket", recordVersionHistory = false) {
         field("name", FieldTypes.string) {
             fieldDisplayName("Name")
             editableByUser()
@@ -62,7 +62,7 @@ class CrudListenerTestSpec : AbstractSpec(AppKey("Test")) {
 
 
     /** Modifiable and deletable, but WITHOUT a crud listener. */
-    val plain = entity("com.example", "Plain", deletable = Deletable.TRUE) {
+    val plain = entity("com.example", "Plain", recordVersionHistory = false, deletable = Deletable.TRUE) {
         field("name", FieldTypes.string) {
             fieldDisplayName("Name")
             editableByUser()
@@ -71,7 +71,7 @@ class CrudListenerTestSpec : AbstractSpec(AppKey("Test")) {
 
 
     /** Listener-enabled entity with a composite primary key. */
-    val pairing = entity("com.example", "Pairing", deletable = Deletable.TRUE) {
+    val pairing = entity("com.example", "Pairing", recordVersionHistory = false, deletable = Deletable.TRUE) {
         field("left", FieldTypes.string) {
             fieldDisplayName("Left")
             primaryKey()
@@ -96,7 +96,7 @@ class CrudListenerTestSpec : AbstractSpec(AppKey("Test")) {
 
 
     /** Abstract, listener-enabled superclass. */
-    val vehicle = entity("com.example", "Vehicle") {
+    val vehicle = entity("com.example", "Vehicle", recordVersionHistory = false) {
         isAbstract = true
         field("name", FieldTypes.string) {
             fieldDisplayName("Name")
@@ -107,7 +107,7 @@ class CrudListenerTestSpec : AbstractSpec(AppKey("Test")) {
 
 
     /** Listener-enabled subclass: its notifier must also fan out to Vehicle listeners. */
-    val car = entity("com.example", "Car") {
+    val car = entity("com.example", "Car", recordVersionHistory = false) {
         superclass(vehicle)
         typeDiscriminator("CAR")
         field("doors", FieldTypes.int) {

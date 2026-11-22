@@ -46,7 +46,7 @@ class SchemaCheckMainTest {
     // ApplicationModelDefInstantiator requires ApplicationModelDefProvider, implemented by
     // ApplicationSpec, which aggregates one or more ModelDefs. Both are needed together.
     class MatchingModelSpec : AbstractSpec(AppKey("SchemaCheckMainTest")) {
-        val widget = entity("com.example", "Widget") {
+        val widget = entity("com.example", "Widget", recordVersionHistory = false) {
             field("name", FieldTypes.string) { lengthConstraint(max = 50) }
         }
     }

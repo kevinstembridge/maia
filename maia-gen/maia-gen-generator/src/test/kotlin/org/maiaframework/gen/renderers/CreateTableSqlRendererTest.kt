@@ -144,20 +144,20 @@ class CreateTableSqlRendererTest {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
 
-            val widget = entity("com.example", "Widget") {
+            val widget = entity("com.example", "Widget", recordVersionHistory = false) {
                 withEffectiveTimestamps(hasSingleEffectiveRecord = true)
                 field("category", FieldTypes.string) { lengthConstraint(max = 50) }
                 index { withFieldAscending("category") }
             }
 
-            val vehicle = entity("com.example", "Vehicle") {
+            val vehicle = entity("com.example", "Vehicle", recordVersionHistory = false) {
                 typeDiscriminator("VEHICLE")
                 withEffectiveTimestamps(hasSingleEffectiveRecord = true)
                 field("category", FieldTypes.string) { lengthConstraint(max = 50) }
                 index { withFieldAscending("category") }
             }
 
-            val car = entity("com.example", "Car") {
+            val car = entity("com.example", "Car", recordVersionHistory = false) {
                 superclass(vehicle)
                 typeDiscriminator("CAR")
                 field("doors", FieldTypes.int)

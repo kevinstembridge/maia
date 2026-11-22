@@ -19,7 +19,7 @@ class HistoryFkValidationTest {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
 
-            val noHistory = entity("com.example", "NoHistory", deletable = Deletable.TRUE) {
+            val noHistory = entity("com.example", "NoHistory", recordVersionHistory = false, deletable = Deletable.TRUE) {
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 
@@ -42,7 +42,7 @@ class HistoryFkValidationTest {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
 
-            val noHistory = entity("com.example", "NoHistory", deletable = Deletable.TRUE) {
+            val noHistory = entity("com.example", "NoHistory", recordVersionHistory = false, deletable = Deletable.TRUE) {
                 refDtoFieldNames("name")
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
@@ -55,6 +55,7 @@ class HistoryFkValidationTest {
             val join = manyToManyEntity(
                 "com.example",
                 "Join",
+                recordVersionHistory = true,
                 leftEntity = ReferencedEntity("left", "Left", noHistory, IsEditableByUser.TRUE),
                 rightEntity = ReferencedEntity("right", "Right", withHistory, IsEditableByUser.TRUE)
             )
@@ -159,7 +160,7 @@ class HistoryFkValidationTest {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
 
-            val nonDeletable = entity("com.example", "NonDeletable") {
+            val nonDeletable = entity("com.example", "NonDeletable", recordVersionHistory = false) {
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 

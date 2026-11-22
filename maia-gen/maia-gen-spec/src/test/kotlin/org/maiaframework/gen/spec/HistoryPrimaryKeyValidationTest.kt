@@ -54,7 +54,7 @@ class HistoryPrimaryKeyValidationTest {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
 
-            val noHistory = entity("com.example", "NoHistory") {
+            val noHistory = entity("com.example", "NoHistory", recordVersionHistory = false) {
                 field("name", FieldTypes.string) {
                     fieldDisplayName("Name")
                     primaryKey()

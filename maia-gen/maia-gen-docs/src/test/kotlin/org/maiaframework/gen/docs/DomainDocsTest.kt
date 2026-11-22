@@ -18,7 +18,7 @@ class DomainDocsTest {
 
     class WidgetModelSpec : AbstractSpec(AppKey("DomainDocsTest")) {
 
-        val widget = entity("com.example", "Widget") {
+        val widget = entity("com.example", "Widget", recordVersionHistory = false) {
             description("A thing <that> we sell")
             field("name", FieldTypes.string) { lengthConstraint(max = 50) }
             field("nickname", FieldTypes.string) { nullable() }
