@@ -20,7 +20,7 @@ class EntityHistoryBlotterRowDtoTypescriptRendererTest {
                 field("street", FieldTypes.string)
             }
 
-            val widget = entity("com.example", "Widget", recordVersionHistory = true) {
+            val widget = entity("com.example", "Widget") {
                 field("address", addressDto)
             }
 

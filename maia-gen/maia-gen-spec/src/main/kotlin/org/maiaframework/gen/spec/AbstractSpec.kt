@@ -666,7 +666,7 @@ abstract class AbstractSpec protected constructor(
     protected fun entity(
         packageName: String,
         entityBaseName: String,
-        recordVersionHistory: Boolean = false,
+        recordVersionHistory: Boolean = true,
         versioned: Boolean = false,
         isDeltaEntity: Boolean = false,
         deletable: Deletable = Deletable.FALSE,

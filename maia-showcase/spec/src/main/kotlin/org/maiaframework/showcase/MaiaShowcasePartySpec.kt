@@ -133,8 +133,6 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
         "Party",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        versioned = true,
-        recordVersionHistory = true,
     ) {
         refDtoFieldNames("displayName")
         isAbstract = true
@@ -163,7 +161,6 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
 
     val orgRoleEntityDef = entity(
         "org.maiaframework.showcase.org", "OrgRole",
-        recordVersionHistory = true,
     ) {
         refDtoFieldNames("displayName")
         field("key", orgRoleKeyStringType) {
@@ -184,6 +181,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val orgEntityDef = entity(
         "org.maiaframework.showcase.org",
         "Organization",
+        recordVersionHistory = false
     ) {
         refDtoFieldNames("orgName")
         superclass(partyEntityDef)
@@ -241,7 +239,8 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
 
     val personEntityDef = entity(
         "org.maiaframework.showcase.person",
-        "Person"
+        "Person",
+        recordVersionHistory = false
     ) {
         superclass(partyEntityDef)
         typeDiscriminator("PER")
@@ -277,6 +276,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val userEntityDef = entity(
         "org.maiaframework.showcase.user",
         "User",
+        recordVersionHistory = false
     ) {
         refDtoFieldNames("displayName")
         superclass(personEntityDef)
@@ -356,7 +356,6 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val userGroupEntityDef = entity(
         "org.maiaframework.showcase.user",
         "UserGroup",
-        recordVersionHistory = true,
     ) {
         refDtoFieldNames("name")
         moduleName("ops")
@@ -382,7 +381,6 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val orgUserGroupEntityDef = entity(
         "org.maiaframework.showcase.org",
         "OrgUserGroup",
-        recordVersionHistory = true
     ) {
         moduleName("ops")
         superclass(userGroupEntityDef)
@@ -464,6 +462,7 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val emailAddressEntityDef = entity(
         "org.maiaframework.showcase.contact",
         "EmailAddress",
+        recordVersionHistory = false
     ) {
         refDtoFieldNames("emailAddress")
         moduleName("ops")
@@ -499,7 +498,8 @@ class MaiaShowcasePartySpec : AbstractSpec(appKey = AppKey("maia_party"), defaul
     val emailAddressVerificationEntityDef = entity(
         "org.maiaframework.showcase.party.contact",
         "EmailAddressVerification",
-        versioned = true
+        versioned = true,
+        recordVersionHistory = false
     ) {
         moduleName("ops")
         foreignKey("emailAddress", emailAddressEntityDef)

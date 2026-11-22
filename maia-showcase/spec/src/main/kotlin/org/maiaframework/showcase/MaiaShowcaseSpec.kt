@@ -166,7 +166,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "org.maiaframework.showcase.effective_dated",
         "EffectiveTimestamp",
         deletable = Deletable.TRUE,
-        allowDeleteAll = AllowDeleteAll.TRUE
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        recordVersionHistory = false
     ) {
         withEffectiveTimestamps(hasSingleEffectiveRecord = true)
         field("someString", FieldTypes.string) {
@@ -184,7 +185,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "AllFieldTypes",
         deletable = Deletable.TRUE,
         allowFindAll = AllowFindAll.TRUE,
-        allowDeleteAll = AllowDeleteAll.TRUE
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        recordVersionHistory = false
     ) {
         field("someBigDecimal", FieldTypes.bigDecimal) {
             fieldDisplayName("Some BigDecimal")
@@ -514,7 +516,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "org.maiaframework.showcase.cached_big_decimal",
         "CachedBigDecimal",
         deletable = Deletable.TRUE,
-        allowDeleteAll = AllowDeleteAll.TRUE
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        recordVersionHistory = false
     ) {
         cacheable {  }
         field("someBigDecimal", FieldTypes.bigDecimal)
@@ -527,7 +530,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "org.maiaframework.showcase.simple",
         "Simple",
         deletable = Deletable.TRUE,
-        allowDeleteAll = AllowDeleteAll.TRUE
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        recordVersionHistory = false
     ) {
         cacheable {  }
         field("someString", FieldTypes.string) {
@@ -604,7 +608,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val historySampleEntityDef = entity(
         "org.maiaframework.showcase.history",
         "HistorySample",
-        recordVersionHistory = true,
         deletable = Deletable.TRUE
     ) {
         field("someString", FieldTypes.string) {
@@ -689,7 +692,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "org.maiaframework.showcase.hierarchy",
         "Grandparent",
         deletable = Deletable.TRUE,
-        allowDeleteAll = AllowDeleteAll.TRUE
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        recordVersionHistory = false
     ) {
         isAbstract = true
         field_createdById(partySpec.partyEntityDef)
@@ -702,7 +706,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "org.maiaframework.showcase.hierarchy",
         "ParentOne",
         deletable = Deletable.TRUE,
-        allowDeleteAll = AllowDeleteAll.TRUE
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        recordVersionHistory = false
     ) {
         superclass(grandparentEntityDef)
         typeDiscriminator("SUB1")
@@ -735,7 +740,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "org.maiaframework.showcase.hierarchy",
         "ChildOne",
         deletable = Deletable.TRUE,
-        allowDeleteAll = AllowDeleteAll.TRUE
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        recordVersionHistory = false
     ) {
         superclass(parentOneEntityDef)
         typeDiscriminator("CHILD1")
@@ -763,7 +769,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "org.maiaframework.showcase.hierarchy",
         "ParentTwo",
         deletable = Deletable.TRUE,
-        allowDeleteAll = AllowDeleteAll.TRUE
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        recordVersionHistory = false
     ) {
         superclass(grandparentEntityDef)
         typeDiscriminator("SUB2")
@@ -794,7 +801,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val historySuperEntityDef = entity(
         "org.maiaframework.showcase.history",
         "HistorySuper",
-        recordVersionHistory = true,
         deletable = Deletable.TRUE
     ) {
         isAbstract = true
@@ -807,7 +813,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val historySubOneEntityDef = entity(
         "org.maiaframework.showcase.history",
         "HistorySubOne",
-        recordVersionHistory = true,
         deletable = Deletable.TRUE
     ) {
         superclass(historySuperEntityDef)
@@ -822,7 +827,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val historySubTwoEntityDef = entity(
         "org.maiaframework.showcase.history",
         "HistorySubTwo",
-        recordVersionHistory = true,
         deletable = Deletable.TRUE
     ) {
         superclass(historySuperEntityDef)
@@ -837,7 +841,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "org.maiaframework.showcase.versioned",
         "SomeVersioned",
         versioned = true,
-        deletable = Deletable.TRUE
+        deletable = Deletable.TRUE,
+        recordVersionHistory = false
     ) {
         field("someString", FieldTypes.string) {
             fieldDisplayName("Some String")
@@ -912,7 +917,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val withOptionalIndexFieldEntityDef = entity(
         "org.maiaframework.showcase.indexed",
-        "WithOptionalIndexField"
+        "WithOptionalIndexField",
+        recordVersionHistory = false
     ) {
         field("someOptionalString1", someStringTypeDef) {
             nullable()
@@ -937,7 +943,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val foreignKeyParentEntityDef = entity(
         "org.maiaframework.showcase.fk",
-        "ForeignKeyParent"
+        "ForeignKeyParent",
+        recordVersionHistory = false
     ) {
         field("someString", FieldTypes.string) {
             lengthConstraint(max = 100)
@@ -948,7 +955,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val foreignKeyEntityDef = entity(
         "org.maiaframework.showcase.fk",
-        "ForeignKeyChild"
+        "ForeignKeyChild",
+        recordVersionHistory = false
     ) {
         field("parentId", FieldTypes.domainId)
         field("someString", FieldTypes.string) {
@@ -975,6 +983,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "Alpha",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
+        recordVersionHistory = false
     ) {
         refDtoFieldNames("someString")
         field("someInt", FieldTypes.int) {
@@ -1067,7 +1076,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "org.maiaframework.showcase.join",
         "Bravo",
         deletable = Deletable.TRUE,
-        allowDeleteAll = AllowDeleteAll.TRUE
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        recordVersionHistory = false
     ) {
         refDtoFieldNames("someString")
         foreignKey("alpha", alphaEntityDef) {
@@ -1103,7 +1113,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "org.maiaframework.showcase.join",
         "Charlie",
         deletable = Deletable.TRUE,
-        allowDeleteAll = AllowDeleteAll.TRUE
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        recordVersionHistory = false
     ) {
         foreignKey("bravo", bravoEntityDef) {
             fieldDisplayName("Bravo")
@@ -1200,7 +1211,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "org.maiaframework.showcase.filter_sample",
         "AgGridFilterSample",
         deletable = Deletable.TRUE,
-        allowDeleteAll = AllowDeleteAll.TRUE
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        recordVersionHistory = false
     ) {
         field("textRequired", FieldTypes.string) {
             fieldDisplayName("Text Required")
@@ -1353,7 +1365,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "org.maiaframework.showcase.join",
         "AlphaAgGrid",
         deletable = Deletable.TRUE,
-        allowDeleteAll = AllowDeleteAll.TRUE
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        recordVersionHistory = false
     ) {
         refDtoFieldNames("someString")
         field("someInt", FieldTypes.int)
@@ -1367,7 +1380,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "org.maiaframework.showcase.join",
         "BravoAgGrid",
         deletable = Deletable.TRUE,
-        allowDeleteAll = AllowDeleteAll.TRUE
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        recordVersionHistory = false
     ) {
         refDtoFieldNames("someString")
         foreignKey("alpha", alphaAgGridEntityDef)
@@ -1382,7 +1396,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "org.maiaframework.showcase.join",
         "CharlieAgGrid",
         deletable = Deletable.TRUE,
-        allowDeleteAll = AllowDeleteAll.TRUE
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        recordVersionHistory = false
     ) {
         foreignKey("bravo", bravoAgGridEntityDef) {
             fieldDisplayName("Bravo")
@@ -1457,7 +1472,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "AlphaWithHistory",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        recordVersionHistory = true,
     ) {
         refDtoFieldNames("someString")
         field("someInt", FieldTypes.int) {
@@ -1547,7 +1561,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "BravoWithHistory",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        recordVersionHistory = true,
     ) {
         refDtoFieldNames("someString")
         foreignKey("alpha", alphaWithHistoryEntityDef) {
@@ -1623,7 +1636,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "LeftMany",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        recordVersionHistory = true,
     ) {
         refDtoFieldNames("someString")
         field("someInt", FieldTypes.int) {
@@ -1677,7 +1689,6 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "RightMany",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        recordVersionHistory = true
     ) {
         refDtoFieldNames("someString")
         field("someInt", FieldTypes.int) {
@@ -2062,7 +2073,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val unmodifiableEntityDef = entity(
         "org.maiaframework.showcase.unmodifiable",
-        "Unmodifiable"
+        "Unmodifiable",
+        recordVersionHistory = false
     ) {
         field("someUniqueInt", FieldTypes.int) { unique() }
     }
@@ -2073,7 +2085,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "CompositePrimaryKey",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        versioned = true
+        versioned = true,
+        recordVersionHistory = false
     ) {
         cacheable {  }
         field("someString", FieldTypes.string) {
@@ -2157,7 +2170,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "NonSurrogatePrimaryKey",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        versioned = true
+        versioned = true,
+        recordVersionHistory = false
     ) {
         field("someString", someStringValueClassDef) {
             primaryKey()
@@ -2176,7 +2190,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         "NonSurrogateIdPrimaryKey",
         deletable = Deletable.TRUE,
         allowDeleteAll = AllowDeleteAll.TRUE,
-        versioned = true
+        versioned = true,
+        recordVersionHistory = false
     ) {
         field("id", someStringValueClassDef) {
             primaryKey()

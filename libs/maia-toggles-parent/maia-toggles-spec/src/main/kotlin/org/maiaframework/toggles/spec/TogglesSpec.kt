@@ -58,8 +58,6 @@ class TogglesSpec : AbstractSpec(appKey = AppKey("maia_toggles"), defaultSchemaN
 
     val featureToggleEntityDef = entity(
         "org.maiaframework.toggles", "FeatureToggle",
-        versioned = true,
-        recordVersionHistory = true,
         deletable = Deletable.TRUE,
         allowFindAll = AllowFindAll.TRUE,
     ) {

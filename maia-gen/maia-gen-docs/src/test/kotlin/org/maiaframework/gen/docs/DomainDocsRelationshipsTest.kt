@@ -48,7 +48,7 @@ class DomainDocsRelationshipsTest {
             field("breed", FieldTypes.string)
         }
 
-        val audited = entity("com.example.app", "Audited", recordVersionHistory = true) {
+        val audited = entity("com.example.app", "Audited") {
             field("label", FieldTypes.string)
         }
 

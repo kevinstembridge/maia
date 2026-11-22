@@ -76,7 +76,7 @@ class HistoryFkValidationTest {
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 
-            val withHistory = entity("com.example", "WithHistory", recordVersionHistory = true) {
+            val withHistory = entity("com.example", "WithHistory") {
                 foreignKey("noHistory", noHistory) { fieldDisplayName("No History") }
             }
 
@@ -126,11 +126,11 @@ class HistoryFkValidationTest {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
 
-            val parent = entity("com.example", "Parent", recordVersionHistory = true) {
+            val parent = entity("com.example", "Parent") {
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 
-            val child = entity("com.example", "Child", recordVersionHistory = true) {
+            val child = entity("com.example", "Child") {
                 foreignKey("parent", parent) { fieldDisplayName("Parent") }
             }
 

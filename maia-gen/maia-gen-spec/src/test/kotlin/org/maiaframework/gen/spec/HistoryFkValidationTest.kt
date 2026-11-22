@@ -23,7 +23,7 @@ class HistoryFkValidationTest {
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 
-            val withHistory = entity("com.example", "WithHistory", recordVersionHistory = true) {
+            val withHistory = entity("com.example", "WithHistory") {
                 foreignKey("noHistory", noHistory) { fieldDisplayName("No History") }
             }
 
@@ -47,7 +47,7 @@ class HistoryFkValidationTest {
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 
-            val withHistory = entity("com.example", "WithHistory", recordVersionHistory = true) {
+            val withHistory = entity("com.example", "WithHistory") {
                 refDtoFieldNames("name")
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
@@ -55,7 +55,6 @@ class HistoryFkValidationTest {
             val join = manyToManyEntity(
                 "com.example",
                 "Join",
-                recordVersionHistory = true,
                 leftEntity = ReferencedEntity("left", "Left", noHistory, IsEditableByUser.TRUE),
                 rightEntity = ReferencedEntity("right", "Right", withHistory, IsEditableByUser.TRUE)
             )
@@ -99,7 +98,7 @@ class HistoryFkValidationTest {
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 
-            val withHistory = entity("com.example", "WithHistory", recordVersionHistory = true) {
+            val withHistory = entity("com.example", "WithHistory") {
                 foreignKey("nonDeletable", nonDeletable) { fieldDisplayName("Non-Deletable") }
             }
 
@@ -115,11 +114,11 @@ class HistoryFkValidationTest {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
 
-            val parent = entity("com.example", "Parent", recordVersionHistory = true) {
+            val parent = entity("com.example", "Parent") {
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 
-            val child = entity("com.example", "Child", recordVersionHistory = true) {
+            val child = entity("com.example", "Child") {
                 foreignKey("parent", parent) { fieldDisplayName("Parent") }
             }
 
@@ -135,11 +134,11 @@ class HistoryFkValidationTest {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
 
-            val parent = entity("com.example", "Parent", recordVersionHistory = true) {
+            val parent = entity("com.example", "Parent") {
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 
-            val child = entity("com.example", "Child", recordVersionHistory = true) {
+            val child = entity("com.example", "Child") {
                 foreignKey("parent", parent) { fieldDisplayName("Parent") }
             }
 
@@ -164,7 +163,7 @@ class HistoryFkValidationTest {
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 
-            val withHistory = entity("com.example", "WithHistory", recordVersionHistory = true) {
+            val withHistory = entity("com.example", "WithHistory") {
                 foreignKey("nonDeletable", nonDeletable) { fieldDisplayName("Non-Deletable") }
             }
 
@@ -182,15 +181,15 @@ class HistoryFkValidationTest {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
 
-            val parent = entity("com.example", "Parent", recordVersionHistory = true) {
+            val parent = entity("com.example", "Parent") {
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 
-            val vehicle = entity("com.example", "Vehicle", recordVersionHistory = true) {
+            val vehicle = entity("com.example", "Vehicle") {
                 typeDiscriminator("VEHICLE")
             }
 
-            val car = entity("com.example", "Car", recordVersionHistory = true) {
+            val car = entity("com.example", "Car") {
                 superclass(vehicle)
                 typeDiscriminator("CAR")
                 foreignKey("parent", parent) { fieldDisplayName("Parent") }

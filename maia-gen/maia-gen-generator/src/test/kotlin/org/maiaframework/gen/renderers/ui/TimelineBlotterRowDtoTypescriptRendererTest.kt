@@ -23,7 +23,6 @@ class TimelineBlotterRowDtoTypescriptRendererTest {
             val widget = entity(
                 "com.example",
                 "Widget",
-                recordVersionHistory = true,
             ) {
                 refDtoFieldNames("name")
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }

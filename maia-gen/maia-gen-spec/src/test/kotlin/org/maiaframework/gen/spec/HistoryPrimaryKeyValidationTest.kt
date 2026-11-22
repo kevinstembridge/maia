@@ -15,7 +15,7 @@ class HistoryPrimaryKeyValidationTest {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
 
-            val withHistory = entity("com.example", "WithHistory", recordVersionHistory = true) {
+            val withHistory = entity("com.example", "WithHistory") {
                 field("name", FieldTypes.string) {
                     fieldDisplayName("Name")
                     primaryKey()
@@ -38,7 +38,7 @@ class HistoryPrimaryKeyValidationTest {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
 
-            val withHistory = entity("com.example", "WithHistory", recordVersionHistory = true) {
+            val withHistory = entity("com.example", "WithHistory") {
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 

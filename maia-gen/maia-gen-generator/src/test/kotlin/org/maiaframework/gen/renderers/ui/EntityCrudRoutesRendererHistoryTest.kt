@@ -24,7 +24,7 @@ class EntityCrudRoutesRendererHistoryTest {
 
             val writeAuthority = authority("WIDGET_WRITE")
 
-            val widget = entity("com.example", "Widget", recordVersionHistory = true) {
+            val widget = entity("com.example", "Widget") {
                 field("name", FieldTypes.string) { editableByUser() }
                 historyBlotter { authority(readAuthority) }
                 crud {
@@ -49,7 +49,7 @@ class EntityCrudRoutesRendererHistoryTest {
 
             val writeAuthority = authority("WIDGET_WRITE")
 
-            val widget = entity("com.example", "Widget", recordVersionHistory = true) {
+            val widget = entity("com.example", "Widget") {
                 field("name", FieldTypes.string) { editableByUser() }
                 crud {
                     authority(writeAuthority)
@@ -71,7 +71,7 @@ class EntityCrudRoutesRendererHistoryTest {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
 
-            val widget = entity("com.example", "Widget", recordVersionHistory = true) {
+            val widget = entity("com.example", "Widget") {
                 field("name", FieldTypes.string)
             }
 

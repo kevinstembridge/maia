@@ -111,7 +111,7 @@ class CreateTableSqlRendererTest {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
 
-            val base = entity("com.example", "Base", recordVersionHistory = true) {
+            val base = entity("com.example", "Base") {
                 field("name", FieldTypes.string) { lengthConstraint(max = 50) }
             }
 
@@ -203,10 +203,10 @@ class CreateTableSqlRendererTest {
     fun `renders a composite foreign key constraint when a history entity FKs another history entity`(@TempDir tempDir: File) {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
-            val parent = entity("com.example", "Parent", recordVersionHistory = true) {
+            val parent = entity("com.example", "Parent") {
                 field("name", FieldTypes.string) { lengthConstraint(max = 50) }
             }
-            val child = entity("com.example", "Child", recordVersionHistory = true) {
+            val child = entity("com.example", "Child") {
                 foreignKey("parent", parent)
             }
         }
@@ -230,10 +230,10 @@ class CreateTableSqlRendererTest {
     fun `renders a composite foreign key constraint with an explicit constraint name`(@TempDir tempDir: File) {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
-            val parent = entity("com.example", "Parent", recordVersionHistory = true) {
+            val parent = entity("com.example", "Parent") {
                 field("name", FieldTypes.string) { lengthConstraint(max = 50) }
             }
-            val child = entity("com.example", "Child", recordVersionHistory = true) {
+            val child = entity("com.example", "Child") {
                 foreignKey("parent", parent) { constraintName("child_parent_fkey") }
             }
         }

@@ -84,7 +84,7 @@ class ExpectedSchemaExtractorTest {
     fun `extracts a separate table for a history entity`() {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
-            val widget = entity("com.example", "Widget", recordVersionHistory = true) {
+            val widget = entity("com.example", "Widget") {
                 field("name", FieldTypes.string) { lengthConstraint(max = 50) }
             }
         }
@@ -179,10 +179,10 @@ class ExpectedSchemaExtractorTest {
     fun `extracts a composite foreign key when a history entity FKs another history entity`() {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
-            val parent = entity("com.example", "Parent", recordVersionHistory = true) {
+            val parent = entity("com.example", "Parent") {
                 field("name", FieldTypes.string) { lengthConstraint(max = 50) }
             }
-            val child = entity("com.example", "Child", recordVersionHistory = true) {
+            val child = entity("com.example", "Child") {
                 foreignKey("parent", parent)
             }
         }

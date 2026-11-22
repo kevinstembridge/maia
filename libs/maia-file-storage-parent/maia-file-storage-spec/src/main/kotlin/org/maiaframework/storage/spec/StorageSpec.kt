@@ -24,7 +24,7 @@ class StorageSpec : AbstractSpec(appKey = AppKey("storage"), defaultSchemaName =
     }
 
 
-    val fileStorageEntityDef = entity("org.maiaframework.storage", "FileStorageEntry") {
+    val fileStorageEntityDef = entity("org.maiaframework.storage", "FileStorageEntry", recordVersionHistory = false) {
         field("fileName", fileNameStringType) {
             lengthConstraint(max = 100)
         }

@@ -113,11 +113,11 @@ Append these three tests to the existing class:
 
         val spec = object : AbstractSpec(AppKey("Test")) {
 
-            val parent = entity("com.example", "Parent", recordVersionHistory = true) {
+            val parent = entity("com.example", "Parent") {
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 
-            val child = entity("com.example", "Child", recordVersionHistory = true) {
+            val child = entity("com.example", "Child") {
                 foreignKey("parent", parent) { fieldDisplayName("Parent") }
             }
 
@@ -142,7 +142,7 @@ Append these three tests to the existing class:
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 
-            val withHistory = entity("com.example", "WithHistory", recordVersionHistory = true) {
+            val withHistory = entity("com.example", "WithHistory") {
                 foreignKey("nonDeletable", nonDeletable) { fieldDisplayName("Non-Deletable") }
             }
 
@@ -160,15 +160,15 @@ Append these three tests to the existing class:
 
         val spec = object : AbstractSpec(AppKey("Test")) {
 
-            val parent = entity("com.example", "Parent", recordVersionHistory = true) {
+            val parent = entity("com.example", "Parent") {
                 field("name", FieldTypes.string) { fieldDisplayName("Name") }
             }
 
-            val vehicle = entity("com.example", "Vehicle", recordVersionHistory = true) {
+            val vehicle = entity("com.example", "Vehicle") {
                 typeDiscriminator("VEHICLE")
             }
 
-            val car = entity("com.example", "Car", recordVersionHistory = true) {
+            val car = entity("com.example", "Car") {
                 superclass(vehicle)
                 typeDiscriminator("CAR")
                 foreignKey("parent", parent) { fieldDisplayName("Parent") }
@@ -627,10 +627,10 @@ data class ExpectedTableDef(
     fun `extracts a composite foreign key when a history entity FKs another history entity`() {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
-            val parent = entity("com.example", "Parent", recordVersionHistory = true) {
+            val parent = entity("com.example", "Parent") {
                 field("name", FieldTypes.string) { lengthConstraint(max = 50) }
             }
-            val child = entity("com.example", "Child", recordVersionHistory = true) {
+            val child = entity("com.example", "Child") {
                 foreignKey("parent", parent)
             }
         }
@@ -725,10 +725,10 @@ Follow the existing `` `renders a separate history table for a recordVersionHist
     fun `renders a composite foreign key constraint when a history entity FKs another history entity`(@TempDir tempDir: File) {
 
         val spec = object : AbstractSpec(AppKey("Test")) {
-            val parent = entity("com.example", "Parent", recordVersionHistory = true) {
+            val parent = entity("com.example", "Parent") {
                 field("name", FieldTypes.string) { lengthConstraint(max = 50) }
             }
-            val child = entity("com.example", "Child", recordVersionHistory = true) {
+            val child = entity("com.example", "Child") {
                 foreignKey("parent", parent)
             }
         }

@@ -28,8 +28,6 @@ class PropsSpec : AbstractSpec(appKey = AppKey("maia_props"), defaultSchemaName 
 
     val propertyEntityDef = entity(
         "org.maiaframework.props", "Props",
-        versioned = true,
-        recordVersionHistory = true,
         deletable = Deletable.TRUE,
         allowFindAll = AllowFindAll.TRUE,
     ) {
