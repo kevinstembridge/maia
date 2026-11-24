@@ -2141,9 +2141,10 @@ class JdbcDaoRenderer(
 
                 val entityRefDef = foreignKeyEntityRefDef(foreignKeyEntity, entityFieldDef)
 
-                listOf(
+                listOfNotNull(
                     "$tableOrAlias.id as ${foreignKeyFieldDef.foreignKeyFieldName}Id",
-                    "$tableOrAlias.${entityRefDef.displayNameEntityFieldDef.tableColumnName} as ${foreignKeyFieldDef.foreignKeyFieldName}Name"
+                    "$tableOrAlias.${entityRefDef.displayNameEntityFieldDef.tableColumnName} as ${foreignKeyFieldDef.foreignKeyFieldName}Name",
+                    entityRefDef.shortcodeEntityFieldDef?.let { "$tableOrAlias.${it.tableColumnName} as ${foreignKeyFieldDef.foreignKeyFieldName}Shortcode" }
                 )
 
             }

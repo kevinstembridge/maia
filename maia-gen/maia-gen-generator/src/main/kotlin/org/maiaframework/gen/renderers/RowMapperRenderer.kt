@@ -168,6 +168,10 @@ class RowMapperRenderer(
         appendLine("        val ${rowMapperFieldDef.classFieldName} = ${entityRefDef.dtoUqcn}(")
         appendLine("            id = " + renderRowMapperField(pkEntityFieldDef, idResultSetFieldName, nullable = false, indentSize = 0, orElseText = "", ::addImportFor) + ",")
         appendLine("            displayName = " + renderRowMapperField(displayNameEntityFieldDef, nameResultSetFieldName, nullable = false, indentSize = 0, orElseText = "", ::addImportFor) + ",")
+        entityRefDef.shortcodeEntityFieldDef?.let { shortcodeEntityFieldDef ->
+            val shortcodeResultSetFieldName = "${foreignKeyFieldDef.foreignKeyFieldName}Shortcode"
+            appendLine("            shortcode = " + renderRowMapperField(shortcodeEntityFieldDef, shortcodeResultSetFieldName, nullable = false, indentSize = 0, orElseText = "", ::addImportFor) + ",")
+        }
         appendLine("        )")
 
     }
