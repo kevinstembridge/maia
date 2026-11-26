@@ -211,7 +211,7 @@ data class ClassFieldDef(
                 return aClassField(
                     fieldType.foreignKeyFieldDef.foreignKeyFieldName.value,
                     FieldTypes.entityRef(fieldType.foreignKeyFieldDef.foreignEntityDef.entityRefDef)
-                ).build()
+                ).nullability(this.nullability).build()
 
             } else {
                 throw RuntimeException("Unable to produce a RefDto from this field because it is not a foreign key reference.")
