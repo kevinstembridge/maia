@@ -284,7 +284,7 @@ object EsRefreshDependencyFactory {
 
             if (rootEntityDef.findFieldByNameOrNull(head) != null) {
 
-                walk(rootEntityDef, fieldPath, emptyList())
+                walk(rootEntityDef, fieldPath, emptyList(), field.entityRefDef)
 
             } else {
 
@@ -294,7 +294,7 @@ object EsRefreshDependencyFactory {
                 val joinPath = addJoinEntity(joinEntityDef)
                 val tail = fieldPath.tail()
 
-                walk(joinEntityDef, tail, joinPath)
+                walk(joinEntityDef, tail, joinPath, field.entityRefDef)
 
                 if (tail.isJustOneField() == false) {
                     markOtherSideReachedThroughJoin(joinEntityDef, joinEntityDef.findFieldByName(tail.head()), joinPath.single().toField)
@@ -409,7 +409,9 @@ object EsRefreshDependencyFactory {
         private fun walk(
             entityDef: EntityDef,
             fieldPath: FieldPath,
-            hopsSoFar: List<JoinHop>
+            hopsSoFar: List<JoinHop>,
+            /** Non-null when the terminal field is exposed as the foreign Entity's ref (ADR-0007). */
+            terminalEntityRefDef: EntityRefDef? = null
         ) {
 
             val builder = builderFor(entityDef)
@@ -421,6 +423,10 @@ object EsRefreshDependencyFactory {
 
                 if (entityFieldDef.isPrimaryKey.value == false) {
                     builder.watchedFields.add(entityFieldDef.classFieldName)
+                }
+
+                if (terminalEntityRefDef != null) {
+                    addEntityRefTarget(entityDef, entityFieldDef, hopsSoFar, terminalEntityRefDef)
                 }
 
                 return
@@ -436,7 +442,28 @@ object EsRefreshDependencyFactory {
 
             val hop = JoinHop(entityDef, entityFieldDef, foreignEntityDef, primaryKeyFieldOf(foreignEntityDef))
 
-            walk(foreignEntityDef, fieldPath.tail(), hopsSoFar + hop)
+            walk(foreignEntityDef, fieldPath.tail(), hopsSoFar + hop, terminalEntityRefDef)
+
+        }
+
+
+        /**
+         * The terminal foreign key [fkField] of [entityDef] is exposed as the foreign Entity's ref, so the foreign
+         * Entity is one more hop on the path and its display name and shortcode are watched.
+         */
+        private fun addEntityRefTarget(
+            entityDef: EntityDef,
+            fkField: EntityFieldDef,
+            hopsSoFar: List<JoinHop>,
+            entityRefDef: EntityRefDef
+        ) {
+
+            val foreignEntityDef = (fkField.fieldType as ForeignKeyFieldType).foreignKeyFieldDef.foreignEntityDef
+            val refBuilder = builderFor(foreignEntityDef)
+
+            refBuilder.paths.add(hopsSoFar + JoinHop(entityDef, fkField, foreignEntityDef, primaryKeyFieldOf(foreignEntityDef)))
+            refBuilder.watchedFields.add(entityRefDef.displayNameEntityFieldDef.classFieldName)
+            entityRefDef.shortcodeEntityFieldDef?.let { refBuilder.watchedFields.add(it.classFieldName) }
 
         }
 

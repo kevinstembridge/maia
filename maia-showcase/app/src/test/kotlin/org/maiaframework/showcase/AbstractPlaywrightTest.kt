@@ -23,6 +23,7 @@ import org.maiaframework.showcase.testing.pages.AllFieldTypesViewPage
 import org.maiaframework.showcase.testing.pages.BravoBlotterPage
 import org.maiaframework.showcase.testing.pages.BravoCreatePage
 import org.maiaframework.showcase.testing.pages.BravoEsBlotterPage
+import org.maiaframework.showcase.testing.pages.CharlieEsBlotterPage
 import org.maiaframework.showcase.testing.pages.BravoEditPage
 import org.maiaframework.showcase.testing.pages.BravoViewPage
 import org.maiaframework.showcase.testing.pages.LeftManyBlotterPage
@@ -146,6 +147,9 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
     protected lateinit var bravoEsBlotterPage: BravoEsBlotterPage
 
 
+    protected lateinit var charlieEsBlotterPage: CharlieEsBlotterPage
+
+
     protected lateinit var bravoEditPage: BravoEditPage
 
 
@@ -245,6 +249,7 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         bravoBlotterPage = BravoBlotterPage(page, urlHelper)
         bravoCreatePage = BravoCreatePage(page, urlHelper)
         bravoEsBlotterPage = BravoEsBlotterPage(page, urlHelper)
+        charlieEsBlotterPage = CharlieEsBlotterPage(page, urlHelper)
         bravoEditPage = BravoEditPage(page, urlHelper)
         bravoViewPage = BravoViewPage(page, urlHelper)
         compositePkBlotterPage = CompositePkBlotterPage(page, urlHelper)

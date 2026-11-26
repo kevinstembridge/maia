@@ -90,7 +90,7 @@ class SearchableDtoDef(
 
 
     /**
-     * ADR-0007: on an Elasticsearch-enabled searchable DTO a direct foreign key to an Entity that has an
+     * ADR-0007: on an Elasticsearch-enabled searchable DTO a foreign key (direct or the terminal field of a path) to an Entity that has an
      * Entity ref is typed as that Entity's RefDto. A foreign key to an Entity without an Entity ref stays a DomainId.
      */
     private fun convertToEntityRefIfEsEnabled(field: SearchableDtoFieldDef): SearchableDtoFieldDef {

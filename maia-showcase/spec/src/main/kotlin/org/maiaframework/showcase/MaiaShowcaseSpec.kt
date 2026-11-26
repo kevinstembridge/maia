@@ -1368,6 +1368,31 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     }
 
 
+    /** ES-enabled DTO over Charlie whose `bravo.alpha` path ends in a foreign key to Alpha, an Entity with an Entity ref (ADR-0007). */
+    val charlieEsSearchableDtoDef = searchableDto(
+        "org.maiaframework.showcase.join",
+        "CharlieEs",
+        entityDef = charlieEntityDef,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+    ) {
+        elasticsearchEnabled(version = 1, autoRefresh = true)
+        field("dtoStringFromCharlie", "someString")
+        field("dtoStringFromBravo", "bravo.someString")
+        field("alphaViaBravo", "bravo.alpha")
+    }
+
+
+    val charlieEsBlotterDef = blotter(charlieEsSearchableDtoDef) {
+        columnFromDto("id")
+        columnFromDto("dtoStringFromCharlie")
+        columnFromDto("dtoStringFromBravo")
+        columnFromDto("alphaViaBravo")
+    }
+
+
+    val charlieEsBlotterPageDef = blotterPage(charlieEsBlotterDef)
+
+
     val alphaAgGridEntityDef = entity(
         "org.maiaframework.showcase.join",
         "AlphaAgGrid",
