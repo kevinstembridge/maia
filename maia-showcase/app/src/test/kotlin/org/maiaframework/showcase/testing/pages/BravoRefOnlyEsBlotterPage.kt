@@ -2,6 +2,7 @@ package org.maiaframework.showcase.testing.pages
 
 import com.microsoft.playwright.Locator
 import com.microsoft.playwright.Page
+import com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat
 import org.maiaframework.webtesting.AbstractPage
 import org.maiaframework.webtesting.UrlHelper
 
@@ -38,6 +39,26 @@ class BravoRefOnlyEsBlotterPage(
         val input = page.locator(".ag-floating-filter[col-id='dtoStringFromBravo'] input").first()
         input.waitFor()
         input.fill(text)
+
+    }
+
+
+    /** Waits until no row whose cells contain [rowText] is shown, and fails if one still is. */
+    fun assertNoRowContaining(rowText: String) {
+
+        assertThat(
+            page.locator(".ag-row:not(.ag-row-loading)").filter(Locator.FilterOptions().setHasText(rowText))
+        ).hasCount(0)
+
+    }
+
+
+    /** Waits until the grid shows a row whose cells contain [rowText]. */
+    fun assertRowContaining(rowText: String) {
+
+        assertThat(
+            page.locator(".ag-row:not(.ag-row-loading)").filter(Locator.FilterOptions().setHasText(rowText))
+        ).hasCount(1)
 
     }
 

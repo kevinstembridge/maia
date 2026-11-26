@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.maiaframework.elasticsearch.index.IndexNameFactory
 import org.maiaframework.showcase.AbstractPlaywrightTest
+import org.maiaframework.showcase.testing.EsTestIndex
 import org.springframework.beans.factory.annotation.Autowired
 
 
@@ -40,6 +41,13 @@ class BravoEsBlotterPlaywrightTest : AbstractPlaywrightTest() {
 
     @Autowired
     private lateinit var bravoEsIndexControl: BravoEsEsIndexControl_v0001
+
+
+    private val esIndex by lazy {
+        EsTestIndex(elasticsearchClient, indexNameFactory, BravoEsEsIndexMeta_v0001.indexBaseNameAndVersion) {
+            bravoEsIndexControl.createIndex()
+        }
+    }
 
 
     private val insertedBravos = mutableListOf<BravoEntity>()
@@ -133,28 +141,9 @@ class BravoEsBlotterPlaywrightTest : AbstractPlaywrightTest() {
 
     private fun indexIntoElasticsearch(vararg bravos: BravoEntity) {
 
-        val indexName = indexNameFactory.indexNameFrom(BravoEsEsIndexMeta_v0001.indexBaseNameAndVersion).value
-
-        if (!elasticsearchClient.indices().exists { r -> r.index(indexName) }.value()) {
-            bravoEsIndexControl.createIndex()
-        }
-
+        esIndex.ensureExists()
         bravoEsIndexService.refreshByIds(bravos.map { it.id })
-        elasticsearchClient.indices().refresh { r -> r.index(indexName) }
-
-    }
-
-
-    private fun indexIntoElasticsearch(bravo: BravoEntity) {
-
-        val indexName = indexNameFactory.indexNameFrom(BravoEsEsIndexMeta_v0001.indexBaseNameAndVersion).value
-
-        if (!elasticsearchClient.indices().exists { r -> r.index(indexName) }.value()) {
-            bravoEsIndexControl.createIndex()
-        }
-
-        bravoEsIndexService.refreshByIds(listOf(bravo.id))
-        elasticsearchClient.indices().refresh { r -> r.index(indexName) }
+        esIndex.refresh()
 
     }
 

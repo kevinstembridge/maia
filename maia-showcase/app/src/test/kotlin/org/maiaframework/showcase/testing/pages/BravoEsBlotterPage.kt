@@ -2,8 +2,10 @@ package org.maiaframework.showcase.testing.pages
 
 import com.microsoft.playwright.Locator
 import com.microsoft.playwright.Page
+import com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat
 import org.maiaframework.webtesting.AbstractPage
 import org.maiaframework.webtesting.UrlHelper
+import java.util.regex.Pattern
 
 
 /** The Blotter over the Elasticsearch-enabled BravoEs Searchable DTO. */
@@ -54,15 +56,20 @@ class BravoEsBlotterPage(
     fun alphaCellTexts(expectedCount: Int): List<String> {
 
         val cells = page.locator(".ag-row:not(.ag-row-loading) .ag-cell[col-id='alpha']")
-        val deadline = System.currentTimeMillis() + 15_000
-        while (System.currentTimeMillis() < deadline &&
-            !(cells.count() == expectedCount && cells.allInnerTexts().none { it.isBlank() })) {
-            page.waitForTimeout(100.0)
-        }
+        assertThat(cells).hasCount(expectedCount)
+        assertThat(cells).hasText(Array(expectedCount) { NON_BLANK })
+
         return page.locator(".ag-row:not(.ag-row-loading)")
             .all()
             .sortedBy { it.getAttribute("row-index").toInt() }
             .map { it.locator(".ag-cell[col-id='alpha']").innerText().trim() }
+
+    }
+
+
+    private companion object {
+
+        val NON_BLANK: Pattern = Pattern.compile("\\S+")
 
     }
 

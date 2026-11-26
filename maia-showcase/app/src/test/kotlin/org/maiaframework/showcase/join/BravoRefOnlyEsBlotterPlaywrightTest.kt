@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.maiaframework.elasticsearch.index.IndexNameFactory
 import org.maiaframework.showcase.AbstractPlaywrightTest
+import org.maiaframework.showcase.testing.EsTestIndex
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.test.context.support.WithMockUser
 
@@ -45,6 +46,17 @@ class BravoRefOnlyEsBlotterPlaywrightTest : AbstractPlaywrightTest() {
 
     @Autowired
     private lateinit var indexControl: BravoRefOnlyEsEsIndexControl_v0001
+
+
+    private val esIndex by lazy {
+        EsTestIndex(elasticsearchClient, indexNameFactory, BravoRefOnlyEsEsIndexMeta_v0001.indexBaseNameAndVersion) {
+            indexControl.createIndex()
+        }
+    }
+
+
+    @Autowired
+    private lateinit var bravoCrudService: BravoCrudService
 
 
     private val insertedBravos = mutableListOf<BravoEntity>()
@@ -86,46 +98,115 @@ class BravoRefOnlyEsBlotterPlaywrightTest : AbstractPlaywrightTest() {
     @WithMockUser(authorities = ["WRITE"])
     fun `editing the referenced alpha refreshes the ref shown in the blotter`() {
 
-        val alpha = AlphaEntityTestBuilder(someString = "alpha-before-edit").build()
-        alphaDao.insert(alpha)
-        insertedAlphas.add(alpha)
-        val bravo = BravoEntityTestBuilder(alphaId = alpha.id, someString = "bravo-ref-only-row").build()
-        bravoDao.insert(bravo)
-        insertedBravos.add(bravo)
-        ensureIndexExists()
-        indexService.refreshByIds(listOf(bravo.id))
-        refreshIndex()
+        val alpha = seedAlpha("alpha-before-edit")
+        seedBravo(alpha, "bravo-ref-only-row")
 
         `log in as admin user`()
-        `navigate to the`(bravoRefOnlyEsBlotterPage)
-        bravoRefOnlyEsBlotterPage.filterBravoColumnBy("bravo-ref-only-row")
+        `show the ref only blotter filtered to`("bravo-ref-only-row")
         assertEquals("alpha-before-edit", bravoRefOnlyEsBlotterPage.alphaCellTextForRowContaining("bravo-ref-only-row"))
 
         alphaCrudService.updateSomeString(AlphaUpdate_someStringRequestDto(id_raw = alpha.id, someString_raw = "alpha-after-edit"))
-        refreshIndex()
+        esIndex.refresh()
 
-        `navigate to the`(bravoRefOnlyEsBlotterPage)
-        bravoRefOnlyEsBlotterPage.filterBravoColumnBy("bravo-ref-only-row")
+        `show the ref only blotter filtered to`("bravo-ref-only-row")
         assertEquals("alpha-after-edit", bravoRefOnlyEsBlotterPage.alphaCellTextForRowContaining("bravo-ref-only-row"))
 
     }
 
 
-    private fun indexName() = indexNameFactory.indexNameFrom(BravoRefOnlyEsEsIndexMeta_v0001.indexBaseNameAndVersion).value
+    @Test
+    @WithMockUser(authorities = ["WRITE"])
+    fun `changing the bravo's alpha shows the new alpha in the ref cell`() {
 
+        val bravo = seedBravo(seedAlpha("alpha-original"), "bravo-switching-alpha")
+        val replacement = seedAlpha("alpha-replacement")
 
-    private fun ensureIndexExists() {
+        `log in as admin user`()
+        `show the ref only blotter filtered to`("bravo-switching-alpha")
+        assertEquals("alpha-original", bravoRefOnlyEsBlotterPage.alphaCellTextForRowContaining("bravo-switching-alpha"))
 
-        if (!elasticsearchClient.indices().exists { r -> r.index(indexName()) }.value()) {
-            indexControl.createIndex()
-        }
+        bravoCrudService.updateAlpha(BravoUpdate_alphaRequestDto(alpha_raw = replacement.id, id_raw = bravo.id))
+        esIndex.refresh()
+
+        `show the ref only blotter filtered to`("bravo-switching-alpha")
+        assertEquals("alpha-replacement", bravoRefOnlyEsBlotterPage.alphaCellTextForRowContaining("bravo-switching-alpha"))
 
     }
 
 
-    private fun refreshIndex() {
+    @Test
+    @WithMockUser(authorities = ["WRITE"])
+    fun `editing an alpha field that is not part of the ref leaves the cell and the indexed document untouched`() {
 
-        elasticsearchClient.indices().refresh { r -> r.index(indexName()) }
+        val alpha = seedAlpha("alpha-stable-text")
+        val bravo = seedBravo(alpha, "bravo-unrelated-edit")
+        val versionBefore = esIndex.documentVersion(bravo.id)
+
+        `log in as admin user`()
+        `show the ref only blotter filtered to`("bravo-unrelated-edit")
+        assertEquals("alpha-stable-text", bravoRefOnlyEsBlotterPage.alphaCellTextForRowContaining("bravo-unrelated-edit"))
+
+        alphaCrudService.updateSomeInt(AlphaUpdate_someIntRequestDto(id_raw = alpha.id, someInt_raw = alpha.someInt + 1))
+        esIndex.refresh()
+
+        `show the ref only blotter filtered to`("bravo-unrelated-edit")
+        assertEquals("alpha-stable-text", bravoRefOnlyEsBlotterPage.alphaCellTextForRowContaining("bravo-unrelated-edit"))
+        assertEquals(versionBefore, esIndex.documentVersion(bravo.id), "the document must not be re-indexed")
+
+    }
+
+
+    /**
+     * The ticket asks that deleting the Alpha leaves no stale ref, but a Bravo that references an Alpha blocks its
+     * deletion through the foreign key, so that state is unreachable. The realistic case is deleting the referencing
+     * Bravo: its row must leave the Blotter.
+     */
+    @Test
+    @WithMockUser(authorities = ["WRITE"])
+    fun `deleting the bravo removes its row from the blotter`() {
+
+        val bravo = seedBravo(seedAlpha("alpha-of-deleted-bravo"), "bravo-to-delete")
+
+        `log in as admin user`()
+        `show the ref only blotter filtered to`("bravo-to-delete")
+        bravoRefOnlyEsBlotterPage.assertRowContaining("bravo-to-delete")
+
+        bravoCrudService.delete(bravo.id)
+        esIndex.refresh()
+
+        `show the ref only blotter filtered to`("bravo-to-delete")
+        bravoRefOnlyEsBlotterPage.assertNoRowContaining("bravo-to-delete")
+
+    }
+
+
+    private fun `show the ref only blotter filtered to`(bravoText: String) {
+
+        `navigate to the`(bravoRefOnlyEsBlotterPage)
+        bravoRefOnlyEsBlotterPage.filterBravoColumnBy(bravoText)
+
+    }
+
+
+    private fun seedAlpha(someString: String): AlphaEntity {
+
+        val alpha = AlphaEntityTestBuilder(someString = someString).build()
+        alphaDao.insert(alpha)
+        insertedAlphas.add(alpha)
+        return alpha
+
+    }
+
+
+    private fun seedBravo(alpha: AlphaEntity, someString: String): BravoEntity {
+
+        val bravo = BravoEntityTestBuilder(alphaId = alpha.id, someString = someString).build()
+        bravoDao.insert(bravo)
+        insertedBravos.add(bravo)
+        esIndex.ensureExists()
+        indexService.refreshByIds(listOf(bravo.id))
+        esIndex.refresh()
+        return bravo
 
     }
 

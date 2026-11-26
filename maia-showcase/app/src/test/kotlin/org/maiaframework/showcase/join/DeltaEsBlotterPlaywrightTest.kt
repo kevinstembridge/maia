@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.maiaframework.elasticsearch.index.IndexNameFactory
 import org.maiaframework.showcase.AbstractPlaywrightTest
+import org.maiaframework.showcase.testing.EsTestIndex
 import org.springframework.beans.factory.annotation.Autowired
 
 
@@ -49,6 +50,13 @@ class DeltaEsBlotterPlaywrightTest : AbstractPlaywrightTest() {
 
     @Autowired
     private lateinit var deltaEsIndexControl: DeltaEsEsIndexControl_v0001
+
+
+    private val esIndex by lazy {
+        EsTestIndex(elasticsearchClient, indexNameFactory, DeltaEsEsIndexMeta_v0001.indexBaseNameAndVersion) {
+            deltaEsIndexControl.createIndex()
+        }
+    }
 
 
     private val insertedDeltas = mutableListOf<DeltaEntity>()
@@ -154,14 +162,9 @@ class DeltaEsBlotterPlaywrightTest : AbstractPlaywrightTest() {
 
     private fun indexIntoElasticsearch() {
 
-        val indexName = indexNameFactory.indexNameFrom(DeltaEsEsIndexMeta_v0001.indexBaseNameAndVersion).value
-
-        if (!elasticsearchClient.indices().exists { r -> r.index(indexName) }.value()) {
-            deltaEsIndexControl.createIndex()
-        }
-
+        esIndex.ensureExists()
         deltaEsIndexService.refreshByIds(insertedDeltas.map { it.id })
-        elasticsearchClient.indices().refresh { r -> r.index(indexName) }
+        esIndex.refresh()
 
     }
 

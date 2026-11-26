@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.maiaframework.elasticsearch.index.IndexNameFactory
 import org.maiaframework.showcase.AbstractPlaywrightTest
+import org.maiaframework.showcase.testing.EsTestIndex
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.test.context.support.WithMockUser
 
@@ -50,6 +51,13 @@ class CharlieEsBlotterPlaywrightTest : AbstractPlaywrightTest() {
 
     @Autowired
     private lateinit var charlieEsIndexControl: CharlieEsEsIndexControl_v0001
+
+
+    private val esIndex by lazy {
+        EsTestIndex(elasticsearchClient, indexNameFactory, CharlieEsEsIndexMeta_v0001.indexBaseNameAndVersion) {
+            charlieEsIndexControl.createIndex()
+        }
+    }
 
 
     private val insertedCharlies = mutableListOf<CharlieEntity>()
@@ -113,7 +121,7 @@ class CharlieEsBlotterPlaywrightTest : AbstractPlaywrightTest() {
         val alpha = seedCharlie(alphaText = "alpha-before-edit", bravoText = "bravo-for-edit", charlieText = "charlie-row-two")
 
         alphaCrudService.updateSomeString(AlphaUpdate_someStringRequestDto(id_raw = alpha.id, someString_raw = "alpha-after-edit"))
-        refreshIndex()
+        esIndex.refresh()
 
         `log in as admin user`()
         `navigate to the`(charlieEsBlotterPage)
@@ -144,22 +152,9 @@ class CharlieEsBlotterPlaywrightTest : AbstractPlaywrightTest() {
 
     private fun indexIntoElasticsearch(charlie: CharlieEntity) {
 
-        val indexName = indexNameFactory.indexNameFrom(CharlieEsEsIndexMeta_v0001.indexBaseNameAndVersion).value
-
-        if (!elasticsearchClient.indices().exists { r -> r.index(indexName) }.value()) {
-            charlieEsIndexControl.createIndex()
-        }
-
+        esIndex.ensureExists()
         charlieEsIndexService.refreshByIds(listOf(charlie.id))
-        refreshIndex()
-
-    }
-
-
-    private fun refreshIndex() {
-
-        val indexName = indexNameFactory.indexNameFrom(CharlieEsEsIndexMeta_v0001.indexBaseNameAndVersion).value
-        elasticsearchClient.indices().refresh { r -> r.index(indexName) }
+        esIndex.refresh()
 
     }
 
