@@ -165,7 +165,14 @@ class RowMapperRenderer(
 
         addImportFor(entityRefDef.dtoDef.fqcn)
 
-        appendLine("        val ${rowMapperFieldDef.classFieldName} = ${entityRefDef.dtoUqcn}(")
+        // A nullable foreign key is read through a left join, so a null id means there is no ref.
+        val nullGuard = if (rowMapperFieldDef.nullability.nullable) {
+            "if (" + renderRowMapperField(pkEntityFieldDef, idResultSetFieldName, nullable = true, indentSize = 0, orElseText = "", ::addImportFor) + " == null) null else "
+        } else {
+            ""
+        }
+
+        appendLine("        val ${rowMapperFieldDef.classFieldName} = $nullGuard${entityRefDef.dtoUqcn}(")
         appendLine("            id = " + renderRowMapperField(pkEntityFieldDef, idResultSetFieldName, nullable = false, indentSize = 0, orElseText = "", ::addImportFor) + ",")
         appendLine("            displayName = " + renderRowMapperField(displayNameEntityFieldDef, nameResultSetFieldName, nullable = false, indentSize = 0, orElseText = "", ::addImportFor) + ",")
         entityRefDef.shortcodeEntityFieldDef?.let { shortcodeEntityFieldDef ->

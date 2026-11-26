@@ -71,6 +71,16 @@ export class ForeignKeyReferenceService {
     }
 
 
+    public checkCharlieForReferences(id: string): Observable<ForeignKeyReferencesExistResponseDto> {
+
+        return this.http.get<ForeignKeyReferencesExistResponseDto>(
+            '/api/charlie/check_foreign_references/' + id,
+            this.httpOptions
+        );
+
+    }
+
+
     public checkAlphaAgGridForReferences(id: string): Observable<ForeignKeyReferencesExistResponseDto> {
 
         return this.http.get<ForeignKeyReferencesExistResponseDto>(

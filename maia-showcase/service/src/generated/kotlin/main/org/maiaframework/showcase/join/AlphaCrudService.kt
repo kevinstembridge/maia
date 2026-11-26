@@ -17,6 +17,7 @@ import java.time.Instant
 class AlphaCrudService(
     private val alphaCrudNotifier: AlphaCrudNotifier,
     private val bravoRepo: BravoRepo,
+    private val deltaRepo: DeltaRepo,
     private val entityRepo: AlphaRepo,
     private val maiaProblems: MaiaProblems
 ) {
@@ -149,6 +150,10 @@ class AlphaCrudService(
 
         if (this.bravoRepo.existsByAlpha(id)) {
             throw this.maiaProblems.foreignKeyRecordsExist("Bravo")
+        }
+
+        if (this.deltaRepo.existsByAlpha(id)) {
+            throw this.maiaProblems.foreignKeyRecordsExist("Delta")
         }
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)

@@ -10,7 +10,10 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class AlphaForeignKeyReferencesService(private val bravoRepo: BravoRepo) {
+class AlphaForeignKeyReferencesService(
+    private val bravoRepo: BravoRepo,
+    private val deltaRepo: DeltaRepo
+) {
 
 
     private val logger = LoggerFactory.getLogger(AlphaForeignKeyReferencesService::class.java)
@@ -20,6 +23,10 @@ class AlphaForeignKeyReferencesService(private val bravoRepo: BravoRepo) {
 
         if (this.bravoRepo.existsByAlpha(id)) {
             return ForeignKeyReferencesExistResponseDto(id, true, "Bravo")
+        }
+
+        if (this.deltaRepo.existsByAlpha(id)) {
+            return ForeignKeyReferencesExistResponseDto(id, true, "Delta")
         }
 
         return ForeignKeyReferencesExistResponseDto(id, false, null)

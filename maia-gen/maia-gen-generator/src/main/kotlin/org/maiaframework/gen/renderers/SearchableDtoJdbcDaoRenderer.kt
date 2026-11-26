@@ -6,6 +6,7 @@ import org.maiaframework.gen.spec.definition.ApplicationModelDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.EntityRefDef
+import org.maiaframework.gen.spec.definition.lang.Nullability
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EffectiveRangeManagedBy
@@ -631,7 +632,9 @@ class SearchableDtoJdbcDaoRenderer(
                 val foreignEntityDef = searchableDtoFieldDef.entityFieldDef.foreignKeyFieldDef!!.foreignEntityDef
                 val alias = entityRefAlias(searchableDtoFieldDef)
 
-                """inner join ${foreignEntityDef.schemaAndTableName} $alias
+                val joinType = if (searchableDtoFieldDef.nullability == Nullability.NULLABLE) "left" else "inner"
+
+                """$joinType join ${foreignEntityDef.schemaAndTableName} $alias
                     on ${searchableDtoFieldDef.schemaAndTableName}.${searchableDtoFieldDef.databaseColumn} = $alias.${foreignEntityDef.primaryKeyFields.single().tableColumnName}""".trimIndent()
 
             }
