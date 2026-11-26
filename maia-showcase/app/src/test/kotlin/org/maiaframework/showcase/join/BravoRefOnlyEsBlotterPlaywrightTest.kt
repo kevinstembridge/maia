@@ -98,12 +98,14 @@ class BravoRefOnlyEsBlotterPlaywrightTest : AbstractPlaywrightTest() {
 
         `log in as admin user`()
         `navigate to the`(bravoRefOnlyEsBlotterPage)
+        bravoRefOnlyEsBlotterPage.filterBravoColumnBy("bravo-ref-only-row")
         assertEquals("alpha-before-edit", bravoRefOnlyEsBlotterPage.alphaCellTextForRowContaining("bravo-ref-only-row"))
 
         alphaCrudService.updateSomeString(AlphaUpdate_someStringRequestDto(id_raw = alpha.id, someString_raw = "alpha-after-edit"))
         refreshIndex()
 
         `navigate to the`(bravoRefOnlyEsBlotterPage)
+        bravoRefOnlyEsBlotterPage.filterBravoColumnBy("bravo-ref-only-row")
         assertEquals("alpha-after-edit", bravoRefOnlyEsBlotterPage.alphaCellTextForRowContaining("bravo-ref-only-row"))
 
     }

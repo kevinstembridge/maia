@@ -32,4 +32,14 @@ class BravoRefOnlyEsBlotterPage(
     }
 
 
+    /** Types [text] into the floating filter of the `dtoStringFromBravo` column, to narrow the grid to the rows under test. */
+    fun filterBravoColumnBy(text: String) {
+
+        val input = page.locator(".ag-floating-filter[col-id='dtoStringFromBravo'] input").first()
+        input.waitFor()
+        input.fill(text)
+
+    }
+
+
 }
