@@ -616,6 +616,20 @@ class SearchableDtoJdbcDaoRenderer(
     }
 
 
+    /** The table, or its alias when the same table is joined more than once, that [searchableDtoFieldDef]'s column is read from. */
+    private fun pathTableOrAlias(searchableDtoFieldDef: SimpleSearchableDtoFieldDef): String {
+
+        val foreignTableIsReferencedMoreThanOnce = (foreignKeyTableCount[searchableDtoFieldDef.schemaAndTableName] ?: 0) > 1
+
+        return if (searchableDtoFieldDef.isForeignKeyRef && foreignTableIsReferencedMoreThanOnce) {
+            quotedSqlIdentifier(searchableDtoFieldDef.entityAndField.referencedEntityFieldNotNull.classFieldName)
+        } else {
+            searchableDtoFieldDef.schemaAndTableName
+        }
+
+    }
+
+
     private fun entityRefAlias(searchableDtoFieldDef: SimpleSearchableDtoFieldDef): String {
 
         return quotedSqlIdentifier(ClassFieldName("${searchableDtoFieldDef.classFieldName}Ref"))
@@ -632,10 +646,11 @@ class SearchableDtoJdbcDaoRenderer(
                 val foreignEntityDef = searchableDtoFieldDef.entityFieldDef.foreignKeyFieldDef!!.foreignEntityDef
                 val alias = entityRefAlias(searchableDtoFieldDef)
 
-                val joinType = if (searchableDtoFieldDef.nullability == Nullability.NULLABLE) "left" else "inner"
+                val joinType = if (searchableDtoFieldDef.nullability == Nullability.NULLABLE) "left" else joinTypeSqlFor(searchableDtoFieldDef)
 
+                // For a path field the ref hangs off the path's own table (or its alias), not off the root table.
                 """$joinType join ${foreignEntityDef.schemaAndTableName} $alias
-                    on ${searchableDtoFieldDef.schemaAndTableName}.${searchableDtoFieldDef.databaseColumn} = $alias.${foreignEntityDef.primaryKeyFields.single().tableColumnName}""".trimIndent()
+                    on ${pathTableOrAlias(searchableDtoFieldDef)}.${searchableDtoFieldDef.databaseColumn} = $alias.${foreignEntityDef.primaryKeyFields.single().tableColumnName}""".trimIndent()
 
             }
 

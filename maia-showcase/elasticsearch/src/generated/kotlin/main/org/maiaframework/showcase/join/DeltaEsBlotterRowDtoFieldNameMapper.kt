@@ -10,7 +10,7 @@ object DeltaEsBlotterRowDtoFieldNameMapper {
 
     val mappingFunction: (String) -> String = {
         when (it) {
-            "alpha" -> "alpha"
+            "alpha" -> "alpha.displayName.raw"
             "charlie" -> "charlie"
             "id" -> "id"
             "someString" -> "someString.raw"

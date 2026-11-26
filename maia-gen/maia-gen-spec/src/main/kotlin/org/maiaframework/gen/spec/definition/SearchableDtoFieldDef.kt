@@ -84,8 +84,8 @@ class SimpleSearchableDtoFieldDef(
 
 
     /**
-     * True for a direct foreign key whose foreign Entity declares an Entity ref, so that an
-     * Elasticsearch-enabled searchable DTO can expose it as that Entity's RefDto.
+     * True for a foreign key, direct or the terminal field of a path, whose foreign Entity declares an Entity ref,
+     * so that an Elasticsearch-enabled searchable DTO can expose it as that Entity's RefDto.
      *
      * A nullable foreign key gives a nullable ref, read through a left join.
      */
@@ -94,8 +94,7 @@ class SimpleSearchableDtoFieldDef(
         val foreignKeyFieldDef = entityFieldDef.foreignKeyFieldDef ?: return false
         val foreignEntityDef = foreignKeyFieldDef.foreignEntityDef
 
-        return fieldPathLength == 1
-            && entityRefDef == null
+        return entityRefDef == null
             && foreignEntityDef.hasRefDtoDef
             && foreignEntityDef.primaryKeyFields.size == 1
 

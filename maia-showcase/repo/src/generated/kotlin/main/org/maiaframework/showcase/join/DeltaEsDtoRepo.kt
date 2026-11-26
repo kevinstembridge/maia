@@ -35,6 +35,13 @@ class DeltaEsDtoRepo(private val dao: DeltaEsDtoDao) {
     }
 
 
+    fun findRootIdsViaAlpha(id: DomainId): List<DomainId> {
+
+        return this.dao.findRootIdsViaAlpha(id)
+
+    }
+
+
     fun getRows(searchModel: AgGridSearchModel): SearchResultPage<DeltaEsDto> {
 
         try {

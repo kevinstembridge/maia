@@ -91,6 +91,23 @@ class DeltaEsDtoDao(private val jdbcOps: JdbcOps) {
     }
 
 
+    fun findRootIdsViaAlpha(id: DomainId): List<DomainId> {
+
+        val sqlParams = SqlParams().addValue("id", id)
+
+        val sql = """
+            select distinct maia.delta.id as id
+            from maia.delta
+            inner join maia.alpha h0
+                    on maia.delta.alpha_id = h0.id
+            where h0.id = :id
+            """.trimIndent()
+
+        return this.jdbcOps.queryForList(sql, sqlParams) { rsa -> rsa.readDomainId("id") }
+
+    }
+
+
     fun search(searchModel: AgGridSearchModel): SearchResultPage<DeltaEsDto> {
 
         val sqlParams = SqlParams()
