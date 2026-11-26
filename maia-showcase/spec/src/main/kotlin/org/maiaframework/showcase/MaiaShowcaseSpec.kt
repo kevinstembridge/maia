@@ -1239,6 +1239,63 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val bravoRefOnlyEsBlotterPageDef = blotterPage(bravoRefOnlyEsBlotterDef)
 
 
+    /**
+     * Vehicle for ES Blotter foreign keys that are not plain required refs: `alpha` is nullable and points at an
+     * Entity with an Entity ref; `charlie` points at an Entity without an Entity ref (stays a uuid).
+     */
+    val deltaEntityDef = entity(
+        "org.maiaframework.showcase.join",
+        "Delta",
+        deletable = Deletable.TRUE,
+        allowDeleteAll = AllowDeleteAll.TRUE,
+        recordVersionHistory = false
+    ) {
+        foreignKey("alpha", alphaEntityDef) {
+            fieldDisplayName("Alpha")
+            nullable()
+        }
+        foreignKey("charlie", charlieEntityDef) {
+            fieldDisplayName("Charlie")
+        }
+        field("someString", FieldTypes.string) {
+            fieldDisplayName("Some String")
+            lengthConstraint(max = 100)
+        }
+        crud {
+            create {
+                api {}
+            }
+            delete {
+                api {}
+            }
+        }
+    }
+
+
+    val deltaEsSearchableDtoDef = searchableDto(
+        "org.maiaframework.showcase.join",
+        "DeltaEs",
+        entityDef = deltaEntityDef,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+    ) {
+        elasticsearchEnabled(version = 1, autoRefresh = true)
+        field("alpha")
+        field("charlie")
+        field("someString")
+    }
+
+
+    val deltaEsBlotterDef = blotter(deltaEsSearchableDtoDef) {
+        columnFromDto("id")
+        columnFromDto("alpha")
+        columnFromDto("charlie")
+        columnFromDto("someString")
+    }
+
+
+    val deltaEsBlotterPageDef = blotterPage(deltaEsBlotterDef)
+
+
     val agGridFilterSampleEntityDef = entity(
         "org.maiaframework.showcase.filter_sample",
         "AgGridFilterSample",

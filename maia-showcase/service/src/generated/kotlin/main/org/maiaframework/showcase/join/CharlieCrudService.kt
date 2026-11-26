@@ -15,6 +15,7 @@ import java.time.Instant
 @Component
 class CharlieCrudService(
     private val charlieCrudNotifier: CharlieCrudNotifier,
+    private val deltaRepo: DeltaRepo,
     private val entityRepo: CharlieRepo,
     private val maiaProblems: MaiaProblems
 ) {
@@ -124,6 +125,10 @@ class CharlieCrudService(
 
     @Transactional
     fun delete(id: DomainId) {
+
+        if (this.deltaRepo.existsByCharlie(id)) {
+            throw this.maiaProblems.foreignKeyRecordsExist("Delta")
+        }
 
         val entityToDelete = this.entityRepo.findByPrimaryKeyOrNull(id)
                 ?: return

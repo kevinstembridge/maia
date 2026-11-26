@@ -6,6 +6,7 @@ import org.maiaframework.gen.spec.definition.ApplicationModelDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.EntityRefDef
+import org.maiaframework.gen.spec.definition.lang.Nullability
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EffectiveRangeManagedBy
@@ -645,8 +646,10 @@ class SearchableDtoJdbcDaoRenderer(
                 val foreignEntityDef = searchableDtoFieldDef.entityFieldDef.foreignKeyFieldDef!!.foreignEntityDef
                 val alias = entityRefAlias(searchableDtoFieldDef)
 
+                val joinType = if (searchableDtoFieldDef.nullability == Nullability.NULLABLE) "left" else joinTypeSqlFor(searchableDtoFieldDef)
+
                 // For a path field the ref hangs off the path's own table (or its alias), not off the root table.
-                """${joinTypeSqlFor(searchableDtoFieldDef)} join ${foreignEntityDef.schemaAndTableName} $alias
+                """$joinType join ${foreignEntityDef.schemaAndTableName} $alias
                     on ${pathTableOrAlias(searchableDtoFieldDef)}.${searchableDtoFieldDef.databaseColumn} = $alias.${foreignEntityDef.primaryKeyFields.single().tableColumnName}""".trimIndent()
 
             }

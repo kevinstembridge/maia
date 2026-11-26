@@ -36,8 +36,8 @@ On an Elasticsearch-enabled DTO, a foreign-key field, direct (such as `field("al
 
 * The EsDoc, the Blotter row DTO and the generated TypeScript carry the RefDto (id, display name and, if declared, shortcode). The index holds it as an object: `<field>.id` and `<field>.shortcode` are `keyword`, `<field>.displayName` is `text` with a `raw` keyword sub-field.
 * The Blotter cell shows the display name as plain text, not the uuid renderer.
-* A foreign key to an Entity **without** an Entity ref stays a `DomainId`, and so does a SQL-backed (non-ES) Searchable DTO's field. A path field ending in a non-foreign-key field (`field("x", "alpha.someString")`) is unchanged. A nullable foreign key is not converted yet.
-* The DTO DAO reads the ref through a join of its own, aliased `"<field>Ref"`, that hangs off the table the field's path ends in. The refresh dependency model registers the foreign Entity as one more hop on the path and watches its display name and shortcode, so renaming the referenced record refreshes the documents.
+* A foreign key to an Entity **without** an Entity ref stays a `DomainId`, and so does a SQL-backed (non-ES) Searchable DTO's field. A path field ending in a non-foreign-key field (`field("x", "alpha.someString")`) is unchanged. A nullable foreign key gives a nullable ref (`XRefDto?`, optional in TypeScript): the ref is read through a left join, a null key gives a null ref and the Blotter cell is empty.
+* The DTO DAO reads the ref through a join of its own (inner, or left for a nullable key), aliased `"<field>Ref"`, that hangs off the table the field's path ends in. The refresh dependency model registers the foreign Entity as one more hop on the path and watches its display name and shortcode, so renaming the referenced record refreshes the documents.
 * **Existing indices:** converting a field changes the index mapping and the document shape, and Maia provides no migration. A consumer with a live index declares a new version, `elasticsearchEnabled(version = n + 1)`, so the new index is built beside the old one; the Blotter switches to the highest version.
 
 ### Default mappings

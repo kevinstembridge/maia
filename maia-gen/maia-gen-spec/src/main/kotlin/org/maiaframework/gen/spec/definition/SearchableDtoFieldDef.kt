@@ -87,7 +87,7 @@ class SimpleSearchableDtoFieldDef(
      * True for a foreign key, direct or the terminal field of a path, whose foreign Entity declares an Entity ref,
      * so that an Elasticsearch-enabled searchable DTO can expose it as that Entity's RefDto.
      *
-     * Nullable foreign keys are not converted yet (a null ref needs an outer join, see the entity-ref spec).
+     * A nullable foreign key gives a nullable ref, read through a left join.
      */
     fun canBeEntityRef(): Boolean {
 
@@ -95,7 +95,6 @@ class SimpleSearchableDtoFieldDef(
         val foreignEntityDef = foreignKeyFieldDef.foreignEntityDef
 
         return entityRefDef == null
-            && nullability == Nullability.NOT_NULLABLE
             && foreignEntityDef.hasRefDtoDef
             && foreignEntityDef.primaryKeyFields.size == 1
 
