@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 import org.maiaframework.elasticsearch.index.IndexNameFactory
 import org.maiaframework.showcase.AbstractPlaywrightTest
 import org.springframework.beans.factory.annotation.Autowired
+import org.junit.jupiter.api.Assertions.assertEquals
 
 
 class BravoCrudPlaywrightTest : AbstractPlaywrightTest() {
@@ -18,6 +19,14 @@ class BravoCrudPlaywrightTest : AbstractPlaywrightTest() {
 
     @Autowired
     private lateinit var indexNameFactory: IndexNameFactory
+
+
+    @Autowired
+    private lateinit var alphaDao: AlphaDao
+
+
+    @Autowired
+    private lateinit var bravoDao: BravoDao
 
 
     @Autowired
@@ -56,6 +65,29 @@ class BravoCrudPlaywrightTest : AbstractPlaywrightTest() {
     fun logOut() {
 
         `log out`()
+
+    }
+
+
+    @Test
+    fun `sql-backed blotter shows the alpha foreign key as a plain uuid`() {
+
+        val alpha = AlphaEntityTestBuilder(someString = "alpha-for-uuid-column").build()
+        alphaDao.insert(alpha)
+        val bravo = BravoEntityTestBuilder(alphaId = alpha.id, someString = "bravo-for-uuid-column").build()
+        bravoDao.insert(bravo)
+
+        try {
+
+            `log in as admin user`()
+            `navigate to the`(bravoBlotterPage)
+
+            // The uuid cell renderer shows the last 12 characters of the uuid
+            assertEquals(alpha.id.value.takeLast(12), bravoBlotterPage.alphaCellTextForRowContaining("bravo-for-uuid-column"))
+
+        } finally {
+            bravoDao.deleteByPrimaryKey(bravo.id)
+        }
 
     }
 

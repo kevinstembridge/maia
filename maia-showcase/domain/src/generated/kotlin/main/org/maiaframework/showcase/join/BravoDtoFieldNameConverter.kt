@@ -14,6 +14,7 @@ class BravoDtoFieldNameConverter : SearchFieldNameConverter {
     override fun convertFieldName(fieldName: String): String {
 
         return when(fieldName) {
+            "alpha" -> "alpha_id"
             "createdTimestamp" -> "created_timestamp"
             "dtoIntFromAlpha" -> "some_int"
             "dtoIntFromBravo" -> "some_int"

@@ -3,6 +3,7 @@
 
 
 export interface BravoDto {
+    alpha: string;
     createdTimestamp: string;
     dtoIntFromAlpha: number;
     dtoIntFromBravo: number;

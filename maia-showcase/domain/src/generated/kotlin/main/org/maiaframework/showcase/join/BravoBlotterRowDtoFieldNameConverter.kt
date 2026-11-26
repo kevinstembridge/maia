@@ -14,6 +14,7 @@ class BravoBlotterRowDtoFieldNameConverter : SearchFieldNameConverter {
     override fun convertFieldName(fieldName: String): String {
 
         return when(fieldName) {
+            "alpha" -> "alpha_id"
             "createdTimestamp" -> "created_timestamp"
             "id" -> "id"
             "tableStringFromAlpha" -> "some_string"

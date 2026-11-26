@@ -12,6 +12,7 @@ class BravoDtoRowMapper : MaiaRowMapper<BravoDto> {
 
     override fun mapRow(rsa: ResultSetAdapter): BravoDto {
 
+        val alpha = rsa.readDomainId("alpha")
         val createdTimestamp = rsa.readInstant("createdTimestamp")
         val dtoIntFromAlpha = rsa.readInt("dtoIntFromAlpha")
         val dtoIntFromBravo = rsa.readInt("dtoIntFromBravo")
@@ -20,6 +21,7 @@ class BravoDtoRowMapper : MaiaRowMapper<BravoDto> {
         val id = rsa.readDomainId("id")
 
         return BravoDto(
+            alpha,
             createdTimestamp,
             dtoIntFromAlpha,
             dtoIntFromBravo,

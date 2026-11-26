@@ -55,6 +55,19 @@ class BravoBlotterPage(
     }
 
 
+    fun alphaCellTextForRowContaining(rowText: String): String {
+
+        val row = page.locator(".ag-row:not(.ag-row-loading)")
+            .filter(Locator.FilterOptions().setHasText(rowText))
+            .first()
+        val cell = row.locator(".ag-cell[col-id='alpha']")
+        cell.waitFor()
+        cell.scrollIntoViewIfNeeded()
+        return cell.innerText().trim()
+
+    }
+
+
     fun clickDeleteButtonForFirstRow() {
 
         page.evaluate("document.querySelector('.ag-grid-viewport').scrollLeft = 0")

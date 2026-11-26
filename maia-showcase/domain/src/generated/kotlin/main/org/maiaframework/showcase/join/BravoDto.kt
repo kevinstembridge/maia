@@ -8,6 +8,7 @@ import java.time.Instant
 
 
 data class BravoDto(
+    val alpha: DomainId,
     val createdTimestamp: Instant,
     val dtoIntFromAlpha: Int,
     val dtoIntFromBravo: Int,

@@ -14,6 +14,8 @@ class BravoBlotterRowDtoFieldConverter : SearchFieldConverter {
     override fun convertValue(tableColumnPath: String, inputValue: Any?): Any? {
 
         when(tableColumnPath) {
+            "alpha_id" -> // alpha
+                return inputValue
             "created_timestamp" -> // createdTimestamp
                 return inputValue
             "id" -> // id

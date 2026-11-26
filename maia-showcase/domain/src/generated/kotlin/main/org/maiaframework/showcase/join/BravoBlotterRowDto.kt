@@ -8,6 +8,7 @@ import java.time.Instant
 
 
 data class BravoBlotterRowDto(
+    val alpha: DomainId,
     val createdTimestamp: Instant,
     val id: DomainId,
     val tableStringFromAlpha: String,

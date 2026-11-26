@@ -70,6 +70,7 @@ export class BravoBlotter {
                 this.onEdit(event.data);
             }
         },
+        { field: 'alpha', headerName: 'Alpha', cellDataType: 'text', filter: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
         { field: 'tableStringFromAlpha', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'tableStringFromBravo', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'createdTimestamp', headerName: 'Created At', cellDataType: 'dateTimeString', filter: true },

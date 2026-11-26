@@ -67,10 +67,6 @@ open class TypescriptInterfaceDtoRenderer(
                 val listElementType = fieldType.parameterFieldType
                 addImportsFor(listElementType)
 
-                if (listElementType is ForeignKeyFieldType && dtoCharacteristics.contains(DtoCharacteristic.RESPONSE_DTO)) {
-                    addImport(listElementType.foreignKeyFieldDef.foreignEntityDef.entityRefDef.refDtoTypescriptImport)
-                }
-
                 if (listElementType is JoinFetchDtoFieldType) {
                     addImport(listElementType.typescriptImport)
                 }
@@ -82,10 +78,6 @@ open class TypescriptInterfaceDtoRenderer(
             }
 
             addImportsFor(fieldType)
-
-            if (fieldType is ForeignKeyFieldType && dtoCharacteristics.contains(DtoCharacteristic.RESPONSE_DTO)) {
-                addImport(fieldType.foreignKeyFieldDef.foreignEntityDef.entityRefDef.refDtoTypescriptImport)
-            }
 
         }
 
@@ -119,7 +111,7 @@ open class TypescriptInterfaceDtoRenderer(
                 is DoubleFieldType -> renderForPlainField(fieldDef, nullableClause)
                 is EnumFieldType -> appendLine("    ${fieldDef.classFieldName}$nullableClause: ${fieldType.enumDef.uqcn};")
                 is EsDocFieldType -> appendLine("    ${fieldDef.classFieldName}$nullableClause: ${fieldType.esDocDef.uqcn};")
-                is ForeignKeyFieldType -> renderForForeignKeyField(fieldDef, nullableClause, fieldType)
+                is ForeignKeyFieldType -> renderForForeignKeyField(fieldDef, nullableClause)
                 is FqcnFieldType -> renderForPlainField(fieldDef, nullableClause)
                 is JoinFetchDtoFieldType -> appendLine("    ${fieldDef.classFieldName}$nullableClause: ${fieldType.uqcn};")
                 is EntityRefFieldType -> appendLine("    ${fieldDef.classFieldName}$nullableClause: ${fieldType.entityRefDef.dtoUqcn};")
@@ -211,17 +203,16 @@ open class TypescriptInterfaceDtoRenderer(
     }
 
 
+    /**
+     * A foreign key field is a plain uuid on the wire. A response DTO that carries an Entity ref uses
+     * an [EntityRefFieldType] field instead, which is rendered as the RefDto type.
+     */
     private fun renderForForeignKeyField(
         fieldDef: ClassFieldDef,
-        nullableClause: String,
-        fieldType: ForeignKeyFieldType
+        nullableClause: String
     ) {
 
-        if (dtoCharacteristics.contains(DtoCharacteristic.RESPONSE_DTO)) {
-            appendLine("    ${fieldDef.classFieldName}$nullableClause: ${fieldType.foreignKeyFieldDef.foreignEntityDef.entityRefDef.dtoUqcn};")
-        } else {
-            appendLine("    ${fieldDef.classFieldName}$nullableClause: string;")
-        }
+        appendLine("    ${fieldDef.classFieldName}$nullableClause: string;")
 
     }
 

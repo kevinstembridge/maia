@@ -41,6 +41,7 @@ class BravoBlotterRowDtoDao(private val jdbcOps: JdbcOps) {
 
         val sqlForPage = """
             select
+                maia.bravo.alpha_id as alpha,
                 maia.bravo.created_timestamp as createdTimestamp,
                 maia.bravo.id as id,
                 maia.alpha.some_string as tableStringFromAlpha,

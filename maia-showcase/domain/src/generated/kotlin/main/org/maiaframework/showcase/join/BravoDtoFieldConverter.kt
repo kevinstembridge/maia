@@ -14,6 +14,8 @@ class BravoDtoFieldConverter : SearchFieldConverter {
     override fun convertValue(tableColumnPath: String, inputValue: Any?): Any? {
 
         when(tableColumnPath) {
+            "alpha_id" -> // alpha
+                return inputValue
             "created_timestamp" -> // createdTimestamp
                 return inputValue
             "some_int" -> // dtoIntFromAlpha

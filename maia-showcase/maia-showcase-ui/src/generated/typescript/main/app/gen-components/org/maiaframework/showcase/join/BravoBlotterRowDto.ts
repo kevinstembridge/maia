@@ -3,6 +3,7 @@
 
 
 export interface BravoBlotterRowDto {
+    alpha: string;
     createdTimestamp: string;
     id: string;
     tableStringFromAlpha: string;

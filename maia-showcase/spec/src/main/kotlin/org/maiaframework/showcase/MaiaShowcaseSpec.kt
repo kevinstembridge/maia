@@ -1158,6 +1158,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         withGeneratedDto = WithGeneratedDto.TRUE,
         searchModelType = SearchModelType.MAIA
     ) {
+        field("alpha")
         field("dtoStringFromAlpha", "alpha.someString")
         field("dtoIntFromAlpha", "alpha.someInt")
         field("dtoStringFromBravo", "someString")
@@ -1174,6 +1175,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     ) {
         viewActionColumn()
         editActionColumn()
+        columnFromDto(dtoFieldName = "alpha", fieldPathInSourceData = "alpha")
         columnFromDto(dtoFieldName = "tableStringFromAlpha", fieldPathInSourceData = "dtoStringFromAlpha")
         columnFromDto(dtoFieldName = "tableStringFromBravo", fieldPathInSourceData = "dtoStringFromBravo")
         columnFromDto(dtoFieldName = "createdTimestamp", fieldPathInSourceData = "createdTimestamp")

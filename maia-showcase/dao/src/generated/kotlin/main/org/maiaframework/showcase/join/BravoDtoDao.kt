@@ -40,6 +40,7 @@ class BravoDtoDao(private val jdbcOps: JdbcOps) {
 
         val sqlForPage = """
             select
+                maia.bravo.alpha_id as alpha,
                 maia.bravo.created_timestamp as createdTimestamp,
                 maia.alpha.some_int as dtoIntFromAlpha,
                 maia.bravo.some_int as dtoIntFromBravo,
