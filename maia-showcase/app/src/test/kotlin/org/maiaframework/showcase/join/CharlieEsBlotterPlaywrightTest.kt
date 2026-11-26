@@ -113,6 +113,7 @@ class CharlieEsBlotterPlaywrightTest : AbstractPlaywrightTest() {
         val alpha = seedCharlie(alphaText = "alpha-before-edit", bravoText = "bravo-for-edit", charlieText = "charlie-row-two")
 
         alphaCrudService.updateSomeString(AlphaUpdate_someStringRequestDto(id_raw = alpha.id, someString_raw = "alpha-after-edit"))
+        refreshIndex()
 
         `log in as admin user`()
         `navigate to the`(charlieEsBlotterPage)
@@ -150,6 +151,14 @@ class CharlieEsBlotterPlaywrightTest : AbstractPlaywrightTest() {
         }
 
         charlieEsIndexService.refreshByIds(listOf(charlie.id))
+        refreshIndex()
+
+    }
+
+
+    private fun refreshIndex() {
+
+        val indexName = indexNameFactory.indexNameFrom(CharlieEsEsIndexMeta_v0001.indexBaseNameAndVersion).value
         elasticsearchClient.indices().refresh { r -> r.index(indexName) }
 
     }
