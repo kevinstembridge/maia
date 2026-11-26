@@ -68,6 +68,23 @@ class ResponseDtoFieldDef(
     }
 
 
+    fun copyWithFieldType(newFieldType: FieldType): ResponseDtoFieldDef {
+
+        return ResponseDtoFieldDef(
+            classFieldName,
+            fieldDisplayName,
+            dbColumnFieldDef.tableColumnName,
+            newFieldType,
+            classFieldDef.nullability,
+            classFieldDef.isMasked,
+            caseSensitive,
+            dbColumnFieldDef.fieldReaderParameterizedType,
+            dbColumnFieldDef.fieldWriterParameterizedType
+        )
+
+    }
+
+
     fun copyWithFieldName(fieldName: String): ResponseDtoFieldDef {
 
         return ResponseDtoFieldDef(

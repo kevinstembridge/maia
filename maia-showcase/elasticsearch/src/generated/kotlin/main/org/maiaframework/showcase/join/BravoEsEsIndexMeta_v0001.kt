@@ -26,6 +26,12 @@ object BravoEsEsIndexMeta_v0001 {
 
 
     val typeMapping = TypeMapping.of { m ->
+            m.properties("alpha.id", Property.of { p -> p.keyword { it } })
+            m.properties("alpha.displayName") {
+                propertyBuilder -> propertyBuilder.text {
+                    t -> t.fields(mapOf("raw" to Property.of { p -> p.keyword { it } }))
+                }
+            }
             m.properties("createdTimestamp", Property.of { p -> p.date { it } })
             m.properties("dtoIntFromBravo", Property.of { p -> p.long_ { it } })
             m.properties("dtoStringFromAlpha") {

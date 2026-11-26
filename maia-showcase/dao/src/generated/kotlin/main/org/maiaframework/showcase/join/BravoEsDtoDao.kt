@@ -32,6 +32,8 @@ class BravoEsDtoDao(private val jdbcOps: JdbcOps) {
 
         val sql = """
             select 
+                "alphaRef".id as alphaId,
+                "alphaRef".some_string as alphaName,
                 maia.bravo.created_timestamp as createdTimestamp,
                 maia.bravo.some_int as dtoIntFromBravo,
                 maia.alpha.some_string as dtoStringFromAlpha,
@@ -40,6 +42,8 @@ class BravoEsDtoDao(private val jdbcOps: JdbcOps) {
             from maia.bravo
             inner join maia.alpha
                     on maia.bravo.alpha_id = maia.alpha.id
+            inner join maia.alpha "alphaRef"
+                    on maia.bravo.alpha_id = "alphaRef".id
             where maia.bravo.id = :id
             """.trimIndent()
 
@@ -56,6 +60,8 @@ class BravoEsDtoDao(private val jdbcOps: JdbcOps) {
 
         val sql = """
             select 
+                "alphaRef".id as alphaId,
+                "alphaRef".some_string as alphaName,
                 maia.bravo.created_timestamp as createdTimestamp,
                 maia.bravo.some_int as dtoIntFromBravo,
                 maia.alpha.some_string as dtoStringFromAlpha,
@@ -64,6 +70,8 @@ class BravoEsDtoDao(private val jdbcOps: JdbcOps) {
             from maia.bravo
             inner join maia.alpha
                     on maia.bravo.alpha_id = maia.alpha.id
+            inner join maia.alpha "alphaRef"
+                    on maia.bravo.alpha_id = "alphaRef".id
             where maia.bravo.id in (:ids)
             """.trimIndent()
 
@@ -76,6 +84,8 @@ class BravoEsDtoDao(private val jdbcOps: JdbcOps) {
 
         val sql = """
             select 
+                "alphaRef".id as alphaId,
+                "alphaRef".some_string as alphaName,
                 maia.bravo.created_timestamp as createdTimestamp,
                 maia.bravo.some_int as dtoIntFromBravo,
                 maia.alpha.some_string as dtoStringFromAlpha,
@@ -84,6 +94,8 @@ class BravoEsDtoDao(private val jdbcOps: JdbcOps) {
             from maia.bravo
             inner join maia.alpha
                     on maia.bravo.alpha_id = maia.alpha.id
+            inner join maia.alpha "alphaRef"
+                    on maia.bravo.alpha_id = "alphaRef".id
             """.trimIndent()
 
         return this.jdbcOps.queryForSequence(sql, SqlParams(), this.dtoRowMapper)
@@ -120,11 +132,15 @@ class BravoEsDtoDao(private val jdbcOps: JdbcOps) {
             from maia.bravo
             inner join maia.alpha
                     on maia.bravo.alpha_id = maia.alpha.id
+            inner join maia.alpha "alphaRef"
+                    on maia.bravo.alpha_id = "alphaRef".id
             $whereClause
             """.trimIndent()
 
         val sqlForPage = """
             select
+                "alphaRef".id as alphaId,
+                "alphaRef".some_string as alphaName,
                 maia.bravo.created_timestamp as createdTimestamp,
                 maia.bravo.some_int as dtoIntFromBravo,
                 maia.alpha.some_string as dtoStringFromAlpha,
@@ -133,6 +149,8 @@ class BravoEsDtoDao(private val jdbcOps: JdbcOps) {
             from maia.bravo
             inner join maia.alpha
                     on maia.bravo.alpha_id = maia.alpha.id
+            inner join maia.alpha "alphaRef"
+                    on maia.bravo.alpha_id = "alphaRef".id
             $whereClause
             $orderByClause
             $offsetAndLimitClause
@@ -163,6 +181,8 @@ class BravoEsDtoDao(private val jdbcOps: JdbcOps) {
             from maia.bravo
             inner join maia.alpha
                     on maia.bravo.alpha_id = maia.alpha.id
+            inner join maia.alpha "alphaRef"
+                    on maia.bravo.alpha_id = "alphaRef".id
             $whereClause
             """.trimIndent()
 

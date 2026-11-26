@@ -28,6 +28,7 @@ class BravoEsV1EsDocRepo(private val dtoRepo: BravoEsDtoRepo) {
     private fun buildEsDoc(dto: BravoEsDto): BravoEsV1EsDoc {
 
         return BravoEsV1EsDoc(
+            alpha = dto.alpha,
             createdTimestamp = dto.createdTimestamp,
             dtoIntFromBravo = dto.dtoIntFromBravo,
             dtoStringFromAlpha = dto.dtoStringFromAlpha,

@@ -13,6 +13,12 @@ export const bravoRoutes: Routes = [
             import('./bravo-blotter-page').then(m => m.BravoBlotterPage),
     },
     {
+        path: 'bravo-es-blotter',
+        data: {authorities: [Authority.WRITE]},
+        loadComponent: () =>
+            import('./bravo-es-blotter-page').then(m => m.BravoEsBlotterPage),
+    },
+    {
         path: 'bravo/view/:id',
         data: {authorities: [Authority.WRITE]},
         loadComponent: () =>

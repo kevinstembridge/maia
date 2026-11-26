@@ -5,6 +5,7 @@ import org.maiaframework.gen.renderers.SqlParamFunctions.sqlParamAddFunctionName
 import org.maiaframework.gen.spec.definition.ApplicationModelDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
+import org.maiaframework.gen.spec.definition.EntityRefDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EffectiveRangeManagedBy
@@ -69,7 +70,7 @@ class SearchableDtoJdbcDaoRenderer(
     private val rootEntitySchemaAndTable = searchableDtoDef.schemaAndTableName
 
 
-    private val joinClauses = manyToManyJoinClauses() + joinClauses(foreignKeyFieldsSortedByDepth, foreignKeyTableCount)
+    private val joinClauses = manyToManyJoinClauses() + joinClauses(foreignKeyFieldsSortedByDepth, foreignKeyTableCount) + entityRefJoinClauses()
 
 
     init {
@@ -558,7 +559,13 @@ class SearchableDtoJdbcDaoRenderer(
     private fun selectColumns(foreignKeyTableCount: Map<String, Int>): List<String> {
 
         return searchableDtoDef.nonManyToManyFields
-            .map { searchableDtoFieldDef ->
+            .flatMap { searchableDtoFieldDef ->
+
+                val entityRefDef = searchableDtoFieldDef.entityRefDef
+
+                if (entityRefDef != null) {
+                    return@flatMap entityRefSelectColumns(searchableDtoFieldDef, entityRefDef)
+                }
 
                 val numberOfTimesTheForeignTableIsReferenced = foreignKeyTableCount[searchableDtoFieldDef.schemaAndTableName] ?: 0
                 val foreignTableIsReferencedMoreThanOnce = numberOfTimesTheForeignTableIsReferenced > 1
@@ -579,10 +586,55 @@ class SearchableDtoJdbcDaoRenderer(
                     "${tableOrAlias}.${searchableDtoFieldDef.databaseColumn}"
                 }
 
-                "$fieldExpression as ${searchableDtoFieldDef.classFieldName}"
+                listOf("$fieldExpression as ${searchableDtoFieldDef.classFieldName}")
 
             }.plus(selectTypeDiscriminatorColumn())
             .filterNotNull()
+
+    }
+
+
+    /**
+     * A field exposed as an Entity ref reads the id, display name and shortcode of the foreign row through a join
+     * of its own ([entityRefJoinClauses]), aliased by the field name so it cannot clash with the path joins.
+     */
+    private fun entityRefSelectColumns(
+        searchableDtoFieldDef: SimpleSearchableDtoFieldDef,
+        entityRefDef: EntityRefDef
+    ): List<String> {
+
+        val alias = entityRefAlias(searchableDtoFieldDef)
+        val prefix = searchableDtoFieldDef.classFieldName
+
+        return listOfNotNull(
+            "$alias.${entityRefDef.pkEntityFieldDef.tableColumnName} as ${prefix}Id",
+            "$alias.${entityRefDef.displayNameEntityFieldDef.tableColumnName} as ${prefix}Name",
+            entityRefDef.shortcodeEntityFieldDef?.let { "$alias.${it.tableColumnName} as ${prefix}Shortcode" }
+        )
+
+    }
+
+
+    private fun entityRefAlias(searchableDtoFieldDef: SimpleSearchableDtoFieldDef): String {
+
+        return quotedSqlIdentifier(ClassFieldName("${searchableDtoFieldDef.classFieldName}Ref"))
+
+    }
+
+
+    private fun entityRefJoinClauses(): List<String> {
+
+        return searchableDtoDef.nonManyToManyFields
+            .filter { it.entityRefDef != null }
+            .map { searchableDtoFieldDef ->
+
+                val foreignEntityDef = searchableDtoFieldDef.entityFieldDef.foreignKeyFieldDef!!.foreignEntityDef
+                val alias = entityRefAlias(searchableDtoFieldDef)
+
+                """inner join ${foreignEntityDef.schemaAndTableName} $alias
+                    on ${searchableDtoFieldDef.schemaAndTableName}.${searchableDtoFieldDef.databaseColumn} = $alias.${foreignEntityDef.primaryKeyFields.single().tableColumnName}""".trimIndent()
+
+            }
 
     }
 

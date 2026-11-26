@@ -5,7 +5,9 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
 import org.maiaframework.gen.spec.AbstractSpec
 import org.maiaframework.gen.spec.definition.flags.IsEditableByUser
+import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
+import org.maiaframework.gen.spec.definition.lang.ForeignKeyFieldType
 
 
 class SearchableDtoEsDocTest {
@@ -116,6 +118,27 @@ class SearchableDtoEsDocTest {
             rightEntity = ReferencedEntity("right", "Right", right, IsEditableByUser.TRUE)
         )
 
+        val referenced = entity("com.example", "Referenced") {
+            refDtoFieldNames("name")
+            field("name", FieldTypes.string)
+        }
+
+        val holder = entity("com.example", "Holder") {
+            foreignKey("referenced", referenced)
+            foreignKey("other", other)
+        }
+
+        val holderEs = searchableDto(baseName = "HolderEs", entityDef = holder) {
+            elasticsearchEnabled()
+            field("referenced")
+            field("other")
+            field("referencedName", "referenced.name")
+        }
+
+        val holderPlain = searchableDto(baseName = "HolderPlain", entityDef = holder) {
+            field("referenced")
+        }
+
         val m2m = searchableDto(entityDef = left, baseName = "LeftEs") {
             elasticsearchEnabled()
             field("name")
@@ -181,6 +204,41 @@ class SearchableDtoEsDocTest {
         assertThat(mappings["other"]).isSameAs(EsDocMappingTypes.keyword)
         assertThat(mappings["id"]).isSameAs(EsDocMappingTypes.keyword)
         assertThat(mappings["otherLabel"]).isSameAs(EsDocMappingTypes.textAndKeyword)
+
+    }
+
+
+    @Test
+    fun `direct foreign key to an Entity with an Entity ref becomes the RefDto on an ES-enabled DTO`() {
+
+        val esDoc = spec.holderEs.esDocDef!!
+
+        assertThat(esDoc.mappingOf("referenced")).isInstanceOf(EntityRefEsDocMappingType::class.java)
+        assertThat(esDoc.fields.single { it.classFieldDef.classFieldName.value == "referenced" }.classFieldDef.fieldType)
+            .isInstanceOf(EntityRefFieldType::class.java)
+        assertThat(spec.holderEs.findSearchableDtoFieldByName("referenced").classFieldDef.fieldType)
+            .isInstanceOf(EntityRefFieldType::class.java)
+
+    }
+
+
+    @Test
+    fun `foreign key to an Entity without an Entity ref and path fields are not converted`() {
+
+        val dto = spec.holderEs
+
+        assertThat(dto.findSearchableDtoFieldByName("other").classFieldDef.fieldType).isInstanceOf(ForeignKeyFieldType::class.java)
+        assertThat(dto.esDocDef!!.mappingOf("other")).isSameAs(EsDocMappingTypes.keyword)
+        assertThat(dto.esDocDef!!.mappingOf("referencedName")).isSameAs(EsDocMappingTypes.textAndKeyword)
+
+    }
+
+
+    @Test
+    fun `a DTO that is not ES-enabled keeps its foreign key as is`() {
+
+        assertThat(spec.holderPlain.findSearchableDtoFieldByName("referenced").classFieldDef.fieldType)
+            .isInstanceOf(ForeignKeyFieldType::class.java)
 
     }
 

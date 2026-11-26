@@ -34,6 +34,15 @@ class ObjectEsDocMappingType internal constructor() : EsDocMappingType("object")
 
 
 /**
+ * An Entity ref held in the index as an object: `id` (keyword), `displayName` (text with a `raw` keyword sub-field,
+ * so it can be filtered and sorted) and, when the Entity declares one, `shortcode` (keyword). See ADR-0007.
+ */
+class EntityRefEsDocMappingType internal constructor(
+    val hasShortcode: Boolean
+) : EsDocMappingType("object")
+
+
+/**
  * `scaled_float`: a float stored as a signed 64-bit long equal to `value * scalingFactor`. Parameterised, so each
  * instance carries its own scaling factor (10^scale for a BigDecimal field).
  */

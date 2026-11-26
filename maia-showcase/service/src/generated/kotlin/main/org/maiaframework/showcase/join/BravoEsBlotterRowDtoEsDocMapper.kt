@@ -13,6 +13,7 @@ class BravoEsBlotterRowDtoEsDocMapper {
     fun mapEsDoc(esDoc: BravoEsV1EsDoc): BravoEsBlotterRowDto {
 
         return BravoEsBlotterRowDto(
+            esDoc.alpha,
             esDoc.createdTimestamp,
             esDoc.dtoIntFromBravo,
             esDoc.dtoStringFromAlpha,

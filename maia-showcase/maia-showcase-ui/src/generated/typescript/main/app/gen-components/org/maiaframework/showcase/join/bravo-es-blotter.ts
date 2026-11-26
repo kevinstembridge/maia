@@ -42,6 +42,7 @@ export class BravoEsBlotter {
 
     public columnDefs: ColDef[] = [
         { field: 'id', headerName: 'ID', cellDataType: 'text', filter: true, cellRenderer: UuidAgGridCellRendererComponent, minWidth: 180 },
+        { field: 'alpha', headerName: 'Alpha', cellDataType: 'text', filter: true, valueFormatter: (params) => params.value?.displayName ?? '' },
         { field: 'dtoStringFromAlpha', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'dtoStringFromBravo', headerName: 'Some String', cellDataType: 'text', filter: true },
         { field: 'dtoIntFromBravo', headerName: 'Some Int', cellDataType: 'number', filter: true },

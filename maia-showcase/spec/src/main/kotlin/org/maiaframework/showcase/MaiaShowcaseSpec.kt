@@ -1193,6 +1193,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         withGeneratedDto = WithGeneratedDto.TRUE,
     ) {
         elasticsearchEnabled(version = 1, autoRefresh = true)
+        field("alpha")
         field("dtoStringFromAlpha", "alpha.someString")
         field("dtoStringFromBravo", "someString")
         field("dtoIntFromBravo", "someInt")
@@ -1202,11 +1203,15 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
     val bravoEsBlotterDef = blotter(bravoEsSearchableDtoDef) {
         columnFromDto("id")
+        columnFromDto("alpha")
         columnFromDto("dtoStringFromAlpha")
         columnFromDto("dtoStringFromBravo")
         columnFromDto("dtoIntFromBravo")
         columnFromDto("createdTimestamp")
     }
+
+
+    val bravoEsBlotterPageDef = blotterPage(bravoEsBlotterDef)
 
 
     val agGridFilterSampleEntityDef = entity(

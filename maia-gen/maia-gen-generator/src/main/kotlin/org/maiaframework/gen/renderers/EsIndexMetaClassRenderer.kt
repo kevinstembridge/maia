@@ -9,6 +9,7 @@ import org.maiaframework.gen.spec.definition.EsDocMappingType
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.KeywordEsDocMappingType
 import org.maiaframework.gen.spec.definition.LongEsDocMappingType
+import org.maiaframework.gen.spec.definition.EntityRefEsDocMappingType
 import org.maiaframework.gen.spec.definition.ObjectEsDocMappingType
 import org.maiaframework.gen.spec.definition.ScaledFloatEsDocMappingType
 import org.maiaframework.gen.spec.definition.SearchAsYouTypeEsDocMappingType
@@ -83,6 +84,7 @@ class EsIndexMetaClassRenderer(private val esDocDef: EsDocDef) : AbstractKotlinR
             is DoubleEsDocMappingType -> appendLineFor(fieldPath, esDocFieldDef.mappingType)
             is KeywordEsDocMappingType -> appendLineFor(fieldPath, esDocFieldDef.mappingType)
             is LongEsDocMappingType -> appendLineFor(fieldPath, esDocFieldDef.mappingType)
+            is EntityRefEsDocMappingType -> renderEntityRefProperties(fieldPath, mappingType)
             is ObjectEsDocMappingType -> appendLineFor(fieldPath, esDocFieldDef.mappingType)
             is ScaledFloatEsDocMappingType -> appendScaledFloatLine(fieldPath, mappingType)
             is SearchAsYouTypeEsDocMappingType -> appendLineFor(fieldPath, esDocFieldDef.mappingType)
@@ -106,6 +108,18 @@ class EsIndexMetaClassRenderer(private val esDocDef: EsDocDef) : AbstractKotlinR
     private fun appendScaledFloatLine(fieldName: String, mappingType: ScaledFloatEsDocMappingType) {
 
         appendLine("            m.properties(\"$fieldName\", Property.of { p -> p.scaledFloat { it.scalingFactor(${mappingType.scalingFactor}.0) } })")
+
+    }
+
+
+    private fun renderEntityRefProperties(fieldName: String, mappingType: EntityRefEsDocMappingType) {
+
+        appendLine("            m.properties(\"$fieldName.id\", Property.of { p -> p.keyword { it } })")
+        renderPropertyWithRawKeywordField("$fieldName.displayName")
+
+        if (mappingType.hasShortcode) {
+            appendLine("            m.properties(\"$fieldName.shortcode\", Property.of { p -> p.keyword { it } })")
+        }
 
     }
 

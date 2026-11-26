@@ -30,6 +30,16 @@ val bravoEsBlotterDef = blotter(bravoEsSearchableDtoDef) {
 * `esMapping(EsDocMappingTypes.x)` inside a `field { }` overrides the default Elasticsearch mapping of a field.
 * Many-to-many fields (`manyToManyField`) are supported and are indexed as `object` lists.
 
+### Ref fields
+
+On an Elasticsearch-enabled DTO, a direct foreign-key field (such as `field("alpha")`) whose foreign Entity declares an Entity ref (`refDtoFieldNames(...)`) is typed as that Entity's RefDto, with no opt-in. See [ADR-0007](adr/0007-es-backed-blotters-denormalize-entity-refs.md).
+
+* The EsDoc, the Blotter row DTO and the generated TypeScript carry the RefDto (id, display name and, if declared, shortcode). The index holds it as an object: `<field>.id` and `<field>.shortcode` are `keyword`, `<field>.displayName` is `text` with a `raw` keyword sub-field.
+* The Blotter cell shows the display name as plain text, not the uuid renderer.
+* A foreign key to an Entity **without** an Entity ref stays a `DomainId`, and so does a SQL-backed (non-ES) Searchable DTO's field. Path fields (`field("x", "alpha.someString")`) are unchanged. A nullable foreign key is not converted yet.
+* The DTO DAO reads the ref through a join of its own, aliased `"<field>Ref"`.
+* **Existing indices:** converting a field changes the index mapping and the document shape, and Maia provides no migration. A consumer with a live index declares a new version, `elasticsearchEnabled(version = n + 1)`, so the new index is built beside the old one; the Blotter switches to the highest version.
+
 ### Default mappings
 Derived from `FieldType.elasticMappingType`, with two deliberate deviations: strings use `textAndKeyword` (text plus a `raw` keyword sub-field) and `Instant` uses `date`. The generated blotter field-name mapper filters (`term` query) and sorts a `textAndKeyword` column on `<field>.raw`, so filters match the exact value and sorting works; this applies to hand-built EsDocs with `textAndKeyword` fields as well. A field type with no default mapping (for example a collection) must declare `esMapping(...)`.
 

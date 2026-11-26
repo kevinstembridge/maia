@@ -30,7 +30,7 @@ object SearchableDtoEsDocFactory {
 
                 is SimpleSearchableDtoFieldDef -> EsDocFieldDef(
                     field.classFieldDef,
-                    field.esMappingOverride ?: defaultMapping(field.classFieldDef),
+                    field.esMappingOverride ?: field.entityRefDef?.let { EsDocMappingTypes.entityRef(it.shortcodeEntityFieldDef != null) } ?: defaultMapping(field.classFieldDef),
                     field.entityFieldDef,
                     isIdField
                 )

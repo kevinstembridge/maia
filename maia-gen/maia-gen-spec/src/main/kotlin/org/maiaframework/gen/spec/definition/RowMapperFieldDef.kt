@@ -23,7 +23,9 @@ class EntityFieldRowMapperFieldDef(
 class ForeignKeyRowMapperFieldDef(
     val foreignKeyFieldDef: ForeignKeyFieldDef,
     classFieldName: ClassFieldName,
-    nullability: Nullability
+    nullability: Nullability,
+    /** Prefix of the result-set columns that carry the ref's id, name and shortcode, e.g. `alpha` for `alphaId`. */
+    val resultSetPrefix: String = foreignKeyFieldDef.foreignKeyFieldName.value
 ) : RowMapperFieldDef(
     nullability,
     classFieldName

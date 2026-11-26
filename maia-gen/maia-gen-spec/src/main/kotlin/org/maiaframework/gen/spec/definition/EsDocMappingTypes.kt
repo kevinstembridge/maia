@@ -22,6 +22,9 @@ object EsDocMappingTypes {
     val `object` = ObjectEsDocMappingType()
 
 
+    fun entityRef(hasShortcode: Boolean) = EntityRefEsDocMappingType(hasShortcode)
+
+
     /** scaling factor is 10^[scale], so values are exact to [scale] decimal places */
     fun scaledFloat(scale: Int): ScaledFloatEsDocMappingType {
 

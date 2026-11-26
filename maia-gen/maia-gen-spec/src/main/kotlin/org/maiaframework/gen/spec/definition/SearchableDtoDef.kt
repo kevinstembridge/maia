@@ -84,7 +84,22 @@ class SearchableDtoDef(
 
         }
 
-        return fields + fieldDefsNotInherited
+        return (fields + fieldDefsNotInherited).map { convertToEntityRefIfEsEnabled(it) }
+
+    }
+
+
+    /**
+     * ADR-0007: on an Elasticsearch-enabled searchable DTO a direct foreign key to an Entity that has an
+     * Entity ref is typed as that Entity's RefDto. A foreign key to an Entity without an Entity ref stays a DomainId.
+     */
+    private fun convertToEntityRefIfEsEnabled(field: SearchableDtoFieldDef): SearchableDtoFieldDef {
+
+        return if (esVersions.isNotEmpty() && field is SimpleSearchableDtoFieldDef && field.canBeEntityRef()) {
+            field.asEntityRef()
+        } else {
+            field
+        }
 
     }
 
@@ -131,7 +146,9 @@ class SearchableDtoDef(
                 when (it) {
                     is CompositeIdFieldDef -> null
                     is ManyToManySearchableDtoFieldDef -> ManyToManyRowMapperFieldDef(it, this.dtoRootEntityDef)
-                    is SimpleSearchableDtoFieldDef -> EntityFieldRowMapperFieldDef(it.classFieldName, it.entityFieldDef, it.responseDtoFieldDef.classFieldName.value)
+                    is SimpleSearchableDtoFieldDef -> if (it.entityRefDef != null) {
+                        ForeignKeyRowMapperFieldDef(it.entityFieldDef.foreignKeyFieldDef!!, it.classFieldName, it.nullability, it.classFieldName.value)
+                    } else EntityFieldRowMapperFieldDef(it.classFieldName, it.entityFieldDef, it.responseDtoFieldDef.classFieldName.value)
                 }
             }
 

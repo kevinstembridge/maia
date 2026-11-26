@@ -599,6 +599,11 @@ class AgGridBlotterComponentRenderer(
             attributes["valueFormatter"] = "(params) => params.data?.$field ?? ''"
         }
 
+        if (blotterColumnDef.fieldType is EntityRefFieldType) {
+            // An Entity ref column shows the display name as plain text (ADR-0007)
+            attributes["valueFormatter"] = "(params) => params.value?.displayName ?? ''"
+        }
+
         if (blotterColumnDef.fieldType is ListFieldType) {
             val listFieldType = blotterColumnDef.fieldType as ListFieldType
             if (listFieldType.parameterFieldType is EntityRefFieldType) {

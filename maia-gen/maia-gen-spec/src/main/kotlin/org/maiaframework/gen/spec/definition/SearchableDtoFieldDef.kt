@@ -1,6 +1,7 @@
 package org.maiaframework.gen.spec.definition
 
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
+import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import org.maiaframework.gen.spec.definition.lang.Nullability
 
 
@@ -34,7 +35,9 @@ class SimpleSearchableDtoFieldDef(
     val entityAndField: EntityAndField,
     val fieldPath: FieldPath,
     sortIndexAndDirection: SortIndexAndDirection?,
-    val esMappingOverride: EsDocMappingType? = null
+    val esMappingOverride: EsDocMappingType? = null,
+    /** Non-null when this field is a foreign key that an Elasticsearch-enabled searchable DTO exposes as the foreign Entity's ref. */
+    val entityRefDef: EntityRefDef? = null
 ): SearchableDtoFieldDef(
     responseDtoFieldDef.classFieldDef,
     sortIndexAndDirection
@@ -73,7 +76,46 @@ class SimpleSearchableDtoFieldDef(
             this.entityAndField,
             this.fieldPath,
             this.sortIndexAndDirection,
-            this.esMappingOverride
+            this.esMappingOverride,
+            this.entityRefDef
+        )
+
+    }
+
+
+    /**
+     * True for a direct foreign key whose foreign Entity declares an Entity ref, so that an
+     * Elasticsearch-enabled searchable DTO can expose it as that Entity's RefDto.
+     *
+     * Nullable foreign keys are not converted yet (a null ref needs an outer join, see the entity-ref spec).
+     */
+    fun canBeEntityRef(): Boolean {
+
+        val foreignKeyFieldDef = entityFieldDef.foreignKeyFieldDef ?: return false
+        val foreignEntityDef = foreignKeyFieldDef.foreignEntityDef
+
+        return fieldPathLength == 1
+            && entityRefDef == null
+            && nullability == Nullability.NOT_NULLABLE
+            && foreignEntityDef.hasRefDtoDef
+            && foreignEntityDef.primaryKeyFields.size == 1
+
+    }
+
+
+    /** This field typed as the foreign Entity's RefDto. See [canBeEntityRef]. */
+    fun asEntityRef(): SimpleSearchableDtoFieldDef {
+
+        val refDef = entityFieldDef.foreignKeyFieldDef!!.foreignEntityDef.entityRefDef
+
+        return SimpleSearchableDtoFieldDef(
+            this.isFilterable,
+            this.responseDtoFieldDef.copyWithFieldType(FieldTypes.entityRef(refDef)),
+            this.entityAndField,
+            this.fieldPath,
+            this.sortIndexAndDirection,
+            this.esMappingOverride,
+            refDef
         )
 
     }
