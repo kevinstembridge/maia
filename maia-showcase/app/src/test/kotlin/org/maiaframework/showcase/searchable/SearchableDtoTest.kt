@@ -1155,6 +1155,7 @@ class SearchableDtoTest : AbstractBlackBoxTest() {
 
         return mapOf(
             "id" to bravoEntity.id.value,
+            "alpha" to alphaEntity.id.value,
             "dtoStringFromAlpha" to alphaEntity.someString,
             "dtoStringFromBravo" to bravoEntity.someString,
             "dtoIntFromAlpha" to alphaEntity.someInt,
