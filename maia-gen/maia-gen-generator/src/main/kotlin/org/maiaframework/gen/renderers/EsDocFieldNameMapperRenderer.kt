@@ -3,7 +3,9 @@ package org.maiaframework.gen.renderers
 import org.maiaframework.gen.spec.definition.BlotterColumnDef
 import org.maiaframework.gen.spec.definition.BlotterDef
 import org.maiaframework.gen.spec.definition.BlotterEsDocSourceDef
+import org.maiaframework.gen.spec.definition.EntityRefEsDocMappingType
 import org.maiaframework.gen.spec.definition.TextAndKeywordEsDocMappingType
+import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
 
 class EsDocFieldNameMapperRenderer(
     private val blotterDef: BlotterDef
@@ -36,7 +38,8 @@ class EsDocFieldNameMapperRenderer(
     /**
      * A `textAndKeyword` field is mapped as an analyzed `text` field (tokenised, so exact `term` filters do not
      * match and it cannot be sorted) with a `keyword` sub-field named `raw`, so filters and sorts must use
-     * `<field>.raw`. Only direct fields of the EsDoc are considered: a nested or unknown path is left unchanged.
+     * `<field>.raw`. An Entity ref column (ADR-0007) is an object, so it filters and sorts as a text column on its
+     * display name sub-field, `<field>.displayName.raw`. Only direct fields of the EsDoc are considered: a nested or unknown path is left unchanged.
      */
     private fun filterAndSortFieldPathFor(blotterColumnDef: BlotterColumnDef): String {
 
@@ -48,10 +51,11 @@ class EsDocFieldNameMapperRenderer(
 
         val esDocFieldDef = esDocDef.fields.firstOrNull { it.classFieldDef.classFieldName.value == fieldPath.head() }
 
-        return if (esDocFieldDef?.mappingType is TextAndKeywordEsDocMappingType) {
-            "$fieldPath.raw"
-        } else {
-            fieldPath.toString()
+        return when {
+            esDocFieldDef?.mappingType is EntityRefEsDocMappingType && blotterColumnDef.fieldType is EntityRefFieldType ->
+                "$fieldPath.displayName.raw"
+            esDocFieldDef?.mappingType is TextAndKeywordEsDocMappingType -> "$fieldPath.raw"
+            else -> fieldPath.toString()
         }
 
     }
