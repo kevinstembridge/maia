@@ -10,7 +10,7 @@ object BravoEsBlotterRowDtoFieldNameMapper {
 
     val mappingFunction: (String) -> String = {
         when (it) {
-            "alpha" -> "alpha"
+            "alpha" -> "alpha.displayName.raw"
             "createdTimestamp" -> "createdTimestamp"
             "dtoIntFromBravo" -> "dtoIntFromBravo"
             "dtoStringFromAlpha" -> "dtoStringFromAlpha.raw"

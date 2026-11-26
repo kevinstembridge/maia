@@ -83,7 +83,7 @@ class BlotterColumnDef(
             is ForeignKeyFieldType -> "id"
             is FqcnFieldType -> TODO("YAGNI?")
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
-            is EntityRefFieldType -> "id"
+            is EntityRefFieldType -> "text"
             is InstantFieldType -> "date"
             is IntFieldType -> "number"
             is BigDecimalFieldType -> "number"
@@ -122,7 +122,7 @@ class BlotterColumnDef(
             is FqcnFieldType -> TODO("YAGNI?")
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
             is ForeignKeyFieldType -> "equals"
-            is EntityRefFieldType -> "equals"
+            is EntityRefFieldType -> "contains"
             is InstantFieldType -> "equals"
             is IntFieldType -> "equals"
             is BigDecimalFieldType -> "equals"
