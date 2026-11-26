@@ -1214,6 +1214,31 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     val bravoEsBlotterPageDef = blotterPage(bravoEsBlotterDef)
 
 
+    /**
+     * Elasticsearch-enabled, with the `alpha` foreign key as the ONLY link to Alpha (no path through it), so the index
+     * stays fresh only if the refresh-dependency model registers Alpha for the Entity ref field itself.
+     */
+    val bravoRefOnlyEsSearchableDtoDef = searchableDto(
+        "org.maiaframework.showcase.join",
+        "BravoRefOnlyEs",
+        entityDef = bravoEntityDef,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+    ) {
+        elasticsearchEnabled(version = 1, autoRefresh = true)
+        field("alpha")
+        field("dtoStringFromBravo", "someString")
+    }
+
+
+    val bravoRefOnlyEsBlotterDef = blotter(bravoRefOnlyEsSearchableDtoDef) {
+        columnFromDto("alpha")
+        columnFromDto("dtoStringFromBravo")
+    }
+
+
+    val bravoRefOnlyEsBlotterPageDef = blotterPage(bravoRefOnlyEsBlotterDef)
+
+
     val agGridFilterSampleEntityDef = entity(
         "org.maiaframework.showcase.filter_sample",
         "AgGridFilterSample",

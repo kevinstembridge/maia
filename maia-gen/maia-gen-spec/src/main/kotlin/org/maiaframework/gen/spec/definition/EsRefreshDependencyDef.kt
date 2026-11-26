@@ -285,6 +285,7 @@ object EsRefreshDependencyFactory {
             if (rootEntityDef.findFieldByNameOrNull(head) != null) {
 
                 walk(rootEntityDef, fieldPath, emptyList())
+                field.entityRefDef?.let { addEntityRefField(field, it) }
 
             } else {
 
@@ -301,6 +302,26 @@ object EsRefreshDependencyFactory {
                 }
 
             }
+
+        }
+
+
+        /**
+         * An Entity ref field stores the foreign Entity's display name and shortcode in the EsDoc, so the foreign
+         * Entity is a dependency that must be watched for changes to those fields. The foreign key itself is
+         * watched by [walk].
+         */
+        private fun addEntityRefField(
+            field: SimpleSearchableDtoFieldDef,
+            entityRefDef: EntityRefDef
+        ) {
+
+            val foreignEntityDef = field.entityFieldDef.foreignKeyFieldDef!!.foreignEntityDef
+            val hop = JoinHop(rootEntityDef, field.entityFieldDef, foreignEntityDef, primaryKeyFieldOf(foreignEntityDef))
+            val foreignBuilder = builderFor(foreignEntityDef)
+            foreignBuilder.paths.add(listOf(hop))
+            foreignBuilder.watchedFields.add(entityRefDef.displayNameEntityFieldDef.classFieldName)
+            entityRefDef.shortcodeEntityFieldDef?.let { foreignBuilder.watchedFields.add(it.classFieldName) }
 
         }
 
