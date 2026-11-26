@@ -65,7 +65,7 @@ An Entity declared `isAbstract = true` that only serves as a parent in Entity in
 _Avoid_: Base table
 
 **Entity ref**:
-A minimal identifying projection of an Entity (its primary key, a display name, and optionally a shortcode), used wherever one Entity refers to another, such as foreign-key pickers and many-to-many sides.
+A minimal identifying projection of an Entity (its primary key, a display name, and optionally a shortcode), used wherever one Entity refers to another, such as foreign-key pickers, many-to-many sides, and the foreign-key columns of an Elasticsearch-backed Blotter, which are filtered and sorted on the display name.
 _Avoid_: Pk and name, lookup, summary
 
 **Effective range**:
