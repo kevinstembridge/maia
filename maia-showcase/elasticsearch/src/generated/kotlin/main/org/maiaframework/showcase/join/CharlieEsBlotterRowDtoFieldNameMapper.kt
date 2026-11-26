@@ -10,7 +10,7 @@ object CharlieEsBlotterRowDtoFieldNameMapper {
 
     val mappingFunction: (String) -> String = {
         when (it) {
-            "alphaViaBravo" -> "alphaViaBravo"
+            "alphaViaBravo" -> "alphaViaBravo.displayName.raw"
             "dtoStringFromBravo" -> "dtoStringFromBravo.raw"
             "dtoStringFromCharlie" -> "dtoStringFromCharlie.raw"
             "id" -> "id"
