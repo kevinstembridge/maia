@@ -101,10 +101,15 @@ class SimpleSearchableDtoFieldDef(
     }
 
 
+    /** The foreign Entity this field points at. Only valid for a foreign key field, see [canBeEntityRef]. */
+    val foreignEntityDef: EntityDef
+        get() = entityFieldDef.foreignKeyFieldDef!!.foreignEntityDef
+
+
     /** This field typed as the foreign Entity's RefDto. See [canBeEntityRef]. */
     fun asEntityRef(): SimpleSearchableDtoFieldDef {
 
-        val refDef = entityFieldDef.foreignKeyFieldDef!!.foreignEntityDef.entityRefDef
+        val refDef = foreignEntityDef.entityRefDef
 
         return SimpleSearchableDtoFieldDef(
             this.isFilterable,

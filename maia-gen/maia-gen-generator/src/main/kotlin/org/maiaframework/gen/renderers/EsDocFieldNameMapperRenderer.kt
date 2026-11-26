@@ -3,6 +3,7 @@ package org.maiaframework.gen.renderers
 import org.maiaframework.gen.spec.definition.BlotterColumnDef
 import org.maiaframework.gen.spec.definition.BlotterDef
 import org.maiaframework.gen.spec.definition.BlotterEsDocSourceDef
+import org.maiaframework.gen.spec.definition.EntityRefDef
 import org.maiaframework.gen.spec.definition.EntityRefEsDocMappingType
 import org.maiaframework.gen.spec.definition.TextAndKeywordEsDocMappingType
 import org.maiaframework.gen.spec.definition.lang.EntityRefFieldType
@@ -53,8 +54,8 @@ class EsDocFieldNameMapperRenderer(
 
         return when {
             esDocFieldDef?.mappingType is EntityRefEsDocMappingType && blotterColumnDef.fieldType is EntityRefFieldType ->
-                "$fieldPath.displayName.raw"
-            esDocFieldDef?.mappingType is TextAndKeywordEsDocMappingType -> "$fieldPath.raw"
+                "$fieldPath.${EntityRefDef.DISPLAY_NAME_FIELD}.${EntityRefDef.RAW_SUB_FIELD}"
+            esDocFieldDef?.mappingType is TextAndKeywordEsDocMappingType -> "$fieldPath.${EntityRefDef.RAW_SUB_FIELD}"
             else -> fieldPath.toString()
         }
 

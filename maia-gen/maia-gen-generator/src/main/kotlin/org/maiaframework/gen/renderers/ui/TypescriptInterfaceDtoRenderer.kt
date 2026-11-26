@@ -2,7 +2,6 @@ package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.spec.definition.AnyTypescriptType
 import org.maiaframework.gen.spec.definition.BooleanTypescriptType
-import org.maiaframework.gen.spec.definition.DtoCharacteristic
 import org.maiaframework.gen.spec.definition.EnumTypescriptType
 import org.maiaframework.gen.spec.definition.FieldTypeTypescriptCompatibleType
 import org.maiaframework.gen.spec.definition.NumberTypescriptType
@@ -49,8 +48,7 @@ import org.maiaframework.gen.spec.definition.lang.UrlFieldType
 open class TypescriptInterfaceDtoRenderer(
     private val renderedFilePath: String,
     private val className: Uqcn,
-    private val fields: List<ClassFieldDef>,
-    private val dtoCharacteristics: Set<DtoCharacteristic>
+    private val fields: List<ClassFieldDef>
 ) : AbstractTypescriptRenderer() {
 
 

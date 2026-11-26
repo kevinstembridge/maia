@@ -3,13 +3,14 @@ package org.maiaframework.gen.renderers
 import org.maiaframework.gen.spec.definition.BooleanEsDocMappingType
 import org.maiaframework.gen.spec.definition.DateEsDocMappingType
 import org.maiaframework.gen.spec.definition.DoubleEsDocMappingType
+import org.maiaframework.gen.spec.definition.EntityRefDef
+import org.maiaframework.gen.spec.definition.EntityRefEsDocMappingType
 import org.maiaframework.gen.spec.definition.EsDocDef
 import org.maiaframework.gen.spec.definition.EsDocFieldDef
 import org.maiaframework.gen.spec.definition.EsDocMappingType
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.KeywordEsDocMappingType
 import org.maiaframework.gen.spec.definition.LongEsDocMappingType
-import org.maiaframework.gen.spec.definition.EntityRefEsDocMappingType
 import org.maiaframework.gen.spec.definition.ObjectEsDocMappingType
 import org.maiaframework.gen.spec.definition.ScaledFloatEsDocMappingType
 import org.maiaframework.gen.spec.definition.SearchAsYouTypeEsDocMappingType
@@ -115,7 +116,7 @@ class EsIndexMetaClassRenderer(private val esDocDef: EsDocDef) : AbstractKotlinR
     private fun renderEntityRefProperties(fieldName: String, mappingType: EntityRefEsDocMappingType) {
 
         appendLine("            m.properties(\"$fieldName.id\", Property.of { p -> p.keyword { it } })")
-        renderPropertyWithRawKeywordField("$fieldName.displayName")
+        renderPropertyWithRawKeywordField("$fieldName.${EntityRefDef.DISPLAY_NAME_FIELD}")
 
         if (mappingType.hasShortcode) {
             appendLine("            m.properties(\"$fieldName.shortcode\", Property.of { p -> p.keyword { it } })")
@@ -129,7 +130,7 @@ class EsIndexMetaClassRenderer(private val esDocDef: EsDocDef) : AbstractKotlinR
         append("""
             |            m.properties("$fieldName") {
             |                propertyBuilder -> propertyBuilder.text {
-            |                    t -> t.fields(mapOf("raw" to Property.of { p -> p.keyword { it } }))
+            |                    t -> t.fields(mapOf("${EntityRefDef.RAW_SUB_FIELD}" to Property.of { p -> p.keyword { it } }))
             |                }
             |            }
             |""".trimMargin())

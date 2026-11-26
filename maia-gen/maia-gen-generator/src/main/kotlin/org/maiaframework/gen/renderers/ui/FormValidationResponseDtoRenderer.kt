@@ -1,6 +1,5 @@
 package org.maiaframework.gen.renderers.ui
 
-import org.maiaframework.gen.spec.definition.DtoCharacteristic
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.MaiaGenConstants
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
@@ -16,6 +15,5 @@ class FormValidationResponseDtoRenderer : TypescriptInterfaceDtoRenderer(
     fields = listOf(
         aClassField("invalid", FieldTypes.boolean).build(),
         aClassField("message", FieldTypes.string).build(),
-    ),
-    dtoCharacteristics = setOf(DtoCharacteristic.RESPONSE_DTO)
+    )
 )

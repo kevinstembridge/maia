@@ -1,6 +1,5 @@
 package org.maiaframework.gen.renderers.ui
 
-import org.maiaframework.gen.spec.definition.DtoCharacteristic
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.MaiaGenConstants
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
@@ -16,6 +15,5 @@ class ForeignKeyReferencesExistResponseDtoRenderer : TypescriptInterfaceDtoRende
     fields = listOf(
         aClassField("exists", FieldTypes.boolean).build(),
         aClassField("entityKey", FieldTypes.string).nullable().build(),
-    ),
-    dtoCharacteristics = setOf(DtoCharacteristic.RESPONSE_DTO)
+    )
 )

@@ -1,6 +1,5 @@
 package org.maiaframework.gen.renderers.ui
 
-import org.maiaframework.gen.spec.definition.DtoCharacteristic
 import org.maiaframework.gen.spec.definition.EnumDefs
 import org.maiaframework.gen.spec.definition.MaiaGenConstants
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
@@ -14,6 +13,5 @@ class TotalHitsResponseDtoRenderer : TypescriptInterfaceDtoRenderer(
     fields = listOf(
         aClassField("count", FieldTypes.int).build(),
         aClassField("relation", FieldTypes.enum(EnumDefs.TOTAL_HITS_RELATION_ENUM_DEF)).build(),
-    ),
-    dtoCharacteristics = setOf(DtoCharacteristic.RESPONSE_DTO)
+    )
 )

@@ -80,7 +80,6 @@ import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormSystem
 import org.maiaframework.gen.spec.definition.BlotterPageDef
-import org.maiaframework.gen.spec.definition.DtoCharacteristic
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EntityCreateApiDef
 import org.maiaframework.gen.spec.definition.EntityDef
@@ -386,8 +385,7 @@ class AngularUiModuleGenerator(
             renderTypescriptInterface(
                 renderedFilePath = blotterDef.dtoDef.typescriptRenderedFilePath,
                 className = blotterDef.dtoDef.uqcn,
-                fields = blotterDef.dtoClassFields,
-                dtoCharacteristics = setOf(DtoCharacteristic.RESPONSE_DTO)
+                fields = blotterDef.dtoClassFields
             )
 
         }
@@ -423,8 +421,7 @@ class AngularUiModuleGenerator(
         renderTypescriptInterface(
             renderedFilePath = requestDtoDef.typescriptDtoRenderedFilePath,
             className = requestDtoDef.uqcn,
-            fields = requestDtoDef.classFieldDefs,
-            dtoCharacteristics = emptySet()
+            fields = requestDtoDef.classFieldDefs
         )
 
     }
@@ -989,8 +986,7 @@ class AngularUiModuleGenerator(
                 renderTypescriptInterface(
                     renderedFilePath = entityIndexDef.asyncValidator.asyncValidationDtoRenderedFilePath,
                     className = entityIndexDef.asyncValidator.asyncValidationDtoUqcn,
-                    fields = entityIndexDef.indexDef.indexFieldDefs.map { it.entityFieldDef.classFieldDef },
-                    dtoCharacteristics = emptySet()
+                    fields = entityIndexDef.indexDef.indexFieldDefs.map { it.entityFieldDef.classFieldDef }
                 )
 
             }
@@ -1043,8 +1039,7 @@ class AngularUiModuleGenerator(
             renderTypescriptInterface(
                 renderedFilePath = joinFetchDtoDef.typescriptRenderedFilePath,
                 className = joinFetchDtoDef.uqcn,
-                fields = joinFetchDtoDef.dtoDef.allFieldsSorted,
-                dtoCharacteristics = setOf(DtoCharacteristic.RESPONSE_DTO)
+                fields = joinFetchDtoDef.dtoDef.allFieldsSorted
             )
         }
 
@@ -1098,8 +1093,7 @@ class AngularUiModuleGenerator(
             renderTypescriptInterface(
                 renderedFilePath = requestDtoDef.typescriptDtoRenderedFilePath,
                 className = requestDtoDef.classDef.uqcn,
-                fields = requestDtoDef.classDef.allFieldsSorted,
-                dtoCharacteristics = emptySet()
+                fields = requestDtoDef.classDef.allFieldsSorted
             )
 
         }
@@ -1111,8 +1105,7 @@ class AngularUiModuleGenerator(
                 renderTypescriptInterface(
                     renderedFilePath = joinDtoDef.typescriptDtoRenderedFilePath,
                     className = joinDtoDef.uqcn,
-                    fields = joinDtoDef.classFieldDefs,
-                    dtoCharacteristics = emptySet()
+                    fields = joinDtoDef.classFieldDefs
                 )
             }
 
@@ -1124,8 +1117,7 @@ class AngularUiModuleGenerator(
         renderTypescriptInterface(
             renderedFilePath = classDef.typescriptRenderedFilePath,
             className = classDef.uqcn,
-            fields = classDef.allFieldsSorted,
-            dtoCharacteristics = setOf(DtoCharacteristic.RESPONSE_DTO)
+            fields = classDef.allFieldsSorted
         )
 
     }
@@ -1134,15 +1126,13 @@ class AngularUiModuleGenerator(
     private fun renderTypescriptInterface(
         renderedFilePath: String,
         className: Uqcn,
-        fields: List<ClassFieldDef>,
-        dtoCharacteristics: Set<DtoCharacteristic>
+        fields: List<ClassFieldDef>
     ) {
 
         TypescriptInterfaceDtoRenderer(
             renderedFilePath,
             className,
-            fields,
-            dtoCharacteristics
+            fields
         ).renderToDir(this.typescriptOutputDir)
 
     }

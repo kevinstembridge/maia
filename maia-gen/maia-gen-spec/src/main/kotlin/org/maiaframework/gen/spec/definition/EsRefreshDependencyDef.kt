@@ -411,7 +411,7 @@ object EsRefreshDependencyFactory {
             fieldPath: FieldPath,
             hopsSoFar: List<JoinHop>,
             /** Non-null when the terminal field is exposed as the foreign Entity's ref (ADR-0007). */
-            terminalEntityRefDef: EntityRefDef? = null
+            terminalEntityRefDef: EntityRefDef?
         ) {
 
             val builder = builderFor(entityDef)

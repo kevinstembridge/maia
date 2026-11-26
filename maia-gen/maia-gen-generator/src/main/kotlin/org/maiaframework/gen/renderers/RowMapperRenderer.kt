@@ -1,5 +1,6 @@
 package org.maiaframework.gen.renderers
 
+import org.maiaframework.gen.spec.definition.EntityRefDef
 import org.maiaframework.gen.spec.definition.EffectiveRangeManagedBy
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EntityFieldRowMapperFieldDef
@@ -160,8 +161,8 @@ class RowMapperRenderer(
         val pkEntityFieldDef = entityRefDef.pkEntityFieldDef
         val displayNameEntityFieldDef = entityRefDef.displayNameEntityFieldDef
 
-        val idResultSetFieldName = "${rowMapperFieldDef.resultSetPrefix}Id"
-        val nameResultSetFieldName = "${rowMapperFieldDef.resultSetPrefix}Name"
+        val idResultSetFieldName = EntityRefDef.idResultSetColumn(rowMapperFieldDef.resultSetPrefix)
+        val nameResultSetFieldName = EntityRefDef.displayNameResultSetColumn(rowMapperFieldDef.resultSetPrefix)
 
         addImportFor(entityRefDef.dtoDef.fqcn)
 
@@ -176,7 +177,7 @@ class RowMapperRenderer(
         appendLine("            id = " + renderRowMapperField(pkEntityFieldDef, idResultSetFieldName, nullable = false, indentSize = 0, orElseText = "", ::addImportFor) + ",")
         appendLine("            displayName = " + renderRowMapperField(displayNameEntityFieldDef, nameResultSetFieldName, nullable = false, indentSize = 0, orElseText = "", ::addImportFor) + ",")
         entityRefDef.shortcodeEntityFieldDef?.let { shortcodeEntityFieldDef ->
-            val shortcodeResultSetFieldName = "${rowMapperFieldDef.resultSetPrefix}Shortcode"
+            val shortcodeResultSetFieldName = EntityRefDef.shortcodeResultSetColumn(rowMapperFieldDef.resultSetPrefix)
             appendLine("            shortcode = " + renderRowMapperField(shortcodeEntityFieldDef, shortcodeResultSetFieldName, nullable = false, indentSize = 0, orElseText = "", ::addImportFor) + ",")
         }
         appendLine("        )")

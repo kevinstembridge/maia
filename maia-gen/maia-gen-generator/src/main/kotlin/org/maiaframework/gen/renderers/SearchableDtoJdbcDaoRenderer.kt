@@ -6,7 +6,6 @@ import org.maiaframework.gen.spec.definition.ApplicationModelDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.EntityRefDef
-import org.maiaframework.gen.spec.definition.lang.Nullability
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EffectiveRangeManagedBy
@@ -21,6 +20,7 @@ import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClass
 import org.maiaframework.gen.spec.definition.lang.ClassFieldName
 import org.maiaframework.gen.spec.definition.lang.ConstructorArg
 import org.maiaframework.gen.spec.definition.lang.Fqcn
+import org.maiaframework.gen.spec.definition.lang.Nullability
 
 class SearchableDtoJdbcDaoRenderer(
     private val searchableDtoDef: SearchableDtoDef,
@@ -65,7 +65,7 @@ class SearchableDtoJdbcDaoRenderer(
         .mapValues { it.value.size }
 
 
-    private val selectColumns = selectColumns(foreignKeyTableCount)
+    private val selectColumns = selectColumns()
 
 
     private val rootEntitySchemaAndTable = searchableDtoDef.schemaAndTableName
@@ -557,7 +557,7 @@ class SearchableDtoJdbcDaoRenderer(
     }
 
 
-    private fun selectColumns(foreignKeyTableCount: Map<String, Int>): List<String> {
+    private fun selectColumns(): List<String> {
 
         return searchableDtoDef.nonManyToManyFields
             .flatMap { searchableDtoFieldDef ->
@@ -568,14 +568,7 @@ class SearchableDtoJdbcDaoRenderer(
                     return@flatMap entityRefSelectColumns(searchableDtoFieldDef, entityRefDef)
                 }
 
-                val numberOfTimesTheForeignTableIsReferenced = foreignKeyTableCount[searchableDtoFieldDef.schemaAndTableName] ?: 0
-                val foreignTableIsReferencedMoreThanOnce = numberOfTimesTheForeignTableIsReferenced > 1
-
-                val tableOrAlias = if (searchableDtoFieldDef.isForeignKeyRef && foreignTableIsReferencedMoreThanOnce) {
-                    quotedSqlIdentifier(searchableDtoFieldDef.entityAndField.referencedEntityFieldNotNull.classFieldName)
-                } else {
-                    searchableDtoFieldDef.schemaAndTableName
-                }
+                val tableOrAlias = pathTableOrAlias(searchableDtoFieldDef)
 
                 val fieldExpression = if (searchableDtoFieldDef.entityAndField.entityDef.hasEffectiveTimestamps) {
                     when (searchableDtoFieldDef.classFieldName) {
@@ -608,9 +601,9 @@ class SearchableDtoJdbcDaoRenderer(
         val prefix = searchableDtoFieldDef.classFieldName
 
         return listOfNotNull(
-            "$alias.${entityRefDef.pkEntityFieldDef.tableColumnName} as ${prefix}Id",
-            "$alias.${entityRefDef.displayNameEntityFieldDef.tableColumnName} as ${prefix}Name",
-            entityRefDef.shortcodeEntityFieldDef?.let { "$alias.${it.tableColumnName} as ${prefix}Shortcode" }
+            "$alias.${entityRefDef.pkEntityFieldDef.tableColumnName} as ${EntityRefDef.idResultSetColumn(prefix)}",
+            "$alias.${entityRefDef.displayNameEntityFieldDef.tableColumnName} as ${EntityRefDef.displayNameResultSetColumn(prefix)}",
+            entityRefDef.shortcodeEntityFieldDef?.let { "$alias.${it.tableColumnName} as ${EntityRefDef.shortcodeResultSetColumn(prefix)}" }
         )
 
     }
@@ -643,7 +636,7 @@ class SearchableDtoJdbcDaoRenderer(
             .filter { it.entityRefDef != null }
             .map { searchableDtoFieldDef ->
 
-                val foreignEntityDef = searchableDtoFieldDef.entityFieldDef.foreignKeyFieldDef!!.foreignEntityDef
+                val foreignEntityDef = searchableDtoFieldDef.foreignEntityDef
                 val alias = entityRefAlias(searchableDtoFieldDef)
 
                 val joinType = if (searchableDtoFieldDef.nullability == Nullability.NULLABLE) "left" else joinTypeSqlFor(searchableDtoFieldDef)

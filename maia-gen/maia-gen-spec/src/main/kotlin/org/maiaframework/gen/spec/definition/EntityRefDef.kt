@@ -22,9 +22,9 @@ class EntityRefDef(
         dtoBaseName.withSuffix("Ref"),
         DtoSuffix("Dto"),
         listOfNotNull(
-            aClassField("id", pkEntityFieldDef.fieldType).build(),
-            aClassField("displayName", displayNameEntityFieldDef.fieldType).build(),
-            shortcodeEntityFieldDef?.let { aClassField("shortcode", it.fieldType).build() },
+            aClassField(ID_FIELD, pkEntityFieldDef.fieldType).build(),
+            aClassField(DISPLAY_NAME_FIELD, displayNameEntityFieldDef.fieldType).build(),
+            shortcodeEntityFieldDef?.let { aClassField(SHORTCODE_FIELD, it.fieldType).build() },
         )
     ).build()
 
@@ -35,9 +35,9 @@ class EntityRefDef(
     val rowMapperDef = RowMapperDef(
         dtoDef.fqcn,
         listOfNotNull(
-            EntityFieldRowMapperFieldDef(ClassFieldName("id"), pkEntityFieldDef, pkEntityFieldDef.tableColumnName.value),
-            EntityFieldRowMapperFieldDef(ClassFieldName("displayName"), displayNameEntityFieldDef, displayNameEntityFieldDef.tableColumnName.value),
-            shortcodeEntityFieldDef?.let { EntityFieldRowMapperFieldDef(ClassFieldName("shortcode"), it, it.tableColumnName.value) }
+            EntityFieldRowMapperFieldDef(ClassFieldName(ID_FIELD), pkEntityFieldDef, pkEntityFieldDef.tableColumnName.value),
+            EntityFieldRowMapperFieldDef(ClassFieldName(DISPLAY_NAME_FIELD), displayNameEntityFieldDef, displayNameEntityFieldDef.tableColumnName.value),
+            shortcodeEntityFieldDef?.let { EntityFieldRowMapperFieldDef(ClassFieldName(SHORTCODE_FIELD), it, it.tableColumnName.value) }
         ),
         dtoDef.rowMapperClassDef,
         isForEditDto = true,
@@ -48,15 +48,37 @@ class EntityRefDef(
     val dtoUqcn = dtoDef.uqcn
 
 
+    companion object {
+
+        /** The names of the RefDto's fields, which are also the names of the sub-fields of a ref held in an Elasticsearch document. */
+        const val ID_FIELD = "id"
+        const val DISPLAY_NAME_FIELD = "displayName"
+        const val SHORTCODE_FIELD = "shortcode"
+
+        /** The keyword sub-field of the text-mapped display name, which the Blotter filters and sorts on. */
+        const val RAW_SUB_FIELD = "raw"
+
+        /** The SQL result-set column holding the ref's id for a Searchable DTO field called [fieldName]. */
+        fun idResultSetColumn(fieldName: Any) = "${fieldName}Id"
+
+        /** The SQL result-set column holding the ref's display name for a Searchable DTO field called [fieldName]. */
+        fun displayNameResultSetColumn(fieldName: Any) = "${fieldName}Name"
+
+        /** The SQL result-set column holding the ref's shortcode for a Searchable DTO field called [fieldName]. */
+        fun shortcodeResultSetColumn(fieldName: Any) = "${fieldName}Shortcode"
+
+    }
+
+
     /**
      * Kotlin source for constructing the DTO from an entity held in a variable named [entityVar].
      */
     fun constructionFrom(entityVar: String, indent: String): String {
 
         val args = listOfNotNull(
-            "id" to pkEntityFieldDef,
-            "displayName" to displayNameEntityFieldDef,
-            shortcodeEntityFieldDef?.let { "shortcode" to it }
+            ID_FIELD to pkEntityFieldDef,
+            DISPLAY_NAME_FIELD to displayNameEntityFieldDef,
+            shortcodeEntityFieldDef?.let { SHORTCODE_FIELD to it }
         ).joinToString(",\n") { (dtoFieldName, entityFieldDef) -> "$indent    $dtoFieldName = $entityVar.${entityFieldDef.classFieldName}" }
 
         return "$dtoUqcn(\n$args\n$indent)"
