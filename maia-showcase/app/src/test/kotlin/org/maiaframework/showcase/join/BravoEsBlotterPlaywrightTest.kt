@@ -91,6 +91,60 @@ class BravoEsBlotterPlaywrightTest : AbstractPlaywrightTest() {
     }
 
 
+    @Test
+    fun `es-backed blotter filters and sorts the alpha column on the display name`() {
+
+        val zebra = seedBravoWithAlpha("reftok-zebra", "bravo-ref-zebra")
+        val apple = seedBravoWithAlpha("reftok-apple", "bravo-ref-apple")
+        val other = seedBravoWithAlpha("unrelated-mango", "bravo-ref-mango")
+
+        indexIntoElasticsearch(zebra, apple, other)
+
+        `log in as admin user`()
+        `navigate to the`(bravoEsBlotterPage)
+
+        bravoEsBlotterPage.filterAlphaColumnBy("reftok")
+
+        assertEquals(
+            setOf("reftok-apple", "reftok-zebra"),
+            bravoEsBlotterPage.alphaCellTexts(expectedCount = 2).toSet()
+        )
+
+        bravoEsBlotterPage.clickAlphaColumnHeaderToSort()
+        assertEquals(listOf("reftok-apple", "reftok-zebra"), bravoEsBlotterPage.alphaCellTexts(expectedCount = 2))
+
+        bravoEsBlotterPage.clickAlphaColumnHeaderToSort()
+        assertEquals(listOf("reftok-zebra", "reftok-apple"), bravoEsBlotterPage.alphaCellTexts(expectedCount = 2))
+
+    }
+
+
+    private fun seedBravoWithAlpha(alphaText: String, bravoText: String): BravoEntity {
+
+        val alpha = AlphaEntityTestBuilder(someString = alphaText).build()
+        alphaDao.insert(alpha)
+        val bravo = BravoEntityTestBuilder(alphaId = alpha.id, someString = bravoText).build()
+        bravoDao.insert(bravo)
+        insertedBravos.add(bravo)
+        return bravo
+
+    }
+
+
+    private fun indexIntoElasticsearch(vararg bravos: BravoEntity) {
+
+        val indexName = indexNameFactory.indexNameFrom(BravoEsEsIndexMeta_v0001.indexBaseNameAndVersion).value
+
+        if (!elasticsearchClient.indices().exists { r -> r.index(indexName) }.value()) {
+            bravoEsIndexControl.createIndex()
+        }
+
+        bravoEsIndexService.refreshByIds(bravos.map { it.id })
+        elasticsearchClient.indices().refresh { r -> r.index(indexName) }
+
+    }
+
+
     private fun indexIntoElasticsearch(bravo: BravoEntity) {
 
         val indexName = indexNameFactory.indexNameFrom(BravoEsEsIndexMeta_v0001.indexBaseNameAndVersion).value
