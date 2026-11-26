@@ -10,7 +10,7 @@ object BravoRefOnlyEsBlotterRowDtoFieldNameMapper {
 
     val mappingFunction: (String) -> String = {
         when (it) {
-            "alpha" -> "alpha"
+            "alpha" -> "alpha.displayName.raw"
             "dtoStringFromBravo" -> "dtoStringFromBravo.raw"
             else -> throw IllegalArgumentException("Unknown field name: $it")
         }
