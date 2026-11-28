@@ -1,6 +1,7 @@
 package org.maiaframework.gen.renderers
 
 import org.maiaframework.gen.spec.definition.CacheName
+import org.maiaframework.gen.spec.definition.EntityRefDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.HazelcastCompatibleType
 import org.maiaframework.gen.spec.definition.lang.BooleanFieldType
@@ -26,6 +27,7 @@ import org.maiaframework.gen.spec.definition.lang.IntValueClassFieldType
 import org.maiaframework.gen.spec.definition.lang.ListFieldType
 import org.maiaframework.gen.spec.definition.lang.LocalDateFieldType
 import org.maiaframework.gen.spec.definition.lang.LongFieldType
+import org.maiaframework.gen.spec.definition.lang.Nullability
 import org.maiaframework.gen.spec.definition.lang.LongTypeFieldType
 import org.maiaframework.gen.spec.definition.lang.MapFieldType
 import org.maiaframework.gen.spec.definition.lang.ObjectIdFieldType
@@ -136,7 +138,7 @@ class HazelcastSerializerRenderer(
             is ForeignKeyFieldType -> `render read for domainId`(field)
             is FqcnFieldType -> TODO()
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
-            is EntityRefFieldType -> TODO()
+            is EntityRefFieldType -> `render read for Entity ref`(field, fieldType)
             is InstantFieldType -> `render read for Instant`(field, fieldType)
             is IntFieldType -> `render read for Int`(field)
             is BigDecimalFieldType -> `render read for BigDecimal`(field)
@@ -156,6 +158,39 @@ class HazelcastSerializerRenderer(
             is StringTypeFieldType -> `render read for StringType`(field, fieldType)
             is StringValueClassFieldType -> `render read for String Value class`(field, fieldType)
             is UrlFieldType -> `render read for URL`(field)
+        }
+
+    }
+
+
+    /**
+     * An Entity ref is flattened into one Compact field per sub-field of the RefDto, named `<field>_<subField>`, so
+     * that no serializer is needed for the RefDto itself. A nullable ref is null when its `id` is null.
+     */
+    private fun `render read for Entity ref`(field: ClassFieldDef, fieldType: EntityRefFieldType) {
+
+        val refDtoDef = fieldType.entityRefDef.dtoDef
+        addImportFor(fieldType)
+
+        val subFields = refDtoDef.allFieldsSorted.map { subField ->
+            subField to subField.copy(
+                classFieldName = ClassFieldName("${field.classFieldName}_${subField.classFieldName}"),
+                nullability = if (field.nullable) Nullability.NULLABLE else subField.nullability
+            )
+        }
+
+        subFields.forEach { (_, flattened) -> renderReadForField(flattened) }
+
+        val args = subFields.joinToString(", ") { (original, flattened) ->
+            val bang = if (field.nullable && !original.nullable && original.classFieldName.value != EntityRefDef.ID_FIELD) "!!" else ""
+            "${original.classFieldName} = ${flattened.classFieldName}$bang"
+        }
+        val construction = "${refDtoDef.uqcn}($args)"
+
+        if (field.nullable) {
+            appendLine("        val ${field.classFieldName} = if (${field.classFieldName}_${EntityRefDef.ID_FIELD} == null) null else $construction")
+        } else {
+            appendLine("        val ${field.classFieldName} = $construction")
         }
 
     }
@@ -572,8 +607,8 @@ class HazelcastSerializerRenderer(
         addImportFor(field.fieldType)
 
         if (field.nullable) {
-            appendLine("        val ${field.classFieldName} = ${field.unqualifiedToString}(reader.readNullableString(\"${field.classFieldName}\"))")
-            appendLine("        val ${field.classFieldName} = reader.readNullableString(\"${field.classFieldName}\")?.let { ${field.unqualifiedToString}(it) })")
+            addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_NULLABLE_STRING)
+            appendLine("        val ${field.classFieldName} = reader.readNullableString(\"${field.classFieldName}\")?.let { ${field.fieldType.unqualifiedToString}(it) }")
         } else {
             addImportFor(Fqcns.MAIA_COMPACT_READER_EXTENSION_READ_STRING_NON_NULL)
             appendLine("        val ${field.classFieldName} = ${field.unqualifiedToString}(reader.readStringNonNull(\"${field.classFieldName}\"))")
@@ -707,7 +742,7 @@ class HazelcastSerializerRenderer(
             is ForeignKeyFieldType -> `render write for DomainId`(field)
             is FqcnFieldType -> TODO()
             is JoinFetchDtoFieldType -> TODO("YAGNI?")
-            is EntityRefFieldType -> TODO()
+            is EntityRefFieldType -> `render write for Entity ref`(field, fieldType)
             is InstantFieldType -> `render write for Instant`(field)
             is IntFieldType -> `render write for`(field)
             is BigDecimalFieldType -> `render write for`(field)
@@ -727,6 +762,29 @@ class HazelcastSerializerRenderer(
             is StringTypeFieldType -> `render write for StringType`(field)
             is StringValueClassFieldType -> `render write for String Value class`(field)
             is UrlFieldType -> `render write for`(field)
+        }
+
+    }
+
+
+    /** See [render read for Entity ref]. */
+    private fun `render write for Entity ref`(field: ClassFieldDef, fieldType: EntityRefFieldType) {
+
+        val refAccess = if (field.nullable) "dto.${field.classFieldName}?" else "dto.${field.classFieldName}"
+
+        fieldType.entityRefDef.dtoDef.allFieldsSorted.forEach { subField ->
+
+            val subFieldType = subField.fieldType
+            val nullable = field.nullable || subField.nullable
+            val valueSuffix = when (subFieldType) {
+                is DomainIdFieldType, is StringTypeFieldType, is StringValueClassFieldType -> if (nullable) "?.value" else ".value"
+                is StringFieldType -> ""
+                else -> TODO("Entity ref sub-field of type ${subFieldType::class.simpleName}")
+            }
+            val writerFunction = getCompactWriterFunctionFor(subFieldType, nullable)
+            val name = "${field.classFieldName}_${subField.classFieldName}"
+            appendLine("            $writerFunction(\"$name\", $refAccess.${subField.classFieldName}$valueSuffix)")
+
         }
 
     }
