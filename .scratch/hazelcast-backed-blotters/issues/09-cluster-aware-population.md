@@ -28,3 +28,6 @@ Note: the body requirement "viewers never see a partial set" is verified only in
 - [x] A `maxRows` failure leaves the map unpopulated on every node.
 - [x] The existing single-node Hazelcast integration tests pass unchanged.
 - [x] ADR-0008's "Known limitation: multi-node clusters" paragraph is replaced by a short description of the cluster-aware behaviour and the mechanism chosen, including any configuration it needs.
+
+
+2026-11-28 - Review fixes (b322308c): shape-stamp start-up rule, failure-safe population, rebuild never skipped, populate lock lease, shared HazelcastClusterPopulator.
