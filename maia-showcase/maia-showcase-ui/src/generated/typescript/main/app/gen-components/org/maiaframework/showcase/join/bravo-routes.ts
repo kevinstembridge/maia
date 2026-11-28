@@ -31,6 +31,12 @@ export const bravoRoutes: Routes = [
             import('./bravo-hz-blotter-page').then(m => m.BravoHzBlotterPage),
     },
     {
+        path: 'bravo-alpha-hz-blotter',
+        data: {authorities: [Authority.WRITE]},
+        loadComponent: () =>
+            import('./bravo-alpha-hz-blotter-page').then(m => m.BravoAlphaHzBlotterPage),
+    },
+    {
         path: 'bravo-ref-only-es-blotter',
         data: {authorities: [Authority.WRITE]},
         loadComponent: () =>

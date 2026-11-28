@@ -11,10 +11,12 @@ import org.maiaframework.showcase.composite_pk.CompositePrimaryKeyEntity
 import org.maiaframework.showcase.composite_pk.CompositePrimaryKeyEntityPk
 import org.maiaframework.showcase.composite_pk.CompositePrimaryKeyPkSerializer
 import org.maiaframework.showcase.composite_pk.CompositePrimaryKeySerializer
+import org.maiaframework.showcase.join.BravoAlphaHzDtoSerializer
 import org.maiaframework.showcase.join.BravoHzCappedDtoSerializer
 import org.maiaframework.showcase.join.BravoHzDtoSerializer
 import org.maiaframework.showcase.join.BravoHzEagerDtoSerializer
 import org.maiaframework.showcase.join.BravoHzLazyDtoSerializer
+import org.maiaframework.showcase.join.DeltaHzDtoSerializer
 import org.maiaframework.showcase.simple.SimpleEntity
 import org.maiaframework.showcase.simple.SimpleSerializer
 import org.springframework.stereotype.Component
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class HazelcastConfig(
+    private val bravoAlphaHzDtoSerializer: BravoAlphaHzDtoSerializer,
     private val bravoHzCappedDtoSerializer: BravoHzCappedDtoSerializer,
     private val bravoHzDtoSerializer: BravoHzDtoSerializer,
     private val bravoHzEagerDtoSerializer: BravoHzEagerDtoSerializer,
@@ -29,6 +32,7 @@ class HazelcastConfig(
     private val cachedBigDecimalSerializer: CachedBigDecimalSerializer,
     private val compositePrimaryKeyPkSerializer: CompositePrimaryKeyPkSerializer,
     private val compositePrimaryKeySerializer: CompositePrimaryKeySerializer,
+    private val deltaHzDtoSerializer: DeltaHzDtoSerializer,
     private val simpleSerializer: SimpleSerializer
 ) {
 
@@ -42,6 +46,8 @@ class HazelcastConfig(
         bravoHzLazyDtoSerializer,
         bravoHzEagerDtoSerializer,
         bravoHzCappedDtoSerializer,
+        bravoAlphaHzDtoSerializer,
+        deltaHzDtoSerializer,
     )
 
 
@@ -50,6 +56,8 @@ class HazelcastConfig(
         MapConfig("bravo_hz_lazy_blotter"),
         MapConfig("bravo_hz_eager_blotter"),
         MapConfig("bravo_hz_capped_blotter"),
+        MapConfig("bravo_alpha_hz_blotter"),
+        MapConfig("delta_hz_blotter"),
     )
 
 
