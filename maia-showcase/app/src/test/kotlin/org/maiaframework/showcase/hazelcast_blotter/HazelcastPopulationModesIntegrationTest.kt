@@ -93,6 +93,9 @@ class HazelcastPopulationModesIntegrationTest : AbstractBlackBoxTest() {
 
         clearGlobalPopulation()
 
+        // leave every map as the default (eager) start-up leaves it, for the test classes that share this context
+        restart()
+
     }
 
 

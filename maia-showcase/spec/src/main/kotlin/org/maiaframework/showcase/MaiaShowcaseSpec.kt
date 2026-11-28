@@ -1265,7 +1265,8 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
     /**
      * Hazelcast-backed with a deliberately small `maxRows` of 20: a set larger than that fails population with a
      * message naming this Searchable DTO and the limit, and the Blotter page shows that message instead of an empty
-     * grid.
+     * grid. It is LAZY so that a shared Bravo table that has grown past the limit fails only this Blotter's first
+     * fetch, never application start (an EAGER failure aborts start).
      */
     val bravoHzCappedSearchableDtoDef = searchableDto(
         "org.maiaframework.showcase.join",
@@ -1273,7 +1274,7 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         entityDef = bravoEntityDef,
         withGeneratedDto = WithGeneratedDto.TRUE,
     ) {
-        hazelcastEnabled(autoRefresh = true, maxRows = 20)
+        hazelcastEnabled(autoRefresh = true, maxRows = 20, population = HazelcastPopulation.LAZY)
         field("dtoStringFromBravo", "someString")
     }
 

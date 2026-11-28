@@ -132,12 +132,18 @@ class FlatHazelcastBlotterIntegrationTest : AbstractBlackBoxTest() {
         val bravo = createBravo(alpha, someString = "in-hazelcast", someInt = 7)
         applicationContext.publishEvent(ContextRefreshedEvent(applicationContext))
 
-        val map = hazelcastInstance.getMap<DomainId, BravoHzDto>("bravo_hz_blotter")
+        // what the application returns, through its own interface
+        val row = fetchAll().single()
+        assertThat(row["id"].asString()).isEqualTo(bravo.id.value)
+        assertThat(row["dtoStringFromBravo"].asString()).isEqualTo("in-hazelcast")
+        assertThat(row["dtoIntFromBravo"].asInt()).isEqualTo(7)
 
+        // and where it is kept; polled because the test classes of this package share one Hazelcast instance
         assertThat(hazelcastInstance.config.mapConfigs).containsKey("bravo_hz_blotter")
-        assertThat(map.size).isEqualTo(1)
-        assertThat(map[bravo.id]!!.dtoStringFromBravo).isEqualTo("in-hazelcast")
-        assertThat(map[bravo.id]!!.dtoIntFromBravo).isEqualTo(7)
+        val map = hazelcastInstance.getMap<DomainId, BravoHzDto>("bravo_hz_blotter")
+        val stored = eventually { map[bravo.id] }
+        assertThat(stored.dtoStringFromBravo).isEqualTo("in-hazelcast")
+        assertThat(stored.dtoIntFromBravo).isEqualTo(7)
 
     }
 
@@ -151,6 +157,19 @@ class FlatHazelcastBlotterIntegrationTest : AbstractBlackBoxTest() {
 
         assertThat(mappings.map { it.patternValues.single() to it.methodsCondition.methods.single().name })
             .containsExactly("/api/bravo-hz-blotter/find-all" to "GET")
+
+    }
+
+
+    private fun <T : Any> eventually(timeoutMillis: Long = 5_000, read: () -> T?): T {
+
+        val deadline = System.nanoTime() + timeoutMillis * 1_000_000
+
+        while (true) {
+            read()?.let { return it }
+            check(System.nanoTime() < deadline) { "Timed out after ${timeoutMillis}ms waiting for a value" }
+            Thread.sleep(50)
+        }
 
     }
 

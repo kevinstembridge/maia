@@ -4,6 +4,7 @@ import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.Logger
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.read.ListAppender
+import com.hazelcast.core.HazelcastInstance
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -20,6 +21,7 @@ import org.maiaframework.showcase.join.BravoCreateRequestDto
 import org.maiaframework.showcase.join.BravoDao
 import org.maiaframework.showcase.join.BravoCrudService
 import org.maiaframework.showcase.join.BravoEntity
+import org.maiaframework.showcase.join.BravoHzDto
 import org.maiaframework.showcase.join.BravoHzDtoHazelcastRepo
 import org.maiaframework.showcase.join.BravoHzLazyDtoHazelcastRepo
 import org.maiaframework.showcase.join.BravoUpdate_alphaRequestDto
@@ -84,6 +86,10 @@ class HazelcastBlotterAutoRefreshIntegrationTest : AbstractBlackBoxTest() {
 
     @Autowired
     private lateinit var deltaHzRepo: DeltaHzDtoHazelcastRepo
+
+
+    @Autowired
+    private lateinit var hazelcastInstance: HazelcastInstance
 
 
     @Autowired
@@ -188,6 +194,8 @@ class HazelcastBlotterAutoRefreshIntegrationTest : AbstractBlackBoxTest() {
     @Test
     fun `a refresh failure is logged and does not fail the write`() {
 
+        // the mock is the only way to force a Hazelcast failure, so this one test spies on the repo's refresh entry point
+
         val alpha = createAlpha("alpha")
         val bravo = createBravo(alpha, "original")
 
@@ -211,7 +219,8 @@ class HazelcastBlotterAutoRefreshIntegrationTest : AbstractBlackBoxTest() {
         val bravo = createBravo(alpha, "while-unpopulated")
         bravoCrudService.updateSomeString(BravoUpdate_someStringRequestDto(id_raw = bravo.id, someString_raw = "still-unpopulated"))
 
-        assertThat(bravoHzLazyRepo.isPopulated()).isFalse()
+        // nothing built the map: the refreshes left it alone and only the first fetch fills it
+        assertThat(hazelcastInstance.getMap<DomainId, BravoHzDto>("bravo_hz_lazy_blotter").size).isZero()
 
         assertThat(bravoHzLazyRepo.findAll().map { it.dtoStringFromBravo }).containsExactly("still-unpopulated")
 
