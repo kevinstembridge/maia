@@ -10,5 +10,10 @@ export const deltaRoutes: Routes = [
         loadComponent: () =>
             import('./delta-es-blotter-page').then(m => m.DeltaEsBlotterPage),
     },
+    {
+        path: 'delta-hz-blotter',
+        loadComponent: () =>
+            import('./delta-hz-blotter-page').then(m => m.DeltaHzBlotterPage),
+    },
 ];
 

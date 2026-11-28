@@ -1274,6 +1274,38 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
 
     /**
+     * Hazelcast-backed (ADR-0008) with a required Entity ref (`alpha`) and a path field through it
+     * (`alpha.someString`), the same denormalized row as BravoEs (ADR-0007).
+     */
+    val bravoAlphaHzSearchableDtoDef = searchableDto(
+        "org.maiaframework.showcase.join",
+        "BravoAlphaHz",
+        entityDef = bravoEntityDef,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+    ) {
+        hazelcastEnabled(autoRefresh = true)
+        field("alpha")
+        field("dtoStringFromAlpha", "alpha.someString")
+        field("dtoStringFromBravo", "someString")
+        field("dtoIntFromBravo", "someInt")
+        field("createdTimestamp")
+    }
+
+
+    val bravoAlphaHzBlotterDef = blotter(bravoAlphaHzSearchableDtoDef) {
+        columnFromDto("id")
+        columnFromDto("alpha")
+        columnFromDto("dtoStringFromAlpha")
+        columnFromDto("dtoStringFromBravo")
+        columnFromDto("dtoIntFromBravo")
+        columnFromDto("createdTimestamp")
+    }
+
+
+    val bravoAlphaHzBlotterPageDef = blotterPage(bravoAlphaHzBlotterDef)
+
+
+    /**
      * Elasticsearch-enabled, with the `alpha` foreign key as the ONLY link to Alpha (no path through it), so the index
      * stays fresh only if the refresh-dependency model registers Alpha for the Entity ref field itself.
      */
@@ -1353,6 +1385,31 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
 
     val deltaEsBlotterPageDef = blotterPage(deltaEsBlotterDef)
+
+
+    /** Hazelcast-backed counterpart of DeltaEs: a nullable ref (`alpha`) and a foreign key with no Entity ref (`charlie`). */
+    val deltaHzSearchableDtoDef = searchableDto(
+        "org.maiaframework.showcase.join",
+        "DeltaHz",
+        entityDef = deltaEntityDef,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+    ) {
+        hazelcastEnabled(autoRefresh = true)
+        field("alpha")
+        field("charlie")
+        field("someString")
+    }
+
+
+    val deltaHzBlotterDef = blotter(deltaHzSearchableDtoDef) {
+        columnFromDto("id")
+        columnFromDto("alpha")
+        columnFromDto("charlie")
+        columnFromDto("someString")
+    }
+
+
+    val deltaHzBlotterPageDef = blotterPage(deltaHzBlotterDef)
 
 
     val agGridFilterSampleEntityDef = entity(
