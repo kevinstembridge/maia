@@ -6,7 +6,9 @@ package org.maiaframework.gen.spec.definition
  * rebuilt from the database.
  *
  * @property autoRefresh whether the map should be refreshed automatically when source records change
+ * @property authority if set, the fetch-all endpoint requires it; if null, any authenticated user may call it
  */
 data class HazelcastSpec(
-    val autoRefresh: Boolean
+    val autoRefresh: Boolean,
+    val authority: AuthorityDef? = null
 )

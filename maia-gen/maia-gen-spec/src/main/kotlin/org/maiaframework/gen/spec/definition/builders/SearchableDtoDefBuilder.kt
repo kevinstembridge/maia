@@ -4,6 +4,7 @@ import org.maiaframework.gen.spec.definition.lang.DomainIdFieldType
 import org.maiaframework.gen.spec.definition.DtoBaseName
 import org.maiaframework.gen.spec.definition.EntityAndField
 import org.maiaframework.gen.spec.definition.EntityBaseName
+import org.maiaframework.gen.spec.definition.AuthorityDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EsVersionSpec
 import org.maiaframework.gen.spec.definition.FieldPath
@@ -77,8 +78,9 @@ class SearchableDtoDefBuilder(
      * Backs this searchable DTO's Blotter with a Hazelcast map holding one document per row (ADR-0008).
      * There is no version: the map is disposable and is rebuilt from the database. Mutually exclusive with
      * [elasticsearchEnabled]. Forces generation of find-by-id.
+     * If [authority] is given the fetch-all endpoint requires it; otherwise any authenticated user may call it.
      */
-    fun hazelcastEnabled(autoRefresh: Boolean = true) {
+    fun hazelcastEnabled(autoRefresh: Boolean = true, authority: AuthorityDef? = null) {
 
         require(this.hazelcastSpec == null) { "hazelcastEnabled already declared on $dtoBaseName" }
 
@@ -92,7 +94,7 @@ class SearchableDtoDefBuilder(
             "hazelcastEnabled on $dtoBaseName requires the root entity ${this.rootEntityDef.entityBaseName} to have a single DomainId primary key named 'id'; found ${this.rootEntityDef.primaryKeyFields.map { it.classFieldName }}"
         }
 
-        this.hazelcastSpec = HazelcastSpec(autoRefresh)
+        this.hazelcastSpec = HazelcastSpec(autoRefresh, authority)
         this.generateFindById = GenerateFindById.TRUE
 
     }

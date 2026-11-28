@@ -1243,6 +1243,26 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
 
     /**
+     * Hazelcast-backed with an authority: the fetch-all endpoint requires it.
+     */
+    val bravoHzSecuredSearchableDtoDef = searchableDto(
+        "org.maiaframework.showcase.join",
+        "BravoHzSecured",
+        entityDef = bravoEntityDef,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+    ) {
+        hazelcastEnabled(autoRefresh = true, authority = partySpec.writeAuthority)
+        field("dtoStringFromBravo", "someString")
+    }
+
+
+    val bravoHzSecuredBlotterDef = blotter(bravoHzSecuredSearchableDtoDef) {
+        columnFromDto("id")
+        columnFromDto("dtoStringFromBravo")
+    }
+
+
+    /**
      * Elasticsearch-enabled, with the `alpha` foreign key as the ONLY link to Alpha (no path through it), so the index
      * stays fresh only if the refresh-dependency model registers Alpha for the Entity ref field itself.
      */
