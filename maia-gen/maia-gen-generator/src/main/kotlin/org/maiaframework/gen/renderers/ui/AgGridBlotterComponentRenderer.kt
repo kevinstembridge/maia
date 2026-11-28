@@ -80,6 +80,10 @@ class AgGridBlotterComponentRenderer(
 
         addImport("@angular/core", "runInInjectionContext")
 
+        if (isClientSide) {
+            addImport("@angular/core", "signal")
+        }
+
         authoritiesDef?.let {
             addImport(it.authServiceTypescriptImport)
             addImport(it.enumDef.typescriptImport)
@@ -210,6 +214,10 @@ class AgGridBlotterComponentRenderer(
             |
             |
             |    public rowData: ${blotterDef.dtoUqcn}[] = [];
+            |
+            |
+            |    /** The server's message when the whole set could not be loaded, e.g. it exceeds the Searchable DTO's maxRows. */
+            |    public loadError = signal<string | null>(null);
             |
             |
             |    private gridApi!: GridApi<${blotterDef.dtoUqcn}>;
@@ -484,9 +492,17 @@ class AgGridBlotterComponentRenderer(
                     |    /** Fetches the whole set again: the grid shows a snapshot as of the last fetch. */
                     |    refresh() {
                     |
-                    |        this.blotterService.fetchAll().subscribe(rows => {
-                    |            this.rowData = rows;
-                    |            this.gridApi.setGridOption('rowData', rows);
+                    |        this.blotterService.fetchAll().subscribe({
+                    |            next: rows => {
+                    |                this.loadError.set(null);
+                    |                this.rowData = rows;
+                    |                this.gridApi.setGridOption('rowData', rows);
+                    |            },
+                    |            error: err => {
+                    |                this.rowData = [];
+                    |                this.gridApi.setGridOption('rowData', []);
+                    |                this.loadError.set(err?.error?.detail ?? 'The rows could not be loaded.');
+                    |            }
                     |        });
                     |
                     |    }

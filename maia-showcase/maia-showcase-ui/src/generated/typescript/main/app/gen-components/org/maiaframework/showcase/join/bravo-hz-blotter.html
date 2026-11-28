@@ -4,6 +4,9 @@
         <mat-icon>refresh</mat-icon>
     </button>
 </div>
+@if (loadError(); as message) {
+    <div role="alert" data-testid="blotter-load-error" class="p-4">{{ message }}</div>
+}
 
 <div class="h-screen">
     <ag-grid-angular

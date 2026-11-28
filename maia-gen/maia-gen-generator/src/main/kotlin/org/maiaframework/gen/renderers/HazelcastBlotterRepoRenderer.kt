@@ -1,6 +1,7 @@
 package org.maiaframework.gen.renderers
 
 import org.maiaframework.gen.spec.definition.Fqcns
+import org.maiaframework.gen.spec.definition.HazelcastSpec
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 
@@ -109,12 +110,13 @@ class HazelcastBlotterRepoRenderer(
             |        synchronized(this.populateLock) {
             |
             |            when (populationMode()) {
+            |                POPULATION_EAGER -> populate()
             |                POPULATION_LAZY -> {
             |                    this.map.clear()
             |                    this.populated = false
             |                    logger.info("Hazelcast map ${searchableDtoDef.hazelcastMapName} will be populated by the first fetch")
             |                }
-            |                else -> populate()
+            |                else -> error("Invalid value '${'$'}{populationMode()}' for ${'$'}POPULATION_PROPERTY; valid values are ${'$'}POPULATION_VALUES")
             |            }
             |
             |        }
@@ -127,9 +129,15 @@ class HazelcastBlotterRepoRenderer(
 
     /**
      * The single population entry point: clears the map and refills it from the database. Runs in a read-only
-     * transaction because the rows are streamed from the database.
+     * transaction because the rows are streamed from the database. A set larger than `maxRows` is never truncated:
+     * it is detected while streaming, before the chunk that would exceed the limit is stored, and population fails
+     * with the map left empty and unpopulated so the next fetch tries again.
      */
     private fun `render function populate`() {
+
+        val maxRows = searchableDtoDef.hazelcastSpec?.maxRows ?: HazelcastSpec.DEFAULT_MAX_ROWS
+
+        addImportRaw("org.maiaframework.common.BlotterTooLargeException")
 
         append("""
             |
@@ -139,14 +147,24 @@ class HazelcastBlotterRepoRenderer(
             |        logger.info("BEGIN: Populating Hazelcast map ${searchableDtoDef.hazelcastMapName}")
             |
             |        this.map.clear()
+            |        this.populated = false
             |
             |        var count = 0
             |
-            |        this.readOnlyTransaction.executeWithoutResult {
-            |            this.dtoRepo.findAllAsSequence().chunked(POPULATE_CHUNK_SIZE).forEach { chunk ->
-            |                this.map.putAll(chunk.associateBy { it.id })
-            |                count += chunk.size
+            |        try {
+            |            this.readOnlyTransaction.executeWithoutResult {
+            |                this.dtoRepo.findAllAsSequence().chunked(POPULATE_CHUNK_SIZE).forEach { chunk ->
+            |                    if (count + chunk.size > MAX_ROWS) {
+            |                        throw BlotterTooLargeException("${searchableDtoDef.uqcn}", MAX_ROWS)
+            |                    }
+            |                    this.map.putAll(chunk.associateBy { it.id })
+            |                    count += chunk.size
+            |                }
             |            }
+            |        } catch (e: BlotterTooLargeException) {
+            |            this.map.clear()
+            |            logger.error("FAILED: Populating Hazelcast map ${searchableDtoDef.hazelcastMapName}: ${'$'}{e.message}")
+            |            throw e
             |        }
             |
             |        this.populated = true
@@ -187,6 +205,8 @@ class HazelcastBlotterRepoRenderer(
 
     override fun renderCompanionObject() {
 
+        val maxRows = searchableDtoDef.hazelcastSpec?.maxRows ?: HazelcastSpec.DEFAULT_MAX_ROWS
+
         append("""
             |
             |
@@ -194,11 +214,15 @@ class HazelcastBlotterRepoRenderer(
             |
             |        const val POPULATE_CHUNK_SIZE = 1000
             |
+            |        const val MAX_ROWS = $maxRows
+            |
             |        const val POPULATION_PROPERTY = "maia.hazelcast-blotter.population"
             |
             |        const val POPULATION_EAGER = "eager"
             |
             |        const val POPULATION_LAZY = "lazy"
+            |
+            |        const val POPULATION_VALUES = "eager|lazy"
             |
             |    }
             |""".trimMargin())
