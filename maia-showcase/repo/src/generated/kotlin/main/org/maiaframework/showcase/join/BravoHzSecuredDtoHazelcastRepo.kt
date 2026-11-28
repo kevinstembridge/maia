@@ -9,18 +9,32 @@ import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.DomainId
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.context.event.EventListener
+import org.springframework.core.env.Environment
 import org.springframework.stereotype.Repository
-import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.PlatformTransactionManager
+import org.springframework.transaction.support.TransactionTemplate
 
 
 @Repository
 class BravoHzSecuredDtoHazelcastRepo(
     private val dtoRepo: BravoHzSecuredDtoRepo,
-    private val hazelcastInstance: HazelcastInstance
+    private val environment: Environment,
+    private val hazelcastInstance: HazelcastInstance,
+    private val transactionManager: PlatformTransactionManager
 ) {
 
 
     private val logger = getLogger<BravoHzSecuredDtoHazelcastRepo>()
+
+
+    private val readOnlyTransaction = TransactionTemplate(transactionManager).apply { isReadOnly = true }
+
+
+    private val populateLock = Any()
+
+
+    @Volatile
+    private var populated = false
 
 
     private val map: IMap<DomainId, BravoHzSecuredDto> = hazelcastInstance.getMap("bravo_hz_secured_blotter")
@@ -28,13 +42,38 @@ class BravoHzSecuredDtoHazelcastRepo(
 
     fun findAll(): List<BravoHzSecuredDto> {
 
+        if (!this.populated) {
+            synchronized(this.populateLock) {
+                if (!this.populated) {
+                    populate()
+                }
+            }
+        }
+
         return this.map.values.toList()
 
     }
 
 
     @EventListener(ContextRefreshedEvent::class)
-    @Transactional(readOnly = true)
+    fun onContextRefreshed() {
+
+        synchronized(this.populateLock) {
+
+            when (populationMode()) {
+                POPULATION_LAZY -> {
+                    this.map.clear()
+                    this.populated = false
+                    logger.info("Hazelcast map bravo_hz_secured_blotter will be populated by the first fetch")
+                }
+                else -> populate()
+            }
+
+        }
+
+    }
+
+
     fun populate() {
 
         logger.info("BEGIN: Populating Hazelcast map bravo_hz_secured_blotter")
@@ -43,12 +82,23 @@ class BravoHzSecuredDtoHazelcastRepo(
 
         var count = 0
 
-        this.dtoRepo.findAllAsSequence().chunked(POPULATE_CHUNK_SIZE).forEach { chunk ->
-            this.map.putAll(chunk.associateBy { it.id })
-            count += chunk.size
+        this.readOnlyTransaction.executeWithoutResult {
+            this.dtoRepo.findAllAsSequence().chunked(POPULATE_CHUNK_SIZE).forEach { chunk ->
+                this.map.putAll(chunk.associateBy { it.id })
+                count += chunk.size
+            }
         }
 
+        this.populated = true
+
         logger.info("END: Populated Hazelcast map bravo_hz_secured_blotter with $count rows")
+
+    }
+
+
+    private fun populationMode(): String {
+
+        return this.environment.getProperty(POPULATION_PROPERTY, POPULATION_EAGER)
 
     }
 
@@ -58,6 +108,12 @@ class BravoHzSecuredDtoHazelcastRepo(
     private companion object {
 
         const val POPULATE_CHUNK_SIZE = 1000
+
+        const val POPULATION_PROPERTY = "maia.hazelcast-blotter.population"
+
+        const val POPULATION_EAGER = "eager"
+
+        const val POPULATION_LAZY = "lazy"
 
     }
 }

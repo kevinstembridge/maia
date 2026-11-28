@@ -4,9 +4,9 @@
 
 **Blocked by:** 02
 
-**Status:** ready-for-agent
+**Status:** resolved
 
-- [ ] With no property set, population is eager.
-- [ ] Setting the global property to lazy defers population to the first fetch, which then returns the full set.
-- [ ] A per-DTO override takes precedence over the global property.
-- [ ] A restart rebuilds the map from the database (black-box integration test).
+- [x] With no property set, population is eager.
+- [x] Setting the global property to lazy defers population to the first fetch, which then returns the full set.
+- [x] A per-DTO override takes precedence over the global property.
+- [x] A restart rebuilds the map from the database (black-box integration test).
