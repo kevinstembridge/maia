@@ -1,0 +1,14 @@
+# The embedded Hazelcast members of the tests (the application context's and the extra members some tests start in the
+# same JVM) find each other at the local address instead of by multicast, so the tests do not depend on multicast
+# working on the machine that runs them.
+hazelcast:
+  network:
+    join:
+      multicast:
+        enabled: false
+      auto-detection:
+        enabled: false
+      tcp-ip:
+        enabled: true
+        member-list:
+          - 127.0.0.1

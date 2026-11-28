@@ -177,8 +177,10 @@ class HazelcastMaxRowsIntegrationTest : AbstractBlackBoxTest() {
     }
 
 
+    /** A restart of the only node of a cluster: the cluster's memory is gone, then the start-up event is handled. */
     private fun restart() {
 
+        HazelcastBlotterTestState.clearAll(hazelcastInstance)
         applicationContext.publishEvent(ContextRefreshedEvent(applicationContext))
 
     }

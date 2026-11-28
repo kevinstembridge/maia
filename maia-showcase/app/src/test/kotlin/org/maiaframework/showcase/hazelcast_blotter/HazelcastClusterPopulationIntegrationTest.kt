@@ -5,36 +5,48 @@ import com.hazelcast.config.YamlConfigBuilder
 import com.hazelcast.core.Hazelcast
 import com.hazelcast.core.HazelcastInstance
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.assertj.core.api.Assertions.assertThatThrownBy
+import org.maiaframework.common.BlotterTooLargeException
 import org.maiaframework.domain.DomainId
-import org.maiaframework.showcase.join.BravoEntityMeta
+import org.maiaframework.hazelcast.population.PopulationLockLostException
+import org.maiaframework.showcase.AbstractBlackBoxTest
+import org.maiaframework.showcase.hazelcast.HazelcastConfig
+import org.maiaframework.showcase.join.AlphaCreateRequestDto
+import org.maiaframework.showcase.join.AlphaCrudService
+import org.maiaframework.showcase.join.AlphaDao
+import org.maiaframework.showcase.join.AlphaEntityMeta
 import org.maiaframework.showcase.join.AlphaEntityTestBuilder
+import org.maiaframework.showcase.join.BravoCreateRequestDto
+import org.maiaframework.showcase.join.BravoCrudService
+import org.maiaframework.showcase.join.BravoDao
+import org.maiaframework.showcase.join.BravoEntity
+import org.maiaframework.showcase.join.BravoEntityMeta
 import org.maiaframework.showcase.join.BravoEntityTestBuilder
 import org.maiaframework.showcase.join.BravoHzCappedDtoHazelcastRepo
 import org.maiaframework.showcase.join.BravoHzCappedDtoRepo
+import org.maiaframework.showcase.join.BravoHzDtoHazelcastRepo
+import org.maiaframework.showcase.join.BravoHzDtoRepo
 import org.maiaframework.showcase.join.BravoHzLazyDtoHazelcastRepo
 import org.maiaframework.showcase.join.BravoHzLazyDtoRepo
 import org.maiaframework.showcase.join.BravoUpdate_someStringRequestDto
+import org.mockito.AdditionalAnswers
+import org.mockito.Mockito
+import org.mockito.stubbing.Answer
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.env.Environment
+import org.springframework.mock.env.MockEnvironment
+import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.transaction.PlatformTransactionManager
+import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.CountDownLatch
+import java.util.concurrent.ExecutionException
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
-import org.maiaframework.showcase.AbstractBlackBoxTest
-import org.maiaframework.showcase.join.AlphaCreateRequestDto
-import org.maiaframework.showcase.join.AlphaCrudService
-import org.maiaframework.showcase.join.AlphaEntityMeta
-import org.maiaframework.showcase.join.BravoCreateRequestDto
-import org.maiaframework.showcase.join.BravoCrudService
-import org.maiaframework.showcase.join.BravoHzDtoHazelcastRepo
-import org.maiaframework.showcase.join.BravoHzDtoRepo
-import org.mockito.Mockito
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.env.Environment
-import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.transaction.PlatformTransactionManager
+import java.util.concurrent.TimeoutException
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.concurrent.thread
@@ -42,8 +54,9 @@ import kotlin.concurrent.thread
 
 /**
  * Black-box tests of Hazelcast-backed Blotter population on a cluster of two members (ADR-0008). The application's own
- * embedded member is "node 1"; the test starts a second member in the same JVM, joined to the same cluster (the
- * application's embedded member uses the default multicast joiner, and a joining member must use the same joiner), and gives it its own generated repo ("node 2") over the same database. Both repos share one IMap.
+ * embedded member is "node 1"; the test starts a second member in the same JVM, joined to the same cluster, and gives
+ * it its own generated repo ("node 2") over the same database. Both repos share one IMap. The protocol itself is
+ * tested once, in the maia-hazelcast library; these tests check the generated repos wire it up correctly.
  */
 @WithMockUser(authorities = ["WRITE"])
 class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
@@ -53,7 +66,7 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
     private lateinit var node1: HazelcastInstance
 
     @Autowired
-    private lateinit var serializers: org.maiaframework.showcase.hazelcast.HazelcastConfig
+    private lateinit var hazelcastConfig: HazelcastConfig
 
     @Autowired
     private lateinit var dtoRepo: BravoHzDtoRepo
@@ -80,10 +93,10 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
     private lateinit var bravoCrudService: BravoCrudService
 
     @Autowired
-    private lateinit var alphaDao: org.maiaframework.showcase.join.AlphaDao
+    private lateinit var alphaDao: AlphaDao
 
     @Autowired
-    private lateinit var bravoDao: org.maiaframework.showcase.join.BravoDao
+    private lateinit var bravoDao: BravoDao
 
     private var node2: HazelcastInstance? = null
 
@@ -99,26 +112,36 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
     @BeforeEach
     fun reset() {
 
-        executor = Executors.newCachedThreadPool()
+        executor = Executors.newCachedThreadPool { runnable -> Thread(runnable).apply { isDaemon = true } }
         spies.clear()
         repo1 = repoOn(node1)
 
-        jdbcOps.update("truncate table ${AlphaEntityMeta.SCHEMA_AND_TABLE_NAME} cascade")
-        listOf("bravo_hz_blotter", "bravo_hz_lazy_blotter", "bravo_hz_capped_blotter").forEach { name ->
-            listOf("", "__control", "__staging", "__changed").forEach { suffix ->
-                node1.getMap<Any, Any>(name + suffix).clear()
+        resetDatabaseAndMaps()
+
+    }
+
+
+    @AfterEach
+    fun cleanUp() {
+
+        try {
+            executor.shutdownNow()
+        } finally {
+            try {
+                node2?.let { if (it.lifecycleService.isRunning) it.shutdown() }
+            } finally {
+                node2 = null
+                resetDatabaseAndMaps()
             }
         }
 
     }
 
 
-    @AfterEach
-    fun stopNode2() {
+    private fun resetDatabaseAndMaps() {
 
-        node2?.let { if (it.lifecycleService.isRunning) it.shutdown() }
-        node2 = null
-        executor.shutdownNow()
+        jdbcOps.update("truncate table ${AlphaEntityMeta.SCHEMA_AND_TABLE_NAME} cascade")
+        HazelcastBlotterTestState.clearAll(node1)
 
     }
 
@@ -133,20 +156,26 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
         val joiner = repoOn(member2)
         Mockito.clearInvocations(*spies.toTypedArray())
 
-        val failures = AtomicInteger()
+        val failures = CopyOnWriteArrayList<String>()
         val running = AtomicBoolean(true)
-        val watcher = thread {
-            while (running.get()) {
-                if (repo1.findAll().size != 3 || joiner.findAll().size != 3) failures.incrementAndGet()
+        val watcher = thread(isDaemon = true) {
+            try {
+                while (running.get()) {
+                    val sizes = listOf(repo1.findAll().size, joiner.findAll().size)
+                    if (sizes != listOf(3, 3)) failures.add("sizes were $sizes")
+                    Thread.sleep(1)
+                }
+            } catch (e: Throwable) {
+                failures.add(e.toString())
             }
         }
 
         joiner.onContextRefreshed()
 
         running.set(false)
-        watcher.join()
+        watcher.join(30_000)
 
-        assertThat(failures.get()).isZero()
+        assertThat(failures).isEmpty()
         assertThat(populations()).isZero()
         assertThat(repo1.findAll()).hasSize(3)
         assertThat(joiner.findAll()).hasSize(3)
@@ -155,15 +184,15 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
 
 
     @Test
-    fun `two nodes populating at the same time populate once and both serve the complete set`() {
+    fun `nodes that start together populate once and both serve the complete set`() {
 
         createBravos(3)
         val repo2 = repoOn(startSecondMember())
         val held = holdFirstPopulation()
 
-        val first = executor.submit { repo1.populate() }
+        val first = executor.submit { repo1.onContextRefreshed() }
         held.awaitStreaming()
-        val second = executor.submit { repo2.populate() }
+        val second = executor.submit { repo2.onContextRefreshed() }
 
         assertThat(isDoneWithin(second, 1_000)).isFalse()
 
@@ -174,6 +203,56 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
         assertThat(populations()).isEqualTo(1)
         assertThat(repo1.findAll()).hasSize(3)
         assertThat(repo2.findAll()).hasSize(3)
+
+    }
+
+
+    @Test
+    fun `a rebuild queued behind another population still runs and reflects the database as of the call`() {
+
+        createBravos(2)
+        val repo2 = repoOn(startSecondMember())
+        val held = holdFirstPopulation()
+
+        val first = executor.submit { repo1.populate() }
+        held.awaitStreaming()
+        val queued = executor.submit { repo2.populate() }
+        assertThat(isDoneWithin(queued, 500)).isFalse()
+        insertBravoWithoutNotification()
+
+        held.release()
+        first.get(30, TimeUnit.SECONDS)
+        queued.get(30, TimeUnit.SECONDS)
+
+        assertThat(populations()).isEqualTo(2)
+        assertThat(repo1.findAll()).hasSize(3)
+        assertThat(repo2.findAll()).hasSize(3)
+
+    }
+
+
+    @Test
+    fun `a node whose shape stamp differs from the one in the map rebuilds it, and one with the same stamp leaves it alone`() {
+
+        createBravos(2)
+        repo1.populate()
+        control("bravo_hz_blotter").set(SHAPE_STAMP, "a-different-shape")
+        insertBravoWithoutNotification()
+        val joiner = repoOn(startSecondMember())
+        Mockito.clearInvocations(*spies.toTypedArray())
+
+        joiner.onContextRefreshed()
+
+        assertThat(populations()).isEqualTo(1)
+        assertThat(joiner.findAll()).hasSize(3)
+        assertThat(control("bravo_hz_blotter").get(SHAPE_STAMP)).isNotEqualTo("a-different-shape")
+
+        insertBravoWithoutNotification()
+        repo1.onContextRefreshed()
+        joiner.onContextRefreshed()
+
+        assertThat(populations()).isEqualTo(1)
+        assertThat(repo1.findAll()).hasSize(3)
 
     }
 
@@ -263,6 +342,38 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
 
 
     @Test
+    fun `a refresh committed while the changed rows are being replayed is not lost`() {
+
+        val bravos = createBravos(2)
+        val repo2 = repoOn(startSecondMember())
+        val held = holdFirstPopulation()
+        val replaying = CountDownLatch(1)
+        val proceed = CountDownLatch(1)
+        val replaySpy = spies.last()
+        Mockito.doAnswer { invocation ->
+            replaying.countDown()
+            check(proceed.await(30, TimeUnit.SECONDS)) { "replay was never released" }
+            dtoRepo.findByIds(invocation.getArgument<Collection<DomainId>>(0))
+        }.`when`(replaySpy).findByIds(Mockito.anyCollection())
+
+        val population = executor.submit { repo2.populate() }
+        held.awaitStreaming()
+        bravoCrudService.updateSomeString(BravoUpdate_someStringRequestDto(id_raw = bravos[0].id, someString_raw = "during-streaming"))
+        held.release()
+        assertThat(replaying.await(30, TimeUnit.SECONDS)).isTrue()
+
+        // the replay is re-reading from the database: a refresh now is neither blocked nor lost
+        bravoCrudService.updateSomeString(BravoUpdate_someStringRequestDto(id_raw = bravos[1].id, someString_raw = "during-replay"))
+        proceed.countDown()
+        population.get(30, TimeUnit.SECONDS)
+
+        assertThat(repo1.findAll().map { it.dtoStringFromBravo }).containsExactlyInAnyOrder("during-streaming", "during-replay")
+        assertThat(repo2.findAll().map { it.dtoStringFromBravo }).containsExactlyInAnyOrder("during-streaming", "during-replay")
+
+    }
+
+
+    @Test
     fun `viewers on other nodes keep getting the previous complete set while a rebuild runs`() {
 
         createBravos(2)
@@ -287,7 +398,36 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
 
 
     @Test
-    fun `when the populating node leaves the cluster mid-population the map is not populated and another node populates it`() {
+    fun `viewers keep getting the previous complete set while a rebuild fails, and after it`() {
+
+        createBravos(2)
+        repo1.populate()
+        val repo2 = repoOn(startSecondMember())
+        insertBravoWithoutNotification()
+
+        val held = holdFirstPopulation(failWith = IllegalStateException("transient database error"))
+        val rebuild = executor.submit { repo2.populate() }
+        held.awaitStreaming()
+        assertThat(repo1.findAll()).hasSize(2)
+
+        held.release()
+        assertThatThrownBy { rebuild.get(30, TimeUnit.SECONDS) }
+            .isInstanceOf(ExecutionException::class.java)
+            .hasRootCauseMessage("transient database error")
+
+        assertThat(control("bravo_hz_blotter").get(POPULATED)).isEqualTo(true)
+        assertThat(repo1.findAll()).hasSize(2)
+        assertThat(repo2.findAll()).hasSize(2)
+
+        repo2.populate()
+
+        assertThat(repo1.findAll()).hasSize(3)
+
+    }
+
+
+    @Test
+    fun `when the populating node leaves the cluster mid-population the map is reported unpopulated and another node populates it`() {
 
         createBravos(2)
         repo1.populate()
@@ -306,8 +446,35 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
         held.release()
         runCatching { dying.get(30, TimeUnit.SECONDS) }
 
-        // the set node 1 would still hold is stale (the third row never reached it): it is rebuilt, not served
+        // the first node to notice discards the dead node's work and reports the map unpopulated
+        repo1.refreshByIds(emptyList())
+        assertThat(control("bravo_hz_blotter").get(POPULATED)).isEqualTo(false)
+
+        // the set node 1 still holds is stale (the third row never reached it): it is rebuilt, not served as current
         assertThat(repo1.findAll()).hasSize(3)
+        assertThat(control("bravo_hz_blotter").get(POPULATED)).isEqualTo(true)
+
+    }
+
+
+    @Test
+    fun `a populator that hangs loses its lock at the lease so another node can populate, and its late finish is refused`() {
+
+        createBravos(2)
+        val shortLease = MockEnvironment().withProperty("maia.hazelcast-blotter.populate-lock-lease-seconds", "1")
+        val hung = repoOn(node1, shortLease)
+        val other = repoOn(startSecondMember(), shortLease)
+        val held = holdFirstPopulation()
+
+        val hanging = executor.submit { hung.populate() }
+        held.awaitStreaming()
+
+        other.populate()
+        assertThat(other.findAll()).hasSize(2)
+
+        held.release()
+        assertThatThrownBy { hanging.get(30, TimeUnit.SECONDS) }.hasRootCauseInstanceOf(PopulationLockLostException::class.java)
+        assertThat(other.findAll()).hasSize(2)
 
     }
 
@@ -323,12 +490,12 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
             transactionManager = transactionManager
         )
 
-        assertThatThrownBy { capped2.populate() }.hasStackTraceContaining("maxRows")
+        assertThatThrownBy { capped2.populate() }.isInstanceOf(BlotterTooLargeException::class.java)
         assertThat(node1.getMap<DomainId, Any>("bravo_hz_capped_blotter").size).isZero()
 
         // node 1 does not serve a partial or stale set: it tries to populate itself and fails the same way
-        assertThatThrownBy { springCappedRepo.findAll() }.hasStackTraceContaining("maxRows")
-        assertThatThrownBy { capped2.findAll() }.hasStackTraceContaining("maxRows")
+        assertThatThrownBy { springCappedRepo.findAll() }.isInstanceOf(BlotterTooLargeException::class.java)
+        assertThatThrownBy { capped2.findAll() }.isInstanceOf(BlotterTooLargeException::class.java)
 
         jdbcOps.update("delete from ${BravoEntityMeta.SCHEMA_AND_TABLE_NAME} where some_string = 'bravo-0'")
 
@@ -339,14 +506,14 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
 
 
     /** A repo for this member over its own spy of the database repo, so each node's reads can be held and counted. */
-    private fun repoOn(member: HazelcastInstance): BravoHzDtoHazelcastRepo {
+    private fun repoOn(member: HazelcastInstance, env: Environment = environment): BravoHzDtoHazelcastRepo {
 
         val spy = delegatingTo(dtoRepo)
         spies.add(spy)
 
         return BravoHzDtoHazelcastRepo(
             dtoRepo = spy,
-            environment = environment,
+            environment = env,
             hazelcastInstance = member,
             transactionManager = transactionManager
         )
@@ -354,12 +521,20 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
     }
 
 
+    private fun control(mapName: String) = node1.getMap<String, Any>(mapName + "__control")
+
+
+    /**
+     * A second member of the same cluster. It is configured exactly as the application's own member is (the test
+     * `hazelcast.yaml` joins members at the local address by TCP-IP rather than by multicast, so the test does not
+     * depend on multicast working on the machine running it, and the second member has to use the same joiner).
+     */
     private fun startSecondMember(): HazelcastInstance {
 
         val config: Config = YamlConfigBuilder().build()
         config.instanceName = "hz-cluster-test-node-2"
         config.clusterName = node1.config.clusterName
-        serializers.serializers.forEach { config.serializationConfig.compactSerializationConfig.addSerializer(it) }
+        hazelcastConfig.serializers.forEach { config.serializationConfig.compactSerializationConfig.addSerializer(it) }
 
         membersBefore = node1.cluster.members.size
 
@@ -392,15 +567,16 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
 
     /**
      * The first population to read the database (on whichever node) delivers its snapshot and then stays held until
-     * released, standing in for a slow read; any later population reads normally.
+     * released (and then fails with [failWith], when given), standing in for a slow read; any later population reads
+     * normally.
      */
-    private fun holdFirstPopulation(): HeldPopulation {
+    private fun holdFirstPopulation(failWith: Exception? = null): HeldPopulation {
 
         val streaming = CountDownLatch(1)
         val release = CountDownLatch(1)
         val calls = AtomicInteger()
 
-        val answer = org.mockito.stubbing.Answer { _ ->
+        val answer = Answer { _ ->
             val real = dtoRepo.findAllAsSequence()
             if (calls.incrementAndGet() > 1) {
                 real
@@ -410,6 +586,7 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
                     yieldAll(snapshot)
                     streaming.countDown()
                     check(release.await(30, TimeUnit.SECONDS)) { "population was never released" }
+                    failWith?.let { throw it }
                 }
             }
         }
@@ -424,7 +601,7 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
     /** A mock that passes every call to the Spring-managed (proxied, so not spy-able) [real] repo unless stubbed. */
     private inline fun <reified T : Any> delegatingTo(real: T): T {
 
-        return Mockito.mock(T::class.java, org.mockito.AdditionalAnswers.delegatesTo<T>(real))
+        return Mockito.mock(T::class.java, AdditionalAnswers.delegatesTo<T>(real))
 
     }
 
@@ -441,7 +618,7 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
         return try {
             future.get(millis, TimeUnit.MILLISECONDS)
             true
-        } catch (e: java.util.concurrent.TimeoutException) {
+        } catch (e: TimeoutException) {
             false
         }
 
@@ -475,13 +652,23 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
     }
 
 
-    private fun createBravos(count: Int): List<org.maiaframework.showcase.join.BravoEntity> {
+    private fun createBravos(count: Int): List<BravoEntity> {
 
         val alpha = alphaCrudService.create(AlphaCreateRequestDto(someInt_raw = 1, someString_raw = "alpha"))
 
         return (0 until count).map {
             bravoCrudService.create(BravoCreateRequestDto(alpha_raw = alpha.id, someInt_raw = it, someString_raw = "bravo-$it"))
         }
+
+    }
+
+
+    private companion object {
+
+        // the control map entries of the population protocol (see HazelcastClusterPopulator)
+        const val POPULATED = "populated"
+
+        const val SHAPE_STAMP = "shapeStamp"
 
     }
 

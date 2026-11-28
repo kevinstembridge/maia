@@ -35,8 +35,10 @@ import org.springframework.security.test.context.support.WithMockUser
  * start, lazy fills it on the first fetch, and a per-DTO override beats the global property
  * `maia.hazelcast-blotter.population`.
  *
- * The application context starts once for the whole test class, so a restart is simulated by publishing the same
- * [ContextRefreshedEvent] the application context publishes when it has started. The mode is read when that event is
+ * The application context starts once for the whole test class, so a restart of the only node of a cluster is simulated
+ * by clearing the cluster's Blotter state (a real restart loses it) and publishing the same [ContextRefreshedEvent] the
+ * application context publishes when it has started. A repeated event with the state left as it is, and a start of a
+ * node whose shape matches a populated map, leave that map alone. The mode is read when that event is
  * handled, so the global property is changed by adding a property source to the live environment.
  */
 @WithMockUser(authorities = ["WRITE"])
@@ -176,6 +178,37 @@ class HazelcastPopulationModesIntegrationTest : AbstractBlackBoxTest() {
 
 
     @Test
+    fun `a repeated eager start-up event leaves a populated same-shape map alone`() {
+
+        createBravos(2)
+        restart()
+        insertBravoWithoutNotification()
+
+        publishStartUpEvent()
+
+        assertThat(bravoHzRepo.findAll()).hasSize(2)
+
+    }
+
+
+    @Test
+    fun `a repeated lazy start-up event does not wipe a populated same-shape map`() {
+
+        setGlobalPopulation("lazy")
+        createBravos(2)
+        restart()
+        assertThat(bravoHzRepo.findAll()).hasSize(2)
+        insertBravoWithoutNotification()
+
+        publishStartUpEvent()
+
+        assertThat(mapSize("bravo_hz_blotter")).isEqualTo(2)
+        assertThat(bravoHzRepo.findAll()).hasSize(2)
+
+    }
+
+
+    @Test
     fun `a per-dto lazy override beats an eager global default`() {
 
         createBravos(2)
@@ -217,7 +250,17 @@ class HazelcastPopulationModesIntegrationTest : AbstractBlackBoxTest() {
     }
 
 
+    /** A restart of the only node of a cluster: the cluster's memory is gone, then the start-up event is handled. */
     private fun restart() {
+
+        HazelcastBlotterTestState.clearAll(hazelcastInstance)
+        publishStartUpEvent()
+
+    }
+
+
+    /** The event the application context publishes when it has started, with the cluster's state as it is. */
+    private fun publishStartUpEvent() {
 
         applicationContext.publishEvent(ContextRefreshedEvent(applicationContext))
 

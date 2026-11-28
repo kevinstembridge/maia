@@ -4,12 +4,10 @@
 package org.maiaframework.showcase.join
 
 import com.hazelcast.core.HazelcastInstance
-import com.hazelcast.map.IMap
-import org.maiaframework.common.BlotterTooLargeException
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.refresh.RefreshTarget
-import org.maiaframework.hazelcast.refresh.HazelcastRefreshCollector
+import org.maiaframework.hazelcast.population.HazelcastClusterPopulator
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.context.event.EventListener
 import org.springframework.core.env.Environment
@@ -33,58 +31,23 @@ class BravoHzLazyDtoHazelcastRepo(
     private val readOnlyTransaction = TransactionTemplate(transactionManager).apply { isReadOnly = true }
 
 
-    private val map: IMap<DomainId, BravoHzLazyDto> = hazelcastInstance.getMap("bravo_hz_lazy_blotter")
-
-
-    private val staging: IMap<DomainId, BravoHzLazyDto> = hazelcastInstance.getMap("bravo_hz_lazy_blotter__staging")
-
-
-    private val changed: IMap<DomainId, Boolean> = hazelcastInstance.getMap("bravo_hz_lazy_blotter__changed")
-
-
-    @Volatile
-    private var started = false
-
-
-    private val control: IMap<String, Any> = hazelcastInstance.getMap("bravo_hz_lazy_blotter__control")
+    private val populator = HazelcastClusterPopulator<DomainId, BravoHzLazyDto>(
+        hazelcastInstance = hazelcastInstance,
+        mapName = "bravo_hz_lazy_blotter",
+        dtoName = "BravoHzLazyDto",
+        shapeStamp = SHAPE_STAMP,
+        maxRows = MAX_ROWS,
+        idOf = { it.id },
+        findAllAsSequence = { dtoRepo.findAllAsSequence() },
+        findByIds = { ids -> dtoRepo.findByIds(ids) },
+        inReadTransaction = { block -> readOnlyTransaction.executeWithoutResult { block() } },
+        settings = HazelcastClusterPopulator.settingsFrom(environment.getProperty(HazelcastClusterPopulator.LOCK_LEASE_PROPERTY))
+    )
 
 
     fun findAll(): List<BravoHzLazyDto> {
 
-        val deadline = System.currentTimeMillis() + READ_TIMEOUT_MILLIS
-
-        while (true) {
-
-            if (!isPopulatedAndHealthy()) {
-                populate(force = false)
-            }
-
-            readServedSet()?.let { return it }
-
-            check(System.currentTimeMillis() < deadline) { "Timed out reading Hazelcast map bravo_hz_lazy_blotter" }
-
-            Thread.sleep(RETRY_MILLIS)
-
-        }
-
-    }
-
-
-    /**
-     * The served map, or null when the read has to be retried because it overlapped the copy of a newly
-     * populated set into the map (a read that overlapped a copy might hold a partial set and is discarded).
-     */
-    private fun readServedSet(): List<BravoHzLazyDto>? {
-
-        val before = swapCount()
-
-        if (before % 2L == 1L) {
-            return null
-        }
-
-        val rows = this.map.values.toList()
-
-        return if (swapCount() == before) rows else null
+        return this.populator.findAll()
 
     }
 
@@ -98,33 +61,10 @@ class BravoHzLazyDtoHazelcastRepo(
             "Invalid value '$mode' for $POPULATION_PROPERTY; valid values are $POPULATION_VALUES"
         }
 
-        val firstEvent = !this.started
-        this.started = true
+        this.populator.onStart(eager = mode == POPULATION_EAGER)
 
-        val joiningCluster = firstEvent && this.hazelcastInstance.cluster.members.size > 1
-
-        if (mode == POPULATION_EAGER) {
-            populate(force = !joiningCluster)
-            return
-        }
-
-        if (!joiningCluster) {
-            resetToUnpopulated()
-        }
-
-        logger.info("Hazelcast map bravo_hz_lazy_blotter will be populated by the first fetch")
-
-    }
-
-
-    private fun resetToUnpopulated() {
-
-        this.control.lock(LOCK_POPULATE)
-
-        try {
-            withStateLock { abandonPopulation() }
-        } finally {
-            this.control.unlock(LOCK_POPULATE)
+        if (mode == POPULATION_LAZY) {
+            logger.info("Hazelcast map bravo_hz_lazy_blotter will be populated by the first fetch")
         }
 
     }
@@ -132,116 +72,7 @@ class BravoHzLazyDtoHazelcastRepo(
 
     fun populate() {
 
-        populate(force = true)
-
-    }
-
-
-    /** [force]: rebuild even a populated map, unless another node's population completed while this call waited. */
-    private fun populate(force: Boolean) {
-
-        val epochOnEntry = epoch()
-
-        this.control.lock(LOCK_POPULATE)
-
-        try {
-
-            withStateLock {
-                if (isPopulating()) {
-                    logger.warn("The node populating Hazelcast map bravo_hz_lazy_blotter left before it finished; discarding its partial work")
-                    abandonPopulation()
-                }
-            }
-
-            val upToDate = if (force) epoch() != epochOnEntry else isPopulated()
-
-            if (!upToDate) {
-                runPopulation()
-            }
-
-        } finally {
-            this.control.unlock(LOCK_POPULATE)
-        }
-
-    }
-
-
-    /** Called with the populate lock held. */
-    private fun runPopulation() {
-
-        logger.info("BEGIN: Populating Hazelcast map bravo_hz_lazy_blotter")
-
-        withStateLock {
-            this.control.set(POPULATING, true)
-            this.staging.clear()
-            this.changed.clear()
-        }
-
-        var count = 0
-
-        try {
-
-            this.readOnlyTransaction.executeWithoutResult {
-                this.dtoRepo.findAllAsSequence().chunked(HazelcastRefreshCollector.CHUNK_SIZE).forEach { chunk ->
-                    if (count + chunk.size > MAX_ROWS) {
-                        throw BlotterTooLargeException("BravoHzLazyDto", MAX_ROWS)
-                    }
-                    this.staging.putAll(chunk.associateBy { it.id })
-                    count += chunk.size
-                }
-            }
-
-            withStateLock { completePopulation() }
-
-        } catch (e: Exception) {
-            withStateLock { abandonPopulation() }
-            throw e
-        }
-
-        logger.info("END: Populated Hazelcast map bravo_hz_lazy_blotter with $count rows")
-
-    }
-
-
-    /**
-     * Replays what changed while the population streamed (those rows are re-read, so the staged set ends up
-     * current), then publishes the staged set. Called with the state lock held.
-     */
-    private fun completePopulation() {
-
-        reconcile(this.changed.keys.toList(), this.staging)
-
-        val swap = swapCount()
-        this.control.set(SWAP, swap + 1)
-        this.map.clear()
-        this.staging.keys.chunked(HazelcastRefreshCollector.CHUNK_SIZE).forEach { ids ->
-            this.map.putAll(this.staging.getAll(ids.toSet()))
-        }
-        this.control.set(SWAP, swap + 2)
-
-        this.staging.clear()
-        this.changed.clear()
-        this.control.set(EPOCH, epoch() + 1)
-        this.control.set(POPULATING, false)
-        this.control.set(POPULATED, true)
-
-    }
-
-
-    /** Leaves the map empty and unpopulated for every node. Called with the state lock held. */
-    private fun abandonPopulation() {
-
-        this.map.clear()
-        this.staging.clear()
-        this.changed.clear()
-
-        val swap = swapCount()
-        if (swap % 2L == 1L) {
-            this.control.set(SWAP, swap + 1)
-        }
-
-        this.control.set(POPULATING, false)
-        this.control.set(POPULATED, false)
+        this.populator.rebuild()
 
     }
 
@@ -253,107 +84,16 @@ class BravoHzLazyDtoHazelcastRepo(
     }
 
 
-    private fun isPopulated(): Boolean = this.control.get(POPULATED) == true
-
-
-    private fun isPopulating(): Boolean = this.control.get(POPULATING) == true
-
-
-    private fun epoch(): Long = (this.control.get(EPOCH) as Long?) ?: 0L
-
-
-    private fun swapCount(): Long = (this.control.get(SWAP) as Long?) ?: 0L
-
-
-    /**
-     * Populated, and no population left behind by a node that has since left the cluster. A running
-     * population holds the populate lock, so `populating` without the lock means its node died.
-     */
-    private fun isPopulatedAndHealthy(): Boolean {
-
-        return isPopulated() && (!isPopulating() || this.control.isLocked(LOCK_POPULATE))
-
-    }
-
-
-    private fun <T> withStateLock(block: () -> T): T {
-
-        this.control.lock(LOCK_STATE)
-
-        try {
-            return block()
-        } finally {
-            this.control.unlock(LOCK_STATE)
-        }
-
-    }
-
-
-    /** True when a population is recorded as running but its node no longer holds the populate lock. Needs the state lock. */
-    private fun populatorDied(): Boolean {
-
-        return isPopulating() && !this.control.isLocked(LOCK_POPULATE)
-
-    }
-
-
     override fun refreshByIds(ids: Collection<DomainId>) {
 
-        withStateLock {
-
-            if (populatorDied()) {
-                abandonPopulation()
-            }
-
-            if (isPopulating()) {
-                recordChanged(ids)
-            } else if (isPopulated()) {
-                reconcile(ids, this.map)
-            }
-
-        }
+        this.populator.refreshByIds(ids)
 
     }
 
 
     override fun deleteById(id: DomainId) {
 
-        withStateLock {
-
-            if (populatorDied()) {
-                abandonPopulation()
-            }
-
-            if (isPopulating()) {
-                recordChanged(listOf(id))
-            } else {
-                this.map.delete(id)
-            }
-
-        }
-
-    }
-
-
-    private fun recordChanged(ids: Collection<DomainId>) {
-
-        this.changed.putAll(ids.associateWith { true })
-
-    }
-
-
-    /** Brings the [target] entries of [ids] in line with the database: present rows are stored, absent rows removed. */
-    private fun reconcile(ids: Collection<DomainId>, target: IMap<DomainId, BravoHzLazyDto>) {
-
-        ids.chunked(HazelcastRefreshCollector.CHUNK_SIZE).forEach { chunk ->
-
-            val found = this.dtoRepo.findByIds(chunk).associateBy { it.id }
-
-            target.putAll(found)
-
-            chunk.filterNot { it in found }.forEach { target.delete(it) }
-
-        }
+        this.populator.deleteById(id)
 
     }
 
@@ -364,6 +104,9 @@ class BravoHzLazyDtoHazelcastRepo(
 
         const val MAX_ROWS = 10000
 
+        /** Identifies the document shape of BravoHzLazyDto: a hash of its field names and types. */
+        const val SHAPE_STAMP = "c1e2d56dc3c55b87"
+
         const val POPULATION_PROPERTY = "maia.hazelcast-blotter.population"
 
         const val POPULATION_EAGER = "eager"
@@ -371,22 +114,6 @@ class BravoHzLazyDtoHazelcastRepo(
         const val POPULATION_LAZY = "lazy"
 
         const val POPULATION_VALUES = "eager|lazy"
-
-        const val LOCK_POPULATE = "populate-lock"
-
-        const val LOCK_STATE = "state-lock"
-
-        const val POPULATED = "populated"
-
-        const val POPULATING = "populating"
-
-        const val EPOCH = "epoch"
-
-        const val SWAP = "swap"
-
-        const val READ_TIMEOUT_MILLIS = 60_000L
-
-        const val RETRY_MILLIS = 5L
 
     }
 }
