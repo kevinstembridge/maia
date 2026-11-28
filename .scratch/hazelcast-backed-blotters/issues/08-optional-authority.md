@@ -4,8 +4,8 @@
 
 **Blocked by:** 02
 
-**Status:** ready-for-agent
+**Status:** resolved
 
-- [ ] A DTO with an authority refuses a user without it and serves a user with it (black-box integration test).
-- [ ] A DTO with no authority serves any authenticated user.
-- [ ] No new authorization mechanism is introduced.
+- [x] A DTO with an authority refuses a user without it and serves a user with it (black-box integration test).
+- [x] A DTO with no authority serves any authenticated user.
+- [x] No new authorization mechanism is introduced.
