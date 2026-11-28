@@ -17,4 +17,6 @@ dependencies {
     api("org.hibernate.validator:hibernate-validator")
     api("org.springframework.data:spring-data-commons")
 
+    implementation("org.springframework:spring-tx")
+
 }

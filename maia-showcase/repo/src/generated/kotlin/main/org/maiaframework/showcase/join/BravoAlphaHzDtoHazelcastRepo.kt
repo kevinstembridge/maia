@@ -7,6 +7,7 @@ import com.hazelcast.core.HazelcastInstance
 import com.hazelcast.map.IMap
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.DomainId
+import org.maiaframework.domain.refresh.RefreshTarget
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.context.event.EventListener
 import org.springframework.core.env.Environment
@@ -21,7 +22,7 @@ class BravoAlphaHzDtoHazelcastRepo(
     private val environment: Environment,
     private val hazelcastInstance: HazelcastInstance,
     private val transactionManager: PlatformTransactionManager
-) {
+) : RefreshTarget {
 
 
     private val logger = getLogger<BravoAlphaHzDtoHazelcastRepo>()
@@ -99,6 +100,35 @@ class BravoAlphaHzDtoHazelcastRepo(
     private fun populationMode(): String {
 
         return this.environment.getProperty(POPULATION_PROPERTY, POPULATION_EAGER)
+
+    }
+
+
+    fun isPopulated(): Boolean {
+
+        return this.populated
+
+    }
+
+
+    override fun refreshByIds(ids: Collection<DomainId>) {
+
+        if (!this.populated) {
+            return
+        }
+
+        val found = this.dtoRepo.findByIds(ids).associateBy { it.id }
+
+        this.map.putAll(found)
+
+        ids.filterNot { it in found }.forEach { this.map.delete(it) }
+
+    }
+
+
+    override fun deleteById(id: DomainId) {
+
+        this.map.delete(id)
 
     }
 

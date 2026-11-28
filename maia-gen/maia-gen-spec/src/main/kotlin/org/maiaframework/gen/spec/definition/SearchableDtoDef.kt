@@ -209,9 +209,10 @@ class SearchableDtoDef(
     val hazelcastMapName: String = "${dtoBaseName.toSnakeCase()}_blotter"
 
 
-    /** Owns the Hazelcast map: reads the whole set, and populates it from the database. */
+    /** Owns the Hazelcast map: reads the whole set, populates it from the database, and is refreshed after commit. */
     val hazelcastRepoClassDef = aClassDef(fqcn.withSuffix("HazelcastRepo"))
         .withClassAnnotation(AnnotationDefs.SPRING_REPOSITORY)
+        .withInterface(ParameterizedType(Fqcns.MAIA_REFRESH_TARGET))
         .build()
 
 

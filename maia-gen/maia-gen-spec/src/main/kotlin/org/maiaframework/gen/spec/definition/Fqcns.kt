@@ -100,6 +100,8 @@ object Fqcns {
     val MAIA_ENTITY_NOT_FOUND_EXCEPTION = Fqcn.valueOf("org.maiaframework.jdbc.EntityNotFoundException")
     val MAIA_ES_DOC_HOLDER = Fqcn.valueOf("org.maiaframework.elasticsearch.EsDocHolder")
     val ES_REFRESH_COLLECTOR = Fqcn.valueOf("org.maiaframework.elasticsearch.refresh.EsRefreshCollector")
+    val HAZELCAST_REFRESH_COLLECTOR = Fqcn.valueOf("org.maiaframework.hazelcast.refresh.HazelcastRefreshCollector")
+    val MAIA_REFRESH_TARGET = Fqcn.valueOf("org.maiaframework.domain.refresh.RefreshTarget")
     val ES_REFRESH_TARGET = Fqcn.valueOf("org.maiaframework.elasticsearch.refresh.EsRefreshTarget")
     val MAIA_ES_INDEX_OPS = Fqcn.valueOf("org.maiaframework.elasticsearch.index.EsIndexOps")
     val MAIA_ES_SEARCH_EXECUTOR = Fqcn.valueOf("org.maiaframework.elasticsearch.search.EsSearchExecutor")

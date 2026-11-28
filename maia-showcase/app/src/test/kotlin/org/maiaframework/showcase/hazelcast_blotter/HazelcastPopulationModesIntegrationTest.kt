@@ -9,6 +9,10 @@ import org.maiaframework.domain.DomainId
 import org.maiaframework.showcase.AbstractBlackBoxTest
 import org.maiaframework.showcase.join.AlphaCreateRequestDto
 import org.maiaframework.showcase.join.AlphaCrudService
+import org.maiaframework.showcase.join.AlphaDao
+import org.maiaframework.showcase.join.AlphaEntityTestBuilder
+import org.maiaframework.showcase.join.BravoDao
+import org.maiaframework.showcase.join.BravoEntityTestBuilder
 import org.maiaframework.showcase.join.AlphaEntity
 import org.maiaframework.showcase.join.AlphaEntityMeta
 import org.maiaframework.showcase.join.BravoCreateRequestDto
@@ -48,6 +52,14 @@ class HazelcastPopulationModesIntegrationTest : AbstractBlackBoxTest() {
 
     @Autowired
     private lateinit var alphaCrudService: AlphaCrudService
+
+
+    @Autowired
+    private lateinit var alphaDao: AlphaDao
+
+
+    @Autowired
+    private lateinit var bravoDao: BravoDao
 
 
     @Autowired
@@ -119,7 +131,7 @@ class HazelcastPopulationModesIntegrationTest : AbstractBlackBoxTest() {
         restart()
         assertThat(bravoHzRepo.findAll()).hasSize(2)
 
-        createBravos(1)
+        insertBravoWithoutNotification()
 
         assertThat(bravoHzRepo.findAll()).hasSize(2)
 
@@ -224,6 +236,15 @@ class HazelcastPopulationModesIntegrationTest : AbstractBlackBoxTest() {
         repeat(count) {
             bravoCrudService.create(BravoCreateRequestDto(alpha_raw = alpha.id, someInt_raw = it, someString_raw = "bravo-$it"))
         }
+
+    }
+
+
+    /** Straight through the DAOs, so no CrudListener event refreshes the map: only a population can show the row. */
+    private fun insertBravoWithoutNotification() {
+
+        val alpha = AlphaEntityTestBuilder().build().also { alphaDao.insert(it) }
+        bravoDao.insert(BravoEntityTestBuilder(alphaId = alpha.id).build())
 
     }
 

@@ -8,6 +8,8 @@ dependencies {
 
     api(platform(project(":maia-platform")))
 
+    api(project(":libs:maia-domain"))
+
     api("com.hazelcast:hazelcast-spring")
 
 }
