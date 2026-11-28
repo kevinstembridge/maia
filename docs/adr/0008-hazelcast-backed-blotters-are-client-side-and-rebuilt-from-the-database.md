@@ -1,0 +1,9 @@
+# Hazelcast-backed Blotters are client-side and rebuilt from the database
+
+A Searchable DTO can be backed by a Hazelcast map, declared with `hazelcastEnabled(autoRefresh = true)`, as an alternative to SQL (the default) or Elasticsearch. The three backings are mutually exclusive on one Searchable DTO. The map holds the same rich, denormalized row as an Elasticsearch document: [ADR-0007](0007-es-backed-blotters-denormalize-entity-refs.md) applies, and the existing refresh-dependency plan keeps entries fresh after the owning transaction commits, as in [ADR-0004](0004-crud-notifications-delivered-after-commit.md).
+
+A Hazelcast-backed Blotter is a Client-side blotter: one generated endpoint returns the whole set, and AG Grid filters and sorts it in the browser. There is no server-side filter model, paging or infinite scroll, so this is a deliberate exception to [ADR-0005](0005-ag-grid-filter-parity-across-backends.md): parity applies to server-side backends, and combining `infiniteScroll()` or paging with a Hazelcast backing fails generation. This is only viable for small sets, so a `maxRows` limit (default 10,000) fails population or the fetch loudly rather than truncating.
+
+The map is derived data, never a source of truth. It is rebuilt from the database on startup (eager by default, lazy by property, globally or per Searchable DTO), and a generated rebuild service can clear and repopulate it. Because of this there is no index-style version parameter, unlike `elasticsearchEnabled(version = n)`: a new document shape is picked up by rebuilding. The client sees a snapshot as of fetch time, with no live push in v1.
+
+Alternatives considered: pushing the cache behind the existing server-side row model (rejected: the point is client-side filtering over a small set, with no per-request query cost), and a per-Entity `cacheable {}` read cache (rejected: it caches single Entities and cannot hold denormalized, joined rows).

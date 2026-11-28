@@ -110,6 +110,14 @@ _Avoid_: Paged grid
 A Blotter that loads more results as the user scrolls down. Declared with `infiniteScroll()`.
 _Avoid_: Endless list
 
+**Client-side blotter**:
+A Blotter that loads its entire result set once and filters and sorts it in the browser. Suited to small data sets only.
+_Avoid_: Local grid
+
+**Hazelcast-backed Blotter**:
+A Blotter whose rows come from a Hazelcast cache of rich documents, one per row, kept fresh whenever any field the document draws on is updated. Always a Client-side blotter.
+_Avoid_: Cached blotter
+
 **Filter model**:
 The filter conditions a user has set on a Blotter's columns. A column may have several conditions, combined with AND or OR; a row must satisfy the conditions of every filtered column.
 _Avoid_: Filter state, search criteria
