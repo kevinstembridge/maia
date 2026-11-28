@@ -4,7 +4,7 @@ import org.maiaframework.domain.types.TypeDiscriminator
 import org.maiaframework.gen.spec.definition.ApplicationModelDef
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EsDocDef
-import org.maiaframework.gen.spec.definition.EsRefreshRole
+import org.maiaframework.gen.spec.definition.RefreshRole
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.JoinHop
 import org.maiaframework.gen.spec.definition.lang.AnnotationDef
@@ -27,10 +27,10 @@ class EsDocRefreshRepoRenderer(
 ) {
 
 
-    private val reverseJoins = EsReverseJoins.reverseJoinsFor(esDocDef)
+    private val reverseJoins = EsDocReverseJoins.reverseJoinsFor(esDocDef)
 
 
-    private val rootEntityDef = esDocDef.refreshDependencies.first { it.role == EsRefreshRole.ROOT && it.isRoot }.entityDef
+    private val rootEntityDef = esDocDef.refreshDependencies.first { it.role == RefreshRole.ROOT && it.isRoot }.entityDef
 
 
     /** Every entity whose table the queries mention. */

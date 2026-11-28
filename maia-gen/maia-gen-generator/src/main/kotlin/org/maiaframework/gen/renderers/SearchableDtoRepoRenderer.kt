@@ -91,7 +91,7 @@ class SearchableDtoRepoRenderer(
 
     private fun `render functions findRootIdsVia`() {
 
-        EsReverseJoins.reverseJoinsFor(searchableDtoDef).forEach { reverseJoin ->
+        ReverseJoins.reverseJoinsFor(searchableDtoDef).forEach { reverseJoin ->
 
             addImportFor(Fqcns.MAIA_DOMAIN_ID)
 

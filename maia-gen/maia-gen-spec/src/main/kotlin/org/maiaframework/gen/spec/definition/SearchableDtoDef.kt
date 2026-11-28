@@ -49,6 +49,18 @@ class SearchableDtoDef(
     private val rootDtoFieldDefs = enrichFields(fieldDefsNotInherited)
 
 
+    /**
+     * True when a document is derived from this DTO: the cached, denormalized row shape shared by every document sink
+     * (today Elasticsearch). The shared pieces, [refreshDependencies] and the Entity-ref conversion of foreign keys,
+     * apply whenever this is true and know nothing about a particular sink.
+     */
+    val isDocumentBacked: Boolean get() = esVersions.isNotEmpty()
+
+
+    /** True when any sink of this DTO's document is declared with auto-refresh. */
+    val hasAutoRefresh: Boolean get() = esVersions.any { it.autoRefresh }
+
+
     private fun enrichFields(fieldDefsNotInherited: List<SearchableDtoFieldDef>): List<SearchableDtoFieldDef> {
 
         val fields = mutableListOf<SearchableDtoFieldDef>()
@@ -84,18 +96,18 @@ class SearchableDtoDef(
 
         }
 
-        return (fields + fieldDefsNotInherited).map { convertToEntityRefIfEsEnabled(it) }
+        return (fields + fieldDefsNotInherited).map { convertToEntityRefIfDocumentBacked(it) }
 
     }
 
 
     /**
-     * ADR-0007: on an Elasticsearch-enabled searchable DTO a foreign key (direct or the terminal field of a path) to an Entity that has an
+     * ADR-0007: on a document-backed searchable DTO a foreign key (direct or the terminal field of a path) to an Entity that has an
      * Entity ref is typed as that Entity's RefDto. A foreign key to an Entity without an Entity ref stays a DomainId.
      */
-    private fun convertToEntityRefIfEsEnabled(field: SearchableDtoFieldDef): SearchableDtoFieldDef {
+    private fun convertToEntityRefIfDocumentBacked(field: SearchableDtoFieldDef): SearchableDtoFieldDef {
 
-        return if (esVersions.isNotEmpty() && field is SimpleSearchableDtoFieldDef && field.canBeEntityRef()) {
+        return if (isDocumentBacked && field is SimpleSearchableDtoFieldDef && field.canBeEntityRef()) {
             field.asEntityRef()
         } else {
             field
@@ -127,12 +139,12 @@ class SearchableDtoDef(
      * Versions with `autoRefresh = false` still trigger validation if this is read, so consumers must
      * only read it when at least one of [esVersions] has `autoRefresh = true`.
      */
-    val esRefreshDependencies: List<EsRefreshDependencyDef> by lazy {
+    val refreshDependencies: List<RefreshDependencyDef> by lazy {
 
-        if (esVersions.isEmpty()) {
+        if (!isDocumentBacked) {
             emptyList()
         } else {
-            EsRefreshDependencyFactory.build(dtoRootEntityDef, dtoBaseName, allFieldsSorted, manyToManyJoinEntityDefs)
+            RefreshDependencyFactory.build(dtoRootEntityDef, dtoBaseName, allFieldsSorted, manyToManyJoinEntityDefs)
         }
 
     }

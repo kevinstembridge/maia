@@ -146,7 +146,7 @@ class EsDocDefBuilder(
     /**
      * Throws if the declared refresh sources are inconsistent with [autoRefresh]; called by `AbstractSpec.esDoc`.
      */
-    fun refreshDependencies(esDocDescription: String): List<EsRefreshDependencyDef> {
+    fun refreshDependencies(esDocDescription: String): List<RefreshDependencyDef> {
 
         val hasSources = this.sourceEntityDef != null || this.subclassSources.isNotEmpty() ||
             this.childSources.isNotEmpty() || this.viaSources.isNotEmpty()
@@ -166,7 +166,7 @@ class EsDocDefBuilder(
             dependency(
                 esDocDescription, rootEntityDef, isRoot = true, watchedFields = this.sourceEntityWatchedFields,
                 refreshOnAnyUpdate = this.sourceEntityWatchedFields.isEmpty(), isChild = false, paths = listOf(emptyList()),
-                role = EsRefreshRole.ROOT
+                role = RefreshRole.ROOT
             )
         )
 
@@ -177,7 +177,7 @@ class EsDocDefBuilder(
             dependency(
                 esDocDescription, source.entityDef, isRoot = false, watchedFields = source.watchedFields,
                 refreshOnAnyUpdate = source.watchedFields.isEmpty(), isChild = false, paths = listOf(emptyList()),
-                role = EsRefreshRole.ROOT
+                role = RefreshRole.ROOT
             )
         }
 
@@ -201,7 +201,7 @@ class EsDocDefBuilder(
 
             dependency(
                 esDocDescription, source.entityDef, isRoot = false, watchedFields = watchedFields,
-                refreshOnAnyUpdate = false, isChild = true, paths = listOf(listOf(hop)), role = EsRefreshRole.CHILD
+                refreshOnAnyUpdate = false, isChild = true, paths = listOf(listOf(hop)), role = RefreshRole.CHILD
             )
 
         }
@@ -219,7 +219,7 @@ class EsDocDefBuilder(
 
             dependency(
                 esDocDescription, entityDef, isRoot = false, watchedFields = watchedFields,
-                refreshOnAnyUpdate = false, isChild = false, paths = paths, role = EsRefreshRole.PATH
+                refreshOnAnyUpdate = false, isChild = false, paths = paths, role = RefreshRole.PATH
             )
 
         }
@@ -275,8 +275,8 @@ class EsDocDefBuilder(
         refreshOnAnyUpdate: Boolean,
         isChild: Boolean,
         paths: List<List<JoinHop>>,
-        role: EsRefreshRole
-    ): EsRefreshDependencyDef {
+        role: RefreshRole
+    ): RefreshDependencyDef {
 
         watchedFields.forEach {
             require(entityDef.findFieldByNameOrNull(it) != null) {
@@ -292,7 +292,7 @@ class EsDocDefBuilder(
             "EsDoc $esDocDescription: entity ${entityDef.entityBaseName} requires a single DomainId primary key."
         }
 
-        return EsRefreshDependencyDef(
+        return RefreshDependencyDef(
             entityDef,
             isRoot,
             watchedFields.map { ClassFieldName(it) }.toSet(),

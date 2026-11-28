@@ -204,9 +204,9 @@ class EsDocAutoRefreshDeclarationTest {
 
         assertThat(dependencies.map { it.entityDef.entityBaseName.value to it.role })
             .containsExactly(
-                "Party" to EsRefreshRole.ROOT,
-                "Person" to EsRefreshRole.ROOT,
-                "PartyEmail" to EsRefreshRole.CHILD
+                "Party" to RefreshRole.ROOT,
+                "Person" to RefreshRole.ROOT,
+                "PartyEmail" to RefreshRole.CHILD
             )
 
         val party = dependencies[0]

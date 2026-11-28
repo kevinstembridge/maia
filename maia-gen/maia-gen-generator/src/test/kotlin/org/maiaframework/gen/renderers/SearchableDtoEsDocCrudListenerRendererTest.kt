@@ -455,7 +455,7 @@ class SearchableDtoEsDocCrudListenerRendererTest {
     }
 
 
-    /** Entities without crud {}: reading esRefreshDependencies fails validation. */
+    /** Entities without crud {}: reading refreshDependencies fails validation. */
     private class NoCrudSpec : AbstractSpec(AppKey("Test")) {
 
         val parent = entity("com.example", "Parent") {

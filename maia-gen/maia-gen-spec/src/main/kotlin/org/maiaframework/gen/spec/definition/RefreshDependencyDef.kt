@@ -54,9 +54,9 @@ class JoinHop(
 
 
 /**
- * How an [EsRefreshDependencyDef]'s changes map to the root ids whose EsDocs must be refreshed.
+ * How an [RefreshDependencyDef]'s changes map to the root ids whose documents must be refreshed.
  */
-enum class EsRefreshRole {
+enum class RefreshRole {
 
     /** The searchable DTO's root entity: a changed row refreshes its own id. */
     ROOT,
@@ -77,7 +77,7 @@ enum class EsRefreshRole {
     companion object {
 
 
-        fun of(isRoot: Boolean, isManyToManyMembership: Boolean, refreshOnAnyUpdate: Boolean): EsRefreshRole {
+        fun of(isRoot: Boolean, isManyToManyMembership: Boolean, refreshOnAnyUpdate: Boolean): RefreshRole {
 
             return when {
                 isRoot -> ROOT
@@ -95,7 +95,7 @@ enum class EsRefreshRole {
 
 
 /**
- * An entity whose changes can alter the EsDocs derived from a searchable DTO.
+ * An entity whose changes can alter the documents derived from a searchable DTO.
  *
  * [entityDef] is the entity that the DTO's field path (or many-to-many join) actually resolves to.
  * When a field is declared on a superclass of that entity, the dependency is still recorded against
@@ -113,10 +113,10 @@ enum class EsRefreshRole {
  * the CrudNotifier's superclass recursion, but events for a concrete SUPERCLASS row updated through
  * a subclass's service are not guaranteed to reach a listener registered only on the other class.
  */
-class EsRefreshDependencyDef(
+class RefreshDependencyDef(
     val entityDef: EntityDef,
     val isRoot: Boolean,
-    /** Entity class field names whose change can alter the EsDoc. */
+    /** Entity class field names whose change can alter the document. */
     val watchedFields: Set<ClassFieldName>,
     /**
      * Each path is ordered root to [entityDef]. The root's own dependency contains the empty path,
@@ -140,8 +140,8 @@ class EsRefreshDependencyDef(
      * key to the root (the target field of its single path's first hop) is the root id itself.
      */
     val isManyToManyMembership: Boolean,
-    /** Derived from [isRoot], [isManyToManyMembership] and [refreshOnAnyUpdate] by [EsRefreshRole.of]. */
-    val role: EsRefreshRole
+    /** Derived from [isRoot], [isManyToManyMembership] and [refreshOnAnyUpdate] by [RefreshRole.of]. */
+    val role: RefreshRole
 ) {
 
 
@@ -156,7 +156,7 @@ class EsRefreshDependencyDef(
 }
 
 
-object EsRefreshDependencyFactory {
+object RefreshDependencyFactory {
 
 
     private val auditFieldNames = setOf(
@@ -175,7 +175,7 @@ object EsRefreshDependencyFactory {
         dtoBaseName: DtoBaseName,
         fields: List<SearchableDtoFieldDef>,
         manyToManyJoinEntityDefs: List<JoinEntityDef>
-    ): List<EsRefreshDependencyDef> {
+    ): List<RefreshDependencyDef> {
 
         val collector = Collector(rootEntityDef, dtoBaseName, manyToManyJoinEntityDefs)
 
@@ -196,19 +196,19 @@ object EsRefreshDependencyFactory {
         // changed row's own id, so documents of other root rows that reach it through such a path would go stale.
         dependencies.filter { it.isRoot }.forEach { root ->
             require(root.pathsFromRoot.all { it.isEmpty() }) {
-                "Elasticsearch auto-refresh on searchable DTO $dtoBaseName: a path that leads back to the root entity ${root.entityDef.entityBaseName} " +
+                "Document auto-refresh on searchable DTO $dtoBaseName: a path that leads back to the root entity ${root.entityDef.entityBaseName} " +
                     "is not supported for automatic refresh: documents of other rows that reference a changed row would go stale. Paths: ${root.pathsFromRoot}"
             }
         }
 
         dependencies.filterNot { collector.isJoin(it.entityDef) }.forEach { dependency ->
             require(dependency.hasCrudListener) {
-                "Elasticsearch auto-refresh on searchable DTO $dtoBaseName requires entity ${dependency.entityDef.entityBaseName} " +
-                    "to have a CrudListener (declare a crud {} block on it). It contributes to the EsDoc via paths ${dependency.pathsFromRoot}"
+                "Document auto-refresh on searchable DTO $dtoBaseName requires entity ${dependency.entityDef.entityBaseName} " +
+                    "to have a CrudListener (declare a crud {} block on it). It contributes to the document via paths ${dependency.pathsFromRoot}"
             }
             // The generated listeners and reverse joins pass the entity's primary key as a DomainId.
             require(dependency.entityDef.primaryKeyFields.singleOrNull()?.classFieldDef?.fieldType is DomainIdFieldType) {
-                "Elasticsearch auto-refresh on searchable DTO $dtoBaseName: entity ${dependency.entityDef.entityBaseName} " +
+                "Document auto-refresh on searchable DTO $dtoBaseName: entity ${dependency.entityDef.entityBaseName} " +
                     "requires a single DomainId primary key; found ${dependency.entityDef.primaryKeyFields.map { "${it.classFieldName}: ${it.classFieldDef.fieldType}" }}"
             }
         }
@@ -239,16 +239,16 @@ object EsRefreshDependencyFactory {
         var isJoin = false
 
 
-        fun build(): EsRefreshDependencyDef {
+        fun build(): RefreshDependencyDef {
 
-            return EsRefreshDependencyDef(
+            return RefreshDependencyDef(
                 entityDef,
                 isRoot,
                 watchedFields.toSet(),
                 paths.toList(),
                 refreshOnAnyUpdate,
                 isManyToManyMembership,
-                EsRefreshRole.of(isRoot, isManyToManyMembership, refreshOnAnyUpdate)
+                RefreshRole.of(isRoot, isManyToManyMembership, refreshOnAnyUpdate)
             )
 
         }
@@ -387,7 +387,7 @@ object EsRefreshDependencyFactory {
             }
 
             require(rootFkFields.size <= 1) {
-                "Elasticsearch auto-refresh: join entity ${joinEntityDef.entityBaseName} has more than one foreign key to the root entity ${rootEntityDef.entityBaseName} " +
+                "Document auto-refresh: join entity ${joinEntityDef.entityBaseName} has more than one foreign key to the root entity ${rootEntityDef.entityBaseName} " +
                     "(${rootFkFields.map { it.classFieldName }}); cannot choose a join path on searchable DTO $dtoBaseName"
             }
 
@@ -400,7 +400,7 @@ object EsRefreshDependencyFactory {
         private fun requireNotSelfManyToMany(isSelfManyToMany: Boolean, joinEntityDef: EntityDef) {
 
             require(isSelfManyToMany == false) {
-                "Elasticsearch auto-refresh: self many-to-many not supported (join entity ${joinEntityDef.entityBaseName} joins ${rootEntityDef.entityBaseName} to itself) on searchable DTO $dtoBaseName"
+                "Document auto-refresh: self many-to-many not supported (join entity ${joinEntityDef.entityBaseName} joins ${rootEntityDef.entityBaseName} to itself) on searchable DTO $dtoBaseName"
             }
 
         }
@@ -471,7 +471,7 @@ object EsRefreshDependencyFactory {
         private fun primaryKeyFieldOf(entityDef: EntityDef): EntityFieldDef {
 
             return entityDef.primaryKeyFields.singleOrNull()
-                ?: throw IllegalArgumentException("Elasticsearch auto-refresh on searchable DTO $dtoBaseName requires entity ${entityDef.entityBaseName} to have a single primary key field; found ${entityDef.primaryKeyFields.map { it.classFieldName }}")
+                ?: throw IllegalArgumentException("Document auto-refresh on searchable DTO $dtoBaseName requires entity ${entityDef.entityBaseName} to have a single primary key field; found ${entityDef.primaryKeyFields.map { it.classFieldName }}")
 
         }
 
@@ -494,7 +494,7 @@ object EsRefreshDependencyFactory {
          * Drops non-root, non-membership entities that contribute no watched field (e.g. a path
          * that only reads the foreign entity's primary key, which never changes).
          */
-        fun build(): List<EsRefreshDependencyDef> {
+        fun build(): List<RefreshDependencyDef> {
 
             return builders.values
                 .filter { it.isRoot || it.isManyToManyMembership || it.watchedFields.isNotEmpty() }

@@ -8,7 +8,7 @@ import org.maiaframework.gen.spec.definition.flags.IsEditableByUser
 import org.maiaframework.gen.spec.definition.lang.FieldTypes
 
 
-class EsRefreshDependencyDefTest {
+class RefreshDependencyDefTest {
 
 
     private class DependencySpec : AbstractSpec(AppKey("Test")) {
@@ -363,17 +363,17 @@ class EsRefreshDependencyDefTest {
     private val spec = DependencySpec()
 
 
-    private fun EsRefreshDependencyDef.watched(): Set<String> = this.watchedFields.map { it.value }.toSet()
+    private fun RefreshDependencyDef.watched(): Set<String> = this.watchedFields.map { it.value }.toSet()
 
 
     private fun JoinHop.describe(): String =
         "${fromEntity.entityBaseName}.${fromField.classFieldName}->${toEntity.entityBaseName}.${toField.classFieldName}"
 
 
-    private fun EsRefreshDependencyDef.describePaths(): List<List<String>> = this.pathsFromRoot.map { path -> path.map { it.describe() } }
+    private fun RefreshDependencyDef.describePaths(): List<List<String>> = this.pathsFromRoot.map { path -> path.map { it.describe() } }
 
 
-    private fun SearchableDtoDef.describe(): List<String> = this.esRefreshDependencies.map { dep ->
+    private fun SearchableDtoDef.describe(): List<String> = this.refreshDependencies.map { dep ->
         "${dep.entityDef.entityBaseName} root=${dep.isRoot} watched=${dep.watchedFields.map { it.value }} paths=${dep.describePaths()} any=${dep.refreshOnAnyUpdate} m2m=${dep.isManyToManyMembership} listener=${dep.hasCrudListener}"
     }
 
@@ -381,7 +381,7 @@ class EsRefreshDependencyDefTest {
     @Test
     fun `chain of foreign keys yields root, intermediate and leaf dependencies`() {
 
-        val deps = spec.orderDto.esRefreshDependencies
+        val deps = spec.orderDto.refreshDependencies
 
         assertThat(deps.map { it.entityDef.entityBaseName.value }).containsExactly("Order", "Customer", "Region")
 
@@ -414,7 +414,7 @@ class EsRefreshDependencyDefTest {
     @Test
     fun `two foreign keys to the same entity yield one dependency with two paths`() {
 
-        val deps = spec.shipmentDto.esRefreshDependencies
+        val deps = spec.shipmentDto.refreshDependencies
 
         assertThat(deps.map { it.entityDef.entityBaseName.value }).containsExactly("Shipment", "Customer", "Region")
 
@@ -438,7 +438,7 @@ class EsRefreshDependencyDefTest {
     @Test
     fun `many-to-many field yields join entity and other side dependencies`() {
 
-        val deps = spec.leftDto.esRefreshDependencies
+        val deps = spec.leftDto.refreshDependencies
 
         assertThat(deps.map { it.entityDef.entityBaseName.value }).containsExactly("Left", "LeftRight", "Right")
 
@@ -470,7 +470,7 @@ class EsRefreshDependencyDefTest {
     @Test
     fun `right-rooted many-to-many walks from the right foreign key to the left entity`() {
 
-        val deps = spec.rightDto.esRefreshDependencies
+        val deps = spec.rightDto.refreshDependencies
 
         assertThat(deps.map { it.entityDef.entityBaseName.value }).containsExactly("Right", "LeftRight", "Left")
 
@@ -492,7 +492,7 @@ class EsRefreshDependencyDefTest {
     @Test
     fun `two many-to-many fields to the same other side yield one other-side dependency with two paths`() {
 
-        val deps = spec.leftTwoJoinsDto.esRefreshDependencies
+        val deps = spec.leftTwoJoinsDto.refreshDependencies
 
         assertThat(deps.map { it.entityDef.entityBaseName.value }).containsExactly("Left", "LeftRight", "Right", "LeftRightOther")
 
@@ -514,7 +514,7 @@ class EsRefreshDependencyDefTest {
     @Test
     fun `join-qualified field path marks the other side as membership`() {
 
-        val deps = spec.leftJoinQualifiedDto.esRefreshDependencies
+        val deps = spec.leftJoinQualifiedDto.refreshDependencies
 
         assertThat(deps.map { it.entityDef.entityBaseName.value }).containsExactly("Left", "LeftRight", "Right")
 
@@ -538,7 +538,7 @@ class EsRefreshDependencyDefTest {
     @Test
     fun `entityRef shortcode on the other side is watched`() {
 
-        val deps = ShortcodeSpec().itemDto.esRefreshDependencies
+        val deps = ShortcodeSpec().itemDto.refreshDependencies
 
         assertThat(deps.map { it.entityDef.entityBaseName.value }).containsExactly("Item", "ItemTag", "Tag")
         assertThat(deps[2].watched()).containsExactlyInAnyOrder("name", "code")
@@ -549,7 +549,7 @@ class EsRefreshDependencyDefTest {
     @Test
     fun `foreign key field and foreign primary key yield no foreign entity dependency`() {
 
-        val deps = spec.orderFkOnlyDto.esRefreshDependencies
+        val deps = spec.orderFkOnlyDto.refreshDependencies
 
         assertThat(deps.map { it.entityDef.entityBaseName.value }).containsExactly("Order")
         assertThat(deps[0].watched()).containsExactly("customer")
@@ -560,7 +560,7 @@ class EsRefreshDependencyDefTest {
     @Test
     fun `join entity with no foreign key to the root is rejected`() {
 
-        assertThatThrownBy { spec.orderWithUnrelatedJoin().esRefreshDependencies }
+        assertThatThrownBy { spec.orderWithUnrelatedJoin().refreshDependencies }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessageContaining("LeftRight")
             .hasMessageContaining("no foreign key to the root entity Order")
@@ -572,7 +572,7 @@ class EsRefreshDependencyDefTest {
     @Test
     fun `join entity with several foreign keys to the root is rejected with a distinct message`() {
 
-        assertThatThrownBy { SelfManyToManySpec().personJoinOnlyDto.esRefreshDependencies }
+        assertThatThrownBy { SelfManyToManySpec().personJoinOnlyDto.refreshDependencies }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessageContaining("Friendship has more than one foreign key to the root entity Person")
             .hasMessageContaining("PersonJoinOnlyEs")
@@ -584,7 +584,7 @@ class EsRefreshDependencyDefTest {
     @Test
     fun `composite primary key path entity is rejected`() {
 
-        assertThatThrownBy { spec.compositeHolderDto.esRefreshDependencies }
+        assertThatThrownBy { spec.compositeHolderDto.refreshDependencies }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessageContaining("CompositeTarget")
             .hasMessageContaining("single primary key")
@@ -596,13 +596,13 @@ class EsRefreshDependencyDefTest {
     @Test
     fun `each dependency has exactly one role`() {
 
-        assertThat(spec.orderDto.esRefreshDependencies.map { "${it.entityDef.entityBaseName}=${it.role}" })
+        assertThat(spec.orderDto.refreshDependencies.map { "${it.entityDef.entityBaseName}=${it.role}" })
             .containsExactly("Order=ROOT", "Customer=PATH", "Region=PATH")
 
-        assertThat(spec.leftDto.esRefreshDependencies.map { "${it.entityDef.entityBaseName}=${it.role}" })
+        assertThat(spec.leftDto.refreshDependencies.map { "${it.entityDef.entityBaseName}=${it.role}" })
             .containsExactly("Left=ROOT", "LeftRight=CHILD", "Right=OTHER_SIDE")
 
-        assertThat(spec.leftJoinQualifiedDto.esRefreshDependencies.map { "${it.entityDef.entityBaseName}=${it.role}" })
+        assertThat(spec.leftJoinQualifiedDto.refreshDependencies.map { "${it.entityDef.entityBaseName}=${it.role}" })
             .containsExactly("Left=ROOT", "LeftRight=CHILD", "Right=OTHER_SIDE")
 
     }
@@ -611,7 +611,7 @@ class EsRefreshDependencyDefTest {
     @Test
     fun `path entity without a DomainId primary key is rejected`() {
 
-        assertThatThrownBy { NonDomainIdPkSpec().addressDto.esRefreshDependencies }
+        assertThatThrownBy { NonDomainIdPkSpec().addressDto.refreshDependencies }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessageContaining("Country")
             .hasMessageContaining("AddressEs")
@@ -623,7 +623,7 @@ class EsRefreshDependencyDefTest {
     @Test
     fun `many-to-many other side without a DomainId primary key is rejected`() {
 
-        assertThatThrownBy { NonDomainIdPkSpec().ownerDto.esRefreshDependencies }
+        assertThatThrownBy { NonDomainIdPkSpec().ownerDto.refreshDependencies }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessageContaining("Label")
             .hasMessageContaining("OwnerEs")
@@ -635,7 +635,7 @@ class EsRefreshDependencyDefTest {
     @Test
     fun `join entity without a DomainId primary key is exempt from validation`() {
 
-        val deps = NonDomainIdPkSpec().ownerJoinOnlyDto.esRefreshDependencies
+        val deps = NonDomainIdPkSpec().ownerJoinOnlyDto.refreshDependencies
 
         assertThat(deps.map { it.entityDef.entityBaseName.value }).containsExactly("Owner", "OwnerCoded")
         assertThat(deps[1].entityDef.primaryKeyFields.map { it.classFieldName.value }).containsExactly("code")
@@ -648,7 +648,7 @@ class EsRefreshDependencyDefTest {
 
         val joinSpec = JoinWithoutListenerSpec()
 
-        val deps = joinSpec.leftDto.esRefreshDependencies
+        val deps = joinSpec.leftDto.refreshDependencies
 
         assertThat(deps.map { it.entityDef.entityBaseName.value }).containsExactly("Left", "LeftRightSimple", "Right")
         assertThat(deps[0].hasCrudListener).isTrue()
@@ -663,7 +663,7 @@ class EsRefreshDependencyDefTest {
     @Test
     fun `bare many-to-many join yields a join entity dependency only`() {
 
-        val deps = spec.leftJoinOnlyDto.esRefreshDependencies
+        val deps = spec.leftJoinOnlyDto.refreshDependencies
 
         assertThat(deps.map { it.entityDef.entityBaseName.value }).containsExactly("Left", "LeftRight")
         assertThat(deps[0].refreshOnAnyUpdate).isTrue()
@@ -678,7 +678,7 @@ class EsRefreshDependencyDefTest {
 
         val selfSpec = SelfManyToManySpec()
 
-        assertThatThrownBy { selfSpec.personDto.esRefreshDependencies }
+        assertThatThrownBy { selfSpec.personDto.refreshDependencies }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessageContaining("self many-to-many not supported")
             .hasMessageContaining("Friendship")
@@ -692,7 +692,7 @@ class EsRefreshDependencyDefTest {
 
         val noListenerSpec = NoListenerSpec()
 
-        assertThatThrownBy { noListenerSpec.enabled.esRefreshDependencies }
+        assertThatThrownBy { noListenerSpec.enabled.refreshDependencies }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessageContaining("Region")
             .hasMessageContaining("CustomerEs")
@@ -705,8 +705,8 @@ class EsRefreshDependencyDefTest {
 
         val noListenerSpec = NoListenerSpec()
 
-        assertThat(noListenerSpec.plain.esRefreshDependencies).isEmpty()
-        assertThat(noListenerSpec.plainJoin.esRefreshDependencies).isEmpty()
+        assertThat(noListenerSpec.plain.refreshDependencies).isEmpty()
+        assertThat(noListenerSpec.plainJoin.refreshDependencies).isEmpty()
 
     }
 
@@ -714,7 +714,7 @@ class EsRefreshDependencyDefTest {
     @Test
     fun `field inherited from a superclass is attributed to the entity in the path`() {
 
-        val deps = spec.contractDto.esRefreshDependencies
+        val deps = spec.contractDto.refreshDependencies
 
         assertThat(deps.map { it.entityDef.entityBaseName.value }).containsExactly("Contract", "Org")
         assertThat(deps[1].entityDef).isSameAs(spec.org)
