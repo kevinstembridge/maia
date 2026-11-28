@@ -4,8 +4,8 @@
 
 **Blocked by:** 02
 
-**Status:** ready-for-agent
+**Status:** resolved
 
-- [ ] The service exists for each Hazelcast-backed Searchable DTO.
+- [x] The service exists for each Hazelcast-backed Searchable DTO.
 - [ ] After a row is changed directly in the database, calling the service makes the fetch-all result match the database (black-box integration test).
 - [ ] The service respects `maxRows` once ticket 06 has landed; until then it has no limit check.
