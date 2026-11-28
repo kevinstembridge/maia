@@ -2,6 +2,7 @@ package org.maiaframework.gen.generator
 
 import org.maiaframework.gen.renderers.HazelcastBlotterRepoRenderer
 import org.maiaframework.gen.renderers.HazelcastRebuildServiceRenderer
+import org.maiaframework.gen.renderers.HazelcastRefreshListeners
 import org.maiaframework.gen.renderers.EntityDetailDtoRepoRenderer
 import org.maiaframework.gen.renderers.EntityHistoryBlotterRowDtoRepoRenderer
 import org.maiaframework.gen.renderers.TimelineBlotterRowDtoRepoRenderer
@@ -79,6 +80,7 @@ class RepoLayerModuleGenerator(
         if (searchableDtoDef.isHazelcastBacked) {
             HazelcastBlotterRepoRenderer(searchableDtoDef).renderToDir(kotlinOutputDir)
             HazelcastRebuildServiceRenderer(searchableDtoDef).renderToDir(kotlinOutputDir)
+            HazelcastRefreshListeners.renderersFor(searchableDtoDef).forEach { it.renderToDir(kotlinOutputDir) }
         }
 
     }

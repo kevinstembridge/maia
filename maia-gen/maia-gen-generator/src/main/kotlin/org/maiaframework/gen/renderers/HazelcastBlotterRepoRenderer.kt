@@ -17,6 +17,7 @@ class HazelcastBlotterRepoRenderer(
 ) {
 
 
+
     init {
 
         addConstructorArg(aClassField("dtoRepo", searchableDtoDef.dtoRepoClassDef.fqcn).privat().build())
@@ -62,6 +63,7 @@ class HazelcastBlotterRepoRenderer(
         `render function onContextRefreshed`()
         `render function populate`()
         `render function populationMode`()
+        `render functions refreshByIds and deleteById`()
 
     }
 
@@ -170,6 +172,49 @@ class HazelcastBlotterRepoRenderer(
             |        this.populated = true
             |
             |        logger.info("END: Populated Hazelcast map ${searchableDtoDef.hazelcastMapName} with ${'$'}count rows")
+            |
+            |    }
+            |""".trimMargin())
+
+    }
+
+
+    /**
+     * The after-commit auto-refresh hooks (ADR-0004): the listeners enlist ids with the collector, which calls
+     * [refreshByIds] once the owning transaction has committed. A map that is not populated (lazy mode, before the first
+     * fetch) is left alone: the first fetch builds it from the database, so there is nothing to keep in step, and a
+     * refresh must not trigger a population of its own.
+     */
+    private fun `render functions refreshByIds and deleteById`() {
+
+        append("""
+            |
+            |
+            |    fun isPopulated(): Boolean {
+            |
+            |        return this.populated
+            |
+            |    }
+            |
+            |
+            |    override fun refreshByIds(ids: Collection<DomainId>) {
+            |
+            |        if (!this.populated) {
+            |            return
+            |        }
+            |
+            |        val found = this.dtoRepo.findByIds(ids).associateBy { it.id }
+            |
+            |        this.map.putAll(found)
+            |
+            |        ids.filterNot { it in found }.forEach { this.map.delete(it) }
+            |
+            |    }
+            |
+            |
+            |    override fun deleteById(id: DomainId) {
+            |
+            |        this.map.delete(id)
             |
             |    }
             |""".trimMargin())

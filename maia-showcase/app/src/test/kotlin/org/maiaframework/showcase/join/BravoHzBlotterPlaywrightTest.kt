@@ -25,6 +25,10 @@ class BravoHzBlotterPlaywrightTest : AbstractPlaywrightTest() {
 
 
     @Autowired
+    private lateinit var bravoCrudService: BravoCrudService
+
+
+    @Autowired
     private lateinit var bravoHzRepo: BravoHzDtoHazelcastRepo
 
 
@@ -119,13 +123,36 @@ class BravoHzBlotterPlaywrightTest : AbstractPlaywrightTest() {
     }
 
 
-    private fun seedBravo(bravoText: String) {
+    @Test
+    fun `an edit is auto-refreshed into the map and becomes visible when the refresh button is pressed`() {
+
+        val bravo = seedBravo("hzedit-before")
+        bravoHzRepo.populate()
+
+        `log in as admin user`()
+        `navigate to the`(bravoHzBlotterPage)
+        assertEquals(listOf("hzedit-before"), bravoHzBlotterPage.stringCellTexts(expectedCount = 1))
+
+        bravoCrudService.updateSomeString(BravoUpdate_someStringRequestDto(id_raw = bravo.id, someString_raw = "hzedit-after"))
+
+        // the page shows a snapshot as of the last fetch until it is refreshed
+        assertEquals(listOf("hzedit-before"), bravoHzBlotterPage.stringCellTexts(expectedCount = 1))
+
+        bravoHzBlotterPage.clickRefreshButton()
+
+        assertEquals(listOf("hzedit-after"), bravoHzBlotterPage.stringCellTexts(expectedCount = 1))
+
+    }
+
+
+    private fun seedBravo(bravoText: String): BravoEntity {
 
         val alpha = AlphaEntityTestBuilder(someString = "alpha-for-$bravoText").build()
         alphaDao.insert(alpha)
         val bravo = BravoEntityTestBuilder(alphaId = alpha.id, someString = bravoText).build()
         bravoDao.insert(bravo)
         insertedBravos.add(bravo)
+        return bravo
 
     }
 

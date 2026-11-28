@@ -6,6 +6,8 @@ import org.maiaframework.gen.spec.definition.EntityFieldDef
 import org.maiaframework.gen.spec.definition.RefreshDependencyDef
 import org.maiaframework.gen.spec.definition.RefreshRole
 import org.maiaframework.gen.spec.definition.Fqcns
+import org.maiaframework.gen.spec.definition.lang.Fqcn
+import org.maiaframework.gen.spec.definition.lang.PackageName
 import org.maiaframework.gen.spec.definition.SearchableDtoDef
 import org.maiaframework.gen.spec.definition.builders.ClassDefBuilder.Companion.aClassDef
 import org.maiaframework.gen.spec.definition.lang.ClassDef
@@ -19,13 +21,36 @@ import org.maiaframework.gen.spec.definition.lang.ParameterizedType
  * with the EsRefreshCollector. It overrides exactly the members of that CrudListener interface (see
  * [CrudListenerCallbacks]). Use [EsRefreshListeners.renderersFor] to get the full set for a searchable DTO.
  */
-class SearchableDtoEsDocCrudListenerRenderer(
+class SearchableDtoEsDocCrudListenerRenderer private constructor(
     private val searchableDtoDef: SearchableDtoDef?,
-    private val esDocDef: EsDocDef,
-    val dependency: RefreshDependencyDef
+    private val esDocDef: EsDocDef?,
+    val dependency: RefreshDependencyDef,
+    private val target: RefreshListenerTarget
 ) : AbstractKotlinRenderer(
-    esRefreshListenerClassDef(esDocDef, dependency)
+    target.listenerClassDef(dependency)
 ) {
+
+
+    constructor(
+        searchableDtoDef: SearchableDtoDef?,
+        esDocDef: EsDocDef,
+        dependency: RefreshDependencyDef
+    ) : this(searchableDtoDef, esDocDef, dependency, RefreshListenerTarget.forEsDoc(esDocDef))
+
+
+    companion object {
+
+        /** The listener that keeps the Hazelcast map of a Hazelcast-backed Searchable DTO in step with [dependency]. */
+        fun forHazelcast(
+            searchableDtoDef: SearchableDtoDef,
+            dependency: RefreshDependencyDef
+        ): SearchableDtoEsDocCrudListenerRenderer {
+
+            return SearchableDtoEsDocCrudListenerRenderer(searchableDtoDef, null, dependency, RefreshListenerTarget.forHazelcast(searchableDtoDef))
+
+        }
+
+    }
 
 
     private val entityDef = this.dependency.entityDef
@@ -40,10 +65,10 @@ class SearchableDtoEsDocCrudListenerRenderer(
     private val reverseJoin: ReverseJoins.ReverseJoin? = if (this.role == RefreshRole.ROOT || this.role == RefreshRole.CHILD) {
         null
     } else {
-        (searchableDtoDef?.let { ReverseJoins.reverseJoinsFor(it) } ?: EsDocReverseJoins.reverseJoinsFor(this.esDocDef))
+        (searchableDtoDef?.let { ReverseJoins.reverseJoinsFor(it) } ?: EsDocReverseJoins.reverseJoinsFor(this.esDocDef!!))
             .singleOrNull { it.dependency === this.dependency }
             ?: throw IllegalArgumentException(
-                "No findRootIdsVia${this.entityDef.entityBaseName} reverse join is rendered for ${this.esDocDef.esDocBaseName}; " +
+                "No findRootIdsVia${this.entityDef.entityBaseName} reverse join is rendered for ${this.target.ownerName}; " +
                     "cannot render an EsDoc auto-refresh listener for it"
             )
     }
@@ -60,7 +85,7 @@ class SearchableDtoEsDocCrudListenerRenderer(
     private val rootForeignKeyField: EntityFieldDef? = if (this.role == RefreshRole.CHILD) {
         EsRefreshListeners.rootForeignKeyFieldOf(this.dependency)
             ?: throw IllegalArgumentException(
-                "Join entity ${this.entityDef.entityBaseName} on ${this.esDocDef.esDocBaseName} has no single DomainId foreign key to the root; " +
+                "Join entity ${this.entityDef.entityBaseName} on ${this.target.ownerName} has no single DomainId foreign key to the root; " +
                     "cannot render an EsDoc auto-refresh listener for it"
             )
     } else {
@@ -83,14 +108,14 @@ class SearchableDtoEsDocCrudListenerRenderer(
 
     init {
 
-        addConstructorArg(aClassField("collector", Fqcns.ES_REFRESH_COLLECTOR).privat().build())
+        addConstructorArg(aClassField("collector", this.target.collectorFqcn).privat().build())
 
         if (this.reverseJoin != null) {
-            val repoClassDef = this.searchableDtoDef?.dtoRepoClassDef ?: this.esDocDef.refreshRepoClassDef
+            val repoClassDef = this.searchableDtoDef?.dtoRepoClassDef ?: this.esDocDef!!.refreshRepoClassDef
             addConstructorArg(aClassField("repo", repoClassDef.fqcn).privat().build())
         }
 
-        addConstructorArg(aClassField("indexService", this.esDocDef.indexServiceClassDef.fqcn).privat().build())
+        addConstructorArg(aClassField("indexService", this.target.targetClassDef.fqcn).privat().build())
 
     }
 
@@ -109,7 +134,7 @@ class SearchableDtoEsDocCrudListenerRenderer(
 
     private fun classKdoc(): String {
 
-        val indexService = this.esDocDef.indexServiceClassDef.uqcn
+        val indexService = this.target.targetClassDef.uqcn
 
         val trigger = when (this.role) {
             RefreshRole.ROOT -> if (this.dependency.refreshOnAnyUpdate) {
@@ -144,12 +169,12 @@ class SearchableDtoEsDocCrudListenerRenderer(
             |/**
             | * Generated. Keeps [$indexService] in step with changes to [${this.entityUqcn}] that raise CrudListener events:
             | * $trigger
-            | * Ids are enlisted with [EsRefreshCollector], which refreshes them once the transaction has committed. The
+            | * Ids are enlisted with [${this.target.collectorFqcn.uqcn.value}], which refreshes them once the transaction has committed. The
             | * created, updated and deleted events are themselves delivered after commit, so ids enlisted from them are
             | * refreshed immediately; only the before-update and before-delete events run inside the transaction.
             |$twoPhase *
             | * Changes that raise no CrudListener event (importers, direct DAO writes, join rows edited outside a CrudService
-            | * event) are not seen here; the scheduled job calling [$indexService.refreshIndex] reconciles them.
+            | * event) are not seen here; ${this.target.reconciliation(indexService.toString())}
             | */
             |""".trimMargin()
 
@@ -324,16 +349,52 @@ class SearchableDtoEsDocCrudListenerRenderer(
 }
 
 
-private fun esRefreshListenerClassDef(
-    esDocDef: EsDocDef,
-    dependency: RefreshDependencyDef
-): ClassDef {
+/** What an auto-refresh listener refreshes: its class, the [RefreshTarget] it enlists with, and the collector. */
+private class RefreshListenerTarget(
+    val ownerName: String,
+    val targetClassDef: ClassDef,
+    val collectorFqcn: Fqcn,
+    private val listenerPackageName: PackageName,
+    private val listenerClassNamePrefix: String,
+    private val reconciliationText: (String) -> String
+) {
 
-    val className = "${esDocDef.esDocBaseName}V${esDocDef.esDocVersion}EsRefresh${dependency.entityDef.entityBaseName}CrudListener"
 
-    return aClassDef(esDocDef.packageName.uqcn(className))
-        .withClassAnnotation(AnnotationDefs.SPRING_SERVICE)
-        .withInterface(ParameterizedType(dependency.entityDef.crudListenerClassDef.fqcn))
-        .build()
+    fun listenerClassDef(dependency: RefreshDependencyDef): ClassDef {
+
+        val className = "$listenerClassNamePrefix${dependency.entityDef.entityBaseName}CrudListener"
+
+        return aClassDef(this.listenerPackageName.uqcn(className))
+            .withClassAnnotation(AnnotationDefs.SPRING_SERVICE)
+            .withInterface(ParameterizedType(dependency.entityDef.crudListenerClassDef.fqcn))
+            .build()
+
+    }
+
+
+    fun reconciliation(targetUqcn: String): String = this.reconciliationText(targetUqcn)
+
+
+    companion object {
+
+        fun forEsDoc(esDocDef: EsDocDef) = RefreshListenerTarget(
+            "${esDocDef.esDocBaseName}",
+            esDocDef.indexServiceClassDef,
+            Fqcns.ES_REFRESH_COLLECTOR,
+            esDocDef.packageName,
+            "${esDocDef.esDocBaseName}V${esDocDef.esDocVersion}EsRefresh",
+        ) { "the scheduled job calling [$it.refreshIndex] reconciles them." }
+
+
+        fun forHazelcast(searchableDtoDef: SearchableDtoDef) = RefreshListenerTarget(
+            "${searchableDtoDef.uqcn}",
+            searchableDtoDef.hazelcastRepoClassDef,
+            Fqcns.HAZELCAST_REFRESH_COLLECTOR,
+            searchableDtoDef.packageName,
+            "${searchableDtoDef.uqcn}HazelcastRefresh",
+        ) { "[$it.populate] rebuilds the map and reconciles them." }
+
+    }
+
 
 }

@@ -43,19 +43,31 @@ internal object EsRefreshListeners {
             return emptyList()
         }
 
+        val dependencies = listenedDependencies(searchableDtoDef)
+
+        return searchableDtoDef.esDocDefs
+            .filter { it.esDocVersion in autoRefreshVersions }
+            .flatMap { esDocDef -> dependencies.map { SearchableDtoEsDocCrudListenerRenderer(searchableDtoDef, esDocDef, it) } }
+
+    }
+
+
+    /**
+     * The dependencies of an auto-refreshed searchable DTO that get a listener, whatever the store: the ROOT; each
+     * dependency with a `findRootIdsVia<Entity>` reverse join; each CHILD with a CrudListener and a DomainId foreign key.
+     * Only call when the searchable DTO has auto-refresh on.
+     */
+    fun listenedDependencies(searchableDtoDef: SearchableDtoDef): List<RefreshDependencyDef> {
+
         val reverseJoinDependencies = ReverseJoins.reverseJoinsFor(searchableDtoDef).map { it.dependency }
 
-        val dependencies = searchableDtoDef.refreshDependencies.filter { dependency ->
+        return searchableDtoDef.refreshDependencies.filter { dependency ->
             when (dependency.role) {
                 RefreshRole.ROOT -> true
                 RefreshRole.CHILD -> dependency.hasCrudListener && rootForeignKeyFieldOf(dependency) != null
                 RefreshRole.PATH, RefreshRole.OTHER_SIDE -> reverseJoinDependencies.any { it === dependency }
             }
         }
-
-        return searchableDtoDef.esDocDefs
-            .filter { it.esDocVersion in autoRefreshVersions }
-            .flatMap { esDocDef -> dependencies.map { SearchableDtoEsDocCrudListenerRenderer(searchableDtoDef, esDocDef, it) } }
 
     }
 
@@ -85,6 +97,29 @@ internal object EsRefreshListeners {
         val referencedPrimaryKey = foreignKeyFieldType.foreignKeyFieldDef.foreignEntityDef.primaryKeyFields.singleOrNull() ?: return null
 
         return if (referencedPrimaryKey.classFieldDef.fieldType is DomainIdFieldType) rootForeignKeyField else null
+
+    }
+
+
+}
+
+
+/**
+ * The Hazelcast auto-refresh CrudListeners of a Hazelcast-backed searchable DTO with `autoRefresh = true`: one per
+ * dependency, chosen as for the EsDoc listeners (see [EsRefreshListeners.listenedDependencies]).
+ */
+internal object HazelcastRefreshListeners {
+
+
+    fun renderersFor(searchableDtoDef: SearchableDtoDef): List<SearchableDtoEsDocCrudListenerRenderer> {
+
+        // refreshDependencies validates on first read, so it must only be read when auto-refresh is on.
+        if (searchableDtoDef.hazelcastSpec?.autoRefresh != true) {
+            return emptyList()
+        }
+
+        return EsRefreshListeners.listenedDependencies(searchableDtoDef)
+            .map { SearchableDtoEsDocCrudListenerRenderer.forHazelcast(searchableDtoDef, it) }
 
     }
 
