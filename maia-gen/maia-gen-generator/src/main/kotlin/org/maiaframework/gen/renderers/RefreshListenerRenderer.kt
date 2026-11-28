@@ -16,14 +16,12 @@ import org.maiaframework.gen.spec.definition.lang.ParameterizedType
 
 
 /**
- * Renders a Spring bean that keeps one auto-refreshed EsDoc version of a searchable DTO in step with one of its
+ * Renders a Spring bean that keeps one auto-refreshed derived store (an EsDoc version, or a Hazelcast map) of a searchable DTO in step with one of its
  * [RefreshDependencyDef]s: it implements the dependency entity's CrudListener and enlists the affected root ids
- * with the EsRefreshCollector. It overrides exactly the members of that CrudListener interface (see
+ * with the store's refresh collector. It overrides exactly the members of that CrudListener interface (see
  * [CrudListenerCallbacks]). Use [EsRefreshListeners.renderersFor] to get the full set for a searchable DTO.
  */
-class SearchableDtoEsDocCrudListenerRenderer private constructor(
-    private val searchableDtoDef: SearchableDtoDef?,
-    private val esDocDef: EsDocDef?,
+class RefreshListenerRenderer private constructor(
     val dependency: RefreshDependencyDef,
     private val target: RefreshListenerTarget
 ) : AbstractKotlinRenderer(
@@ -31,22 +29,27 @@ class SearchableDtoEsDocCrudListenerRenderer private constructor(
 ) {
 
 
-    constructor(
-        searchableDtoDef: SearchableDtoDef?,
-        esDocDef: EsDocDef,
-        dependency: RefreshDependencyDef
-    ) : this(searchableDtoDef, esDocDef, dependency, RefreshListenerTarget.forEsDoc(esDocDef))
-
-
     companion object {
+
+        /** The listener that keeps one EsDoc version in step with [dependency]; [searchableDtoDef] is null for a hand-built EsDoc. */
+        fun forEsDoc(
+            searchableDtoDef: SearchableDtoDef?,
+            esDocDef: EsDocDef,
+            dependency: RefreshDependencyDef
+        ): RefreshListenerRenderer {
+
+            return RefreshListenerRenderer(dependency, RefreshListenerTarget.forEsDoc(searchableDtoDef, esDocDef))
+
+        }
+
 
         /** The listener that keeps the Hazelcast map of a Hazelcast-backed Searchable DTO in step with [dependency]. */
         fun forHazelcast(
             searchableDtoDef: SearchableDtoDef,
             dependency: RefreshDependencyDef
-        ): SearchableDtoEsDocCrudListenerRenderer {
+        ): RefreshListenerRenderer {
 
-            return SearchableDtoEsDocCrudListenerRenderer(searchableDtoDef, null, dependency, RefreshListenerTarget.forHazelcast(searchableDtoDef))
+            return RefreshListenerRenderer(dependency, RefreshListenerTarget.forHazelcast(searchableDtoDef))
 
         }
 
@@ -65,11 +68,11 @@ class SearchableDtoEsDocCrudListenerRenderer private constructor(
     private val reverseJoin: ReverseJoins.ReverseJoin? = if (this.role == RefreshRole.ROOT || this.role == RefreshRole.CHILD) {
         null
     } else {
-        (searchableDtoDef?.let { ReverseJoins.reverseJoinsFor(it) } ?: EsDocReverseJoins.reverseJoinsFor(this.esDocDef!!))
+        this.target.reverseJoins()
             .singleOrNull { it.dependency === this.dependency }
             ?: throw IllegalArgumentException(
                 "No findRootIdsVia${this.entityDef.entityBaseName} reverse join is rendered for ${this.target.ownerName}; " +
-                    "cannot render an EsDoc auto-refresh listener for it"
+                    "cannot render an auto-refresh listener for it"
             )
     }
 
@@ -86,7 +89,7 @@ class SearchableDtoEsDocCrudListenerRenderer private constructor(
         EsRefreshListeners.rootForeignKeyFieldOf(this.dependency)
             ?: throw IllegalArgumentException(
                 "Join entity ${this.entityDef.entityBaseName} on ${this.target.ownerName} has no single DomainId foreign key to the root; " +
-                    "cannot render an EsDoc auto-refresh listener for it"
+                    "cannot render an auto-refresh listener for it"
             )
     } else {
         null
@@ -111,8 +114,7 @@ class SearchableDtoEsDocCrudListenerRenderer private constructor(
         addConstructorArg(aClassField("collector", this.target.collectorFqcn).privat().build())
 
         if (this.reverseJoin != null) {
-            val repoClassDef = this.searchableDtoDef?.dtoRepoClassDef ?: this.esDocDef!!.refreshRepoClassDef
-            addConstructorArg(aClassField("repo", repoClassDef.fqcn).privat().build())
+            addConstructorArg(aClassField("repo", this.target.repoClassDef.fqcn).privat().build())
         }
 
         addConstructorArg(aClassField("indexService", this.target.targetClassDef.fqcn).privat().build())
@@ -141,12 +143,12 @@ class SearchableDtoEsDocCrudListenerRenderer private constructor(
                 "creating, updating or deleting a row refreshes its own document. Every update refreshes it, because the\n" +
                     " * row's many-to-many membership may change in the same operation."
             } else {
-                "creating or deleting a row refreshes its own document, and an update refreshes it when a field the EsDoc\n" +
+                "creating or deleting a row refreshes its own document, and an update refreshes it when a field the document\n" +
                     " * reads changes."
             }
-            RefreshRole.PATH -> "when a field the EsDoc reads changes, or before a row is deleted, the documents of every root\n" +
+            RefreshRole.PATH -> "when a field the document reads changes, or before a row is deleted, the documents of every root\n" +
                 " * that reaches the row are refreshed."
-            RefreshRole.CHILD -> "creating a join or child row, changing a field the EsDoc reads, or deleting it refreshes the\n" +
+            RefreshRole.CHILD -> "creating a join or child row, changing a field the document reads, or deleting it refreshes the\n" +
                 " * document of the root it joins (before and after, if the row moves to another root). The root id is read\n" +
                 " * straight from the join row's foreign key to the root, so no query is needed."
             RefreshRole.OTHER_SIDE -> "every update, and every delete, refreshes the documents of the roots the row is\n" +
@@ -349,10 +351,15 @@ class SearchableDtoEsDocCrudListenerRenderer private constructor(
 }
 
 
-/** What an auto-refresh listener refreshes: its class, the [RefreshTarget] it enlists with, and the collector. */
+/**
+ * What an auto-refresh listener refreshes, whatever the store: its class, the [RefreshTarget] it enlists with, the
+ * collector, and the repo and reverse joins used to resolve the roots of an entity that is not the root.
+ */
 private class RefreshListenerTarget(
     val ownerName: String,
     val targetClassDef: ClassDef,
+    val repoClassDef: ClassDef,
+    val reverseJoins: () -> List<ReverseJoins.ReverseJoin>,
     val collectorFqcn: Fqcn,
     private val listenerPackageName: PackageName,
     private val listenerClassNamePrefix: String,
@@ -377,9 +384,11 @@ private class RefreshListenerTarget(
 
     companion object {
 
-        fun forEsDoc(esDocDef: EsDocDef) = RefreshListenerTarget(
+        fun forEsDoc(searchableDtoDef: SearchableDtoDef?, esDocDef: EsDocDef) = RefreshListenerTarget(
             "${esDocDef.esDocBaseName}",
             esDocDef.indexServiceClassDef,
+            searchableDtoDef?.dtoRepoClassDef ?: esDocDef.refreshRepoClassDef,
+            { searchableDtoDef?.let { ReverseJoins.reverseJoinsFor(it) } ?: EsDocReverseJoins.reverseJoinsFor(esDocDef) },
             Fqcns.ES_REFRESH_COLLECTOR,
             esDocDef.packageName,
             "${esDocDef.esDocBaseName}V${esDocDef.esDocVersion}EsRefresh",
@@ -389,6 +398,8 @@ private class RefreshListenerTarget(
         fun forHazelcast(searchableDtoDef: SearchableDtoDef) = RefreshListenerTarget(
             "${searchableDtoDef.uqcn}",
             searchableDtoDef.hazelcastRepoClassDef,
+            searchableDtoDef.dtoRepoClassDef,
+            { ReverseJoins.reverseJoinsFor(searchableDtoDef) },
             Fqcns.HAZELCAST_REFRESH_COLLECTOR,
             searchableDtoDef.packageName,
             "${searchableDtoDef.uqcn}HazelcastRefresh",

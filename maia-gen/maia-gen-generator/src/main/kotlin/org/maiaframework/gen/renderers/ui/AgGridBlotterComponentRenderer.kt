@@ -7,7 +7,6 @@ import org.maiaframework.gen.spec.definition.BlotterActionColumnDef
 import org.maiaframework.gen.spec.definition.BlotterColumnDef
 import org.maiaframework.gen.spec.definition.BlotterCompositePkColumnDef
 import org.maiaframework.gen.spec.definition.BlotterDef
-import org.maiaframework.gen.spec.definition.BlotterHazelcastSourceDef
 import org.maiaframework.gen.spec.definition.EntityCreatePageDef
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 import org.maiaframework.gen.spec.definition.EntityEditPageDef
@@ -29,7 +28,7 @@ class AgGridBlotterComponentRenderer(
 
 
     /** A Hazelcast-backed Blotter loads the whole set once into AG Grid's client-side row model. */
-    private val isClientSide = blotterDef.blotterSourceDef is BlotterHazelcastSourceDef
+    private val isClientSide = blotterDef.isClientSide
 
 
     val requiresRouter = (entityDetailViewDef != null && blotterDef.hasViewActionColumn)

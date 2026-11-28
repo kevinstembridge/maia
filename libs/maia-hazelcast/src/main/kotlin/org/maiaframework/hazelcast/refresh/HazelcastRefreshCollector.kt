@@ -11,7 +11,18 @@ import org.springframework.stereotype.Component
  */
 @Component
 class HazelcastRefreshCollector : RefreshCollector(
-    { 1000 },
+    { CHUNK_SIZE },
     "Hazelcast",
     "the map entry is reconciled by the next refresh of the row or a rebuild"
-)
+) {
+
+
+    companion object {
+
+        /** The number of ids refreshed per call, and of rows stored per call when a map is populated. */
+        const val CHUNK_SIZE = 1000
+
+    }
+
+
+}

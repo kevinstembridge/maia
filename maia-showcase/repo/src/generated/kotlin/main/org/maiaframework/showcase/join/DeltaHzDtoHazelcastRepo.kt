@@ -9,6 +9,7 @@ import org.maiaframework.common.BlotterTooLargeException
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.refresh.RefreshTarget
+import org.maiaframework.hazelcast.refresh.HazelcastRefreshCollector
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.context.event.EventListener
 import org.springframework.core.env.Environment
@@ -35,8 +36,19 @@ class DeltaHzDtoHazelcastRepo(
     private val populateLock = Any()
 
 
+    private val stateLock = Any()
+
+
     @Volatile
     private var populated = false
+
+
+    // guarded by stateLock
+    private var populating = false
+
+
+    // guarded by stateLock: ids refreshed or deleted while a population was streaming
+    private val changedWhilePopulating = LinkedHashSet<DomainId>()
 
 
     private val map: IMap<DomainId, DeltaHzDto> = hazelcastInstance.getMap("delta_hz_blotter")
@@ -65,8 +77,11 @@ class DeltaHzDtoHazelcastRepo(
             when (populationMode()) {
                 POPULATION_EAGER -> populate()
                 POPULATION_LAZY -> {
-                    this.map.clear()
-                    this.populated = false
+                    synchronized(this.stateLock) {
+                        this.map.clear()
+                        this.populated = false
+                        this.changedWhilePopulating.clear()
+                    }
                     logger.info("Hazelcast map delta_hz_blotter will be populated by the first fetch")
                 }
                 else -> error("Invalid value '${populationMode()}' for $POPULATION_PROPERTY; valid values are $POPULATION_VALUES")
@@ -79,32 +94,70 @@ class DeltaHzDtoHazelcastRepo(
 
     fun populate() {
 
-        logger.info("BEGIN: Populating Hazelcast map delta_hz_blotter")
+        synchronized(this.populateLock) {
 
-        this.map.clear()
-        this.populated = false
+            logger.info("BEGIN: Populating Hazelcast map delta_hz_blotter")
 
-        var count = 0
+            beginPopulation()
 
-        try {
-            this.readOnlyTransaction.executeWithoutResult {
-                this.dtoRepo.findAllAsSequence().chunked(POPULATE_CHUNK_SIZE).forEach { chunk ->
-                    if (count + chunk.size > MAX_ROWS) {
-                        throw BlotterTooLargeException("DeltaHzDto", MAX_ROWS)
+            var count = 0
+
+            try {
+                this.readOnlyTransaction.executeWithoutResult {
+                    this.dtoRepo.findAllAsSequence().chunked(HazelcastRefreshCollector.CHUNK_SIZE).forEach { chunk ->
+                        if (count + chunk.size > MAX_ROWS) {
+                            throw BlotterTooLargeException("DeltaHzDto", MAX_ROWS)
+                        }
+                        this.map.putAll(chunk.associateBy { it.id })
+                        count += chunk.size
                     }
-                    this.map.putAll(chunk.associateBy { it.id })
-                    count += chunk.size
                 }
+                completePopulation()
+            } catch (e: Exception) {
+                abandonPopulation()
+                throw e
             }
-        } catch (e: BlotterTooLargeException) {
-            this.map.clear()
-            logger.error("FAILED: Populating Hazelcast map delta_hz_blotter: ${e.message}")
-            throw e
+
+            logger.info("END: Populated Hazelcast map delta_hz_blotter with $count rows")
+
         }
 
-        this.populated = true
+    }
 
-        logger.info("END: Populated Hazelcast map delta_hz_blotter with $count rows")
+
+    private fun beginPopulation() {
+
+        synchronized(this.stateLock) {
+            this.populated = false
+            this.populating = true
+            this.changedWhilePopulating.clear()
+            this.map.clear()
+        }
+
+    }
+
+
+    /** Replays what changed while the population streamed: those rows are re-read, so the map ends up current. */
+    private fun completePopulation() {
+
+        synchronized(this.stateLock) {
+            reconcile(this.changedWhilePopulating.toList())
+            this.changedWhilePopulating.clear()
+            this.populating = false
+            this.populated = true
+        }
+
+    }
+
+
+    private fun abandonPopulation() {
+
+        synchronized(this.stateLock) {
+            this.map.clear()
+            this.changedWhilePopulating.clear()
+            this.populating = false
+            this.populated = false
+        }
 
     }
 
@@ -116,31 +169,54 @@ class DeltaHzDtoHazelcastRepo(
     }
 
 
-    fun isPopulated(): Boolean {
-
-        return this.populated
-
-    }
-
-
     override fun refreshByIds(ids: Collection<DomainId>) {
 
-        if (!this.populated) {
-            return
+        synchronized(this.stateLock) {
+
+            if (this.populating) {
+                this.changedWhilePopulating.addAll(ids)
+                return
+            }
+
+            if (!this.populated) {
+                return
+            }
+
+            reconcile(ids)
+
         }
-
-        val found = this.dtoRepo.findByIds(ids).associateBy { it.id }
-
-        this.map.putAll(found)
-
-        ids.filterNot { it in found }.forEach { this.map.delete(it) }
 
     }
 
 
     override fun deleteById(id: DomainId) {
 
-        this.map.delete(id)
+        synchronized(this.stateLock) {
+
+            if (this.populating) {
+                this.changedWhilePopulating.add(id)
+                return
+            }
+
+            this.map.delete(id)
+
+        }
+
+    }
+
+
+    /** Brings the map entries of [ids] in line with the database: present rows are stored, absent rows removed. */
+    private fun reconcile(ids: Collection<DomainId>) {
+
+        ids.chunked(HazelcastRefreshCollector.CHUNK_SIZE).forEach { chunk ->
+
+            val found = this.dtoRepo.findByIds(chunk).associateBy { it.id }
+
+            this.map.putAll(found)
+
+            chunk.filterNot { it in found }.forEach { this.map.delete(it) }
+
+        }
 
     }
 
@@ -148,8 +224,6 @@ class DeltaHzDtoHazelcastRepo(
 
 
     private companion object {
-
-        const val POPULATE_CHUNK_SIZE = 1000
 
         const val MAX_ROWS = 10000
 

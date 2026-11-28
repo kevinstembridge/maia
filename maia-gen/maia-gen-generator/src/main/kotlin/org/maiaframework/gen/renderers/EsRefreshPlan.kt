@@ -34,7 +34,7 @@ internal object EsDocReverseJoins {
 internal object EsRefreshListeners {
 
 
-    fun renderersFor(searchableDtoDef: SearchableDtoDef): List<SearchableDtoEsDocCrudListenerRenderer> {
+    fun renderersFor(searchableDtoDef: SearchableDtoDef): List<RefreshListenerRenderer> {
 
         val autoRefreshVersions = searchableDtoDef.esVersions.filter { it.autoRefresh }.map { it.version }.toSet()
 
@@ -47,7 +47,7 @@ internal object EsRefreshListeners {
 
         return searchableDtoDef.esDocDefs
             .filter { it.esDocVersion in autoRefreshVersions }
-            .flatMap { esDocDef -> dependencies.map { SearchableDtoEsDocCrudListenerRenderer(searchableDtoDef, esDocDef, it) } }
+            .flatMap { esDocDef -> dependencies.map { RefreshListenerRenderer.forEsDoc(searchableDtoDef, esDocDef, it) } }
 
     }
 
@@ -77,9 +77,9 @@ internal object EsRefreshListeners {
      * (ROOT) and foreign-key child (CHILD) sources need no query; `watchesVia` (PATH) sources call the
      * `findRootIdsVia<Entity>` queries of the [EsDocRefreshRepoRenderer]'s repo. Empty for any other EsDoc.
      */
-    fun renderersFor(esDocDef: EsDocDef): List<SearchableDtoEsDocCrudListenerRenderer> {
+    fun renderersFor(esDocDef: EsDocDef): List<RefreshListenerRenderer> {
 
-        return esDocDef.refreshDependencies.map { SearchableDtoEsDocCrudListenerRenderer(null, esDocDef, it) }
+        return esDocDef.refreshDependencies.map { RefreshListenerRenderer.forEsDoc(null, esDocDef, it) }
 
     }
 
@@ -111,7 +111,7 @@ internal object EsRefreshListeners {
 internal object HazelcastRefreshListeners {
 
 
-    fun renderersFor(searchableDtoDef: SearchableDtoDef): List<SearchableDtoEsDocCrudListenerRenderer> {
+    fun renderersFor(searchableDtoDef: SearchableDtoDef): List<RefreshListenerRenderer> {
 
         // refreshDependencies validates on first read, so it must only be read when auto-refresh is on.
         if (searchableDtoDef.hazelcastSpec?.autoRefresh != true) {
@@ -119,7 +119,7 @@ internal object HazelcastRefreshListeners {
         }
 
         return EsRefreshListeners.listenedDependencies(searchableDtoDef)
-            .map { SearchableDtoEsDocCrudListenerRenderer.forHazelcast(searchableDtoDef, it) }
+            .map { RefreshListenerRenderer.forHazelcast(searchableDtoDef, it) }
 
     }
 

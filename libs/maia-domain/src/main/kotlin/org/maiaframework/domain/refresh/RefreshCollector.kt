@@ -100,8 +100,8 @@ open class RefreshCollector(
     /**
      * Like [enlistRefresh], but the ids are produced by [resolver] now, inside the caller's transaction, for ids
      * that can only be known before the change commits (e.g. the roots joined to a row about to be deleted). A
-     * resolver that throws is logged and enlists nothing, so the caller carries on and the later reconciliation
-     * is reconciled later. Note that a failed SQL statement in PostgreSQL still aborts the surrounding transaction.
+     * resolver that throws is logged and enlists nothing, so the caller carries on and the store is left to its usual
+     * reconciliation. Note that a failed SQL statement in PostgreSQL still aborts the surrounding transaction.
      */
     fun enlistRefreshNow(
         target: RefreshTarget,

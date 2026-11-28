@@ -2,7 +2,6 @@ package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.renderers.AbstractSourceFileRenderer
 import org.maiaframework.gen.spec.definition.BlotterDef
-import org.maiaframework.gen.spec.definition.BlotterHazelcastSourceDef
 
 class AgGridBlotterHtmlRenderer(private val dtoDef: BlotterDef) : AbstractSourceFileRenderer() {
 
@@ -26,7 +25,7 @@ class AgGridBlotterHtmlRenderer(private val dtoDef: BlotterDef) : AbstractSource
                  |""".trimMargin())
         }
 
-        val isClientSide = dtoDef.blotterSourceDef is BlotterHazelcastSourceDef
+        val isClientSide = dtoDef.isClientSide
 
         if (isClientSide) {
             append(

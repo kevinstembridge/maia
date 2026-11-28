@@ -132,7 +132,7 @@ class WebLayerModuleGenerator(
 
         if (searchDtoDef.withGeneratedEndpoint == WithGeneratedEndpoint.TRUE) {
 
-            if (blotterDef.blotterSourceDef is BlotterHazelcastSourceDef) {
+            if (blotterDef.isClientSide) {
                 HazelcastBlotterEndpointRenderer(blotterDef).renderToDir(this.kotlinOutputDir)
             } else {
                 DtoSearchEndpointRenderer(searchDtoDef).renderToDir(this.kotlinOutputDir)

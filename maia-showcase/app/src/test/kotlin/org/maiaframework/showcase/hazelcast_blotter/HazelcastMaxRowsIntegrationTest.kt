@@ -19,8 +19,6 @@ import org.maiaframework.showcase.join.BravoHzCappedDtoHazelcastRepo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationContext
 import org.springframework.context.event.ContextRefreshedEvent
-import org.springframework.core.env.ConfigurableEnvironment
-import org.springframework.core.env.MapPropertySource
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.context.TestSecurityContextHolder
@@ -32,6 +30,10 @@ import tools.jackson.databind.json.JsonMapper
 /**
  * Black-box tests of the `maxRows` guard of the Hazelcast-backed Blotter `BravoHzCapped` (limit 20): a set larger
  * than the limit fails population with a message naming the Searchable DTO and the limit, never a truncated set.
+ *
+ * `BravoHzCapped` is declared LAZY, so a start-up (the [ContextRefreshedEvent] the other test classes also publish)
+ * never trips the limit over the shared Bravo table. Eager population is the same [populate][BravoHzCappedDtoHazelcastRepo.populate]
+ * call that an eager start-up makes, so the eager failure is exercised by calling it directly.
  */
 @WithMockUser(authorities = ["WRITE"])
 class HazelcastMaxRowsIntegrationTest : AbstractBlackBoxTest() {
@@ -69,7 +71,6 @@ class HazelcastMaxRowsIntegrationTest : AbstractBlackBoxTest() {
     fun resetDatabase() {
 
         jdbcOps.update("truncate table ${AlphaEntityMeta.SCHEMA_AND_TABLE_NAME} cascade")
-        clearGlobalPopulation()
 
     }
 
@@ -77,7 +78,6 @@ class HazelcastMaxRowsIntegrationTest : AbstractBlackBoxTest() {
     @AfterEach
     fun restoreState() {
 
-        clearGlobalPopulation()
         jdbcOps.update("truncate table ${AlphaEntityMeta.SCHEMA_AND_TABLE_NAME} cascade")
         restart()
 
@@ -97,11 +97,11 @@ class HazelcastMaxRowsIntegrationTest : AbstractBlackBoxTest() {
 
 
     @Test
-    fun `eager population fails with a message naming the dto and the limit when the set exceeds it`() {
+    fun `population fails with a message naming the dto and the limit when the set exceeds it`() {
 
         createBravos(21)
 
-        assertThatThrownBy { restart() }
+        assertThatThrownBy { cappedRepo.populate() }
             .hasStackTraceContaining("BravoHzCappedDto")
             .hasStackTraceContaining("maxRows")
             .hasStackTraceContaining("20")
@@ -114,7 +114,6 @@ class HazelcastMaxRowsIntegrationTest : AbstractBlackBoxTest() {
     @Test
     fun `a lazy fetch over the limit returns an error with the same message and no rows, and retries on the next fetch`() {
 
-        setGlobalPopulation("lazy")
         createBravos(21)
         restart()
 
@@ -131,6 +130,18 @@ class HazelcastMaxRowsIntegrationTest : AbstractBlackBoxTest() {
 
         assertThat(retried.status).isEqualTo(200)
         assertThat(jsonMapper.readTree(retried.body).toList()).hasSize(20)
+
+    }
+
+
+    @Test
+    fun `a start-up over the limit does not fail because the dto is lazy`() {
+
+        createBravos(21)
+
+        restart()
+
+        assertThat(mapSize()).isZero()
 
     }
 
@@ -180,21 +191,6 @@ class HazelcastMaxRowsIntegrationTest : AbstractBlackBoxTest() {
     }
 
 
-    private fun setGlobalPopulation(value: String) {
-
-        (applicationContext.environment as ConfigurableEnvironment).propertySources
-            .addFirst(MapPropertySource(PROPERTY_SOURCE_NAME, mapOf("maia.hazelcast-blotter.population" to value)))
-
-    }
-
-
-    private fun clearGlobalPopulation() {
-
-        (applicationContext.environment as ConfigurableEnvironment).propertySources.remove(PROPERTY_SOURCE_NAME)
-
-    }
-
-
     private fun createBravos(count: Int) {
 
         val alpha = alphaCrudService.create(AlphaCreateRequestDto(someInt_raw = 1, someString_raw = "alpha"))
@@ -202,13 +198,6 @@ class HazelcastMaxRowsIntegrationTest : AbstractBlackBoxTest() {
         repeat(count) {
             bravoCrudService.create(BravoCreateRequestDto(alpha_raw = alpha.id, someInt_raw = it, someString_raw = "bravo-$it"))
         }
-
-    }
-
-
-    private companion object {
-
-        const val PROPERTY_SOURCE_NAME = "hazelcast-max-rows-test"
 
     }
 
