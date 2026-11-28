@@ -12,7 +12,7 @@ import org.maiaframework.gen.spec.definition.lang.FieldTypes
 import java.io.File
 
 
-class SearchableDtoEsDocCrudListenerRendererTest {
+class RefreshListenerRendererTest {
 
 
     private val spec = EsRefreshListenerTestSpec()

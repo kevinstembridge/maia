@@ -37,6 +37,10 @@ class BlotterDef(
     val isPaginated get() = paginationPageSize != null
 
 
+    /** Client-side blotter: the backing returns the whole set in one fetch and the browser filters and sorts it. */
+    val isClientSide get() = blotterSourceDef is BlotterHazelcastSourceDef
+
+
     val angularDeleteDialogComponentNames
         get() = blotterSourceDef.deleteDialogComponentNames
 

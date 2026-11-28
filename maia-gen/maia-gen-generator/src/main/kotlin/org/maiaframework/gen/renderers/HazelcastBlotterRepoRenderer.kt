@@ -8,7 +8,13 @@ import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClass
 
 /**
  * Renders the repo that owns the Hazelcast map of a Hazelcast-backed Searchable DTO (ADR-0008): one document per row,
- * keyed by the row id. Later refresh, population-mode, rebuild and authority work builds on this class.
+ * keyed by the row id. The repo fills the map from the database (eagerly at start or lazily on the first fetch, per the
+ * population mode), keeps it in step through the after-commit refresh hooks, and is the target of the rebuild service.
+ *
+ * Concurrency: [populate] is serialised by `populateLock`; `stateLock` guards the `populated`/`populating` flags and
+ * every change to the map made by a refresh or delete. A refresh or delete that arrives while a population is
+ * streaming is buffered and replayed (re-read from the database) when the population completes, so a write committed
+ * during a population is never lost to the older snapshot the population read. Lock order: `populateLock`, then `stateLock`.
  */
 class HazelcastBlotterRepoRenderer(
     private val searchableDtoDef: SearchableDtoDef
@@ -34,6 +40,7 @@ class HazelcastBlotterRepoRenderer(
         addImportFor(Fqcns.MAIA_DOMAIN_ID)
         addImportRaw("org.maiaframework.common.logging.getLogger")
         addImportRaw("org.springframework.transaction.support.TransactionTemplate")
+        addImportRaw("org.maiaframework.hazelcast.refresh.HazelcastRefreshCollector")
 
         append("""
             |
@@ -47,8 +54,19 @@ class HazelcastBlotterRepoRenderer(
             |    private val populateLock = Any()
             |
             |
+            |    private val stateLock = Any()
+            |
+            |
             |    @Volatile
             |    private var populated = false
+            |
+            |
+            |    // guarded by stateLock
+            |    private var populating = false
+            |
+            |
+            |    // guarded by stateLock: ids refreshed or deleted while a population was streaming
+            |    private val changedWhilePopulating = LinkedHashSet<DomainId>()
             |
             |
             |    private val map: IMap<DomainId, ${searchableDtoDef.uqcn}> = hazelcastInstance.getMap("${searchableDtoDef.hazelcastMapName}")
@@ -114,8 +132,11 @@ class HazelcastBlotterRepoRenderer(
             |            when (populationMode()) {
             |                POPULATION_EAGER -> populate()
             |                POPULATION_LAZY -> {
-            |                    this.map.clear()
-            |                    this.populated = false
+            |                    synchronized(this.stateLock) {
+            |                        this.map.clear()
+            |                        this.populated = false
+            |                        this.changedWhilePopulating.clear()
+            |                    }
             |                    logger.info("Hazelcast map ${searchableDtoDef.hazelcastMapName} will be populated by the first fetch")
             |                }
             |                else -> error("Invalid value '${'$'}{populationMode()}' for ${'$'}POPULATION_PROPERTY; valid values are ${'$'}POPULATION_VALUES")
@@ -130,14 +151,12 @@ class HazelcastBlotterRepoRenderer(
 
 
     /**
-     * The single population entry point: clears the map and refills it from the database. Runs in a read-only
-     * transaction because the rows are streamed from the database. A set larger than `maxRows` is never truncated:
-     * it is detected while streaming, before the chunk that would exceed the limit is stored, and population fails
-     * with the map left empty and unpopulated so the next fetch tries again.
+     * The single population entry point, also used by the rebuild service: clears the map and refills it from the
+     * database. Runs in a read-only transaction because the rows are streamed from the database. A set larger than
+     * `maxRows` is never truncated: it is detected while streaming, before the chunk that would exceed the limit is
+     * stored, and population fails with the map left empty and unpopulated so the next fetch tries again.
      */
     private fun `render function populate`() {
-
-        val maxRows = searchableDtoDef.hazelcastSpec?.maxRows ?: HazelcastSpec.DEFAULT_MAX_ROWS
 
         addImportRaw("org.maiaframework.common.BlotterTooLargeException")
 
@@ -146,32 +165,70 @@ class HazelcastBlotterRepoRenderer(
             |
             |    fun populate() {
             |
-            |        logger.info("BEGIN: Populating Hazelcast map ${searchableDtoDef.hazelcastMapName}")
+            |        synchronized(this.populateLock) {
             |
-            |        this.map.clear()
-            |        this.populated = false
+            |            logger.info("BEGIN: Populating Hazelcast map ${searchableDtoDef.hazelcastMapName}")
             |
-            |        var count = 0
+            |            beginPopulation()
             |
-            |        try {
-            |            this.readOnlyTransaction.executeWithoutResult {
-            |                this.dtoRepo.findAllAsSequence().chunked(POPULATE_CHUNK_SIZE).forEach { chunk ->
-            |                    if (count + chunk.size > MAX_ROWS) {
-            |                        throw BlotterTooLargeException("${searchableDtoDef.uqcn}", MAX_ROWS)
+            |            var count = 0
+            |
+            |            try {
+            |                this.readOnlyTransaction.executeWithoutResult {
+            |                    this.dtoRepo.findAllAsSequence().chunked(HazelcastRefreshCollector.CHUNK_SIZE).forEach { chunk ->
+            |                        if (count + chunk.size > MAX_ROWS) {
+            |                            throw BlotterTooLargeException("${searchableDtoDef.uqcn}", MAX_ROWS)
+            |                        }
+            |                        this.map.putAll(chunk.associateBy { it.id })
+            |                        count += chunk.size
             |                    }
-            |                    this.map.putAll(chunk.associateBy { it.id })
-            |                    count += chunk.size
             |                }
+            |                completePopulation()
+            |            } catch (e: Exception) {
+            |                abandonPopulation()
+            |                throw e
             |            }
-            |        } catch (e: BlotterTooLargeException) {
-            |            this.map.clear()
-            |            logger.error("FAILED: Populating Hazelcast map ${searchableDtoDef.hazelcastMapName}: ${'$'}{e.message}")
-            |            throw e
+            |
+            |            logger.info("END: Populated Hazelcast map ${searchableDtoDef.hazelcastMapName} with ${'$'}count rows")
+            |
             |        }
             |
-            |        this.populated = true
+            |    }
             |
-            |        logger.info("END: Populated Hazelcast map ${searchableDtoDef.hazelcastMapName} with ${'$'}count rows")
+            |
+            |    private fun beginPopulation() {
+            |
+            |        synchronized(this.stateLock) {
+            |            this.populated = false
+            |            this.populating = true
+            |            this.changedWhilePopulating.clear()
+            |            this.map.clear()
+            |        }
+            |
+            |    }
+            |
+            |
+            |    /** Replays what changed while the population streamed: those rows are re-read, so the map ends up current. */
+            |    private fun completePopulation() {
+            |
+            |        synchronized(this.stateLock) {
+            |            reconcile(this.changedWhilePopulating.toList())
+            |            this.changedWhilePopulating.clear()
+            |            this.populating = false
+            |            this.populated = true
+            |        }
+            |
+            |    }
+            |
+            |
+            |    private fun abandonPopulation() {
+            |
+            |        synchronized(this.stateLock) {
+            |            this.map.clear()
+            |            this.changedWhilePopulating.clear()
+            |            this.populating = false
+            |            this.populated = false
+            |        }
             |
             |    }
             |""".trimMargin())
@@ -190,31 +247,54 @@ class HazelcastBlotterRepoRenderer(
         append("""
             |
             |
-            |    fun isPopulated(): Boolean {
-            |
-            |        return this.populated
-            |
-            |    }
-            |
-            |
             |    override fun refreshByIds(ids: Collection<DomainId>) {
             |
-            |        if (!this.populated) {
-            |            return
+            |        synchronized(this.stateLock) {
+            |
+            |            if (this.populating) {
+            |                this.changedWhilePopulating.addAll(ids)
+            |                return
+            |            }
+            |
+            |            if (!this.populated) {
+            |                return
+            |            }
+            |
+            |            reconcile(ids)
+            |
             |        }
-            |
-            |        val found = this.dtoRepo.findByIds(ids).associateBy { it.id }
-            |
-            |        this.map.putAll(found)
-            |
-            |        ids.filterNot { it in found }.forEach { this.map.delete(it) }
             |
             |    }
             |
             |
             |    override fun deleteById(id: DomainId) {
             |
-            |        this.map.delete(id)
+            |        synchronized(this.stateLock) {
+            |
+            |            if (this.populating) {
+            |                this.changedWhilePopulating.add(id)
+            |                return
+            |            }
+            |
+            |            this.map.delete(id)
+            |
+            |        }
+            |
+            |    }
+            |
+            |
+            |    /** Brings the map entries of [ids] in line with the database: present rows are stored, absent rows removed. */
+            |    private fun reconcile(ids: Collection<DomainId>) {
+            |
+            |        ids.chunked(HazelcastRefreshCollector.CHUNK_SIZE).forEach { chunk ->
+            |
+            |            val found = this.dtoRepo.findByIds(chunk).associateBy { it.id }
+            |
+            |            this.map.putAll(found)
+            |
+            |            chunk.filterNot { it in found }.forEach { this.map.delete(it) }
+            |
+            |        }
             |
             |    }
             |""".trimMargin())
@@ -256,8 +336,6 @@ class HazelcastBlotterRepoRenderer(
             |
             |
             |    private companion object {
-            |
-            |        const val POPULATE_CHUNK_SIZE = 1000
             |
             |        const val MAX_ROWS = $maxRows
             |

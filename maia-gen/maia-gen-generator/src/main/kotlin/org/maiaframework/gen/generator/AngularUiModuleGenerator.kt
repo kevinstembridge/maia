@@ -79,7 +79,6 @@ import org.maiaframework.gen.renderers.ui.UserSummaryDtoRenderer
 import org.maiaframework.gen.spec.definition.AngularComponentNames
 import org.maiaframework.gen.spec.definition.AngularFormDef
 import org.maiaframework.gen.spec.definition.AngularFormSystem
-import org.maiaframework.gen.spec.definition.BlotterHazelcastSourceDef
 import org.maiaframework.gen.spec.definition.BlotterPageDef
 import org.maiaframework.gen.spec.definition.EffectiveRangeDateType
 import org.maiaframework.gen.spec.definition.EntityCreateApiDef
@@ -280,7 +279,7 @@ class AngularUiModuleGenerator(
 
         this.applicationModelDef.blotterDefs
             .filter { it.searchDtoDef.searchModelType == SearchModelType.AG_GRID }
-            .filterNot { it.blotterSourceDef is BlotterHazelcastSourceDef }
+            .filterNot { it.isClientSide }
             .forEach {
                 AgGridDatasourceRenderer(it).renderToDir(this.typescriptOutputDir)
             }

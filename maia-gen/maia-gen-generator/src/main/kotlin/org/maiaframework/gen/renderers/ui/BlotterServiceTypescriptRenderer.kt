@@ -8,7 +8,7 @@ import org.maiaframework.gen.spec.definition.BlotterSearchableDtoSourceDef
 class BlotterServiceTypescriptRenderer(private val blotterDef: BlotterDef) : AbstractTypescriptRenderer() {
 
 
-    private val isClientSide = blotterDef.blotterSourceDef is BlotterHazelcastSourceDef
+    private val isClientSide = blotterDef.isClientSide
 
 
     private val searchResultType = when (blotterDef.blotterSourceDef) {
