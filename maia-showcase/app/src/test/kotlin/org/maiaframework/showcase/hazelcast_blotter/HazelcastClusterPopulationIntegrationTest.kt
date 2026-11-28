@@ -93,6 +93,8 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
 
     private lateinit var repo1: BravoHzDtoHazelcastRepo
 
+    private var membersBefore = 0
+
 
     @BeforeEach
     fun reset() {
@@ -299,7 +301,7 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
 
         member2.lifecycleService.terminate()
         node2 = null
-        waitUntil { node1.cluster.members.size == 1 }
+        waitUntil { node1.cluster.members.size == membersBefore }
 
         held.release()
         runCatching { dying.get(30, TimeUnit.SECONDS) }
@@ -359,10 +361,13 @@ class HazelcastClusterPopulationIntegrationTest : AbstractBlackBoxTest() {
         config.clusterName = node1.config.clusterName
         serializers.serializers.forEach { config.serializationConfig.compactSerializationConfig.addSerializer(it) }
 
+        membersBefore = node1.cluster.members.size
+
         val member = Hazelcast.newHazelcastInstance(config)
         node2 = member
 
-        assertThat(node1.cluster.members).hasSize(2)
+        // other Spring contexts cached in this JVM are members of the same cluster too, so count relative to before
+        assertThat(node1.cluster.members).hasSize(membersBefore + 1)
 
         return member
 
