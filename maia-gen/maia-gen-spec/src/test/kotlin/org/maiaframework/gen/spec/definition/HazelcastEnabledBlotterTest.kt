@@ -59,6 +59,23 @@ class HazelcastEnabledBlotterTest {
     }
 
 
+    private class PopulationSpec : ThingSpec() {
+
+        val thing = thingEntity()
+
+        val unset = searchableDto(baseName = "ThingUnset", entityDef = thing) {
+            hazelcastEnabled()
+            field("name")
+        }
+
+        val lazy = searchableDto(baseName = "ThingLazy", entityDef = thing) {
+            hazelcastEnabled(population = HazelcastPopulation.LAZY)
+            field("name")
+        }
+
+    }
+
+
     private class HazelcastThenElasticsearchSpec : ThingSpec() {
 
         val thing = thingEntity()
@@ -130,6 +147,17 @@ class HazelcastEnabledBlotterTest {
         assertThat(spec.enabled.esVersions).isEmpty()
         assertThat(spec.plain.isDocumentBacked).isFalse()
         assertThat(spec.plain.hazelcastSpec).isNull()
+
+    }
+
+
+    @Test
+    fun `population has no per-dto override unless declared`() {
+
+        val spec = PopulationSpec()
+
+        assertThat(spec.unset.hazelcastSpec!!.population).isNull()
+        assertThat(spec.lazy.hazelcastSpec!!.population).isEqualTo(HazelcastPopulation.LAZY)
 
     }
 

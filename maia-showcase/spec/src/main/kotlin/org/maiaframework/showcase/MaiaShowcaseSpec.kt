@@ -1,5 +1,6 @@
 package org.maiaframework.showcase
 
+import org.maiaframework.gen.spec.definition.HazelcastPopulation
 import org.maiaframework.gen.spec.AbstractSpec
 import org.maiaframework.gen.spec.definition.EffectiveRangeManagedBy
 import org.maiaframework.gen.spec.definition.ReferencedEntity
@@ -1228,6 +1229,36 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
         field("dtoStringFromBravo", "someString")
         field("dtoIntFromBravo", "someInt")
         field("createdTimestamp")
+    }
+
+
+    /**
+     * Hazelcast-backed with a per-DTO population override of lazy: its map is filled by the first fetch whatever the
+     * global `maia.hazelcast-blotter.population` property says. Has no Blotter; it exists to exercise population modes.
+     */
+    val bravoHzLazySearchableDtoDef = searchableDto(
+        "org.maiaframework.showcase.join",
+        "BravoHzLazy",
+        entityDef = bravoEntityDef,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+    ) {
+        hazelcastEnabled(autoRefresh = true, population = HazelcastPopulation.LAZY)
+        field("dtoStringFromBravo", "someString")
+    }
+
+
+    /**
+     * Hazelcast-backed with a per-DTO population override of eager: its map is filled at start whatever the global
+     * `maia.hazelcast-blotter.population` property says. Has no Blotter; it exists to exercise population modes.
+     */
+    val bravoHzEagerSearchableDtoDef = searchableDto(
+        "org.maiaframework.showcase.join",
+        "BravoHzEager",
+        entityDef = bravoEntityDef,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+    ) {
+        hazelcastEnabled(autoRefresh = true, population = HazelcastPopulation.EAGER)
+        field("dtoStringFromBravo", "someString")
     }
 
 
