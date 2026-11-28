@@ -45,7 +45,8 @@ class HazelcastBlotterEndpointRenderer(
 
     private fun preAuthorizeLine(): String {
 
-        val authority = (blotterDef.blotterSourceDef as? BlotterHazelcastSourceDef)?.searchableDtoDef?.hazelcastSpec?.authority ?: return ""
+        val authority = (blotterDef.blotterSourceDef as? BlotterHazelcastSourceDef)?.searchableDtoDef?.hazelcastSpec?.authority
+            ?: return ""
 
         addImportFor(Fqcns.SPRING_SECURITY_PRE_AUTHORIZE)
         return "\n            |    @PreAuthorize(\"hasAuthority('${authority.name}')\")"

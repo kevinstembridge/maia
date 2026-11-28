@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.maiaframework.showcase.AbstractPlaywrightTest
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.authentication.TestingAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
 
 
 /**
@@ -133,7 +135,13 @@ class BravoHzBlotterPlaywrightTest : AbstractPlaywrightTest() {
         `navigate to the`(bravoHzBlotterPage)
         assertEquals(listOf("hzedit-before"), bravoHzBlotterPage.stringCellTexts(expectedCount = 1))
 
-        bravoCrudService.updateSomeString(BravoUpdate_someStringRequestDto(id_raw = bravo.id, someString_raw = "hzedit-after"))
+        // the browser is logged in, but this call runs on the test thread, which has no Authentication of its own
+        SecurityContextHolder.getContext().authentication = TestingAuthenticationToken("test", "n/a", "WRITE")
+        try {
+            bravoCrudService.updateSomeString(BravoUpdate_someStringRequestDto(id_raw = bravo.id, someString_raw = "hzedit-after"))
+        } finally {
+            SecurityContextHolder.clearContext()
+        }
 
         // the page shows a snapshot as of the last fetch until it is refreshed
         assertEquals(listOf("hzedit-before"), bravoHzBlotterPage.stringCellTexts(expectedCount = 1))

@@ -63,8 +63,23 @@ dependencies {
 val playwrightHeadless = providers.gradleProperty("playwright.headless").orElse("false")
 
 
+// Playwright ships browser builds for specific Ubuntu releases only. On a newer Ubuntu it refuses to install
+// ("does not support chromium on ubuntuNN.NN-x64"), so fall back to the 24.04 build, which runs there.
+// An explicit PLAYWRIGHT_HOST_PLATFORM_OVERRIDE in the environment always wins.
+val playwrightPlatformOverride: String? = run {
+    val osRelease = file("/etc/os-release")
+    if (System.getenv("PLAYWRIGHT_HOST_PLATFORM_OVERRIDE") != null || !osRelease.isFile) return@run null
+    val fields = osRelease.readLines()
+        .filter { it.contains('=') }
+        .associate { it.substringBefore('=') to it.substringAfter('=').trim('"') }
+    val version = fields["VERSION_ID"]?.split('.')?.mapNotNull { it.toIntOrNull() }
+    if (fields["ID"] == "ubuntu" && version != null && version.size >= 2 && version[0] > 24) "ubuntu24.04-x64" else null
+}
+
+
 tasks.withType<Test>().configureEach {
     systemProperty("playwright.headless", playwrightHeadless.get())
+    playwrightPlatformOverride?.let { environment("PLAYWRIGHT_HOST_PLATFORM_OVERRIDE", it) }
     // The PostgreSQL JDBC driver opens each session in the JVM's time zone; the filter-parity tests
     // (docs/adr/0005) expect UTC day boundaries, so run the whole suite in UTC.
     jvmArgs("-Duser.timezone=UTC")

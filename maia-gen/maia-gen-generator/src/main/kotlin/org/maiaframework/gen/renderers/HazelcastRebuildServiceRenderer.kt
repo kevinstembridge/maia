@@ -9,7 +9,7 @@ import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClass
  * operator can recover from a failed refresh without restarting. There is no endpoint for it in v1.
  */
 class HazelcastRebuildServiceRenderer(
-    private val searchableDtoDef: SearchableDtoDef
+    searchableDtoDef: SearchableDtoDef
 ) : AbstractKotlinRenderer(
     searchableDtoDef.hazelcastRebuildServiceClassDef
 ) {

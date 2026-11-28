@@ -65,6 +65,9 @@ class BravoEsBlotterPlaywrightTest : AbstractPlaywrightTest() {
     @BeforeEach
     fun logOut() {
 
+        // other test classes create Bravos through the CRUD service, which indexes them and leaves them behind
+        esIndex.deleteAllDocuments()
+
         `log out`()
 
     }

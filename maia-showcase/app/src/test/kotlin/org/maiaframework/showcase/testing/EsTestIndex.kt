@@ -31,6 +31,15 @@ class EsTestIndex(
     }
 
 
+    /** Removes every document, so a test that asserts on the whole index does not see documents left by other tests. */
+    fun deleteAllDocuments() {
+
+        ensureExists()
+        elasticsearchClient.deleteByQuery { r -> r.index(indexName).query { q -> q.matchAll { it } }.refresh(true) }
+
+    }
+
+
     fun refresh() {
 
         elasticsearchClient.indices().refresh { r -> r.index(indexName) }
