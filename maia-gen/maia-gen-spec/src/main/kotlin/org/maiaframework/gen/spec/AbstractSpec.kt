@@ -7,6 +7,7 @@ import org.maiaframework.gen.spec.definition.AppKey
 import org.maiaframework.gen.spec.definition.AuthorityDef
 import org.maiaframework.gen.spec.definition.BlotterDef
 import org.maiaframework.gen.spec.definition.BlotterEsDocSourceDef
+import org.maiaframework.gen.spec.definition.BlotterHazelcastSourceDef
 import org.maiaframework.gen.spec.definition.BlotterPageDef
 import org.maiaframework.gen.spec.definition.BlotterSearchableDtoSourceDef
 import org.maiaframework.gen.spec.definition.BooleanTypeDef
@@ -1062,9 +1063,16 @@ abstract class AbstractSpec protected constructor(
         }
 
         // ES-enabled DTOs use their highest-version EsDoc as the blotter data source.
-        val blotterSourceDef = when (val esDocDef = searchableDtoDef.esDocDef) {
-            null -> BlotterSearchableDtoSourceDef(searchableDtoDef)
-            else -> BlotterEsDocSourceDef(esDocDef)
+        val esDocDef = searchableDtoDef.esDocDef
+
+        val blotterSourceDef = when {
+            esDocDef != null -> BlotterEsDocSourceDef(esDocDef)
+            searchableDtoDef.isHazelcastBacked -> BlotterHazelcastSourceDef(searchableDtoDef)
+            else -> BlotterSearchableDtoSourceDef(searchableDtoDef)
+        }
+
+        require(!searchableDtoDef.isHazelcastBacked || searchModelType == SearchModelType.AG_GRID) {
+            "The Hazelcast-backed Blotter ${searchableDtoDef.dtoBaseName} must use the AG Grid search model type"
         }
 
         val builder = BlotterDefBuilder(

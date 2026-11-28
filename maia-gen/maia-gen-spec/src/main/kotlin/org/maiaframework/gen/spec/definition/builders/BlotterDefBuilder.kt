@@ -62,7 +62,7 @@ class BlotterDefBuilder(
             this.withGeneratedTypescriptService,
             this.withGeneratedFindAllFunction,
             this.searchModelType,
-            this.paginationPageSize,
+            if (this.blotterSourceDef is BlotterHazelcastSourceDef) null else this.paginationPageSize,
             this.urlBaseName,
             this.apiVersion
         )
@@ -138,6 +138,8 @@ class BlotterDefBuilder(
 
     fun pagination(pageSize: Int = BlotterDef.DEFAULT_PAGINATION_PAGE_SIZE) {
 
+        requireServerSideRowModel("pagination")
+
         require(pageSize > 0) { "pageSize must be positive but was $pageSize" }
 
         this.paginationPageSize = pageSize
@@ -147,7 +149,18 @@ class BlotterDefBuilder(
 
     fun infiniteScroll() {
 
+        requireServerSideRowModel("infiniteScroll")
+
         this.paginationPageSize = null
+
+    }
+
+
+    private fun requireServerSideRowModel(option: String) {
+
+        require(this.blotterSourceDef !is BlotterHazelcastSourceDef) {
+            "$option() does not apply to the Hazelcast-backed Blotter $dtoBaseName: it is a client-side blotter that loads the whole set at once"
+        }
 
     }
 

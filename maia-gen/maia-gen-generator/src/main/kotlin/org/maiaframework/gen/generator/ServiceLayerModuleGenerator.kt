@@ -1,5 +1,6 @@
 package org.maiaframework.gen.generator
 
+import org.maiaframework.gen.renderers.HazelcastBlotterSearchServiceRenderer
 import org.maiaframework.gen.renderers.CrudNotifierRenderer
 import org.maiaframework.gen.renderers.CrudServiceRenderer
 import org.maiaframework.gen.renderers.ElasticSearchDtoSearchServiceRenderer
@@ -13,6 +14,7 @@ import org.maiaframework.gen.renderers.SearchDtoSearchServiceRenderer
 import org.maiaframework.gen.renderers.TypeaheadCrudListenerRenderer
 import org.maiaframework.gen.renderers.TypeaheadServiceRenderer
 import org.maiaframework.gen.spec.definition.BlotterEsDocSourceDef
+import org.maiaframework.gen.spec.definition.BlotterHazelcastSourceDef
 import org.maiaframework.gen.spec.definition.BlotterSearchableDtoSourceDef
 
 
@@ -149,6 +151,7 @@ class ServiceLayerModuleGenerator(
                     EsDocBlotterRowDtoMapperRenderer(it).renderToDir(this.kotlinOutputDir)
                     ElasticSearchDtoSearchServiceRenderer(it.searchDtoDef, (blotterSourceDef).esDocDef).renderToDir(this.kotlinOutputDir)
                 }
+                is BlotterHazelcastSourceDef -> HazelcastBlotterSearchServiceRenderer(it).renderToDir(this.kotlinOutputDir)
                 is BlotterSearchableDtoSourceDef -> SearchDtoSearchServiceRenderer(it.searchDtoDef).renderToDir(this.kotlinOutputDir)
             }
 

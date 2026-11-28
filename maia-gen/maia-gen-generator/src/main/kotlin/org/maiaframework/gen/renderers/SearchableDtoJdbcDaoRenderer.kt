@@ -33,7 +33,7 @@ class SearchableDtoJdbcDaoRenderer(
     private val entityDef = searchableDtoDef.dtoRootEntityDef
 
 
-    private val esEnabled = searchableDtoDef.esDocDefs.isNotEmpty()
+    private val esEnabled = searchableDtoDef.isDocumentBacked
 
 
     private val dtoUqcn = searchableDtoDef.uqcn

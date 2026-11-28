@@ -1215,6 +1215,34 @@ class MaiaShowcaseSpec : AbstractSpec(AppKey("maia")) {
 
 
     /**
+     * Hazelcast-backed (ADR-0008), scalar fields only: the whole set is held in a Hazelcast map and delivered to the
+     * Blotter in one fetch, so AG Grid filters and sorts it in the browser.
+     */
+    val bravoHzSearchableDtoDef = searchableDto(
+        "org.maiaframework.showcase.join",
+        "BravoHz",
+        entityDef = bravoEntityDef,
+        withGeneratedDto = WithGeneratedDto.TRUE,
+    ) {
+        hazelcastEnabled(autoRefresh = true)
+        field("dtoStringFromBravo", "someString")
+        field("dtoIntFromBravo", "someInt")
+        field("createdTimestamp")
+    }
+
+
+    val bravoHzBlotterDef = blotter(bravoHzSearchableDtoDef) {
+        columnFromDto("id")
+        columnFromDto("dtoStringFromBravo")
+        columnFromDto("dtoIntFromBravo")
+        columnFromDto("createdTimestamp")
+    }
+
+
+    val bravoHzBlotterPageDef = blotterPage(bravoHzBlotterDef)
+
+
+    /**
      * Elasticsearch-enabled, with the `alpha` foreign key as the ONLY link to Alpha (no path through it), so the index
      * stays fresh only if the refresh-dependency model registers Alpha for the Entity ref field itself.
      */

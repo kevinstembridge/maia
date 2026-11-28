@@ -5,6 +5,7 @@ import org.maiaframework.gen.spec.definition.BlotterColumnDef
 import org.maiaframework.gen.spec.definition.BlotterCompositePkColumnDef
 import org.maiaframework.gen.spec.definition.BlotterDef
 import org.maiaframework.gen.spec.definition.BlotterEsDocSourceDef
+import org.maiaframework.gen.spec.definition.BlotterHazelcastSourceDef
 import org.maiaframework.gen.spec.definition.BlotterSearchableDtoSourceDef
 
 
@@ -14,6 +15,7 @@ class BlotterComponentRenderer(private val blotterDef: BlotterDef) : AbstractTyp
     private val searchResultUqcn = when (blotterDef.blotterSourceDef) {
         is BlotterEsDocSourceDef -> "IndexSearchResult"
         is BlotterSearchableDtoSourceDef -> "SearchResultPage"
+        is BlotterHazelcastSourceDef -> throw IllegalStateException("A Hazelcast-backed Blotter uses AG Grid")
     }
 
 
@@ -167,6 +169,8 @@ class BlotterComponentRenderer(private val blotterDef: BlotterDef) : AbstractTyp
                 appendLine("      this._lastResultIndex.next(result.lastResultIndex);")
 
             }
+
+            is BlotterHazelcastSourceDef -> throw IllegalStateException("A Hazelcast-backed Blotter uses AG Grid")
 
             is BlotterSearchableDtoSourceDef -> {
 

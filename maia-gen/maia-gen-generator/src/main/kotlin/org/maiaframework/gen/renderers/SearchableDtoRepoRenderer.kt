@@ -12,7 +12,7 @@ class SearchableDtoRepoRenderer(
 ) {
 
 
-    private val esEnabled = searchableDtoDef.esDocDefs.isNotEmpty()
+    private val esEnabled = searchableDtoDef.isDocumentBacked
 
 
     init {

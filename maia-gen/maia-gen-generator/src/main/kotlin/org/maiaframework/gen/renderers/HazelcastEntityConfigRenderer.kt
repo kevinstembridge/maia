@@ -1,6 +1,7 @@
 package org.maiaframework.gen.renderers
 
 import org.maiaframework.gen.spec.definition.EntityDef
+import org.maiaframework.gen.spec.definition.SearchableDtoDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.lang.ClassDef
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef
@@ -9,7 +10,8 @@ import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClass
 
 class HazelcastEntityConfigRenderer(
     private val cacheableEntityDefs: List<EntityDef>,
-    hazelcastEntityConfigClassDef: ClassDef
+    hazelcastEntityConfigClassDef: ClassDef,
+    private val hazelcastBlotterDtoDefs: List<SearchableDtoDef> = emptyList()
 ) : AbstractKotlinRenderer(
     hazelcastEntityConfigClassDef
 ) {
@@ -36,6 +38,17 @@ class HazelcastEntityConfigRenderer(
                 addConstructorArg(classFieldDef)
 
             }
+
+        }
+
+        hazelcastBlotterDtoDefs.forEach {
+
+            val classFieldDef = aClassField(
+                it.hazelcastSerializerClassDef.uqcn.firstToLower(),
+                it.hazelcastSerializerClassDef.fqcn
+            ).privat().build()
+
+            addConstructorArg(classFieldDef)
 
         }
 
@@ -66,6 +79,10 @@ class HazelcastEntityConfigRenderer(
 
         }
 
+        hazelcastBlotterDtoDefs.forEach {
+            appendLine("        ${it.hazelcastSerializerClassDef.uqcn.firstToLower()},")
+        }
+
         append("""
             |    )
             |
@@ -75,6 +92,10 @@ class HazelcastEntityConfigRenderer(
         )
 
         // TODO render MapConfig for each cache that defines it
+
+        hazelcastBlotterDtoDefs.forEach {
+            appendLine("        MapConfig(\"${it.hazelcastMapName}\"),")
+        }
 
         appendLine("    )")
 

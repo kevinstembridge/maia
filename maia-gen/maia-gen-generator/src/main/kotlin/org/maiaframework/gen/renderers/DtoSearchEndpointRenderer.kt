@@ -76,6 +76,7 @@ class DtoSearchEndpointRenderer(
                 addImportFor(Fqcns.MAIA_INDEX_SEARCH_RESULTS)
                 Fqcns.MAIA_INDEX_SEARCH_RESULTS
             }
+            DataSourceType.HAZELCAST -> throw IllegalStateException("A Hazelcast-backed Blotter has no search endpoint; see HazelcastBlotterEndpointRenderer")
         }
 
         val searchModelType = when (this.searchDtoDef.searchModelType) {

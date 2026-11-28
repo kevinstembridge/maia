@@ -1,0 +1,12 @@
+package org.maiaframework.gen.spec.definition
+
+
+/**
+ * A Hazelcast-backed declaration on a searchable DTO (ADR-0008). There is no version: the map is disposable and is
+ * rebuilt from the database.
+ *
+ * @property autoRefresh whether the map should be refreshed automatically when source records change
+ */
+data class HazelcastSpec(
+    val autoRefresh: Boolean
+)

@@ -33,6 +33,7 @@ import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EntityHierarchy
 import org.maiaframework.gen.spec.definition.EsDocDef
 import org.maiaframework.gen.spec.definition.FormModelDef
+import org.maiaframework.gen.spec.definition.CacheName
 import org.maiaframework.gen.spec.definition.HazelcastDtoDef
 import org.maiaframework.gen.spec.definition.InlineEditDtoDef
 import org.maiaframework.gen.spec.definition.RequestDtoDef
@@ -132,7 +133,13 @@ class DomainModuleGenerator(
             .flatMap { it.entityDefs }
             .filter { it.cacheableDef != null }
 
-        HazelcastEntityConfigRenderer(cacheableEntityDefs, this.applicationModelDef.hazelcastEntityConfigClassDef).renderToDir(this.kotlinOutputDir)
+        val hazelcastBlotterDtoDefs = this.applicationModelDef.allSearchableDtoDefs.filter { it.isHazelcastBacked }
+
+        HazelcastEntityConfigRenderer(
+            cacheableEntityDefs,
+            this.applicationModelDef.hazelcastEntityConfigClassDef,
+            hazelcastBlotterDtoDefs
+        ).renderToDir(this.kotlinOutputDir)
 
     }
 
@@ -462,8 +469,17 @@ class DomainModuleGenerator(
 
     private fun processSearchableDto(searchableDtoDef: SearchableDtoDef) {
 
-        if (searchableDtoDef.withGeneratedDto.value) {
+        // A Hazelcast-backed searchable DTO's class is its document, so it is always rendered, with its serializer.
+        if (searchableDtoDef.withGeneratedDto.value || searchableDtoDef.isHazelcastBacked) {
             renderDto(searchableDtoDef.dtoDef)
+        }
+
+        if (searchableDtoDef.isHazelcastBacked) {
+            HazelcastSerializerRenderer(
+                CacheName(searchableDtoDef.dtoBaseName.value),
+                searchableDtoDef.dtoDef,
+                searchableDtoDef.hazelcastSerializerClassDef
+            ).renderToDir(this.kotlinOutputDir)
         }
 
         renderSearchableDtoMeta(searchableDtoDef)
