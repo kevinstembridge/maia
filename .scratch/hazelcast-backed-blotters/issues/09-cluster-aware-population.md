@@ -16,13 +16,15 @@ Keep the single-node behaviour and its tests unchanged. The mechanism is the imp
 
 **Blocked by:** None (can start immediately; tickets 01 to 08 are merged)
 
-**Status:** ready-for-agent
+**Status:** resolved
 
-- [ ] A test starts a second Hazelcast member in the same JVM (or an equivalent two-node setup) against the same cluster. A node that joins a populated map leaves it intact, and fetch-all on both nodes returns the full set throughout.
-- [ ] Two nodes started or rebuilt at the same time populate once, with no concurrent clear and fill, and both end up serving the complete set.
-- [ ] A lazy node whose map was filled by another node serves it without repopulating, and applies a refresh made on either node.
-- [ ] A refresh or delete committed on one node while the other is populating is reflected afterwards, with no ghost row (extend the existing refresh-during-population test to two nodes).
-- [ ] If the populating node fails or leaves the cluster mid-population, the map is not reported populated, and another node's next fetch or rebuild populates it.
-- [ ] A `maxRows` failure leaves the map unpopulated on every node.
-- [ ] The existing single-node Hazelcast integration tests pass unchanged.
-- [ ] ADR-0008's "Known limitation: multi-node clusters" paragraph is replaced by a short description of the cluster-aware behaviour and the mechanism chosen, including any configuration it needs.
+Note: the body requirement "viewers never see a partial set" is verified only indirectly (via the fetch-all-throughout and no-concurrent-clear tests), not by a dedicated test.
+
+- [x] A test starts a second Hazelcast member in the same JVM (or an equivalent two-node setup) against the same cluster. A node that joins a populated map leaves it intact, and fetch-all on both nodes returns the full set throughout.
+- [x] Two nodes started or rebuilt at the same time populate once, with no concurrent clear and fill, and both end up serving the complete set.
+- [x] A lazy node whose map was filled by another node serves it without repopulating, and applies a refresh made on either node.
+- [x] A refresh or delete committed on one node while the other is populating is reflected afterwards, with no ghost row (extend the existing refresh-during-population test to two nodes).
+- [x] If the populating node fails or leaves the cluster mid-population, the map is not reported populated, and another node's next fetch or rebuild populates it.
+- [x] A `maxRows` failure leaves the map unpopulated on every node.
+- [x] The existing single-node Hazelcast integration tests pass unchanged.
+- [x] ADR-0008's "Known limitation: multi-node clusters" paragraph is replaced by a short description of the cluster-aware behaviour and the mechanism chosen, including any configuration it needs.
