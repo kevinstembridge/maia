@@ -1,0 +1,23 @@
+
+<div class="flex">
+    <button (click)="refresh()" mat-icon-button class="ms-auto" aria-label="Refresh" data-testid="refresh-button">
+        <mat-icon>refresh</mat-icon>
+    </button>
+</div>
+@if (loadError(); as message) {
+    <div role="alert" data-testid="blotter-load-error" class="p-4">{{ message }}</div>
+}
+
+<div class="h-screen">
+    <ag-grid-angular
+        style="width: 100%; height: 100%;"
+        [columnDefs]="columnDefs"
+        [defaultColDef]="defaultColDef"
+        [rowBuffer]="rowBuffer"
+        [rowSelection]="rowSelection"
+        [rowModelType]="rowModelType"
+        [rowData]="rowData"
+        [theme]="agGridTheme"
+        (gridReady)="onGridReady($event)"
+    ></ag-grid-angular>
+</div>

@@ -2,6 +2,7 @@ package org.maiaframework.showcase.hazelcast_blotter
 
 import com.hazelcast.core.HazelcastInstance
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -196,6 +197,19 @@ class HazelcastPopulationModesIntegrationTest : AbstractBlackBoxTest() {
         assertThat(mapSize("bravo_hz_blotter")).isZero()
         assertThat(mapSize("bravo_hz_eager_blotter")).isEqualTo(2)
         assertThat(eagerRepo.findAll()).hasSize(2)
+
+    }
+
+
+    @Test
+    fun `an invalid population value fails start-up naming the property and the valid values`() {
+
+        setGlobalPopulation("sometimes")
+
+        assertThatThrownBy { restart() }
+            .hasStackTraceContaining("maia.hazelcast-blotter.population")
+            .hasStackTraceContaining("sometimes")
+            .hasStackTraceContaining("eager|lazy")
 
     }
 

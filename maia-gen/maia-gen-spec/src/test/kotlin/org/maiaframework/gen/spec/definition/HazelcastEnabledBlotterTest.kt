@@ -76,6 +76,47 @@ class HazelcastEnabledBlotterTest {
     }
 
 
+    private class MaxRowsSpec : ThingSpec() {
+
+        val thing = thingEntity()
+
+        val unset = searchableDto(baseName = "ThingUnset", entityDef = thing) {
+            hazelcastEnabled()
+            field("name")
+        }
+
+        val capped = searchableDto(baseName = "ThingCapped", entityDef = thing) {
+            hazelcastEnabled(maxRows = 250)
+            field("name")
+        }
+
+    }
+
+
+    private class ZeroMaxRowsSpec : ThingSpec() {
+
+        val thing = thingEntity()
+
+        val bad = searchableDto(baseName = "ThingZero", entityDef = thing) {
+            hazelcastEnabled(maxRows = 0)
+            field("name")
+        }
+
+    }
+
+
+    private class NegativeMaxRowsSpec : ThingSpec() {
+
+        val thing = thingEntity()
+
+        val bad = searchableDto(baseName = "ThingNegative", entityDef = thing) {
+            hazelcastEnabled(maxRows = -5)
+            field("name")
+        }
+
+    }
+
+
     private class HazelcastThenElasticsearchSpec : ThingSpec() {
 
         val thing = thingEntity()
@@ -158,6 +199,39 @@ class HazelcastEnabledBlotterTest {
 
         assertThat(spec.unset.hazelcastSpec!!.population).isNull()
         assertThat(spec.lazy.hazelcastSpec!!.population).isEqualTo(HazelcastPopulation.LAZY)
+
+    }
+
+
+    @Test
+    fun `maxRows defaults to 10000 and can be set per dto`() {
+
+        val spec = MaxRowsSpec()
+
+        assertThat(spec.unset.hazelcastSpec!!.maxRows).isEqualTo(10_000)
+        assertThat(spec.capped.hazelcastSpec!!.maxRows).isEqualTo(250)
+
+    }
+
+
+    @Test
+    fun `a zero maxRows is rejected`() {
+
+        assertThatThrownBy { ZeroMaxRowsSpec() }
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessageContaining("ThingZero")
+            .hasMessageContaining("maxRows")
+
+    }
+
+
+    @Test
+    fun `a negative maxRows is rejected`() {
+
+        assertThatThrownBy { NegativeMaxRowsSpec() }
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessageContaining("ThingNegative")
+            .hasMessageContaining("maxRows")
 
     }
 

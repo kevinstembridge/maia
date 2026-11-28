@@ -5,6 +5,7 @@ package org.maiaframework.showcase.join
 
 import com.hazelcast.core.HazelcastInstance
 import com.hazelcast.map.IMap
+import org.maiaframework.common.BlotterTooLargeException
 import org.maiaframework.common.logging.getLogger
 import org.maiaframework.domain.DomainId
 import org.maiaframework.domain.refresh.RefreshTarget
@@ -62,12 +63,13 @@ class BravoHzEagerDtoHazelcastRepo(
         synchronized(this.populateLock) {
 
             when (populationMode()) {
+                POPULATION_EAGER -> populate()
                 POPULATION_LAZY -> {
                     this.map.clear()
                     this.populated = false
                     logger.info("Hazelcast map bravo_hz_eager_blotter will be populated by the first fetch")
                 }
-                else -> populate()
+                else -> error("Invalid value '${populationMode()}' for $POPULATION_PROPERTY; valid values are $POPULATION_VALUES")
             }
 
         }
@@ -80,14 +82,24 @@ class BravoHzEagerDtoHazelcastRepo(
         logger.info("BEGIN: Populating Hazelcast map bravo_hz_eager_blotter")
 
         this.map.clear()
+        this.populated = false
 
         var count = 0
 
-        this.readOnlyTransaction.executeWithoutResult {
-            this.dtoRepo.findAllAsSequence().chunked(POPULATE_CHUNK_SIZE).forEach { chunk ->
-                this.map.putAll(chunk.associateBy { it.id })
-                count += chunk.size
+        try {
+            this.readOnlyTransaction.executeWithoutResult {
+                this.dtoRepo.findAllAsSequence().chunked(POPULATE_CHUNK_SIZE).forEach { chunk ->
+                    if (count + chunk.size > MAX_ROWS) {
+                        throw BlotterTooLargeException("BravoHzEagerDto", MAX_ROWS)
+                    }
+                    this.map.putAll(chunk.associateBy { it.id })
+                    count += chunk.size
+                }
             }
+        } catch (e: BlotterTooLargeException) {
+            this.map.clear()
+            logger.error("FAILED: Populating Hazelcast map bravo_hz_eager_blotter: ${e.message}")
+            throw e
         }
 
         this.populated = true
@@ -139,11 +151,15 @@ class BravoHzEagerDtoHazelcastRepo(
 
         const val POPULATE_CHUNK_SIZE = 1000
 
+        const val MAX_ROWS = 10000
+
         const val POPULATION_PROPERTY = "maia.hazelcast-blotter.population"
 
         const val POPULATION_EAGER = "eager"
 
         const val POPULATION_LAZY = "lazy"
+
+        const val POPULATION_VALUES = "eager|lazy"
 
     }
 }

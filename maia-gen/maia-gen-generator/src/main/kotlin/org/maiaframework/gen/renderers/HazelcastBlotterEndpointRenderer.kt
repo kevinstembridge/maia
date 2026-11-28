@@ -1,6 +1,7 @@
 package org.maiaframework.gen.renderers
 
 import org.maiaframework.gen.spec.definition.BlotterDef
+import org.maiaframework.gen.spec.definition.BlotterHazelcastSourceDef
 import org.maiaframework.gen.spec.definition.Fqcns
 import org.maiaframework.gen.spec.definition.lang.ClassFieldDef.Companion.aClassField
 
@@ -31,13 +32,23 @@ class HazelcastBlotterEndpointRenderer(
         append("""
             |
             |
-            |    @GetMapping("${blotterDef.searchDtoDef.findAllApiUrl}", produces = [MediaType.APPLICATION_JSON_VALUE])
+            |    @GetMapping("${blotterDef.searchDtoDef.findAllApiUrl}", produces = [MediaType.APPLICATION_JSON_VALUE])${preAuthorizeLine()}
             |    fun fetchAll(): List<${blotterDef.searchDtoDef.uqcn}> {
             |
             |        return this.searchService.fetchAll()
             |
             |    }
             |""".trimMargin())
+
+    }
+
+
+    private fun preAuthorizeLine(): String {
+
+        val authority = (blotterDef.blotterSourceDef as? BlotterHazelcastSourceDef)?.searchableDtoDef?.hazelcastSpec?.authority ?: return ""
+
+        addImportFor(Fqcns.SPRING_SECURITY_PRE_AUTHORIZE)
+        return "\n            |    @PreAuthorize(\"hasAuthority('${authority.name}')\")"
 
     }
 

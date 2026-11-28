@@ -25,6 +25,7 @@ import org.maiaframework.showcase.testing.pages.BravoCreatePage
 import org.maiaframework.showcase.testing.pages.BravoAlphaHzBlotterPage
 import org.maiaframework.showcase.testing.pages.BravoEsBlotterPage
 import org.maiaframework.showcase.testing.pages.BravoHzBlotterPage
+import org.maiaframework.showcase.testing.pages.BravoHzCappedBlotterPage
 import org.maiaframework.showcase.testing.pages.DeltaEsBlotterPage
 import org.maiaframework.showcase.testing.pages.DeltaHzBlotterPage
 import org.maiaframework.showcase.testing.pages.CharlieEsBlotterPage
@@ -155,6 +156,7 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
     protected lateinit var bravoHzBlotterPage: BravoHzBlotterPage
 
 
+    protected lateinit var bravoHzCappedBlotterPage: BravoHzCappedBlotterPage
     protected lateinit var bravoAlphaHzBlotterPage: BravoAlphaHzBlotterPage
 
 
@@ -266,6 +268,7 @@ abstract class AbstractPlaywrightTest : AbstractBlackBoxTest() {
         bravoCreatePage = BravoCreatePage(page, urlHelper)
         bravoEsBlotterPage = BravoEsBlotterPage(page, urlHelper)
         bravoHzBlotterPage = BravoHzBlotterPage(page, urlHelper)
+        bravoHzCappedBlotterPage = BravoHzCappedBlotterPage(page, urlHelper)
         bravoAlphaHzBlotterPage = BravoAlphaHzBlotterPage(page, urlHelper)
         deltaHzBlotterPage = DeltaHzBlotterPage(page, urlHelper)
         deltaEsBlotterPage = DeltaEsBlotterPage(page, urlHelper)
