@@ -15,6 +15,7 @@ import org.maiaframework.showcase.join.BravoAlphaHzDtoSerializer
 import org.maiaframework.showcase.join.BravoHzDtoSerializer
 import org.maiaframework.showcase.join.BravoHzEagerDtoSerializer
 import org.maiaframework.showcase.join.BravoHzLazyDtoSerializer
+import org.maiaframework.showcase.join.BravoHzSecuredDtoSerializer
 import org.maiaframework.showcase.join.DeltaHzDtoSerializer
 import org.maiaframework.showcase.simple.SimpleEntity
 import org.maiaframework.showcase.simple.SimpleSerializer
@@ -27,6 +28,7 @@ class HazelcastConfig(
     private val bravoHzDtoSerializer: BravoHzDtoSerializer,
     private val bravoHzEagerDtoSerializer: BravoHzEagerDtoSerializer,
     private val bravoHzLazyDtoSerializer: BravoHzLazyDtoSerializer,
+    private val bravoHzSecuredDtoSerializer: BravoHzSecuredDtoSerializer,
     private val cachedBigDecimalSerializer: CachedBigDecimalSerializer,
     private val compositePrimaryKeyPkSerializer: CompositePrimaryKeyPkSerializer,
     private val compositePrimaryKeySerializer: CompositePrimaryKeySerializer,
@@ -44,6 +46,7 @@ class HazelcastConfig(
         bravoHzLazyDtoSerializer,
         bravoHzEagerDtoSerializer,
         bravoAlphaHzDtoSerializer,
+        bravoHzSecuredDtoSerializer,
         deltaHzDtoSerializer,
     )
 
@@ -53,6 +56,7 @@ class HazelcastConfig(
         MapConfig("bravo_hz_lazy_blotter"),
         MapConfig("bravo_hz_eager_blotter"),
         MapConfig("bravo_alpha_hz_blotter"),
+        MapConfig("bravo_hz_secured_blotter"),
         MapConfig("delta_hz_blotter"),
     )
 
