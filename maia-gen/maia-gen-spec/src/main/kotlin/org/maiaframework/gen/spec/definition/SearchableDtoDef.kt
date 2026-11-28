@@ -215,6 +215,12 @@ class SearchableDtoDef(
         .build()
 
 
+    /** Clears the Hazelcast map and repopulates it from the database, so an operator can recover from a failed refresh. */
+    val hazelcastRebuildServiceClassDef = aClassDef(fqcn.withSuffix("HazelcastRebuildService"))
+        .withClassAnnotation(AnnotationDefs.SPRING_SERVICE)
+        .build()
+
+
     /** The compact serializer for the document, which is this DTO's own class. */
     val hazelcastSerializerClassDef = aClassDef(fqcn.withSuffix("Serializer"))
         .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
