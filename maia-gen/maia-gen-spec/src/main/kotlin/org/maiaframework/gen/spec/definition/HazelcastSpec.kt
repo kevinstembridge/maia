@@ -8,9 +8,19 @@ package org.maiaframework.gen.spec.definition
  * @property autoRefresh whether the map should be refreshed automatically when source records change
  * @property population per-DTO override of the global population mode, or null to follow the global property
  * @property authority if set, the fetch-all endpoint requires it; if null, any authenticated user may call it
+ * @property maxRows the most rows the map may hold; a database set larger than this fails population instead of being truncated
  */
 data class HazelcastSpec(
     val autoRefresh: Boolean,
     val population: HazelcastPopulation? = null,
-    val authority: AuthorityDef? = null
-)
+    val authority: AuthorityDef? = null,
+    val maxRows: Int = DEFAULT_MAX_ROWS
+) {
+
+    companion object {
+
+        const val DEFAULT_MAX_ROWS = 10_000
+
+    }
+
+}

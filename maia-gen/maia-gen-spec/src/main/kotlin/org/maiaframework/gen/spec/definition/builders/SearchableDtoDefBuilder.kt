@@ -83,12 +83,17 @@ class SearchableDtoDefBuilder(
      * @param population overrides the global `maia.hazelcast-blotter.population` property for this DTO
      * (null follows the global property, which defaults to eager)
      * @param authority if given the fetch-all endpoint requires it; otherwise any authenticated user may call it
+     * @param maxRows the most rows the map may hold (default 10,000); a larger set fails population with a message
+     * naming this DTO and the limit, rather than being truncated
      */
     fun hazelcastEnabled(
         autoRefresh: Boolean = true,
         population: HazelcastPopulation? = null,
-        authority: AuthorityDef? = null
+        authority: AuthorityDef? = null,
+        maxRows: Int = HazelcastSpec.DEFAULT_MAX_ROWS
     ) {
+
+        require(maxRows > 0) { "hazelcastEnabled on $dtoBaseName requires maxRows to be positive; found $maxRows" }
 
         require(this.hazelcastSpec == null) { "hazelcastEnabled already declared on $dtoBaseName" }
 
@@ -102,7 +107,7 @@ class SearchableDtoDefBuilder(
             "hazelcastEnabled on $dtoBaseName requires the root entity ${this.rootEntityDef.entityBaseName} to have a single DomainId primary key named 'id'; found ${this.rootEntityDef.primaryKeyFields.map { it.classFieldName }}"
         }
 
-        this.hazelcastSpec = HazelcastSpec(autoRefresh, population, authority)
+        this.hazelcastSpec = HazelcastSpec(autoRefresh, population, authority, maxRows)
         this.generateFindById = GenerateFindById.TRUE
 
     }

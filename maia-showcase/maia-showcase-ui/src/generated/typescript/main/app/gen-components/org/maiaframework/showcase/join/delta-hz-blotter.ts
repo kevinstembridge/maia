@@ -2,7 +2,7 @@
 // Renderer class: class org.maiaframework.gen.renderers.ui.AgGridBlotterComponentRenderer
 
 import {DecimalPipe} from '@angular/common';
-import {Component, EnvironmentInjector, inject, runInInjectionContext} from '@angular/core';
+import {Component, EnvironmentInjector, inject, runInInjectionContext, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -60,6 +60,10 @@ export class DeltaHzBlotter {
     public rowData: DeltaHzBlotterRowDto[] = [];
 
 
+    /** The server's message when the whole set could not be loaded, e.g. it exceeds the Searchable DTO's maxRows. */
+    public loadError = signal<string | null>(null);
+
+
     private gridApi!: GridApi<DeltaHzBlotterRowDto>;
 
 
@@ -83,9 +87,17 @@ export class DeltaHzBlotter {
     /** Fetches the whole set again: the grid shows a snapshot as of the last fetch. */
     refresh() {
 
-        this.blotterService.fetchAll().subscribe(rows => {
-            this.rowData = rows;
-            this.gridApi.setGridOption('rowData', rows);
+        this.blotterService.fetchAll().subscribe({
+            next: rows => {
+                this.loadError.set(null);
+                this.rowData = rows;
+                this.gridApi.setGridOption('rowData', rows);
+            },
+            error: err => {
+                this.rowData = [];
+                this.gridApi.setGridOption('rowData', []);
+                this.loadError.set(err?.error?.detail ?? 'The rows could not be loaded.');
+            }
         });
 
     }
