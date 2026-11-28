@@ -89,3 +89,33 @@ class BlotterEsDocSourceDef(
     }
 
 }
+
+
+/**
+ * A Client-side blotter over a Hazelcast-backed searchable DTO (ADR-0008). Rows are the documents in the DTO's
+ * Hazelcast map, fetched in one call; there is no server-side search.
+ */
+class BlotterHazelcastSourceDef(
+    val searchableDtoDef: SearchableDtoDef
+) : BlotterSourceDef(searchableDtoDef.dtoRootEntityDef) {
+
+
+    override val withGeneratedFindAllFunction: WithGeneratedFindAllFunction = WithGeneratedFindAllFunction.FALSE
+
+
+    override val withGeneratedEndpoint: WithGeneratedEndpoint = this.searchableDtoDef.withGeneratedEndpoint
+
+
+    override val dataSourceType: DataSourceType = DataSourceType.HAZELCAST
+
+
+    override val rowIdField: ClassFieldDef = this.searchableDtoDef.idField
+
+
+    override fun findFieldByPath(fieldPath: FieldPath): ClassFieldDef {
+
+        return this.searchableDtoDef.findSearchableDtoFieldByName(fieldPath.head()).classFieldDef
+
+    }
+
+}

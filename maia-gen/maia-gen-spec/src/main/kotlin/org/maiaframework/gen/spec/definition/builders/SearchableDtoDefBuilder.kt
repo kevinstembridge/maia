@@ -7,6 +7,7 @@ import org.maiaframework.gen.spec.definition.EntityBaseName
 import org.maiaframework.gen.spec.definition.EntityDef
 import org.maiaframework.gen.spec.definition.EsVersionSpec
 import org.maiaframework.gen.spec.definition.FieldPath
+import org.maiaframework.gen.spec.definition.HazelcastSpec
 import org.maiaframework.gen.spec.definition.JoinEntityDef
 import org.maiaframework.gen.spec.definition.JoinType
 import org.maiaframework.gen.spec.definition.ManyToManyEntityDef
@@ -69,12 +70,44 @@ class SearchableDtoDefBuilder(
     private val esVersions = mutableListOf<EsVersionSpec>()
 
 
+    private var hazelcastSpec: HazelcastSpec? = null
+
+
+    /**
+     * Backs this searchable DTO's Blotter with a Hazelcast map holding one document per row (ADR-0008).
+     * There is no version: the map is disposable and is rebuilt from the database. Mutually exclusive with
+     * [elasticsearchEnabled]. Forces generation of find-by-id.
+     */
+    fun hazelcastEnabled(autoRefresh: Boolean = true) {
+
+        require(this.hazelcastSpec == null) { "hazelcastEnabled already declared on $dtoBaseName" }
+
+        require(this.esVersions.isEmpty()) {
+            "$dtoBaseName declares both hazelcastEnabled and elasticsearchEnabled; a searchable DTO has exactly one backing"
+        }
+
+        val pk = this.rootEntityDef.primaryKeyFields.singleOrNull()
+
+        require(pk != null && pk.classFieldDef.fieldType is DomainIdFieldType && pk.tableColumnName.value == "id") {
+            "hazelcastEnabled on $dtoBaseName requires the root entity ${this.rootEntityDef.entityBaseName} to have a single DomainId primary key named 'id'; found ${this.rootEntityDef.primaryKeyFields.map { it.classFieldName }}"
+        }
+
+        this.hazelcastSpec = HazelcastSpec(autoRefresh)
+        this.generateFindById = GenerateFindById.TRUE
+
+    }
+
+
     /**
      * Enables Elasticsearch for this searchable DTO, deriving one EsDocDef per declared [version].
      * Forces generation of find-by-id. May be declared once per version.
      * [autoRefresh] is currently only recorded; it is consumed by later generator work.
      */
     fun elasticsearchEnabled(version: Int = 1, autoRefresh: Boolean = true) {
+
+        require(this.hazelcastSpec == null) {
+            "$dtoBaseName declares both hazelcastEnabled and elasticsearchEnabled; a searchable DTO has exactly one backing"
+        }
 
         require(this.esVersions.none { it.version == version }) { "ES version $version already declared on $dtoBaseName" }
 
@@ -108,7 +141,8 @@ class SearchableDtoDefBuilder(
             this.searchModelType,
             this.withProvidedFieldConverter,
             this.manyToManyJoinEntityDefs.toList(),
-            this.esVersions.toList()
+            this.esVersions.toList(),
+            this.hazelcastSpec
         )
 
     }

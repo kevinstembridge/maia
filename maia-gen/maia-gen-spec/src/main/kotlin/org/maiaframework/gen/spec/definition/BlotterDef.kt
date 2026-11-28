@@ -56,6 +56,9 @@ class BlotterDef(
             is BlotterEsDocSourceDef -> {
                 // TODO
             }
+            is BlotterHazelcastSourceDef -> {
+                // TODO the id column, as for the Elasticsearch source
+            }
             is BlotterSearchableDtoSourceDef -> {
 
                 if (blotterSourceDef.searchableDtoDef.dtoRootEntityDef.hasCompositePrimaryKey) {
@@ -194,6 +197,7 @@ class BlotterDef(
 
     val searchableDtoDef = when (blotterSourceDef) {
         is BlotterEsDocSourceDef -> null
+        is BlotterHazelcastSourceDef -> null
         is BlotterSearchableDtoSourceDef ->
             blotterSourceDef.searchableDtoDef.let { searchableDtoDef ->
 

@@ -2,14 +2,19 @@ package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.spec.definition.BlotterDef
 import org.maiaframework.gen.spec.definition.BlotterEsDocSourceDef
+import org.maiaframework.gen.spec.definition.BlotterHazelcastSourceDef
 import org.maiaframework.gen.spec.definition.BlotterSearchableDtoSourceDef
 
 class BlotterServiceTypescriptRenderer(private val blotterDef: BlotterDef) : AbstractTypescriptRenderer() {
 
 
+    private val isClientSide = blotterDef.blotterSourceDef is BlotterHazelcastSourceDef
+
+
     private val searchResultType = when (blotterDef.blotterSourceDef) {
         is BlotterEsDocSourceDef -> "IndexSearchResult"
         is BlotterSearchableDtoSourceDef -> "SearchResultPage"
+        is BlotterHazelcastSourceDef -> null
     }
 
 
@@ -20,7 +25,7 @@ class BlotterServiceTypescriptRenderer(private val blotterDef: BlotterDef) : Abs
         addImport("@angular/common/http", "HttpClient")
         addImport("@angular/common/http", "HttpHeaders")
         addImport("rxjs", "Observable")
-        addImport("@maia/maia-ui", searchResultType)
+        searchResultType?.let { addImport("@maia/maia-ui", it) }
         addImport(blotterDef.dtoDef.typescriptDtoImport)
 
     }
@@ -49,6 +54,22 @@ class BlotterServiceTypescriptRenderer(private val blotterDef: BlotterDef) : Abs
         appendLine("    private readonly http = inject(HttpClient);")
         blankLine()
         blankLine()
+        if (isClientSide) {
+
+            appendLine("    public fetchAll(): Observable<${this.blotterDef.dtoUqcn}[]> {")
+            blankLine()
+            appendLine("        return this.http.get<${this.blotterDef.dtoUqcn}[]>(")
+            appendLine("                '${this.blotterDef.searchDtoDef.findAllApiUrl}',")
+            appendLine("                this.httpOptions);")
+            blankLine()
+            appendLine("    }")
+            blankLine()
+            blankLine()
+            appendLine("}")
+            return
+
+        }
+
         appendLine("    public search(searchModel: any): Observable<$searchResultType<${this.blotterDef.dtoUqcn}>> {")
         blankLine()
         appendLine("        return this.http.post<$searchResultType<${this.blotterDef.dtoUqcn}>>(")

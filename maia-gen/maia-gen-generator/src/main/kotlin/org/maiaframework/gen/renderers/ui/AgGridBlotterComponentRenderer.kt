@@ -7,6 +7,7 @@ import org.maiaframework.gen.spec.definition.BlotterActionColumnDef
 import org.maiaframework.gen.spec.definition.BlotterColumnDef
 import org.maiaframework.gen.spec.definition.BlotterCompositePkColumnDef
 import org.maiaframework.gen.spec.definition.BlotterDef
+import org.maiaframework.gen.spec.definition.BlotterHazelcastSourceDef
 import org.maiaframework.gen.spec.definition.EntityCreatePageDef
 import org.maiaframework.gen.spec.definition.EntityDetailViewDef
 import org.maiaframework.gen.spec.definition.EntityEditPageDef
@@ -25,6 +26,10 @@ class AgGridBlotterComponentRenderer(
     private val entityIsReferencedByForeignKeys: Boolean,
     authoritiesDef: AuthoritiesDef?
 ) : AbstractTypescriptRenderer() {
+
+
+    /** A Hazelcast-backed Blotter loads the whole set once into AG Grid's client-side row model. */
+    private val isClientSide = blotterDef.blotterSourceDef is BlotterHazelcastSourceDef
 
 
     val requiresRouter = (entityDetailViewDef != null && blotterDef.hasViewActionColumn)
@@ -101,7 +106,10 @@ class AgGridBlotterComponentRenderer(
         addImport("ag-grid-community", "GridReadyEvent")
         addImport("ag-grid-community", "ICellRendererParams")
         addImport("ag-grid-community", "RowModelType")
-        addImport(blotterDef.blotterComponent.agGridDatasourceTypescriptImport)
+
+        if (!isClientSide) {
+            addImport(blotterDef.blotterComponent.agGridDatasourceTypescriptImport)
+        }
 
     }
 
@@ -149,6 +157,80 @@ class AgGridBlotterComponentRenderer(
             |
             |
             |    public agGridTheme = agGridTheme;
+            |""".trimMargin()
+        )
+
+        if (isClientSide) {
+
+            `render client-side row model fields`()
+
+        } else {
+
+            `render infinite row model fields`()
+
+        }
+
+        `render router field`()
+
+        `render dialog field`()
+
+        `render onGridReady function`()
+
+        `render functions for Add button`()
+
+        `render onView function`()
+
+        `render onEdit function`()
+
+        `render onDelete function`()
+
+        `render handler functions for action columns`()
+
+        `render onCellClicked function for clickable row`()
+
+        `render reapplyFilters function`()
+
+        `render getFilterModel function`()
+
+        append("""
+            |
+            |
+            |}
+            |""".trimMargin())
+
+    }
+
+
+    private fun `render client-side row model fields`() {
+
+        append("""
+            |
+            |
+            |    public rowModelType: RowModelType = 'clientSide';
+            |
+            |
+            |    public rowData: ${blotterDef.dtoUqcn}[] = [];
+            |
+            |
+            |    private gridApi!: GridApi<${blotterDef.dtoUqcn}>;
+            |
+            |
+            |    private readonly blotterService = inject(${blotterDef.angularBlotterServiceName});
+            |
+            |
+            |    private readonly authService = inject(AuthService);
+            |
+            |
+            |    private readonly injector = inject(EnvironmentInjector);
+            |""".trimMargin()
+        )
+
+    }
+
+
+    private fun `render infinite row model fields`() {
+
+        append("""
             |
             |
             |    public rowModelType: RowModelType = 'infinite';
@@ -192,34 +274,6 @@ class AgGridBlotterComponentRenderer(
             |    private readonly injector = inject(EnvironmentInjector);
             |""".trimMargin()
         )
-
-        `render router field`()
-
-        `render dialog field`()
-
-        `render onGridReady function`()
-
-        `render functions for Add button`()
-
-        `render onView function`()
-
-        `render onEdit function`()
-
-        `render onDelete function`()
-
-        `render handler functions for action columns`()
-
-        `render onCellClicked function for clickable row`()
-
-        `render reapplyFilters function`()
-
-        `render getFilterModel function`()
-
-        append("""
-            |
-            |
-            |}
-            |""".trimMargin())
 
     }
 
@@ -306,7 +360,7 @@ class AgGridBlotterComponentRenderer(
                 |
                 |@Component({
                 |    imports: [AgGridAngular, FormsModule, MatButtonModule, MatIconModule],
-                |    providers: [${this.blotterDef.angularBlotterServiceName}, ${this.blotterDef.agGridDatasourceClassName}, DecimalPipe],
+                |    providers: [${providers()}],
                 |    selector: '${this.blotterDef.blotterComponent.componentSelector}',
                 |    templateUrl: './${this.blotterDef.blotterComponent.htmlFileName}'
                 |""".trimMargin()
@@ -317,6 +371,17 @@ class AgGridBlotterComponentRenderer(
         }
 
         appendLine("})")
+
+    }
+
+
+    private fun providers(): String {
+
+        return if (isClientSide) {
+            "${this.blotterDef.angularBlotterServiceName}, DecimalPipe"
+        } else {
+            "${this.blotterDef.angularBlotterServiceName}, ${this.blotterDef.agGridDatasourceClassName}, DecimalPipe"
+        }
 
     }
 
@@ -401,6 +466,36 @@ class AgGridBlotterComponentRenderer(
 
 
     private fun `render onGridReady function`() {
+
+        if (isClientSide) {
+
+            append(
+                """
+                    |
+                    |
+                    |    onGridReady(params: GridReadyEvent<${blotterDef.dtoUqcn}>) {
+                    |
+                    |        this.gridApi = params.api;
+                    |        this.refresh();
+                    |
+                    |    }
+                    |
+                    |
+                    |    /** Fetches the whole set again: the grid shows a snapshot as of the last fetch. */
+                    |    refresh() {
+                    |
+                    |        this.blotterService.fetchAll().subscribe(rows => {
+                    |            this.rowData = rows;
+                    |            this.gridApi.setGridOption('rowData', rows);
+                    |        });
+                    |
+                    |    }
+                    |""".trimMargin()
+            )
+
+            return
+
+        }
 
         append(
             """

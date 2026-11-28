@@ -2,27 +2,34 @@ package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.spec.definition.BlotterDef
 import org.maiaframework.gen.spec.definition.BlotterEsDocSourceDef
+import org.maiaframework.gen.spec.definition.BlotterHazelcastSourceDef
 import org.maiaframework.gen.spec.definition.BlotterSearchableDtoSourceDef
 
 
 class AgGridDatasourceRenderer(private val blotterDef: BlotterDef) : AbstractTypescriptRenderer() {
 
 
+    private fun noDatasource(): Nothing = throw IllegalStateException("A Hazelcast-backed Blotter is a client-side blotter and has no AG Grid datasource")
+
+
     private val searchResultUqcn = when (blotterDef.blotterSourceDef) {
         is BlotterEsDocSourceDef -> "IndexSearchResult"
         is BlotterSearchableDtoSourceDef -> "SearchResultPage"
+        is BlotterHazelcastSourceDef -> noDatasource()
     }
 
 
     private val hitsOrResults = when (blotterDef.blotterSourceDef) {
         is BlotterEsDocSourceDef -> "hits"
         is BlotterSearchableDtoSourceDef -> "results"
+        is BlotterHazelcastSourceDef -> noDatasource()
     }
 
 
     private val totalResultsOrTotalHitCount = when (blotterDef.blotterSourceDef) {
         is BlotterEsDocSourceDef -> "totalHits.count"
         is BlotterSearchableDtoSourceDef -> "totalResultCount"
+        is BlotterHazelcastSourceDef -> noDatasource()
     }
 
 

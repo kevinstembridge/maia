@@ -11,6 +11,7 @@ import org.maiaframework.showcase.composite_pk.CompositePrimaryKeyEntity
 import org.maiaframework.showcase.composite_pk.CompositePrimaryKeyEntityPk
 import org.maiaframework.showcase.composite_pk.CompositePrimaryKeyPkSerializer
 import org.maiaframework.showcase.composite_pk.CompositePrimaryKeySerializer
+import org.maiaframework.showcase.join.BravoHzDtoSerializer
 import org.maiaframework.showcase.simple.SimpleEntity
 import org.maiaframework.showcase.simple.SimpleSerializer
 import org.springframework.stereotype.Component
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class HazelcastConfig(
+    private val bravoHzDtoSerializer: BravoHzDtoSerializer,
     private val cachedBigDecimalSerializer: CachedBigDecimalSerializer,
     private val compositePrimaryKeyPkSerializer: CompositePrimaryKeyPkSerializer,
     private val compositePrimaryKeySerializer: CompositePrimaryKeySerializer,
@@ -30,10 +32,12 @@ class HazelcastConfig(
         simpleSerializer,
         compositePrimaryKeySerializer,
         compositePrimaryKeyPkSerializer,
+        bravoHzDtoSerializer,
     )
 
 
     val mapConfigs: List<MapConfig> = listOf(
+        MapConfig("bravo_hz_blotter"),
     )
 
 

@@ -42,7 +42,8 @@ class SearchableDtoDef(
     val searchModelType: SearchModelType,
     val withProvidedFieldConverter: WithProvidedFieldConverter,
     val manyToManyJoinEntityDefs: List<JoinEntityDef>,
-    val esVersions: List<EsVersionSpec> = emptyList()
+    val esVersions: List<EsVersionSpec> = emptyList(),
+    val hazelcastSpec: HazelcastSpec? = null
 ) {
 
 
@@ -51,14 +52,14 @@ class SearchableDtoDef(
 
     /**
      * True when a document is derived from this DTO: the cached, denormalized row shape shared by every document sink
-     * (today Elasticsearch). The shared pieces, [refreshDependencies] and the Entity-ref conversion of foreign keys,
+     * (Elasticsearch or Hazelcast). The shared pieces, [refreshDependencies] and the Entity-ref conversion of foreign keys,
      * apply whenever this is true and know nothing about a particular sink.
      */
-    val isDocumentBacked: Boolean get() = esVersions.isNotEmpty()
+    val isDocumentBacked: Boolean get() = esVersions.isNotEmpty() || hazelcastSpec != null
 
 
     /** True when any sink of this DTO's document is declared with auto-refresh. */
-    val hasAutoRefresh: Boolean get() = esVersions.any { it.autoRefresh }
+    val hasAutoRefresh: Boolean get() = esVersions.any { it.autoRefresh } || hazelcastSpec?.autoRefresh == true
 
 
     private fun enrichFields(fieldDefsNotInherited: List<SearchableDtoFieldDef>): List<SearchableDtoFieldDef> {
@@ -198,6 +199,27 @@ class SearchableDtoDef(
 
 
     val fqcn = searchDtoDef.fqcn
+
+
+    /** True when this DTO's document lives in a Hazelcast map; such a DTO has no EsDoc. */
+    val isHazelcastBacked: Boolean get() = hazelcastSpec != null
+
+
+    /** The name of the Hazelcast map holding one [dtoDef] document per row, keyed by the row id. */
+    val hazelcastMapName: String = "${dtoBaseName.toSnakeCase()}_blotter"
+
+
+    /** Owns the Hazelcast map: reads the whole set, and populates it from the database. */
+    val hazelcastRepoClassDef = aClassDef(fqcn.withSuffix("HazelcastRepo"))
+        .withClassAnnotation(AnnotationDefs.SPRING_REPOSITORY)
+        .build()
+
+
+    /** The compact serializer for the document, which is this DTO's own class. */
+    val hazelcastSerializerClassDef = aClassDef(fqcn.withSuffix("Serializer"))
+        .withClassAnnotation(AnnotationDefs.SPRING_COMPONENT)
+        .withInterface(ParameterizedTypes.hazelcastCompactSerializer(ParameterizedType(fqcn)))
+        .build()
 
 
     val hasAnyMapFields: Boolean = rootDtoFieldDefs.any { it.classFieldDef.isMap }

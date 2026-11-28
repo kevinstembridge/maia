@@ -2,6 +2,7 @@ package org.maiaframework.gen.renderers.ui
 
 import org.maiaframework.gen.renderers.AbstractSourceFileRenderer
 import org.maiaframework.gen.spec.definition.BlotterDef
+import org.maiaframework.gen.spec.definition.BlotterHazelcastSourceDef
 
 class AgGridBlotterHtmlRenderer(private val dtoDef: BlotterDef) : AbstractSourceFileRenderer() {
 
@@ -25,6 +26,21 @@ class AgGridBlotterHtmlRenderer(private val dtoDef: BlotterDef) : AbstractSource
                  |""".trimMargin())
         }
 
+        val isClientSide = dtoDef.blotterSourceDef is BlotterHazelcastSourceDef
+
+        if (isClientSide) {
+            append(
+                """
+                |
+                |<div class="flex">
+                |    <button (click)="refresh()" mat-icon-button class="ms-auto" aria-label="Refresh" data-testid="refresh-button">
+                |        <mat-icon>refresh</mat-icon>
+                |    </button>
+                |</div>
+                |""".trimMargin()
+            )
+        }
+
         append(
             $$"""
             |
@@ -45,14 +61,26 @@ class AgGridBlotterHtmlRenderer(private val dtoDef: BlotterDef) : AbstractSource
             |        [rowBuffer]="rowBuffer"
             |        [rowSelection]="rowSelection"
             |        [rowModelType]="rowModelType"
-            |        [cacheBlockSize]="cacheBlockSize"
-            |        [cacheOverflowSize]="cacheOverflowSize"
-            |        [maxConcurrentDatasourceRequests]="maxConcurrentDatasourceRequests"
-            |        [infiniteInitialRowCount]="infiniteInitialRowCount"
-            |        [maxBlocksInCache]="maxBlocksInCache"
-            |        [pagination]="pagination"
-            |        [paginationPageSize]="paginationPageSize"
-            |        [paginationPageSizeSelector]="paginationPageSizeSelector"
+            |""".trimMargin()
+        )
+
+        if (!isClientSide) {
+            append(
+                $$"""
+                |        [cacheBlockSize]="cacheBlockSize"
+                |        [cacheOverflowSize]="cacheOverflowSize"
+                |        [maxConcurrentDatasourceRequests]="maxConcurrentDatasourceRequests"
+                |        [infiniteInitialRowCount]="infiniteInitialRowCount"
+                |        [maxBlocksInCache]="maxBlocksInCache"
+                |        [pagination]="pagination"
+                |        [paginationPageSize]="paginationPageSize"
+                |        [paginationPageSizeSelector]="paginationPageSizeSelector"
+                |""".trimMargin()
+            )
+        }
+
+        append(
+            $$"""
             |        [rowData]="rowData"
             |        [theme]="agGridTheme"
             |        (gridReady)="onGridReady($event)"
