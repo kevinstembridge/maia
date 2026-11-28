@@ -27,9 +27,9 @@ class EsDocDef(
     val entityDef: EntityDef?,
     /**
      * For a hand-built EsDoc declared with `autoRefresh(true)`: the entities whose changes refresh it. Empty for an
-     * EsDoc derived from a searchable DTO, whose dependencies come from [SearchableDtoDef.esRefreshDependencies].
+     * EsDoc derived from a searchable DTO, whose dependencies come from [SearchableDtoDef.refreshDependencies].
      */
-    val refreshDependencies: List<EsRefreshDependencyDef> = emptyList()
+    val refreshDependencies: List<RefreshDependencyDef> = emptyList()
 ) {
 
 

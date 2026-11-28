@@ -82,7 +82,7 @@ class CrudListenerFlagTest {
     @Test
     fun `an Elasticsearch-enabled searchable DTO fails when an entity on its path has no listener`() {
 
-        assertThatThrownBy { spec.childEsDto.esRefreshDependencies }
+        assertThatThrownBy { spec.childEsDto.refreshDependencies }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessageContaining("WithoutListener")
             .hasMessageContaining("CrudListener")

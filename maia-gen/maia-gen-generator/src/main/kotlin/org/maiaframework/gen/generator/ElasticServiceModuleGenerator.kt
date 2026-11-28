@@ -3,7 +3,7 @@ package org.maiaframework.gen.generator
 import org.maiaframework.gen.renderers.EsDocRepoRenderer
 import org.maiaframework.gen.renderers.EsDocRefreshRepoRenderer
 import org.maiaframework.gen.renderers.EsRefreshListeners
-import org.maiaframework.gen.renderers.EsReverseJoins
+import org.maiaframework.gen.renderers.EsDocReverseJoins
 import org.maiaframework.gen.renderers.SearchableDtoEsDocRepoRenderer
 import org.maiaframework.gen.renderers.SearchableDtoEsIndexServiceRenderer
 import org.maiaframework.gen.renderers.TypeaheadIndexServiceRenderer
@@ -98,7 +98,7 @@ class ElasticServiceModuleGenerator(
 
             EsRefreshListeners.renderersFor(esDocDef).forEach { it.renderToDir(this.kotlinOutputDir) }
 
-            if (EsReverseJoins.reverseJoinsFor(esDocDef).isNotEmpty()) {
+            if (EsDocReverseJoins.reverseJoinsFor(esDocDef).isNotEmpty()) {
                 EsDocRefreshRepoRenderer(esDocDef, this.applicationModelDef).renderToDir(this.kotlinOutputDir)
             }
 

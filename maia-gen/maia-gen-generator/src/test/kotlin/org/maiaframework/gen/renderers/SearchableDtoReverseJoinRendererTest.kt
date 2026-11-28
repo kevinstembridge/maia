@@ -139,7 +139,7 @@ class SearchableDtoReverseJoinRendererTest {
     }
 
 
-    /** Entities without crud {}: reading esRefreshDependencies would fail validation. */
+    /** Entities without crud {}: reading refreshDependencies would fail validation. */
     private class NoCrudSpec : AbstractSpec(AppKey("Test")) {
 
         val parent = entity("com.example", "Parent") {
@@ -351,8 +351,8 @@ class SearchableDtoReverseJoinRendererTest {
         val listenerSpec = EsRefreshListenerTestSpec()
         val dto = listenerSpec.leftCodedDto
 
-        assertThat(dto.esRefreshDependencies.map { it.entityDef.entityBaseName.value }).containsExactly("Left", "LeftRightCoded")
-        assertThat(dto.esRefreshDependencies[1].hasCrudListener).isTrue()
+        assertThat(dto.refreshDependencies.map { it.entityDef.entityBaseName.value }).containsExactly("Left", "LeftRightCoded")
+        assertThat(dto.refreshDependencies[1].hasCrudListener).isTrue()
 
         val dao = renderDao(dto, tempDir.resolve("dao"), applicationModelDefFor(listenerSpec))
 

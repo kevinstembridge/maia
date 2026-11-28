@@ -8,7 +8,7 @@ import org.maiaframework.gen.spec.AbstractSpec
 import org.maiaframework.gen.spec.ApplicationSpec
 import org.maiaframework.gen.spec.definition.AppKey
 import org.maiaframework.gen.spec.definition.ApplicationModelDef
-import org.maiaframework.gen.spec.definition.EsRefreshRole
+import org.maiaframework.gen.spec.definition.RefreshRole
 import org.maiaframework.gen.spec.definition.ModelDef
 import org.maiaframework.gen.spec.definition.flags.Deletable
 import org.maiaframework.gen.spec.definition.flags.IsEditableByUser
@@ -113,7 +113,7 @@ class HandBuiltEsDocViaRendererTest {
         val dependencies = spec.orderEsDoc.refreshDependencies.associateBy { it.entityDef.entityBaseName.value }
 
         assertThat(dependencies.keys).containsExactly("Order", "Customer", "Region", "Carrier")
-        assertThat(dependencies.getValue("Region").role).isEqualTo(EsRefreshRole.PATH)
+        assertThat(dependencies.getValue("Region").role).isEqualTo(RefreshRole.PATH)
         assertThat(dependencies.getValue("Region").pathsFromRoot.single().map { "${it.fromEntity.entityBaseName}.${it.fromField.classFieldName}" })
             .containsExactly("Order.customer", "Customer.region")
         // defaults to every non-key, non-audit field
